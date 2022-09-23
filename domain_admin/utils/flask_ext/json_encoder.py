@@ -13,7 +13,7 @@ class JSONEncoder(_JSONEncoder):
         print(o)
 
         if isinstance(o, ModelSelect):
-            return list(o)
+            return list(o.dicts())
 
         if isinstance(o, datetime):
             return o.strftime(self.DATETIME_FORMAT)

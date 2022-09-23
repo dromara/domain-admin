@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
 
 from collections import Iterator
-
+import flask
 from flask import Flask
 from peewee import ModelSelect, Model
 
 from domain_admin.utils.flask_ext.api_result import ApiResult
 from domain_admin.utils.flask_ext.json_encoder import JSONEncoder
-from domain_admin.utils.flask_ext.json_provider import JSONProvider
+# from domain_admin.utils.flask_ext.json_provider import JSONProvider
 from domain_admin.utils.flask_ext.request import Request
-
 
 class FlaskApp(Flask):
     """
     扩展Flask
     """
-    # json_encoder = JSONEncoder
+    json_encoder = JSONEncoder
 
-    # Flask 2
-    json_provider_class = JSONProvider
+    # Flask 2.2.2
+    # json_provider_class = JSONProvider
 
     request_class = Request
 
