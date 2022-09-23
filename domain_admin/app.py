@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import request, make_response
 from flask_cors import CORS
-from werkzeug.middleware.proxy_fix import ProxyFix
 
 from domain_admin.model import db
 from domain_admin.router import routes
@@ -11,7 +10,6 @@ from domain_admin.utils.flask_ext.register import register_app_routers, register
 app = FlaskApp(__name__, static_folder=None)
 
 CORS(app, supports_credentials=True)
-app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # 路由
 register_app_routers(app, routes)

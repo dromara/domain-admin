@@ -12,4 +12,5 @@ dist/
 .env
 config.yml
 logs/
+.deta
 
