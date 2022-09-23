@@ -10,6 +10,7 @@ from domain_admin.utils.flask_ext.json_encoder import JSONEncoder
 # from domain_admin.utils.flask_ext.json_provider import JSONProvider
 from domain_admin.utils.flask_ext.request import Request
 
+
 class FlaskApp(Flask):
     """
     扩展Flask

@@ -5,4 +5,4 @@ from domain_admin.app import app
 
 if __name__ == '__main__':
     app.wsgi_app = ProxyFix(app.wsgi_app)
-    app.run()
+    app.run(port=8001, host="0.0.0.0")
