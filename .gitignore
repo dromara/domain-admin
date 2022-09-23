@@ -1,0 +1,15 @@
+.idea
+__pycache__
+*.pyc
+*.sqlite
+*.db
+build/
+dist/
+*.egg-info/
+*.log
+*.db-shm
+*.db-wal
+.env
+config.yml
+logs/
+
