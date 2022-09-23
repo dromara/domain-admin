@@ -1,6 +1,6 @@
 dateparser==1.1.1
 Flask>=2.0.0
 Flask-Cors==3.0.10
-Jinja2==3.1.2
+Jinja2>=3.0.0
 peewee==3.15.3
 python-dateutil==2.8.2
