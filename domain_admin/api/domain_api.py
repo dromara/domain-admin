@@ -27,6 +27,10 @@ def delete_domain_by_id():
 
 
 def get_domain_list():
+    """
+    获取域名列表
+    :return:
+    """
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
 
@@ -43,4 +47,6 @@ def get_domain_list():
 
 
 def get_domain_by_id():
-    pass
+    domain_id = request.json.get('id')
+
+    return DomainModel.get_by_id(domain_id)

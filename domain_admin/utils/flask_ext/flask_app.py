@@ -15,6 +15,7 @@ class FlaskApp(Flask):
     """
     扩展Flask
     """
+    # 2.0.0
     json_encoder = JSONEncoder
 
     # Flask 2.2.2

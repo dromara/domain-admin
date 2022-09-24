@@ -34,3 +34,12 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{baseUrl}}/api/getDomainById
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###

@@ -33,3 +33,13 @@ python3 domain_admin/main.py
 接口文档：[/doc/index.md](/doc/index.md)
 
 > 注意：后端服务依赖 `curl`
+
+代码推送
+
+```bash
+# github
+git push
+
+# gitee
+git push -u gitee master
+```
