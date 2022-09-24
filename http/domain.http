@@ -11,7 +11,7 @@ Content-Type: application/json
 {
   "domain": "www.baidu.com",
   "alias": "百度",
-  "group_id": 1
+  "group_id": 2
 }
 
 ###
@@ -34,7 +34,8 @@ Content-Type: application/json
 
 {
   "page": 1,
-  "size": 10
+  "size": 10,
+  "group_id": 1
 }
 
 ###
@@ -43,11 +44,19 @@ POST {{baseUrl}}/api/getDomainById
 Content-Type: application/json
 
 {
-  "id": 1
+  "id": 10
 }
 
 ###
 POST {{baseUrl}}/api/deleteDomainById
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+POST {{baseUrl}}/api/updateDomainCertInfoById
 Content-Type: application/json
 
 {

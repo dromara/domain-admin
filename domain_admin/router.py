@@ -8,8 +8,8 @@ from domain_admin.api.domain_api import (
     update_domain_by_id,
     delete_domain_by_id,
     get_domain_list,
-    get_domain_by_id
-)
+    get_domain_by_id,
+    update_domain_cert_info_by_id)
 from domain_admin.api.group_api import add_group, get_group_by_id, get_group_list, delete_group_by_id, \
     update_group_by_id
 
@@ -21,6 +21,7 @@ routes = {
     "/api/deleteDomainById": delete_domain_by_id,
     "/api/getDomainList": get_domain_list,
     "/api/getDomainById": get_domain_by_id,
+    "/api/updateDomainCertInfoById": update_domain_cert_info_by_id,
 
     "/api/addGroup": add_group,
     "/api/updateGroupById": update_group_by_id,

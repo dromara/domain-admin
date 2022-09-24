@@ -2,7 +2,8 @@
 
 域名管理控制台
 
-https://gitee.com/mouday/domain-admin
+- https://gitee.com/mouday/domain-admin
+- https://github.com/mouday/domain-admin
 
 功能：
 

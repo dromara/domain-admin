@@ -5,6 +5,7 @@ import flask
 from flask import Flask
 from peewee import ModelSelect, Model
 
+
 from domain_admin.utils.flask_ext.api_result import ApiResult
 from domain_admin.utils.flask_ext.json_encoder import JSONEncoder
 # from domain_admin.utils.flask_ext.json_provider import JSONProvider

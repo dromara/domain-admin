@@ -8,8 +8,8 @@ import subprocess
 from datetime import datetime
 import traceback
 
-from datahelper.util.render_util import Render
-from dataspider.util import EmailSender
+
+
 import dateparser
 from operator import itemgetter
 
@@ -23,22 +23,6 @@ BEFORE_EXPIRE_DAYS = 3
 
 
 
-def get_cert_expire_date(domain):
-    """获取证书剩余时间"""
-    info = get_cert_info(domain)
-
-    # print(format_date(info['start_date']), '~', format_date(info['expire_date']))
-
-    expire_date = info['expire_date']
-
-    # 剩余天数
-    # print(datetime.now())
-    return {
-        'domain': domain,
-        'start_date': format_date(info['start_date']),
-        'expire_date': format_date(info['expire_date']),
-        'expire_days': (expire_date - datetime.now()).days
-    }
 
 
 def main():

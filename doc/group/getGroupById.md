@@ -12,8 +12,13 @@
 
 4、返回参数
 
-略
 
+| 参数  | 类型   | 说明 |
+| -| - | - |
+| id | int | id
+| name | string  | 名称
+| create_time | datetime  | 域名添加时间
+| update_time | datetime  | 域名更新时间
 
 5、请求示例
 
