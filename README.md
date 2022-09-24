@@ -2,6 +2,8 @@
 
 域名管理控制台
 
+https://gitee.com/mouday/domain-admin
+
 功能：
 
 - 域名证书信息查询
