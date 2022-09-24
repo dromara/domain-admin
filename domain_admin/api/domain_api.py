@@ -16,11 +16,13 @@ def add_domain():
     alias = request.json.get('alias', '')
     group_id = request.json.get('group_id', 0)
 
-    DomainModel.create(
+    row = DomainModel.create(
         domain=domain,
         alias=alias,
         group_id=group_id
     )
+
+    return {'id': row.id}
 
 
 def update_domain_by_id():

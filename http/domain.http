@@ -44,7 +44,7 @@ POST {{baseUrl}}/api/getDomainById
 Content-Type: application/json
 
 {
-  "id": 10
+  "id": 1
 }
 
 ###

@@ -11,9 +11,11 @@ def add_group():
     """
     name = request.json.get('name')
 
-    return GroupModel.create(
+    row = GroupModel.create(
         name=name
     )
+
+    return {'id': row.id}
 
 
 def update_group_by_id():
@@ -38,7 +40,7 @@ def delete_group_by_id():
     """
     group_id = request.json.get('id')
 
-    return GroupModel.delete_by_id(group_id)
+    GroupModel.delete_by_id(group_id)
 
 
 def get_group_list():
