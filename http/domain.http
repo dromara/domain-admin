@@ -34,8 +34,7 @@ Content-Type: application/json
 
 {
   "page": 1,
-  "size": 10,
-  "group_id": 1
+  "size": 1
 }
 
 ###
@@ -44,7 +43,7 @@ POST {{baseUrl}}/api/getDomainById
 Content-Type: application/json
 
 {
-  "id": 1
+  "id": 3
 }
 
 ###
@@ -60,7 +59,7 @@ POST {{baseUrl}}/api/updateDomainCertInfoById
 Content-Type: application/json
 
 {
-  "id": 1
+  "id": 3
 }
 
 ###

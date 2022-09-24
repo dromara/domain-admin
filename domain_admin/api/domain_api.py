@@ -62,7 +62,7 @@ def get_domain_list():
     """
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
-    group_id = request.json.get('group_id', 0)
+    group_id = request.json.get('group_id')
 
     query = DomainModel.select()
 

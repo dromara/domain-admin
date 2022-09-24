@@ -53,7 +53,8 @@ class DomainModel(BaseModel):
 
     @property
     def detail(self):
-        return json.loads(self.detail_raw)
+        if self.detail_raw:
+            return json.loads(self.detail_raw)
 
     @property
     def group(self):

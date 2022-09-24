@@ -38,18 +38,20 @@ Content-Type: application/json
     "list": [
       {
         "alias": "百度",
-        "check_time": null,
-        "connect_status": false,
-        "create_time": "2022-09-23 16:50:04",
+        "check_time": "2022-09-24 22:31:55",
+        "connect_status": true,
+        "create_time": "2022-09-24 22:29:02",
         "domain": "www.baidu.com",
-        "expire_time": null,
-        "id": 2,
-        "group_id": 1,
-        "start_time": null,
-        "update_time": "2022-09-23 16:50:04"
+        "expire_days": 315,
+        "expire_time": "2023-08-06 13:16:01",
+        "group_id": 2,
+        "id": 3,
+        "start_time": "2022-07-05 13:16:02",
+        "total_days": 396,
+        "update_time": "2022-09-24 22:29:02"
       }
     ],
-    "total": 2
+    "total": 3
   },
   "msg": "success"
 }
