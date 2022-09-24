@@ -1,0 +1,57 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST {{baseUrl}}/api/addDomain
+Content-Type: application/json
+
+{
+  "domain": "www.baidu.com",
+  "alias": "百度",
+  "group_id": 1
+}
+
+###
+
+POST {{baseUrl}}/api/updateDomainById
+Content-Type: application/json
+
+{
+  "id": 1,
+  "domain": "www.baidu.com",
+  "alias": "百度",
+  "group_id": 1
+}
+
+
+###
+
+POST {{baseUrl}}/api/getDomainList
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}
+
+###
+
+POST {{baseUrl}}/api/getDomainById
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+POST {{baseUrl}}/api/deleteDomainById
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###

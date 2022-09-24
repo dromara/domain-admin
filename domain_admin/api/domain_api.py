@@ -2,6 +2,7 @@
 from flask import request
 
 from domain_admin.model import DomainModel
+from domain_admin.utils.datetime_util import get_datetime
 
 
 def add_domain():
@@ -11,19 +12,43 @@ def add_domain():
     """
     domain = request.json.get('domain')
     alias = request.json.get('alias', '')
+    group_id = request.json.get('group_id', 0)
 
     DomainModel.create(
         domain=domain,
-        alias=alias
+        alias=alias,
+        group_id=group_id
     )
 
 
 def update_domain_by_id():
-    pass
+    """
+    更新数据
+    :return:
+    """
+    domain_id = request.json.get('id')
+    domain = request.json.get('domain')
+    alias = request.json.get('alias', '')
+    group_id = request.json.get('group_id', 0)
+
+    DomainModel.update(
+        domain=domain,
+        alias=alias,
+        group_id=group_id,
+        update_time=get_datetime()
+    ).where(
+        DomainModel.id == domain_id
+    ).execute()
 
 
 def delete_domain_by_id():
-    pass
+    """
+    删除
+    :return:
+    """
+    domain_id = request.json.get('id')
+
+    DomainModel.delete_by_id(domain_id)
 
 
 def get_domain_list():
@@ -47,6 +72,10 @@ def get_domain_list():
 
 
 def get_domain_by_id():
+    """
+    获取
+    :return:
+    """
     domain_id = request.json.get('id')
 
     return DomainModel.get_by_id(domain_id)

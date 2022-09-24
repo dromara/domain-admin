@@ -31,8 +31,3 @@ def before_request():
 def after_request(response):
     db.close()
     return response
-
-
-if __name__ == '__main__':
-    print(app.url_map)
-    app.run(debug=True)

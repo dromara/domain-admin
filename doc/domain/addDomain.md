@@ -10,6 +10,7 @@
 | -| - | - | - |
 | domain | string | 是 | 查询的域名，eg: www.baidu.com
 | alias | string | 否 | 域名别名
+| group_id | int | 否 | 域名分组id
 
 4、返回参数
 
@@ -17,13 +18,14 @@
 
 5、请求示例
 
-```json
+```
 POST {{baseUrl}}/api/addDomain
 Content-Type: application/json
 
 {
     "domain": "www.baidu.com",
-    "alias": "百度"
+    "alias": "百度",
+    "group_id": 1,
 }
 ```
 

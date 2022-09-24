@@ -36,7 +36,7 @@ GET {{baseUrl}}/api/getCertInformation?domain=www.baidu.com
 ```
 
 POST
-```json
+```
 POST {{baseUrl}}/api/getCertInformation
 Content-Type: application/json
 

@@ -18,7 +18,7 @@
 
 5、请求示例
 
-```json
+```
 POST {{baseUrl}}/api/getDomainList
 Content-Type: application/json
 
@@ -43,6 +43,7 @@ Content-Type: application/json
         "domain": "www.baidu.com",
         "expire_time": null,
         "id": 2,
+        "group_id": 1,
         "start_time": null,
         "update_time": "2022-09-23 16:50:04"
       }

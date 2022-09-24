@@ -6,7 +6,7 @@ from peewee import CharField, IntegerField, DateTimeField, BooleanField
 
 
 class DomainModel(BaseModel):
-    """登录日志"""
+    """域名"""
     id = IntegerField(primary_key=True)
 
     # 域名
@@ -14,6 +14,9 @@ class DomainModel(BaseModel):
 
     # 别名
     alias = CharField(default="")
+
+    # 分组
+    group_id = IntegerField(default=0)
 
     # 签发时间
     start_time = DateTimeField(default=None, null=True)

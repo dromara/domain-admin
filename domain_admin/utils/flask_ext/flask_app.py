@@ -9,7 +9,7 @@ from domain_admin.utils.flask_ext.api_result import ApiResult
 from domain_admin.utils.flask_ext.json_encoder import JSONEncoder
 # from domain_admin.utils.flask_ext.json_provider import JSONProvider
 from domain_admin.utils.flask_ext.request import Request
-
+from playhouse.shortcuts import model_to_dict
 
 class FlaskApp(Flask):
     """
@@ -28,10 +28,13 @@ class FlaskApp(Flask):
         if isinstance(rv, ModelSelect):
             rv = list(rv.dicts())
 
+        if isinstance(rv, Model):
+            rv = model_to_dict(rv)
+
         if isinstance(rv, Iterator):
             rv = list(rv)
 
-        if isinstance(rv, (list, dict)) or rv is None:
+        if isinstance(rv, (list, dict, int, str)) or rv is None:
             rv = ApiResult.success(rv)
 
         if isinstance(rv, ApiResult):

@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+生产环境启动入口
+"""
+
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from domain_admin.app import app
