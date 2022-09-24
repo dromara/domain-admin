@@ -46,12 +46,12 @@ def get_group_list():
     获取域名列表
     :return:
     """
-    page = request.json.get('page', 1)
-    size = request.json.get('size', 10)
+    # page = request.json.get('page', 1)
+    # size = request.json.get('size', 10)
 
     lst = GroupModel.select().order_by(
         GroupModel.update_time.desc()
-    ).paginate(page, size)
+    )
 
     total = GroupModel.select().count()
 

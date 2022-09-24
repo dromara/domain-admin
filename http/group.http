@@ -1,0 +1,50 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST {{baseUrl}}/api/addGroup
+Content-Type: application/json
+
+{
+  "name": "项目1"
+}
+
+###
+
+POST {{baseUrl}}/api/updateGroupById
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "项目2"
+}
+
+
+###
+
+POST {{baseUrl}}/api/getGroupList
+Content-Type: application/json
+
+{}
+
+###
+
+POST {{baseUrl}}/api/getGroupById
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+POST {{baseUrl}}/api/deleteGroupById
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###

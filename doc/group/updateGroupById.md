@@ -1,6 +1,6 @@
 # 更新数据
 
-1、请求地址：/api/updateDomainById
+1、请求地址：/api/updateGroupById
 
 2、请求方式：POST
 
@@ -9,9 +9,7 @@
 | 参数  | 类型   | 必须 | 说明 |
 | -| - | - | - |
 | id | int | 是 | 域名id
-| domain | string | 是 | 查询的域名，eg: www.baidu.com
-| alias | string | 是 | 域名别名
-| group_id | int | 是 | 域名分组id
+| name | string | 是 | 分组名称
 
 4、返回参数
 
@@ -20,14 +18,12 @@
 5、请求示例
 
 ```
-POST {{baseUrl}}/api/updateDomainById
+POST {{baseUrl}}/api/updateGroupById
 Content-Type: application/json
 
 {
   "id": 1,
-  "domain": "www.baidu.com",
-  "alias": "百度",
-  "group_id": 1
+  "name": "项目2"
 }
 ```
 
