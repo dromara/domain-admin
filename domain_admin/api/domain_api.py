@@ -130,4 +130,14 @@ def send_domain_info_list_email():
     :return:
     """
     to_addresses = request.json['to_addresses']
-    email_service.send_domain_list_email(to_addresses)
+    domain_service.send_domain_list_email(to_addresses)
+
+
+def check_domain_cert():
+    """
+    检查域名证书信息
+    :return:
+    """
+    domain_service.update_all_domain_cert_info()
+
+    domain_service.check_domain_cert()

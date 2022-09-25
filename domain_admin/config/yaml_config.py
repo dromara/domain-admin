@@ -31,3 +31,9 @@ MAIL_PORT = config.get('MAIL_PORT')
 MAIL_USERNAME = config.get('MAIL_USERNAME')
 # 发件人邮箱密码
 MAIL_PASSWORD = config.get('MAIL_PASSWORD')
+
+# 到期前几天邮件提醒
+BEFORE_EXPIRE_DAYS = config.get('BEFORE_EXPIRE_DAYS')
+
+# 提醒邮箱
+MAIL_TO_ADDRESSES = config.get('MAIL_TO_ADDRESSES')

@@ -71,3 +71,11 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{baseUrl}}/api/checkDomainCert
+Content-Type: application/json
+
+{}
+
+###
+

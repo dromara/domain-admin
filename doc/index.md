@@ -11,6 +11,7 @@
 | /api/deleteDomainById | 删除域名 | [deleteDomainById.md](/doc/domain/deleteDomainById.md) |
 | /api/updateDomainCertInfoById | 更新域名证书信息 | [updateDomainCertInfoById.md](/doc/domain/updateDomainCertInfoById.md) |
 | /api/sendDomainInfoListEmail | 发送域名证书信息到邮箱 | [sendDomainInfoListEmail.md](/doc/domain/sendDomainInfoListEmail.md) |
+| /api/checkDomainCert | 检查域名证书到期信息 | [checkDomainCert.md](/doc/domain/checkDomainCert.md) |
 
 分组管理
 
