@@ -34,8 +34,8 @@ bind = "127.0.0.1:9090"
 # 日志文件
 loglevel = 'debug'
 pidfile = 'gunicorn.pid'
-accesslog = resolve_file("access.log")
-errorlog = resolve_file("error.log")
+accesslog = resolve_file("gunicorn-access.log")
+errorlog = resolve_file("gunicorn-error.log")
 
 # 启动的进程数
 # workers = get_workers()
