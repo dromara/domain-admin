@@ -29,7 +29,7 @@ daemon = False  # 使用supervisor不能是后台进程
 proc_name = "domain-admin"
 
 # 启动端口
-bind = "127.0.0.1:9090"
+bind = "0.0.0.0:9090"
 
 # 日志文件
 loglevel = 'debug'
