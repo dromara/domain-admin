@@ -1,0 +1,47 @@
+{# 查询域名证书到期情况 #}
+<html lang="zh">
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+    <table style="border: 1px solid #eeeeee;border-collapse: collapse;">
+        {# 表头 #}
+        <thead style="background-color: #ddd;">
+        <tr>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">序号</th>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名</th>
+{#            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">开始日期</th>#}
+{#            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">结束日期</th>#}
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">剩余天数</th>
+        </tr>
+        </thead>
+
+        {#  数据 #}
+        <tbody>
+        {% for item in list %}
+            <tr>
+                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ loop.index }}</td>
+                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">
+                    <a href="{{ item.domain }}" target="_blank">{{ item.domain }}</a>
+                </td>
+{#                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date }}</td>#}
+{#                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date }}</td>#}
+                {% if item.expire_days <= -1 %}
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">未知</td>
+                {% elif item.expire_days <= 3 %}
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.expire_days }}</td>
+                {% elif item.expire_days <= 30 %}
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.expire_days }}</td>
+                {% else %}
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.expire_days }}</td>
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

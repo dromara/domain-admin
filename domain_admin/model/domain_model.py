@@ -42,14 +42,28 @@ class DomainModel(BaseModel):
     update_time = DateTimeField(default=datetime.now)
 
     @property
+    def start_date(self):
+        if self.start_time and isinstance(self.start_time, datetime):
+            return self.start_time.strftime('%Y-%m-%d')
+
+    @property
+    def expire_date(self):
+        if self.expire_time and isinstance(self.expire_time, datetime):
+            return self.expire_time.strftime('%Y-%m-%d')
+
+    @property
     def total_days(self):
         if self.start_time and self.expire_time:
             return (self.expire_time - self.start_time).days
+        else:
+            return -1
 
     @property
     def expire_days(self):
         if self.expire_time:
             return (self.expire_time - datetime.now()).days
+        else:
+            return -1
 
     @property
     def detail(self):

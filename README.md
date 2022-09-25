@@ -21,7 +21,10 @@
 
 - Python3.7.0
 - Flask
-- jinja2
+- jinja2 https://jinja.palletsprojects.com/en/3.1.x/
+- peewee http://docs.peewee-orm.com/en/latest/index.html#
+- apscheduler https://apscheduler.readthedocs.io/en/3.x/
+- supervisord http://supervisord.org/index.html
 
 启动服务
 
@@ -45,4 +48,19 @@ git push
 
 # gitee
 git push -u gitee master
+```
+
+配置文件 config.yml
+
+```yaml
+# 服务器地址
+MAIL_HOST: "smtp.163.com"
+# 服务器端口 25 或者 465(ssl)
+MAIL_PORT: 25
+
+# 发件人邮箱账号
+MAIL_USERNAME: "demo@163.com"
+# 发件人邮箱密码
+MAIL_PASSWORD: "xxx"
+
 ```

@@ -10,3 +10,6 @@ APP_DIR = os.path.dirname(CONFIG_DIR)
 
 # 项目根目录
 ROOT_DIR = os.path.dirname(APP_DIR)
+
+# 模板目录
+TEMPLATE_DIR = os.path.join(APP_DIR, 'templates')

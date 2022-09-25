@@ -3,8 +3,9 @@ from flask import request
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model import DomainModel
-from domain_admin.service.domain_service import update_domain_cert_info
-from domain_admin.utils.datetime_util import get_datetime
+from domain_admin.service import domain_service
+from domain_admin.service import email_service
+from domain_admin.utils import datetime_util
 
 
 def add_domain():
@@ -39,7 +40,7 @@ def update_domain_by_id():
         domain=domain,
         alias=alias,
         group_id=group_id,
-        update_time=get_datetime()
+        update_time=datetime_util.get_datetime()
     ).where(
         DomainModel.id == domain_id
     ).execute()
@@ -120,4 +121,13 @@ def update_domain_cert_info_by_id():
 
     row = DomainModel.get_by_id(domain_id)
 
-    update_domain_cert_info(row)
+    domain_service.update_domain_cert_info(row)
+
+
+def send_domain_info_list_email():
+    """
+    发送域名证书信息到邮箱
+    :return:
+    """
+    to_addresses = request.json['to_addresses']
+    email_service.send_domain_list_email(to_addresses)

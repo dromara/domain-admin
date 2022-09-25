@@ -10,6 +10,7 @@
 | /api/updateDomainById | 更新数据 | [updateDomainById.md](/doc/domain/updateDomainById.md) | 
 | /api/deleteDomainById | 删除域名 | [deleteDomainById.md](/doc/domain/deleteDomainById.md) |
 | /api/updateDomainCertInfoById | 更新域名证书信息 | [updateDomainCertInfoById.md](/doc/domain/updateDomainCertInfoById.md) |
+| /api/sendDomainInfoListEmail | 发送域名证书信息到邮箱 | [sendDomainInfoListEmail.md](/doc/domain/sendDomainInfoListEmail.md) |
 
 分组管理
 

@@ -63,3 +63,11 @@ Content-Type: application/json
 }
 
 ###
+POST {{baseUrl}}/api/sendDomainInfoListEmail
+Content-Type: application/json
+
+{
+  "to_addresses": ["1940607002@qq.com"]
+}
+
+###
