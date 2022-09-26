@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from functools import cmp_to_key
 from operator import itemgetter
 
 from playhouse.shortcuts import model_to_dict
@@ -97,8 +98,16 @@ def get_domain_info_list():
         ]
     ), lst))
 
-    # TODO: 排序
-    # lst = sorted(lst, key=itemgetter('expire_days'))
+    def compare(a, b):
+        if a['expire_days'] and b['expire_days']:
+            return a['expire_days'] - b['expire_days']
+        else:
+            if a['expire_days']:
+                return a['expire_days']
+            else:
+                return -b['expire_days']
+
+    lst = sorted(lst, key=cmp_to_key(compare), reverse=True)
 
     return lst
 
@@ -140,4 +149,4 @@ def send_domain_list_email(to_addresses):
 
 
 if __name__ == '__main__':
-    update_domain_cert_info(1)
+    print(get_domain_info_list())
