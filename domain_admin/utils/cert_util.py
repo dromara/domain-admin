@@ -43,6 +43,11 @@ def get_cert_info(domain):
     cmd = f"curl -Ivs https://{domain} --connect-timeout 10"
 
     exitcode, output = subprocess.getstatusoutput(cmd)
+    # print(exitcode)
+    # print(output)
+
+    if exitcode != 0:
+        raise Exception('域名连接错误')
 
     # 正则匹配
     problem = get_re_match_result('SSL certificate problem: (.*)', output)
@@ -69,4 +74,4 @@ def get_cert_info(domain):
 
 
 if __name__ == '__main__':
-    print(get_cert_info('www.baidu.com'))
+    print(get_cert_info('www.baidu1.com'))

@@ -6,7 +6,6 @@ from domain_admin.model import GroupModel
 from domain_admin.model.base_model import BaseModel
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
 
-
 class DomainModel(BaseModel):
     """域名"""
     id = IntegerField(primary_key=True)

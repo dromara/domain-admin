@@ -2,7 +2,7 @@
 from flask import request
 from playhouse.shortcuts import model_to_dict
 
-from domain_admin.model import DomainModel
+from domain_admin.model import DomainModel, GroupModel
 from domain_admin.service import domain_service
 from domain_admin.service import email_service
 from domain_admin.utils import datetime_util
@@ -76,14 +76,18 @@ def get_domain_list():
 
     total = DomainModel.select().count()
 
+    # TODO: N+1 解决问题
     lst = list(map(lambda m: model_to_dict(
         model=m,
         exclude=[DomainModel.detail_raw],
         extra_attrs=[
             'total_days',
             'expire_days',
+            'group',
         ]
     ), lst))
+
+    # append_model(lst, [{'group': GroupModel}])
 
     return {
         'list': lst,
