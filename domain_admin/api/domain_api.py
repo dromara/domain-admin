@@ -71,7 +71,7 @@ def get_domain_list():
         query = query.where(DomainModel.group_id == group_id)
 
     lst = query.order_by(
-        DomainModel.update_time.desc()
+        DomainModel.create_time.asc()
     ).paginate(page, size)
 
     total = DomainModel.select().count()
