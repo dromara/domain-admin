@@ -12,7 +12,7 @@ POST {{baseUrl}}/api/getCertInformation
 Content-Type: application/json
 
 {
-  "domain": "www.baidu.com"
+  "domain": "www.baidu1.com"
 }
 
 ###
