@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
   "page": 1,
-  "size": 1
+  "size": 10
 }
 
 ###

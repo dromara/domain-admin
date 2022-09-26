@@ -62,7 +62,8 @@ def get_domain_info_list():
         ]
     ), lst))
 
-    lst = sorted(lst, key=itemgetter('expire_days'))
+    # TODO: 排序
+    # lst = sorted(lst, key=itemgetter('expire_days'))
 
     return lst
 
@@ -77,7 +78,7 @@ def check_domain_cert():
     has_expired_domain = False
 
     for item in lst:
-        if -1 < item['expire_days'] <= BEFORE_EXPIRE_DAYS:
+        if item['expire_days'] is None or item['expire_days'] <= BEFORE_EXPIRE_DAYS:
             has_expired_domain = True
             break
 

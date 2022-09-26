@@ -6,6 +6,7 @@ from domain_admin.model import GroupModel
 from domain_admin.model.base_model import BaseModel
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
 
+
 class DomainModel(BaseModel):
     """域名"""
     id = IntegerField(primary_key=True)
@@ -54,15 +55,11 @@ class DomainModel(BaseModel):
     def total_days(self):
         if self.start_time and self.expire_time:
             return (self.expire_time - self.start_time).days
-        else:
-            return -1
 
     @property
     def expire_days(self):
         if self.expire_time:
             return (self.expire_time - datetime.now()).days
-        else:
-            return -1
 
     @property
     def detail(self):
