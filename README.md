@@ -64,3 +64,9 @@ MAIL_USERNAME: "demo@163.com"
 MAIL_PASSWORD: "xxx"
 
 ```
+
+定时设置
+```
+# 定时检查域名证书到期
+30 9 * * * curl http://127.0.0.1:9090/api/checkDomainCert
+```

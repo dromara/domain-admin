@@ -129,10 +129,7 @@ def update_all_domain_cert_info():
     更新所有域名证书信息
     :return:
     """
-
-    rows = DomainModel.select()
-    for row in rows:
-        domain_service.update_domain_cert_info(row)
+    domain_service.update_all_domain_cert_info()
 
 
 def update_domain_cert_info_by_id():
@@ -161,6 +158,7 @@ def check_domain_cert():
     检查域名证书信息
     :return:
     """
+    # 先更新，再检查
     domain_service.update_all_domain_cert_info()
 
     domain_service.check_domain_cert()
