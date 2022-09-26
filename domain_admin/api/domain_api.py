@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 from flask import request
 from playhouse.shortcuts import model_to_dict
 
@@ -6,6 +8,9 @@ from domain_admin.model import DomainModel, GroupModel
 from domain_admin.service import domain_service
 from domain_admin.service import email_service
 from domain_admin.utils import datetime_util
+from domain_admin.utils import cert_util
+from domain_admin.utils import datetime_util
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def add_domain():
@@ -17,11 +22,14 @@ def add_domain():
     alias = request.json.get('alias', '')
     group_id = request.json.get('group_id', 0)
 
-    row = DomainModel.create(
-        domain=domain,
-        alias=alias,
-        group_id=group_id
-    )
+    if not domain:
+        raise AppException('参数缺失：domain')
+
+    row = domain_service.add_domain({
+        'domain': domain,
+        'alias': alias,
+        'group_id': group_id,
+    })
 
     return {'id': row.id}
 
