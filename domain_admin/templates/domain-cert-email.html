@@ -29,16 +29,17 @@
                 </td>
 {#                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date }}</td>#}
 {#                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date }}</td>#}
-                {% if item.expire_days is None %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">未知</td>
-                {% elif item.expire_days <= 3 %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.expire_days }}</td>
-                {% elif item.expire_days <= 30 %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.expire_days }}</td>
+                {% if item.expire_days%}
+                    {% if item.expire_days <= 3 %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.expire_days }}</td>
+                    {% elif item.expire_days <= 30 %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.expire_days }}</td>
+                    {% else %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.expire_days }}</td>
+                    {% endif %}
                 {% else %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.expire_days }}</td>
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">未知</td>
                 {% endif %}
-
             </tr>
         {% endfor %}
         </tbody>
