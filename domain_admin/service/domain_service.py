@@ -107,7 +107,7 @@ def get_domain_info_list():
             else:
                 return -b['expire_days']
 
-    lst = sorted(lst, key=cmp_to_key(compare), reverse=True)
+    lst = sorted(lst, key=cmp_to_key(compare))
 
     return lst
 
