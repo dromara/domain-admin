@@ -52,7 +52,7 @@ def get_group_list():
     # size = request.json.get('size', 10)
 
     lst = GroupModel.select().order_by(
-        GroupModel.update_time.desc()
+        GroupModel.update_time.asc()
     )
 
     total = GroupModel.select().count()
