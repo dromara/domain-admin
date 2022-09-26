@@ -15,6 +15,7 @@ routes = {
     "/api/getDomainList": domain_api.get_domain_list,
     "/api/getDomainById": domain_api.get_domain_by_id,
     "/api/updateDomainCertInfoById": domain_api.update_domain_cert_info_by_id,
+    "/api/updateAllDomainCertInfo": domain_api.update_all_domain_cert_info,
     "/api/sendDomainInfoListEmail": domain_api.send_domain_info_list_email,
     "/api/checkDomainCert": domain_api.check_domain_cert,
 

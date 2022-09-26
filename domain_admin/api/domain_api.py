@@ -124,6 +124,17 @@ def get_domain_by_id():
     )
 
 
+def update_all_domain_cert_info():
+    """
+    更新所有域名证书信息
+    :return:
+    """
+
+    rows = DomainModel.select()
+    for row in rows:
+        domain_service.update_domain_cert_info(row)
+
+
 def update_domain_cert_info_by_id():
     """
     更新域名证书信息

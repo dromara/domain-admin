@@ -10,6 +10,7 @@
 | /api/updateDomainById | 更新数据 | [updateDomainById.md](/doc/domain/updateDomainById.md) | 
 | /api/deleteDomainById | 删除域名 | [deleteDomainById.md](/doc/domain/deleteDomainById.md) |
 | /api/updateDomainCertInfoById | 更新域名证书信息 | [updateDomainCertInfoById.md](/doc/domain/updateDomainCertInfoById.md) |
+| /api/updateAllDomainCertInfo | 更新所有域名证书信息 | [updateAllDomainCertInfo.md](/doc/domain/updateAllDomainCertInfo.md) |
 | /api/sendDomainInfoListEmail | 发送域名证书信息到邮箱 | [sendDomainInfoListEmail.md](/doc/domain/sendDomainInfoListEmail.md) |
 | /api/checkDomainCert | 检查域名证书到期信息 | [checkDomainCert.md](/doc/domain/checkDomainCert.md) |
 
