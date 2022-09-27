@@ -11,6 +11,7 @@ from domain_admin.utils import datetime_util
 from domain_admin.utils import cert_util
 from domain_admin.utils import datetime_util
 from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.peewee_ext import model_util
 
 
 def add_domain():
@@ -37,19 +38,16 @@ def add_domain():
 def update_domain_by_id():
     """
     更新数据
+    id domain alias group_id notify_status
     :return:
     """
-    domain_id = request.json.get('id')
-    domain = request.json.get('domain')
-    alias = request.json.get('alias', '')
-    group_id = request.json.get('group_id', 0)
 
-    DomainModel.update(
-        domain=domain,
-        alias=alias,
-        group_id=group_id,
-        update_time=datetime_util.get_datetime()
-    ).where(
+    data = request.get_json(force=True)
+    domain_id = data.pop('id')
+
+    data['update_time'] = datetime_util.get_datetime()
+
+    DomainModel.update(data).where(
         DomainModel.id == domain_id
     ).execute()
 
@@ -91,11 +89,13 @@ def get_domain_list():
         extra_attrs=[
             'total_days',
             'expire_days',
-            'group',
         ]
     ), lst))
 
-    # append_model(lst, [{'group': GroupModel}])
+    # append_field(lst, ['group'])
+
+    # domain_service.domain_list_with_group(lst)
+    lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
 
     return {
         'list': lst,

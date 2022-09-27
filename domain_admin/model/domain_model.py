@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-
 from domain_admin.model import GroupModel
 from domain_admin.model.base_model import BaseModel
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
@@ -17,6 +16,9 @@ class DomainModel(BaseModel):
     # 别名
     alias = CharField(default="")
 
+    # ip
+    ip = CharField(default="")
+
     # 分组
     group_id = IntegerField(default=0)
 
@@ -28,6 +30,9 @@ class DomainModel(BaseModel):
 
     # 连接状态
     connect_status = BooleanField(default=False, null=True)
+
+    # 通知状态
+    notify_status = BooleanField(default=True)
 
     # 最后检查时间
     check_time = DateTimeField(default=None, null=True)

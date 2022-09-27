@@ -54,6 +54,7 @@ def get_cert_info(domain):
     if problem:
         raise Exception(problem)
 
+    ip = get_re_match_result('Connected to .*? \((.*?)\)', output)
     subject = get_re_match_result('subject: (.*)', output)
     issuer = get_re_match_result('issuer: (.*)', output)
     start_date = get_re_match_result('start date: (.*)', output)
@@ -66,6 +67,7 @@ def get_cert_info(domain):
 
     return {
         'domain': domain,
+        'ip': ip,
         'subject': parse_params(subject),
         'issuer': parse_params(issuer),
         'start_date': format_datetime(start_date),

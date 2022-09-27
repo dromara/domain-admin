@@ -6,11 +6,12 @@ from operator import itemgetter
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.config import BEFORE_EXPIRE_DAYS, MAIL_TO_ADDRESSES
-from domain_admin.model import DomainModel
+from domain_admin.model import DomainModel, GroupModel
 from domain_admin.service import email_service, render_service
 from domain_admin.utils import cert_util, datetime_util
 from domain_admin.utils.cert_util import get_cert_info
 from domain_admin.utils.datetime_util import get_datetime
+from domain_admin.utils.peewee_ext.model_util import list_with_relation_one
 
 
 def add_domain(data):
@@ -39,6 +40,7 @@ def add_domain(data):
         group_id=group_id,
         start_time=info.get('start_date'),
         expire_time=info.get('expire_date'),
+        ip=info.get('ip'),
         connect_status=connect_status,
         detail_raw=json.dumps(info, ensure_ascii=False),
         check_time=datetime_util.get_datetime(),
@@ -67,6 +69,7 @@ def update_domain_cert_info(row):
     DomainModel.update(
         start_time=info.get('start_date'),
         expire_time=info.get('expire_date'),
+        ip=info.get('ip'),
         connect_status=connect_status,
         detail_raw=json.dumps(info, ensure_ascii=False),
         check_time=get_datetime(),
