@@ -14,8 +14,7 @@
 
 4、返回参数
 
-略
-
+参见：[getDomainById.md](/doc/domain/getDomainById.md)
 
 5、请求示例
 
@@ -48,7 +47,9 @@ Content-Type: application/json
         "id": 3,
         "start_time": "2022-07-05 13:16:02",
         "total_days": 396,
-        "update_time": "2022-09-24 22:29:02"
+        "update_time": "2022-09-24 22:29:02",
+        "ip": "110.242.68.3",
+        "notify_status": true
       }
     ],
     "total": 3

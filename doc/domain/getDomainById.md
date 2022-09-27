@@ -16,6 +16,7 @@
 | -| - | - |
 | id | int | 域名id
 | domain | string | 查询的域名
+| ip | string  | 域名ip地址
 | alias | string  | 域名别名
 | group_id | int  | 域名分组id
 | group | object/null  | 域名分组对象，同 [getGroupById.md](/doc/group/getGroupById.md)
@@ -23,11 +24,13 @@
 | expire_time | datetime  | 证书过期时间
 | check_time | datetime  | 证书检查时间
 | connect_status | bool  | 域名连接状态
+| notify_status | bool  | 域名到期后是否通知
 | total_days | int  | 域名有效期总天数
 | expire_days | int | 域名过期剩余天数
 | detail | object  | 域名信息，同 [getCertInformation.md](/doc/cert/getCertInformation.md)
 | create_time | datetime  | 域名添加时间
 | update_time | datetime  | 域名更新时间
+
 
 
 5、请求示例
@@ -84,7 +87,9 @@ Content-Type: application/json
     "id": 1,
     "start_time": "2022-07-05 13:16:02",
     "total_days": 396,
-    "update_time": "2022-09-24 21:13:19"
+    "update_time": "2022-09-24 21:13:19",
+    "ip": "110.242.68.3",
+     "notify_status": true
   },
   "msg": "success"
 }
