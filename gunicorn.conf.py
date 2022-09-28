@@ -39,7 +39,7 @@ errorlog = resolve_file("gunicorn-error.log")
 
 # 启动的进程数
 # workers = get_workers()
-workers = 2
+workers = 1
 worker_class = 'gevent'
 
 

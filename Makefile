@@ -8,3 +8,4 @@ dev:
 # 部署
 dep-pro:
 	ssh root@182.92.114.142 "cd /home/domain-admin && git pull && /usr/local/bin/supervisorctl restart domain-admin"
+	echo http://182.92.114.142:9090/
