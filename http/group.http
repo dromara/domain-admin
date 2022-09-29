@@ -7,6 +7,7 @@
 
 POST {{baseUrl}}/api/addGroup
 Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
 
 {
   "name": "项目1"
@@ -16,9 +17,10 @@ Content-Type: application/json
 
 POST {{baseUrl}}/api/updateGroupById
 Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
 
 {
-  "id": 1,
+  "id": 3,
   "name": "项目2"
 }
 
@@ -27,6 +29,7 @@ Content-Type: application/json
 
 POST {{baseUrl}}/api/getGroupList
 Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
 
 {}
 
@@ -34,17 +37,19 @@ Content-Type: application/json
 
 POST {{baseUrl}}/api/getGroupById
 Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
 
 {
-  "id": 1
+  "id": 3
 }
 
 ###
 POST {{baseUrl}}/api/deleteGroupById
 Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
 
 {
-  "id": 1
+  "id": 3
 }
 
 ###

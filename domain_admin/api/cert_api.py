@@ -2,7 +2,6 @@
 from flask import request
 
 from domain_admin.utils import cert_util
-from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def get_cert_information():
@@ -11,12 +10,9 @@ def get_cert_information():
     :return:
     """
     if request.method == 'GET':
-        domain = request.args.get('domain')
+        domain = request.args['domain']
     else:
-        domain = request.json.get('domain')
-
-    if not domain:
-        raise AppException('参数缺失：domain')
+        domain = request.json['domain']
 
     try:
         data = cert_util.get_cert_info(domain)

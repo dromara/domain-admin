@@ -39,6 +39,8 @@ errorlog = resolve_file("gunicorn-error.log")
 
 # 启动的进程数
 # workers = get_workers()
+
+# 需要定时器，只能开一个进程
 workers = 1
 worker_class = 'gevent'
 

@@ -12,6 +12,9 @@ class GroupModel(BaseModel):
     # 名称
     name = CharField()
 
+    # 用户id
+    user_id = IntegerField(default=0)
+
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
 

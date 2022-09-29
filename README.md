@@ -1,21 +1,38 @@
 # Domain Admin
 
-域名管理控制台
+基于Python + Vue.js 技术栈的域名管理控制台
 
 - https://gitee.com/mouday/domain-admin
 - https://github.com/mouday/domain-admin
+- https://pypi.org/project/domain-admin/
+
+项目截图
+
+![](image/screencapture.png)
 
 功能：
 
 - 域名证书信息查询
-- 监控域名证书信息，定时提醒，到期提醒
+- 监控域名证书信息，到期提醒
 - api接口 浏览器 桌面 移动端（app+小程序）
+- 用户登录
+- 域名导入，导出功能
+
+安装
+
+```bash
+$ pip install domain_admin
+
+# 启动运行
+$ python -m domain_admin.main
+```
+
 
 前端选型
 
-- Node.js v16.14.0 
-- vue3.js 
-- element-plus
+- node.js v16.15.1
+- vue3.js
+- quasar + electron
 
 后端选型
 
@@ -63,10 +80,4 @@ MAIL_USERNAME: "demo@163.com"
 # 发件人邮箱密码
 MAIL_PASSWORD: "xxx"
 
-```
-
-定时设置
-```
-# 定时检查域名证书到期
-30 9 * * * curl http://127.0.0.1:9090/api/checkDomainCert
 ```

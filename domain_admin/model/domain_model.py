@@ -13,6 +13,9 @@ class DomainModel(BaseModel):
     # 域名
     domain = CharField()
 
+    # 用户id
+    user_id = IntegerField(default=0)
+
     # 别名
     alias = CharField(default="")
 
