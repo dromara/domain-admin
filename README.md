@@ -65,7 +65,7 @@ python dev.py
 
 ```bash
 # github
-git push
+git push -u origin master
 
 # gitee
 git push -u gitee master

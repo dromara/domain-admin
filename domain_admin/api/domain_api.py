@@ -5,6 +5,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model import DomainModel, GroupModel
 from domain_admin.service import domain_service
+from domain_admin.service import file_service
 from domain_admin.utils import datetime_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.peewee_ext import model_util
@@ -54,6 +55,10 @@ def update_domain_by_id():
         DomainModel.id == domain_id
     ).execute()
 
+    domain_row = DomainModel.get_by_id(domain_id)
+
+    domain_service.update_domain_cert_info(domain_row)
+
 
 def delete_domain_by_id():
     """
@@ -100,6 +105,9 @@ def get_domain_list():
         extra_attrs=[
             'total_days',
             'expire_days',
+            'create_time_label',
+            'check_time_label',
+            'domain_url',
         ]
     ), lst))
 
@@ -130,6 +138,7 @@ def get_domain_by_id():
             'expire_days',
             'detail',
             'group',
+            'domain_url',
         ]
     )
 
@@ -187,3 +196,21 @@ def check_domain_cert():
     domain_service.update_all_domain_cert_info_of_user(current_user_id)
 
     domain_service.check_domain_cert(current_user_id)
+
+
+def import_domain_from_file():
+    """
+    从文件导入域名
+    :return:
+    """
+    current_user_id = g.user_id
+
+    update_file = request.files.get('file')
+
+    filename = file_service.save_temp_file(update_file)
+
+    count = domain_service.add_domain_from_file(filename, current_user_id)
+
+    return {
+        'count': count
+    }

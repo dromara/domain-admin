@@ -16,3 +16,9 @@ TEMPLATE_DIR = os.path.join(APP_DIR, 'templates')
 
 # 公开资源目录
 PUBLIC_DIR = os.path.join(APP_DIR, 'public')
+
+# 临时文件存放地
+TEMP_DIR = os.path.join(ROOT_DIR, 'temp')
+
+if not os.path.exists(TEMP_DIR):
+    os.mkdir(TEMP_DIR)

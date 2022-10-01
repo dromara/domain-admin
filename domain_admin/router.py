@@ -25,6 +25,7 @@ routes = {
     "/api/updateAllDomainCertInfoOfUser": domain_api.update_all_domain_cert_info_of_user,
     "/api/sendDomainInfoListEmail": domain_api.send_domain_info_list_email,
     "/api/checkDomainCert": domain_api.check_domain_cert,
+    "/api/importDomainFromFile": domain_api.import_domain_from_file,
 
     "/api/addGroup": group_api.add_group,
     "/api/updateGroupById": group_api.update_group_by_id,

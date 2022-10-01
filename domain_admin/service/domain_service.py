@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
 from functools import cmp_to_key
-
+import traceback
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model import DomainModel, UserModel
 from domain_admin.service import email_service, render_service
 from domain_admin.utils import cert_util, datetime_util
+from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
 
@@ -14,10 +15,10 @@ def add_domain(data):
     """
     添加域名
     :param data: {
-        domain 必传
-        user_id 必传
-        alias 可选，默认 ""
-        group_id 可选，默认 0
+        'domain': '必传',
+        'user_id': '必传',
+        'alias': '可选，默认 ""'
+        'group_id': '可选，默认 0'
      }
     :return:
     """
@@ -191,6 +192,24 @@ def check_permission_and_get_row(domain_id, user_id):
         raise ForbiddenAppException()
 
     return row
+
+
+def add_domain_from_file(filename, user_id):
+    lst = domain_util.parse_domain_from_file(filename)
+
+    count = 0
+    for domain in lst:
+        try:
+            add_domain({
+                'domain': domain,
+                'user_id': user_id,
+            })
+
+            count += 1
+        except Exception as e:
+            traceback.print_exc()
+
+    return count
 
 
 if __name__ == '__main__':

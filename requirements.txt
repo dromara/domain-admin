@@ -10,3 +10,4 @@ PyYAML>=6.0
 apscheduler>=3.9.1
 PyJWT>=2.5.0
 bcrypt>=4.0.0
+pendulum>=2.1.2

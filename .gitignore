@@ -13,4 +13,5 @@ dist/
 config.yml
 logs/
 .deta
+temp
 

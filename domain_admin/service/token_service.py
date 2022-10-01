@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import jwt
 
 from domain_admin.config import SECRET_KEY, TOKEN_EXPIRE_DAYS
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def encode_token(payload):
@@ -30,14 +31,15 @@ def decode_token(token):
     :param token: str
     :return:  dict
     """
-    return jwt.decode(jwt=token, key=SECRET_KEY, algorithms=['HS256'])
+    try:
+        return jwt.decode(jwt=token, key=SECRET_KEY, algorithms=['HS256'])
+    except Exception:
+        raise AppException('token无效')
 
 
 if __name__ == '__main__':
-
     data = {'name': 'Tom'}
     w = encode_token(data)
     print(w)
 
     print(decode_token(w))
-

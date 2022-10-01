@@ -4,6 +4,9 @@ from datetime import datetime
 from domain_admin.model import GroupModel
 from domain_admin.model.base_model import BaseModel
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
+import pendulum
+
+from domain_admin.utils import datetime_util
 
 
 class DomainModel(BaseModel):
@@ -48,6 +51,24 @@ class DomainModel(BaseModel):
 
     # 更新时间
     update_time = DateTimeField(default=datetime.now)
+
+    class Meta:
+        indexes = (
+            # 唯一索引
+            (('user_id', 'domain'), True),  # Note the trailing comma!
+        )
+
+    @property
+    def domain_url(self):
+        return 'https://' + self.domain
+
+    @property
+    def create_time_label(self):
+        return datetime_util.format_datetime_label(self.create_time)
+
+    @property
+    def check_time_label(self):
+        return datetime_util.format_datetime_label(self.check_time)
 
     @property
     def start_date(self):

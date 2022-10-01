@@ -33,6 +33,7 @@ X-TOKEN: <token>
 | /api/updateAllDomainCertInfoOfUser | 更新当前用户的所有域名信息 | [updateAllDomainCertInfoOfUser.md](/doc/domain/updateAllDomainCertInfoOfUser.md) |
 | /api/sendDomainInfoListEmail | 发送域名证书信息到邮箱 | [sendDomainInfoListEmail.md](/doc/domain/sendDomainInfoListEmail.md) |
 | /api/checkDomainCert | 检查域名证书到期信息 | [checkDomainCert.md](/doc/domain/checkDomainCert.md) |
+| /api/importDomainFromFile | 从文件导入域名 | [importDomainFromFile.md](/doc/domain/importDomainFromFile.md) |
 
 分组管理
 

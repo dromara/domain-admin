@@ -18,6 +18,11 @@ def parse_params(text):
 
     for item in text.split(';'):
         [key, value] = item.split('=')
+
+        # 处理中文
+        if '\\u' in value.lower():
+            value = value.lower().encode('utf-8').decode("unicode_escape")
+
         data[key.strip()] = value
 
     return data
@@ -60,6 +65,8 @@ def get_cert_info(domain):
     start_date = get_re_match_result('start date: (.*)', output)
     expire_date = get_re_match_result('expire date: (.*)', output)
 
+    # print(subject)
+
     # 解析匹配结果
     start_date = parse_time(start_date)
     # print(start_date)
@@ -76,4 +83,4 @@ def get_cert_info(domain):
 
 
 if __name__ == '__main__':
-    print(get_cert_info('www.baidu1.com'))
+    print(get_cert_info('mp.csdn.net'))
