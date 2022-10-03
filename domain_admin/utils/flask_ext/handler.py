@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from peewee import DoesNotExist
+from peewee import DoesNotExist, IntegrityError
 
 from domain_admin.utils.flask_ext.api_result import ApiResult
 import traceback
@@ -22,6 +22,9 @@ def error_handler(e):
 
     elif isinstance(e, DoesNotExist):
         msg = '数据不存在'
+
+    elif isinstance(e, IntegrityError):
+        msg = '数据已存在'
 
     elif isinstance(e, AppException):
         msg = e.message

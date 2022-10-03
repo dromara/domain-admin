@@ -26,6 +26,9 @@ def login(username, password):
     if not bcrypt_util.check_password(password, user_row.password):
         raise AppException('用户名或密码错误')
 
+    if not user_row.status:
+        raise AppException('账号不可用')
+
     return token_service.encode_token({
         'user_id': user_row.id
     })
@@ -53,5 +56,3 @@ def register(username, password, password_repeat):
         username=username,
         password=bcrypt_util.encode_password(password)
     )
-
-

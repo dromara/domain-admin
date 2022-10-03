@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
+user_api.py
+"""
+
 import json
 
 from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.user_model import UserModel
-from domain_admin.utils import datetime_util
+from domain_admin.utils import datetime_util, bcrypt_util
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def get_user_info():
@@ -43,3 +48,96 @@ def update_user_info():
     }).where(
         UserModel.id == current_user_id
     ).execute()
+
+
+def update_user_password():
+    """
+    更新用户密码
+    :return:
+    """
+    current_user_id = g.user_id
+
+    password = request.json.get('password')
+    new_password = request.json.get('new_password')
+
+    user_row = UserModel.get_by_id(current_user_id)
+
+    if not bcrypt_util.check_password(password, user_row.password):
+        raise AppException('旧密码不正确')
+
+    UserModel.update(
+        {
+            'password': bcrypt_util.encode_password(new_password),
+        }
+    ).where(
+        UserModel.id == current_user_id
+    ).execute()
+
+
+def get_user_list():
+    """
+    获取当前用户信息
+    :return:
+    """
+
+    query = UserModel.select()
+
+    total = query.count()
+
+    rows = list(map(lambda m: model_to_dict(
+        model=m,
+        extra_attrs=[
+            'email_list',
+        ]
+    ), query))
+
+    return {
+        'list': rows,
+        'total': total
+    }
+
+
+def add_user():
+    """
+    获取当前用户信息
+    :return:
+    """
+    username = request.json.get('username')
+    password = request.json.get('password')
+
+    row = UserModel.select().where(
+        UserModel.username == username
+    ).get_or_none()
+
+    if row:
+        raise AppException('用户已存在')
+
+    UserModel.create(
+        username=username,
+        password=bcrypt_util.encode_password(password)
+    )
+
+
+def update_user_status():
+    """
+    获取当前用户信息
+    :return:
+    """
+    user_id = request.json.get('user_id')
+    status = request.json.get('status')
+
+    UserModel.update({
+        'status': status
+    }).where(
+        UserModel.id == user_id
+    ).execute()
+
+
+def delete_user():
+    """
+    获取当前用户信息
+    :return:
+    """
+    user_id = request.json.get('user_id')
+
+    UserModel.delete_by_id(user_id)

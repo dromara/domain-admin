@@ -59,8 +59,7 @@ def app_init(app):
 
     init_database()
 
-    scheduler_service.init_job()
-    scheduler_service.start_scheduler()
+    scheduler_service.init_scheduler()
 
 
 app_init(app)

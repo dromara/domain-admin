@@ -75,6 +75,14 @@ def init_table_data():
             'is_show_value': False,
         },
 
+        {
+            'key': 'mail_subject',
+            'value': '[ssl]证书过期时间汇总',
+            'label': '邮件标题',
+            'placeholder': '邮件标题',
+            'is_show_value': False,
+        },
+
         # 分 时 日 月 周，默认每天上午 10: 30 检测
         {
             'key': 'scheduler_cron',

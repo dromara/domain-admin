@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from time import gmtime, strftime
 
 import pendulum
 
@@ -44,3 +45,36 @@ def format_datetime_label(date_time):
         return format_time(date_time)
     else:
         return format_date(date_time)
+
+
+def seconds_for_human(seconds):
+    second = 1
+    minute = second * 60
+    hour = minute * 12
+    day = hour * 24
+
+    lst = []
+
+    if seconds > 0:
+        days, seconds = divmod(seconds, day)
+        if days > 0:
+            lst.append(str(days) + 'd')
+
+    if seconds > 0:
+        hours, seconds = divmod(seconds, hour)
+        if hours > 0:
+            lst.append(str(hours) + 'h')
+
+    if seconds > 0:
+        minutes, seconds = divmod(seconds, minute)
+        if minutes > 0:
+            lst.append(str(minutes) + 'm')
+
+    if seconds > 0:
+        lst.append(str(seconds) + 's')
+
+    return ' '.join(lst)
+
+
+if __name__ == '__main__':
+    print(seconds_for_human(0.010))

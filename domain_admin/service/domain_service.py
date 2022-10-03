@@ -6,6 +6,7 @@ import traceback
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
@@ -75,7 +76,7 @@ def update_domain_cert_info(row):
         expire_time=info.get('expire_date'),
         expire_days=expire_days,
         total_days=total_days,
-        ip=info.get('ip'),
+        ip=info.get('ip', ''),
         connect_status=connect_status,
         detail_raw=json.dumps(info, ensure_ascii=False),
         check_time=datetime_util.get_datetime(),
@@ -160,10 +161,42 @@ def check_domain_cert(user_id):
 
 
 def update_and_check_all_domain_cert():
-    update_all_domain_cert_info()
-    rows = UserModel.select()
-    for row in rows:
-        check_domain_cert(row.id)
+    log_row = LogSchedulerModel.create()
+
+    error_message = ''
+    status = False
+
+    # 外层捕获全局错误
+    try:
+        update_all_domain_cert_info()
+
+        rows = UserModel.select()
+
+        for row in rows:
+
+            # 内层捕获单个用户发送错误
+            try:
+                check_domain_cert(row.id)
+            except Exception as e:
+                traceback.print_exc()
+
+        status = True
+
+    except Exception as e:
+        traceback.print_exc()
+
+        if isinstance(e, AppException):
+            error_message = e.message
+        else:
+            error_message = str(e)
+
+    LogSchedulerModel.update({
+        'status': status,
+        'error_message': error_message,
+        'update_time': datetime_util.get_datetime(),
+    }).where(
+        LogSchedulerModel.id == log_row
+    ).execute()
 
 
 def send_domain_list_email(user_id):
@@ -182,7 +215,6 @@ def send_domain_list_email(user_id):
     content = render_service.render_template('domain-cert-email.html', {'list': lst})
 
     email_service.send_email(
-        subject='[ssl]证书过期时间汇总',
         content=content,
         to_addresses=user_row.email_list,
         content_type='html'

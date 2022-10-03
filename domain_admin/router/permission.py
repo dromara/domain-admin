@@ -14,8 +14,15 @@ WHITE_LIST = [
 
 # 仅管理账号可访问的接口
 ADMIN_API_LIST = [
+    # 全局配置管理
     '/api/getAllSystemConfig',
-    '/api/updateSystemConfig'
+    '/api/updateSystemConfig',
+
+    # 用户管理
+    '/api/getUserList',
+    '/api/addUser',
+    '/api/updateUserStatus',
+    '/api/deleteUser'
 ]
 
 API_PREFIX = '/api'

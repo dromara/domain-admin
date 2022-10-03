@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import logging
 import warnings
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -9,15 +9,14 @@ from domain_admin.service import system_service, domain_service
 
 warnings.filterwarnings(action="ignore", category=PytzUsageWarning)
 
+apscheduler_logger = logging.getLogger('apscheduler')
+apscheduler_logger.addHandler(logging.StreamHandler())
+apscheduler_logger.setLevel(logging.DEBUG)
+
 scheduler = BackgroundScheduler()
 
 
-def start_scheduler():
-    print('start_scheduler')
-    scheduler.start()
-
-
-def init_job():
+def init_scheduler():
     config = system_service.get_system_config()
     scheduler_cron = config.get('scheduler_cron')
 
@@ -25,6 +24,8 @@ def init_job():
         return
 
     update_job(scheduler_cron)
+
+    scheduler.start()
 
 
 def update_job(cron_exp):

@@ -8,6 +8,7 @@ from domain_admin.api import group_api
 from domain_admin.api import auth_api
 from domain_admin.api import system_api
 from domain_admin.api import user_api
+from domain_admin.api import log_scheduler_api
 
 routes = {
     # 域名信息
@@ -46,4 +47,14 @@ routes = {
     # 用户
     '/api/getUserInfo': user_api.get_user_info,
     '/api/updateUserInfo': user_api.update_user_info,
+    '/api/updateUserPassword': user_api.update_user_password,
+
+    # 用户管理
+    '/api/getUserList': user_api.get_user_list,
+    '/api/addUser': user_api.add_user,
+    '/api/updateUserStatus': user_api.update_user_status,
+    '/api/deleteUser': user_api.delete_user,
+
+
+    '/api/getLogSchedulerList': log_scheduler_api.get_log_scheduler_list,
 }

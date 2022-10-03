@@ -86,6 +86,7 @@ def get_domain_list():
 
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
+    keyword = request.json.get('keyword')
     group_id = request.json.get('group_id')
 
     query = DomainModel.select().where(
@@ -94,6 +95,9 @@ def get_domain_list():
 
     if isinstance(group_id, int):
         query = query.where(DomainModel.group_id == group_id)
+
+    if keyword:
+        query = query.where(DomainModel.domain.contains(keyword))
 
     lst = query.order_by(
         DomainModel.expire_days.asc(),

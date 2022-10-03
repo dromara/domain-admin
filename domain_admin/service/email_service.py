@@ -5,13 +5,11 @@ from domain_admin.utils.email_util import EmailServer
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
-def send_email(subject: str,
-               content: str,
+def send_email(content: str,
                to_addresses: list,
                content_type: str = 'plain'):
     """
     发送邮件
-    :param subject:
     :param content:
     :param to_addresses:
     :param content_type:
@@ -42,7 +40,7 @@ def send_email(subject: str,
     )
 
     email_server.send_email(
-        subject=subject,
+        subject=config.get('mail_subject', '-'),
         content=content,
         to_addresses=to_addresses,
         content_type=content_type

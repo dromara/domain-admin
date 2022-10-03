@@ -23,10 +23,13 @@ class UserModel(BaseModel):
     avatar_url = CharField(null=None, default='')
 
     # 过期前多少天提醒
-    before_expire_days = IntegerField(null=None, default=0)
+    before_expire_days = IntegerField(null=None, default=3)
 
     # 邮件列表
     email_list_raw = TextField(default=None, null=True)
+
+    # 账号状态
+    status = BooleanField(default=True)
 
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
