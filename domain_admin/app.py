@@ -2,13 +2,12 @@
 from flask import request, make_response, send_file
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
-
-from domain_admin.config import SCHEDULER_CRON
-from domain_admin.model import db
-from domain_admin.router import routes
-from domain_admin.service import permission_service
+from werkzeug.utils import safe_join
+from domain_admin.config import TEMP_DIR
+from domain_admin.model.base_model import db
+from domain_admin.model.database import init_database
+from domain_admin.router import api_map, permission
 from domain_admin.service import scheduler_service
-from domain_admin.service import user_service
 from domain_admin.utils.flask_ext import handler
 from domain_admin.utils.flask_ext import register
 from domain_admin.utils.flask_ext.flask_app import FlaskApp
@@ -25,9 +24,9 @@ def before_request():
     if request.method == 'OPTIONS':
         return make_response()
 
-    permission_service.check_permission()
+    permission.check_permission()
 
-    db.connect()
+    db.connect(reuse_if_open=True)
 
 
 @app.teardown_request
@@ -41,9 +40,15 @@ def index():
     return send_file('public/index.html')
 
 
+@app.get('/temp/<path:filename>')
+def temp(filename):
+    """临时文件"""
+    return send_file(safe_join(TEMP_DIR, filename))
+
+
 def app_init(app):
     # 路由
-    register.register_app_routers(app, routes)
+    register.register_app_routers(app, api_map.routes)
 
     # 全局异常捕获，也相当于一个视图函数
     app.register_error_handler(Exception, handler.error_handler)
@@ -52,9 +57,10 @@ def app_init(app):
 
     CORS(app, supports_credentials=True)
 
-    user_service.init_root_user()
+    init_database()
 
-    scheduler_service.start_scheduler(SCHEDULER_CRON)
+    scheduler_service.init_job()
+    scheduler_service.start_scheduler()
 
 
 app_init(app)

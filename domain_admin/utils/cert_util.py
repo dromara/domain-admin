@@ -51,13 +51,13 @@ def get_cert_info(domain):
     # print(exitcode)
     # print(output)
 
-    if exitcode != 0:
-        raise Exception('域名连接错误')
+    # if exitcode != 0:
+    #     raise Exception('域名连接错误')
 
     # 正则匹配
-    problem = get_re_match_result('SSL certificate problem: (.*)', output)
-    if problem:
-        raise Exception(problem)
+    # problem = get_re_match_result('SSL certificate problem: (.*)', output)
+    # if problem:
+    #     raise Exception(problem)
 
     ip = get_re_match_result('Connected to .*? \((.*?)\)', output)
     subject = get_re_match_result('subject: (.*)', output)

@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from peewee import Model
-from playhouse.db_url import connect
-# from playhouse.signals import Model, pre_save
 from playhouse.sqliteq import SqliteQueueDatabase
 
-from domain_admin.config import SQLITE_DATABASE_URL, SQLITE_DATABASE_PATH
-
-import logging
+from domain_admin.config import SQLITE_DATABASE_PATH
 
 # 打印日志
 logger = logging.getLogger('peewee')

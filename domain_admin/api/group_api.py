@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, g
 
-from domain_admin.model import GroupModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.service import group_service
 
 

@@ -6,8 +6,11 @@ from domain_admin.api import cert_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
+from domain_admin.api import system_api
+from domain_admin.api import user_api
 
 routes = {
+    # 域名信息
     "/api/getCertInformation": cert_api.get_cert_information,
 
     # 登录注册
@@ -26,11 +29,21 @@ routes = {
     "/api/sendDomainInfoListEmail": domain_api.send_domain_info_list_email,
     "/api/checkDomainCert": domain_api.check_domain_cert,
     "/api/importDomainFromFile": domain_api.import_domain_from_file,
+    # "/api/exportDomainToFile": domain_api.export_domain_to_file,
+    "/api/getAllDomainListOfUser": domain_api.get_all_domain_list_of_user,
 
+    # 分组管理
     "/api/addGroup": group_api.add_group,
     "/api/updateGroupById": group_api.update_group_by_id,
     "/api/deleteGroupById": group_api.delete_group_by_id,
     "/api/getGroupList": group_api.get_group_list,
     "/api/getGroupById": group_api.get_group_by_id,
 
+    # 系统管理
+    '/api/getAllSystemConfig': system_api.get_all_system_config,
+    '/api/updateSystemConfig': system_api.update_system_config,
+
+    # 用户
+    '/api/getUserInfo': user_api.get_user_info,
+    '/api/updateUserInfo': user_api.update_user_info,
 }

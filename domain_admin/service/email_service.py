@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-
-from domain_admin.config import MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
+from domain_admin.log import logger
+from domain_admin.service import system_service
 from domain_admin.utils.email_util import EmailServer
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def send_email(subject: str,
@@ -16,12 +17,28 @@ def send_email(subject: str,
     :param content_type:
     :return:
     """
-    
+    config = system_service.get_system_config()
+
+    if not config['mail_host']:
+        raise AppException('未设置发件邮箱服务器地址')
+
+    if not config['mail_port']:
+        raise AppException('未设置发件邮箱服务器端口')
+
+    if not config['mail_username']:
+        raise AppException('未设置发件人邮箱账号')
+
+    if not config['mail_password']:
+        raise AppException('未设置发件人邮箱密码')
+
+    # logger.debug(config)
+
     email_server = EmailServer(
-        mail_host=MAIL_HOST,
-        mail_port=MAIL_PORT,
-        mail_username=MAIL_USERNAME,
-        mail_password=MAIL_PASSWORD
+        mail_host=config['mail_host'],
+        mail_port=config['mail_port'],
+        mail_alias=config['mail_alias'],
+        mail_username=config['mail_username'],
+        mail_password=config['mail_password']
     )
 
     email_server.send_email(

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
+生产环境
 $ gunicorn --config gunicorn.conf.py main:app
 """
 
@@ -21,12 +22,6 @@ def resolve_file(filename):
 def get_workers():
     return multiprocessing.cpu_count() * 2 + 1
 
-
-# daemon = True
-daemon = False  # 使用supervisor不能是后台进程
-
-# 进程名称
-proc_name = "domain-admin"
 
 # 启动端口
 bind = "0.0.0.0:9090"

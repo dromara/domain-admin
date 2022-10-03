@@ -2,6 +2,9 @@
 
 import os
 
+# 项目的运行目录
+RUNTIME_DIR = os.getcwd()
+
 # 配置文件目录
 CONFIG_DIR = os.path.dirname(__file__)
 
@@ -18,7 +21,23 @@ TEMPLATE_DIR = os.path.join(APP_DIR, 'templates')
 PUBLIC_DIR = os.path.join(APP_DIR, 'public')
 
 # 临时文件存放地
-TEMP_DIR = os.path.join(ROOT_DIR, 'temp')
+TEMP_DIR = os.path.join(RUNTIME_DIR, 'temp')
+TEMP_DIR_BASE_URL = '/temp'
+
+# 数据库文件存放
+DATABASE_DIR = os.path.join(RUNTIME_DIR, 'database')
+
+# sqlite 数据库
+SQLITE_DATABASE_PATH = os.path.join(DATABASE_DIR, 'database.db')
 
 if not os.path.exists(TEMP_DIR):
     os.mkdir(TEMP_DIR)
+
+if not os.path.exists(DATABASE_DIR):
+    os.mkdir(DATABASE_DIR)
+
+# 管理员账号，用户名
+ADMIN_USERNAME = 'admin'
+
+# header请求头中携带 token 参数名称
+TOKEN_KEY = 'X-Token'

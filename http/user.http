@@ -5,34 +5,11 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-POST {{baseUrl}}/api/login
+POST {{baseUrl}}/api/getUserInfo
 Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjUzNjU5OTl9.MQi-V9g2VbwtRSKRsyaNsFWfgkYXfKblYvupLpVgu9g
 
 {
-  "username": "admin",
-  "password": "123456"
 }
 
 ###
-
-POST {{baseUrl}}/api/login
-Content-Type: application/json
-
-{
-  "username": "tom",
-  "password": "1234567"
-}
-
-###
-
-POST {{baseUrl}}/api/register
-Content-Type: application/json
-
-{
-  "username": "tom",
-  "password": "123456",
-  "password_repeat": "123456"
-}
-
-###
-

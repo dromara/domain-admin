@@ -20,3 +20,6 @@ class GroupModel(BaseModel):
 
     # 更新时间
     update_time = DateTimeField(default=datetime.now)
+
+    class Meta:
+        table_name = 'tb_group'

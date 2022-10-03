@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, g
+from flask import request, g, send_file
 from playhouse.shortcuts import model_to_dict
 
-from domain_admin.model import DomainModel, GroupModel
+from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.service import domain_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util
@@ -32,6 +33,8 @@ def add_domain():
         'alias': alias,
         'group_id': group_id,
     })
+
+    domain_service.update_domain_cert_info(row)
 
     return {'id': row.id}
 
@@ -93,8 +96,8 @@ def get_domain_list():
         query = query.where(DomainModel.group_id == group_id)
 
     lst = query.order_by(
-        DomainModel.create_time.asc(),
-        DomainModel.id.asc(),
+        DomainModel.expire_days.asc(),
+        DomainModel.id.desc(),
     ).paginate(page, size)
 
     total = query.count()
@@ -213,4 +216,25 @@ def import_domain_from_file():
 
     return {
         'count': count
+    }
+
+
+def get_all_domain_list_of_user():
+    """
+    获取用户的所有域名数据
+    :return:
+    """
+
+    current_user_id = g.user_id
+    # temp_filename = domain_service.export_domain_to_file(current_user_id)
+
+    rows = DomainModel.select().where(
+        DomainModel.user_id == current_user_id
+    )
+
+    lst = [{'domain': row.domain} for row in rows]
+
+    return {
+        'list': lst,
+        'total': len(lst)
     }

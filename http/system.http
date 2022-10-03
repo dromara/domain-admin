@@ -5,33 +5,18 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-POST {{baseUrl}}/api/login
+POST {{baseUrl}}/api/getAllSystemConfig
 Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "123456"
-}
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjUzMjA3ODN9.pLfVwuxWvBUr4GtJdmBzXs_X8fieaPesgLwgdsIGnv4
 
 ###
-
-POST {{baseUrl}}/api/login
+POST {{baseUrl}}/api/updateSystemConfig
 Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjUzMjA3ODN9.pLfVwuxWvBUr4GtJdmBzXs_X8fieaPesgLwgdsIGnv4
 
 {
-  "username": "tom",
-  "password": "1234567"
-}
-
-###
-
-POST {{baseUrl}}/api/register
-Content-Type: application/json
-
-{
-  "username": "tom",
-  "password": "123456",
-  "password_repeat": "123456"
+  "key": "mail_username",
+  "value": "123@qq.com"
 }
 
 ###

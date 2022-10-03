@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import request, g
 
-from domain_admin.config import ROOT_USERNAME
-from domain_admin.model import UserModel
+from domain_admin.config import ADMIN_USERNAME, TOKEN_KEY
+from domain_admin.model.user_model import UserModel
 from domain_admin.service import token_service
-from domain_admin.utils.flask_ext.app_exception import AppException, UnauthorizedAppException, ForbiddenAppException
+from domain_admin.utils.flask_ext.app_exception import UnauthorizedAppException, ForbiddenAppException
 
 # 白名单
 WHITE_LIST = [
@@ -13,13 +13,12 @@ WHITE_LIST = [
 ]
 
 # 仅管理账号可访问的接口
-ROOT_API_LIST = [
-
+ADMIN_API_LIST = [
+    '/api/getAllSystemConfig',
+    '/api/updateSystemConfig'
 ]
 
 API_PREFIX = '/api'
-
-TOKEN_KEY = 'X-Token'
 
 
 def check_permission():
@@ -37,13 +36,13 @@ def check_permission():
     if not token:
         raise UnauthorizedAppException()
 
-    # 解析token
+    # 解析token，并全局挂载
     payload = token_service.decode_token(token)
     g.user_id = payload['user_id']
 
     # root 权限 api
-    if request.path in ROOT_API_LIST:
+    if request.path in ADMIN_API_LIST:
         user_row = UserModel.get_by_id(g.user_id)
 
-        if user_row.username != ROOT_USERNAME:
+        if user_row.username != ADMIN_USERNAME:
             raise ForbiddenAppException()

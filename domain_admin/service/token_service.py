@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 
 import jwt
 
-from domain_admin.config import SECRET_KEY, TOKEN_EXPIRE_DAYS
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.service import system_service
+from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
 
 def encode_token(payload):
@@ -17,12 +17,15 @@ def encode_token(payload):
     :param payload: dict
     :return: byte
     """
+    config = system_service.get_system_config()
+    secret_key = config['secret_key']
+    token_expire_days = int(config['token_expire_days'])
 
     # 使用utc时间
-    payload['exp'] = datetime.utcnow() + timedelta(days=TOKEN_EXPIRE_DAYS)
+    payload['exp'] = datetime.utcnow() + timedelta(days=token_expire_days)
 
     # 返回 str 部分Python版本会报错
-    return jwt.encode(payload=payload, key=SECRET_KEY, algorithm='HS256')
+    return jwt.encode(payload=payload, key=secret_key, algorithm='HS256')
 
 
 def decode_token(token):
@@ -31,10 +34,13 @@ def decode_token(token):
     :param token: str
     :return:  dict
     """
+    config = system_service.get_system_config()
+
+    secret_key = config['secret_key']
     try:
-        return jwt.decode(jwt=token, key=SECRET_KEY, algorithms=['HS256'])
+        return jwt.decode(jwt=token, key=secret_key, algorithms=['HS256'])
     except Exception:
-        raise AppException('token无效')
+        raise ForbiddenAppException()
 
 
 if __name__ == '__main__':

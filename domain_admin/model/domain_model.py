@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-from domain_admin.model import GroupModel
-from domain_admin.model.base_model import BaseModel
-from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
-import pendulum
 
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
+
+from domain_admin.model.base_model import BaseModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.utils import datetime_util
 
 
@@ -37,6 +37,12 @@ class DomainModel(BaseModel):
     # 连接状态
     connect_status = BooleanField(default=False, null=True)
 
+    # 过期剩余天数
+    expire_days = IntegerField(default=0, null=False)
+
+    # 有效期总天数
+    total_days = IntegerField(default=0, null=False)
+
     # 通知状态
     notify_status = BooleanField(default=True)
 
@@ -53,6 +59,9 @@ class DomainModel(BaseModel):
     update_time = DateTimeField(default=datetime.now)
 
     class Meta:
+
+        table_name = 'tb_domain'
+
         indexes = (
             # 唯一索引
             (('user_id', 'domain'), True),  # Note the trailing comma!
@@ -80,15 +89,15 @@ class DomainModel(BaseModel):
         if self.expire_time and isinstance(self.expire_time, datetime):
             return self.expire_time.strftime('%Y-%m-%d')
 
-    @property
-    def total_days(self):
-        if self.start_time and self.expire_time:
-            return (self.expire_time - self.start_time).days
+    # @property
+    # def total_days(self):
+    #     if self.start_time and self.expire_time:
+    #         return (self.expire_time - self.start_time).days
 
-    @property
-    def expire_days(self):
-        if self.expire_time:
-            return (self.expire_time - datetime.now()).days
+    # @property
+    # def expire_days(self):
+    #     if self.expire_time:
+    #         return (self.expire_time - datetime.now()).days
 
     @property
     def detail(self):

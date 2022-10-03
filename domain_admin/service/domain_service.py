@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
+from datetime import datetime
 from functools import cmp_to_key
 import traceback
 from playhouse.shortcuts import model_to_dict
 
-from domain_admin.model import DomainModel, UserModel
+from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.user_model import UserModel
 from domain_admin.service import email_service, render_service
-from domain_admin.utils import cert_util, datetime_util
+from domain_admin.service import file_service
+from domain_admin.utils import cert_util, datetime_util, file_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
@@ -27,27 +30,11 @@ def add_domain(data):
     alias = data.get('alias', '')
     group_id = data.get('group_id', 0)
 
-    connect_status = False
-
-    info = {}
-
-    try:
-        info = cert_util.get_cert_info(domain)
-        connect_status = True
-    except Exception:
-        pass
-
     row = DomainModel.create(
         user_id=user_id,
         domain=domain,
         alias=alias,
-        group_id=group_id,
-        start_time=info.get('start_date'),
-        expire_time=info.get('expire_date'),
-        ip=info.get('ip'),
-        connect_status=connect_status,
-        detail_raw=json.dumps(info, ensure_ascii=False),
-        check_time=datetime_util.get_datetime(),
+        group_id=group_id
     )
 
     return row
@@ -61,6 +48,8 @@ def update_domain_cert_info(row):
     """
 
     connect_status = False
+    expire_days = 0
+    total_days = 0
 
     info = {}
 
@@ -70,9 +59,22 @@ def update_domain_cert_info(row):
     except Exception:
         pass
 
+    start_date = info.get('start_date')
+    expire_date = info.get('expire_date')
+
+    if start_date and expire_date:
+        now = datetime.now()
+        start_time = datetime_util.parse_datetime(start_date)
+        expire_time = datetime_util.parse_datetime(expire_date)
+
+        expire_days = (expire_time - now).days
+        total_days = (expire_time - start_time).days
+
     DomainModel.update(
         start_time=info.get('start_date'),
         expire_time=info.get('expire_date'),
+        expire_days=expire_days,
+        total_days=total_days,
         ip=info.get('ip'),
         connect_status=connect_status,
         detail_raw=json.dumps(info, ensure_ascii=False),
@@ -149,12 +151,19 @@ def check_domain_cert(user_id):
     has_expired_domain = False
 
     for item in lst:
-        if item['expire_days'] is None or item['expire_days'] <= user_row.before_expire_days:
+        if not item['expire_days'] or item['expire_days'] <= user_row.before_expire_days:
             has_expired_domain = True
             break
 
     if has_expired_domain:
         send_domain_list_email(user_id)
+
+
+def update_and_check_all_domain_cert():
+    update_all_domain_cert_info()
+    rows = UserModel.select()
+    for row in rows:
+        check_domain_cert(row.id)
 
 
 def send_domain_list_email(user_id):
@@ -200,16 +209,30 @@ def add_domain_from_file(filename, user_id):
     count = 0
     for domain in lst:
         try:
-            add_domain({
+            row = add_domain({
                 'domain': domain,
                 'user_id': user_id,
             })
+
+            update_domain_cert_info(row)
 
             count += 1
         except Exception as e:
             traceback.print_exc()
 
     return count
+
+
+def export_domain_to_file(user_id):
+    rows = DomainModel.select().where(DomainModel.user_id == user_id)
+    lst = [row.domain for row in rows]
+
+    temp_filename = file_service.get_temp_filename('txt')
+
+    with open(temp_filename, 'w') as f:
+        f.writelines(lst)
+
+    return temp_filename
 
 
 if __name__ == '__main__':

@@ -14,6 +14,10 @@ def get_datetime():
     return datetime.now().strftime(DATETIME_FORMAT)
 
 
+def parse_datetime(datetime_str):
+    return datetime.strptime(datetime_str, DATETIME_FORMAT)
+
+
 def get_date():
     return datetime.now().strftime(DATE_FORMAT)
 

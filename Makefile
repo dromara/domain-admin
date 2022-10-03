@@ -1,9 +1,13 @@
 # 伪目标
-.PHONY: dev dep-pro dep-pub
+.PHONY: dev pro dep-pro dep-pub
 
 # 运行开发环境
 dev:
-	python dev.py
+	flask run
+
+# 运行生产环境
+pro:
+	gunicorn --config gunicorn.conf.py domain_admin.app:app
 
 # 部署
 dep-pro:

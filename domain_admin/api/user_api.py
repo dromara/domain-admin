@@ -1,17 +1,45 @@
 # -*- coding: utf-8 -*-
+import json
 
-from flask import request
+from flask import request, g
+from playhouse.shortcuts import model_to_dict
 
-from domain_admin.service import auth_service
+from domain_admin.model.user_model import UserModel
+from domain_admin.utils import datetime_util
 
 
-def add_user():
+def get_user_info():
     """
-    添加用户
+    获取当前用户信息
     :return:
     """
-    username = request.json['username']
-    password = request.json['password']
-    password_repeat = request.json['password_repeat']
+    current_user_id = g.user_id
 
-    auth_service.register(username, password, password_repeat)
+    row = UserModel.get_by_id(current_user_id)
+
+    return model_to_dict(
+        model=row,
+        exclude=[UserModel.password],
+        extra_attrs=['email_list']
+    )
+
+
+def update_user_info():
+    """
+    更新当前用户信息
+    :return:
+    """
+    current_user_id = g.user_id
+
+    avatar_url = request.json.get('avatar_url')
+    before_expire_days = request.json.get('before_expire_days')
+    email_list = request.json.get('email_list')
+
+    UserModel.update({
+        'avatar_url': avatar_url,
+        'before_expire_days': before_expire_days,
+        'email_list_raw': json.dumps(email_list, ensure_ascii=False),
+        'update_time': datetime_util.get_datetime()
+    }).where(
+        UserModel.id == current_user_id
+    ).execute()

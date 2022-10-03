@@ -2,12 +2,14 @@
 
 import smtplib
 from email.mime.text import MIMEText
+from email.utils import formataddr
 
 
 class EmailServer(object):
-    def __init__(self, mail_host, mail_port, mail_username, mail_password):
+    def __init__(self, mail_host, mail_port,mail_alias, mail_username, mail_password):
         self.mail_host = mail_host
         self.mail_port = mail_port
+        self.mail_alias = mail_alias
         self.mail_username = mail_username
         self.mail_password = mail_password
         self._server = None
@@ -49,7 +51,7 @@ class EmailServer(object):
         # 构造邮件
         msg = MIMEText(content, content_type, 'utf-8')
         # 邮箱昵称、发件人邮箱账号
-        # msg['From'] = formataddr([self.mail_username, self.mail_username])
+        msg['From'] = formataddr([self.mail_alias, self.mail_username])
         # msg['To'] = to_addresses.join(',')
         msg['Subject'] = subject
         return msg

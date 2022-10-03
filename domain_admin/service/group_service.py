@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from domain_admin.model import GroupModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
 
 

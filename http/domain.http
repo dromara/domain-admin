@@ -1,3 +1,4 @@
+
 # For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
 #
 # Following HTTP Request Live Templates are available:
@@ -99,3 +100,13 @@ Content-Type: application/json
 X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
 
 {}
+
+###
+
+POST {{baseUrl}}/api/exportDomainToFile
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjUzMjA3ODN9.pLfVwuxWvBUr4GtJdmBzXs_X8fieaPesgLwgdsIGnv4
+
+{}
+
+###

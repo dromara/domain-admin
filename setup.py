@@ -49,8 +49,6 @@ https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 
 """
 
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
 # 版本号
 version_file = glob.glob("*/version.py", recursive=True)[0]
 
@@ -80,11 +78,11 @@ setup(
     long_description_content_type='text/markdown',
 
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7"
-    ],
+    # classifiers=[
+    #     "Programming Language :: Python :: 3",
+    #     "Programming Language :: Python :: 3.6",
+    #     "Programming Language :: Python :: 3.7"
+    # ],
 
     packages=find_packages(),
     include_package_data=True,
