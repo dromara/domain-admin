@@ -3,7 +3,7 @@
 
 # 运行开发环境
 dev:
-	flask run
+	gunicorn --bind '127.0.0.1:5000' --reload domain_admin.main:app
 
 # 运行生产环境
 pro:

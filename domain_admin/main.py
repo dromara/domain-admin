@@ -61,8 +61,6 @@ def app_init(app):
 
     init_database()
 
-    WERKZEUG_RUN_MAIN = os.environ.get('WERKZEUG_RUN_MAIN')
-    print('WERKZEUG_RUN_MAIN', WERKZEUG_RUN_MAIN)
     scheduler_service.init_scheduler()
 
 

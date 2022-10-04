@@ -43,4 +43,4 @@ worker_class = 'gevent'
 # 启动时钩子
 def on_starting(server):
     ip, port = server.address[0]
-    print('server.address:', f'http://{ip}:{port}')
+    print('server address:', f'http://{ip}:{port}')

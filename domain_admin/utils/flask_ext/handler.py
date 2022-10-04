@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from peewee import DoesNotExist, IntegrityError
 
+from domain_admin.log import logger
 from domain_admin.utils.flask_ext.api_result import ApiResult
 import traceback
 
@@ -13,7 +14,8 @@ def error_handler(e):
     :param e:
     :return:
     """
-    traceback.print_exc()
+    # traceback.print_exc()
+    logger.error(traceback.format_exc())
 
     code = -1
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import math
 from datetime import datetime
 
 from peewee import IntegerField, DateTimeField, BooleanField, TextField
@@ -29,7 +30,7 @@ class LogSchedulerModel(BaseModel):
     @property
     def total_time(self):
         if isinstance(self.update_time, datetime) and isinstance(self.create_time, datetime):
-            return int((self.update_time - self.create_time).total_seconds())
+            return math.ceil(self.update_time.timestamp() - self.create_time.timestamp())
 
     @property
     def total_time_label(self):

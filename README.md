@@ -17,6 +17,10 @@ $ pip install domain_admin
 $ gunicorn 'domain_admin.main:app'
 ```
 
+默认的管理员账号：admin 密码：123456
+
+> 注意：后端服务依赖 `curl`
+
 ## 项目简介
 
 - https://gitee.com/mouday/domain-admin
@@ -36,16 +40,16 @@ $ gunicorn 'domain_admin.main:app'
 
 功能：
 
-- 域名证书信息查询
-- 监控域名证书信息，到期提醒
-- api接口 浏览器 桌面 移动端（app+小程序），便于二次开发
-- 用户登录
-- 域名导入，导出功能
-- 登录优化
-- 域名搜索
+- 手动 + 自动查询证书信息
+- 定时监控域名证书信息，到期邮件提醒
+- 域名添加、删除、搜索管理
+- 域名批量导入，导出功能
+- 用户登录、退出
 - 修改密码
+- 多用户模式
 - 用户管理
-- 调度历史
+- 调度历史日志
+- api接口 浏览器 桌面 ~~移动端（app+小程序）~~
 
 
 前端选型（网页版）
@@ -88,10 +92,6 @@ pip install -r requirements.txt
 make dev
 ```
 
-默认的管理员账号：admin 密码：123456
-
-> 注意：后端服务依赖 `curl`
-
 代码推送
 
 ```bash
@@ -100,20 +100,6 @@ git push -u origin master
 
 # gitee
 git push -u gitee master
-```
-
-配置文件 
-
-可以在运行目录添加配置文件 `.env`
-
-支持的参数
-
-```bash
-FLASK_APP=domain_admin/app.py
-FLASK_ENV=development
-FLASK_DEBUG=1
-FLASK_RUN_HOST = '127.0.0.1'
-FLASK_RUN_PORT = '5000'
 ```
 
 ## 问题

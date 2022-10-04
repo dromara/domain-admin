@@ -2,12 +2,16 @@
 import os
 from urllib.parse import urljoin
 
-from domain_admin.config import TEMP_DIR, TEMP_DIR_BASE_URL
+from domain_admin.config import TEMP_DIR, TEMP_DIR_BASE_URL, LOG_DIR
 from domain_admin.utils import file_util
 
 
 def resolve_temp_file(filename):
     return os.path.join(TEMP_DIR, filename)
+
+
+def resolve_log_file(filename):
+    return os.path.join(LOG_DIR, filename)
 
 
 def resolve_temp_url(filename):
