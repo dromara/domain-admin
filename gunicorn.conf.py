@@ -24,7 +24,7 @@ def get_workers():
 
 
 # 启动端口
-bind = "0.0.0.0:9090"
+bind = "0.0.0.0:5001"
 
 # 日志文件
 loglevel = 'debug'

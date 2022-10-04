@@ -1,5 +1,5 @@
 # 伪目标
-.PHONY: dev pro dep-pro dep-pub
+.PHONY: dev pro dep-pro dep-pub build
 
 # 运行开发环境
 dev:
@@ -7,12 +7,11 @@ dev:
 
 # 运行生产环境
 pro:
-	gunicorn --config gunicorn.conf.py domain_admin.app:app
+	gunicorn --config gunicorn.conf.py domain_admin.main:app
 
-# 部署
-dep-pro:
-	ssh root@182.92.114.142 "cd /home/domain-admin && git pull && /usr/local/bin/supervisorctl restart domain-admin"
-	echo http://182.92.114.142:9090/
+# 打包
+build:
+	python setup.py sdist bdist_wheel
 
 # 发布
 dep-pub:

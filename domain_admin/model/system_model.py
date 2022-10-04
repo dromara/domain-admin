@@ -87,7 +87,7 @@ def init_table_data():
         {
             'key': 'scheduler_cron',
             'value': '30 10 * * *',
-            'label': '定时检测时间',
+            'label': '定时检测时间（crontab 表达式）',
             'placeholder': '分 时 日 月 周',
             'is_show_value': True,
         },
