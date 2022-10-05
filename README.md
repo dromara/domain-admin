@@ -138,4 +138,4 @@ git push -u gitee master
 
 邀请码：domain-admin
 
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg)
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
