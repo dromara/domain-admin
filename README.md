@@ -1,6 +1,6 @@
 # Domain Admin
 
-![](image/logo.png)
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/logo.png)
 
 基于Python + Vue.js 技术栈实现的域名SSL证书监测平台
 
@@ -36,11 +36,11 @@ $ gunicorn 'domain_admin.main:app'
 
 网页版：
 
-![](image/screencapture.png)
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png)
 
 桌面端：
 
-![](image/screencapture-desktop.png)
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-desktop.png)
 
 功能：
 
@@ -61,11 +61,11 @@ $ gunicorn 'domain_admin.main:app'
 
 1、设置系统发送邮件的账号密码
 
-![](image/system-list.png)
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
 
 2、设置接收邮件的邮箱
 
-![](image/user-edit.png)
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/user-edit.png)
 
 ## 二次开发
 
@@ -131,3 +131,9 @@ git push -u gitee master
 如果是需要支持并发访问，可自行改进应用
 
 将定时器独立出来，单独一个进程控制，行成 scheduler + Flask（master + 多worker）
+
+## 问题反馈交流
+
+邀请码：domain-admin
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg)
