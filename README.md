@@ -19,6 +19,8 @@ $ pip install domain_admin
 $ gunicorn 'domain_admin.main:app'
 ```
 
+访问地址：http://127.0.0.1:8000
+
 默认的管理员账号：admin 密码：123456
 
 强烈建议：登录系统后修改默认密码
