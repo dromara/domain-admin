@@ -5,11 +5,13 @@ from functools import cmp_to_key
 import traceback
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.log import logger
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
+from domain_admin.service import system_service
 from domain_admin.utils import cert_util, datetime_util, file_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
@@ -164,12 +166,28 @@ def update_and_check_all_domain_cert():
     log_row = LogSchedulerModel.create()
 
     error_message = ''
-    status = False
 
-    # 外层捕获全局错误
+    status = True
+
+    # 更新全部域名证书信息
+    update_all_domain_cert_info()
+
+    # 配置检查
+    config = system_service.get_system_config()
     try:
-        update_all_domain_cert_info()
+        system_service.check_email_config(config)
+    except Exception as e:
+        logger.error(traceback.format_exc())
 
+        status = False
+
+        if isinstance(e, AppException):
+            error_message = e.message
+        else:
+            error_message = str(e)
+
+    # 全员发送
+    if status:
         rows = UserModel.select()
 
         for row in rows:
@@ -178,17 +196,15 @@ def update_and_check_all_domain_cert():
             try:
                 check_domain_cert(row.id)
             except Exception as e:
-                traceback.print_exc()
+                # traceback.print_exc()
+                logger.error(traceback.format_exc())
 
-        status = True
+                status = False
 
-    except Exception as e:
-        traceback.print_exc()
-
-        if isinstance(e, AppException):
-            error_message = e.message
-        else:
-            error_message = str(e)
+                if isinstance(e, AppException):
+                    error_message = e.message
+                else:
+                    error_message = str(e)
 
     LogSchedulerModel.update({
         'status': status,
@@ -208,7 +224,7 @@ def send_domain_list_email(user_id):
     user_row = UserModel.get_by_id(user_id)
 
     if not user_row.email_list:
-        raise AppException('邮箱未设置')
+        raise AppException('收件邮箱未设置')
 
     lst = get_domain_info_list(user_row.id)
 
@@ -250,7 +266,8 @@ def add_domain_from_file(filename, user_id):
 
             count += 1
         except Exception as e:
-            traceback.print_exc()
+            # traceback.print_exc()
+            logger.error(traceback.format_exc())
 
     return count
 

@@ -79,20 +79,30 @@ def get_user_list():
     获取当前用户信息
     :return:
     """
+    page = request.json.get('page', 1)
+    size = request.json.get('size', 10)
+    keyword = request.json.get('keyword')
 
     query = UserModel.select()
 
-    total = query.count()
+    if keyword:
+        query = query.where(UserModel.username.contains(keyword))
 
-    rows = list(map(lambda m: model_to_dict(
+    total = query.count()
+    lst = query.order_by(
+        UserModel.create_time.desc(),
+        UserModel.id.desc(),
+    ).paginate(page, size)
+
+    lst = list(map(lambda m: model_to_dict(
         model=m,
         extra_attrs=[
             'email_list',
         ]
-    ), query))
+    ), lst))
 
     return {
-        'list': rows,
+        'list': lst,
         'total': total
     }
 

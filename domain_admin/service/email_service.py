@@ -15,21 +15,11 @@ def send_email(content: str,
     :param content_type:
     :return:
     """
+    # print('to_addresses:', to_addresses)
+
     config = system_service.get_system_config()
 
-    if not config['mail_host']:
-        raise AppException('未设置发件邮箱服务器地址')
-
-    if not config['mail_port']:
-        raise AppException('未设置发件邮箱服务器端口')
-
-    if not config['mail_username']:
-        raise AppException('未设置发件人邮箱账号')
-
-    if not config['mail_password']:
-        raise AppException('未设置发件人邮箱密码')
-
-    # logger.debug(config)
+    system_service.check_email_config(config)
 
     email_server = EmailServer(
         mail_host=config['mail_host'],
