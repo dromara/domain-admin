@@ -23,7 +23,7 @@ def send_email(content: str,
 
     email_server = EmailServer(
         mail_host=config['mail_host'],
-        mail_port=config['mail_port'],
+        mail_port=int(config['mail_port']),
         mail_alias=config['mail_alias'],
         mail_username=config['mail_username'],
         mail_password=config['mail_password']
