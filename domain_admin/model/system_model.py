@@ -48,7 +48,7 @@ def init_table_data():
         },
         {
             'key': 'mail_port',
-            'value': '25',  # 25 或者 465(ssl)
+            'value': '465',  # 25 或者 465(ssl)
             'label': '发件邮箱服务器端口',
             'placeholder': '发件邮箱服务器端口：25 或者 465(ssl)',
             'is_show_value': True,
