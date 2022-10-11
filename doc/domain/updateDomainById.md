@@ -22,6 +22,7 @@
 ```
 POST {{baseUrl}}/api/updateDomainById
 Content-Type: application/json
+X-Token: <token>
 
 {
   "id": 1,

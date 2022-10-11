@@ -55,7 +55,7 @@ def init_table_data():
         },
         {
             'key': 'mail_alias',
-            'value': 'Domain-Admin',
+            'value': 'Domain Admin',
             'label': '发件人邮箱名称',
             'placeholder': '发件人邮箱名称',
             'is_show_value': True,

@@ -5,19 +5,10 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-POST {{baseUrl}}/api/getAllSystemConfig
+POST {{baseUrl}}/api/getLogSchedulerList
 Content-Type: application/json
 X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
 
-###
-POST {{baseUrl}}/api/updateSystemConfig
-Content-Type: application/json
-X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
-
-{
-  "key": "mail_username",
-  "value": "123@qq.com"
-}
+{}
 
 ###
-

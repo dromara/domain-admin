@@ -20,6 +20,7 @@
 ```
 POST {{baseUrl}}/api/updateDomainCertInfoById
 Content-Type: application/json
+X-Token: <token>
 
 {
   "id": 1

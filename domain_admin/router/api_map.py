@@ -30,7 +30,6 @@ routes = {
     "/api/sendDomainInfoListEmail": domain_api.send_domain_info_list_email,
     "/api/checkDomainCert": domain_api.check_domain_cert,
     "/api/importDomainFromFile": domain_api.import_domain_from_file,
-    # "/api/exportDomainToFile": domain_api.export_domain_to_file,
     "/api/getAllDomainListOfUser": domain_api.get_all_domain_list_of_user,
 
     # 分组管理
@@ -40,21 +39,22 @@ routes = {
     "/api/getGroupList": group_api.get_group_list,
     "/api/getGroupById": group_api.get_group_by_id,
 
-    # 系统管理
-    '/api/getAllSystemConfig': system_api.get_all_system_config,
-    '/api/updateSystemConfig': system_api.update_system_config,
-
     # 用户
     '/api/getUserInfo': user_api.get_user_info,
     '/api/updateUserInfo': user_api.update_user_info,
     '/api/updateUserPassword': user_api.update_user_password,
 
-    # 用户管理
+    # 调度日志
+    '/api/getLogSchedulerList': log_scheduler_api.get_log_scheduler_list,
+
+    # 系统管理 (管理员权限)
+    '/api/getAllSystemConfig': system_api.get_all_system_config,
+    '/api/updateSystemConfig': system_api.update_system_config,
+
+    # 用户管理 (管理员权限)
     '/api/getUserList': user_api.get_user_list,
     '/api/addUser': user_api.add_user,
     '/api/updateUserStatus': user_api.update_user_status,
     '/api/deleteUser': user_api.delete_user,
 
-
-    '/api/getLogSchedulerList': log_scheduler_api.get_log_scheduler_list,
 }

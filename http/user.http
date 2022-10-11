@@ -7,9 +7,66 @@
 
 POST {{baseUrl}}/api/getUserInfo
 Content-Type: application/json
-X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjUzNjU5OTl9.MQi-V9g2VbwtRSKRsyaNsFWfgkYXfKblYvupLpVgu9g
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{}
+
+###
+POST {{baseUrl}}/api/updateUserInfo
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
 
 {
+  "avatar_url": "https://www.image.com/image.png",
+  "email_list": ["123@qq.com"],
+  "before_expire_days": 1
 }
 
 ###
+POST {{baseUrl}}/api/updateUserPassword
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{
+  "password": "123456",
+  "new_password": "234567"
+}
+
+###
+POST {{baseUrl}}/api/getUserList
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{
+  "page": 1,
+  "size": 10,
+  "keyword": ""
+}
+
+###
+POST {{baseUrl}}/api/addUser
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{
+  "username": "mouday",
+  "password": "ooxx"
+}
+
+###
+POST {{baseUrl}}/api/updateUserStatus
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{
+  "user_id": 1,
+  "status": false
+}
+
+###
+
+
+
+
+
+

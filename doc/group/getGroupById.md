@@ -25,6 +25,7 @@
 ```
 POST {{baseUrl}}/api/getGroupById
 Content-Type: application/json
+X-Token: <token>
 
 {
   "id": 1

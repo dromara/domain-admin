@@ -21,6 +21,7 @@
 ```
 POST {{baseUrl}}/api/addDomain
 Content-Type: application/json
+X-Token: <token>
 
 {
     "domain": "www.baidu.com",

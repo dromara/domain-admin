@@ -20,6 +20,7 @@
 ```
 POST {{baseUrl}}/api/sendDomainInfoListEmail
 Content-Type: application/json
+X-Token: <token>
 
 {
   "to_addresses": ["xxx@qq.com"]

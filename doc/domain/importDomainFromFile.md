@@ -22,6 +22,7 @@
 ```
 POST {{baseUrl}}/api/updateDomainCertInfoById
 Content-Type: multipart/form-data
+X-Token: <token>
 
 file: （二进制）
 ```

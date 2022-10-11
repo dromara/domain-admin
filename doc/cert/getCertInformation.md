@@ -33,12 +33,14 @@
 GET
 ```
 GET {{baseUrl}}/api/getCertInformation?domain=www.baidu.com
+X-Token: <token>
 ```
 
 POST
 ```
 POST {{baseUrl}}/api/getCertInformation
 Content-Type: application/json
+X-Token: <token>
 
 {
     "domain": "www.baidu.com"

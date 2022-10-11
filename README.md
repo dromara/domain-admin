@@ -1,5 +1,11 @@
 # Domain Admin
 
+![PyPI](https://img.shields.io/pypi/v/domain-admin.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/domain-admin)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/domain-admin)
+![PyPI - License](https://img.shields.io/pypi/l/domain-admin)
+
+
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/logo.png)
 
 基于Python + Vue.js 技术栈实现的域名SSL证书监测平台
@@ -16,6 +22,9 @@
 
 ```bash
 $ pip install domain_admin
+
+# 升级到最新版本，可选
+$ pip3 install -U domain-admin -i https://pypi.org/simple
 
 # 启动运行
 $ gunicorn 'domain_admin.main:app'

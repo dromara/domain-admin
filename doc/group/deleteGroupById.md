@@ -19,6 +19,7 @@
 ```
 POST {{baseUrl}}/api/deleteGroupById
 Content-Type: application/json
+X-Token: <token>
 
 {
   "id": 1

@@ -1,6 +1,6 @@
-# 添加分组
+# 更新单个配置
 
-1、请求地址：/api/addGroup
+1、请求地址：/api/updateSystemConfig
 
 2、请求方式：POST
 
@@ -8,7 +8,8 @@
 
 | 参数  | 类型   | 必须 | 说明 |
 | -| - | - | - |
-| name | string | 是 | 分组名称
+| key | string | 键
+| value | string | 值
 
 4、返回参数
 
@@ -17,12 +18,13 @@
 5、请求示例
 
 ```
-POST {{baseUrl}}/api/addGroup
+POST {{baseUrl}}/api/updateSystemConfig
 Content-Type: application/json
 X-Token: <token>
 
 {
-  "name": "项目1"
+  "key": "mail_username",
+  "value": "123@qq.com"
 }
 ```
 
@@ -35,4 +37,3 @@ X-Token: <token>
   "msg": "success"
 }
 ```
-

@@ -1,6 +1,6 @@
-# 添加分组
+# 添加用户
 
-1、请求地址：/api/addGroup
+1、请求地址：/api/addUser
 
 2、请求方式：POST
 
@@ -8,7 +8,8 @@
 
 | 参数  | 类型   | 必须 | 说明 |
 | -| - | - | - |
-| name | string | 是 | 分组名称
+| username | string | 用户名
+| password | string | 登录密码
 
 4、返回参数
 
@@ -17,13 +18,15 @@
 5、请求示例
 
 ```
-POST {{baseUrl}}/api/addGroup
+POST {{baseUrl}}/api/addUser
 Content-Type: application/json
 X-Token: <token>
 
 {
-  "name": "项目1"
+  "username": "mouday",
+  "password": "ooxx"
 }
+
 ```
 
 6、返回示例

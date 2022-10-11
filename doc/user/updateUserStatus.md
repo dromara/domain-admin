@@ -1,6 +1,6 @@
-# 添加分组
+# 更新账号可用状态
 
-1、请求地址：/api/addGroup
+1、请求地址：/api/updateUserStatus
 
 2、请求方式：POST
 
@@ -8,7 +8,8 @@
 
 | 参数  | 类型   | 必须 | 说明 |
 | -| - | - | - |
-| name | string | 是 | 分组名称
+| user_id | int | 是 | 用户id
+| status | bool | 是 | 状态
 
 4、返回参数
 
@@ -17,12 +18,13 @@
 5、请求示例
 
 ```
-POST {{baseUrl}}/api/addGroup
+POST {{baseUrl}}/api/updateUserStatus
 Content-Type: application/json
 X-Token: <token>
 
 {
-  "name": "项目1"
+  "user_id": 1,
+  "status": false
 }
 ```
 

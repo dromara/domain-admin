@@ -21,6 +21,7 @@
 ```
 POST {{baseUrl}}/api/getDomainList
 Content-Type: application/json
+X-Token: <token>
 
 {
   "page": 1,

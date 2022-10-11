@@ -34,6 +34,7 @@ X-TOKEN: <token>
 | /api/sendDomainInfoListEmail | 发送域名证书信息到邮箱 | [sendDomainInfoListEmail.md](/doc/domain/sendDomainInfoListEmail.md) |
 | /api/checkDomainCert | 检查域名证书到期信息 | [checkDomainCert.md](/doc/domain/checkDomainCert.md) |
 | /api/importDomainFromFile | 从文件导入域名 | [importDomainFromFile.md](/doc/domain/importDomainFromFile.md) |
+| /api/getAllDomainListOfUser | 获取用户的所有域名数据 | [getAllDomainListOfUser.md](/doc/domain/getAllDomainListOfUser.md) |
 
 分组管理
 
@@ -45,7 +46,39 @@ X-TOKEN: <token>
 | /api/updateGroupById | 更新数据 | [updateGroupById.md](/doc/group/updateGroupById.md) | 
 | /api/deleteGroupById | 删除分组 | [deleteGroupById.md](/doc/group/deleteGroupById.md) |
 
-其他
+
+用户信息管理
+
+| 接口 | 说明 | 文档 | 
+| - | - | -| 
+| /api/getUserInfo | 获取当前用户信息 | [getUserInfo.md](/doc/user/getUserInfo.md) | 
+| /api/updateUserInfo | 更新当前用户信息 | [updateUserInfo.md](/doc/user/updateUserInfo.md) | 
+| /api/updateUserPassword | 更新用户密码 | [updateUserPassword.md](/doc/user/updateUserPassword.md) | 
+ 
+
+调度日志
+
+| 接口 | 说明 | 文档 | 
+| - | - | -|
+| /api/getLogSchedulerList | 获取调度日志列表 | [getLogSchedulerList.md](/doc/log_scheduler/getLogSchedulerList.md) |
+
+系统管理 (管理员权限)
+
+| 接口 | 说明 | 文档 | 
+| - | - | -|
+| /api/getAllSystemConfig | 获取所有配置项 | [getAllSystemConfig.md](/doc/system_config/getAllSystemConfig.md) |
+| /api/updateSystemConfig | 更新单个配置 | [updateSystemConfig.md](/doc/system_config/updateSystemConfig.md) |
+
+用户管理 (管理员权限)
+
+| 接口 | 说明 | 文档 | 
+| - | - | -|
+| /api/getUserList | 获取用户列表 | [getUserList.md](/doc/user/getUserList.md) |
+| /api/addUser | 添加用户 | [addUser.md](/doc/user/addUser.md) |
+| /api/updateUserStatus | 更新账号可用状态 | [updateUserStatus.md](/doc/user/updateUserStatus.md) |
+| /api/deleteUser | 删除用户账号 | [deleteUser.md](/doc/user/deleteUser.md) |
+
+域名信息
 
 | 接口 | 说明 | 文档 | 
 | - | - | -| 

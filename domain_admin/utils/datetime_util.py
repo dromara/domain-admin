@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-import math
-from time import gmtime, strftime
+"""
+datetime_util.py
+"""
 
-import pendulum
+from datetime import datetime
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -49,6 +49,11 @@ def format_datetime_label(date_time):
 
 
 def seconds_for_human(seconds):
+    """
+    将时间格式化为: 1d 2h 3m 4s
+    :param seconds:
+    :return:
+    """
     second = 1
     minute = second * 60
     hour = minute * 12
@@ -56,20 +61,17 @@ def seconds_for_human(seconds):
 
     lst = []
 
-    if seconds > 0:
+    if seconds > day:
         days, seconds = divmod(seconds, day)
-        if days > 0:
-            lst.append(str(days) + 'd')
+        lst.append(str(days) + 'd')
 
-    if seconds > 0:
+    if seconds > hour:
         hours, seconds = divmod(seconds, hour)
-        if hours > 0:
-            lst.append(str(hours) + 'h')
+        lst.append(str(hours) + 'h')
 
-    if seconds > 0:
+    if seconds > minute:
         minutes, seconds = divmod(seconds, minute)
-        if minutes > 0:
-            lst.append(str(minutes) + 'm')
+        lst.append(str(minutes) + 'm')
 
     if seconds > 0:
         lst.append(str(seconds) + 's')
@@ -78,4 +80,4 @@ def seconds_for_human(seconds):
 
 
 if __name__ == '__main__':
-    print(seconds_for_human(0.010))
+    print(seconds_for_human(100.010))

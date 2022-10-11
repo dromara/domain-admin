@@ -17,12 +17,14 @@
 GET
 ```
 GET {{baseUrl}}/api/updateAllDomainCertInfo
+X-Token: <token>
 ```
 
 POST
 ```
 POST {{baseUrl}}/api/updateAllDomainCertInfo
 Content-Type: application/json
+X-Token: <token>
 
 {}
 ```

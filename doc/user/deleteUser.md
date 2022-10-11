@@ -1,12 +1,14 @@
-# 检查域名证书到期信息
+# 删除用户账号
 
-1、请求地址：/api/checkDomainCert
+1、请求地址：/api/deleteUser
 
 2、请求方式：POST
 
 3、请求参数
 
-无
+| 参数  | 类型   | 必须 | 说明 |
+| -| - | - | - |
+| user_id | int | 是 | 用户id
 
 4、返回参数
 
@@ -14,19 +16,14 @@
 
 5、请求示例
 
-GET
 ```
-GET {{baseUrl}}/api/checkDomainCert
-X-Token: <token>
-```
-
-POST
-```
-POST {{baseUrl}}/api/checkDomainCert
+POST {{baseUrl}}/api/deleteUser
 Content-Type: application/json
 X-Token: <token>
 
-{}
+{
+  "user_id": 1
+}
 ```
 
 6、返回示例

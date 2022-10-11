@@ -24,7 +24,7 @@ def get_user_info():
 
     return model_to_dict(
         model=row,
-        exclude=[UserModel.password],
+        exclude=[UserModel.password, UserModel.email_list_raw],
         extra_attrs=['email_list']
     )
 
@@ -76,7 +76,7 @@ def update_user_password():
 
 def get_user_list():
     """
-    获取当前用户信息
+    获取用户列表
     :return:
     """
     page = request.json.get('page', 1)
@@ -96,6 +96,10 @@ def get_user_list():
 
     lst = list(map(lambda m: model_to_dict(
         model=m,
+        exclude=[
+            UserModel.password,
+            UserModel.email_list_raw,
+        ],
         extra_attrs=[
             'email_list',
         ]
@@ -109,7 +113,7 @@ def get_user_list():
 
 def add_user():
     """
-    获取当前用户信息
+    添加用户
     :return:
     """
     username = request.json.get('username')
@@ -130,7 +134,7 @@ def add_user():
 
 def update_user_status():
     """
-    获取当前用户信息
+    更新账号可用状态
     :return:
     """
     user_id = request.json.get('user_id')
@@ -145,7 +149,7 @@ def update_user_status():
 
 def delete_user():
     """
-    获取当前用户信息
+    删除用户账号
     :return:
     """
     user_id = request.json.get('user_id')

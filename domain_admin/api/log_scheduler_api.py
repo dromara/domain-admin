@@ -11,7 +11,7 @@ from domain_admin.model.log_scheduler_model import LogSchedulerModel
 
 def get_log_scheduler_list():
     """
-    获取域名列表
+    获取调度日志列表
     :return:
     """
     current_user_id = g.user_id
