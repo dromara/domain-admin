@@ -79,11 +79,11 @@ setup(
     long_description_content_type='text/markdown',
 
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    # classifiers=[
-    #     "Programming Language :: Python :: 3",
-    #     "Programming Language :: Python :: 3.6",
-    #     "Programming Language :: Python :: 3.7"
-    # ],
+    classifiers=[
+        # "Programming Language :: Python :: 3",
+        # "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7"
+    ],
 
     packages=find_packages(),
     include_package_data=True,
