@@ -2,10 +2,13 @@
 """
 datetime_util.py
 """
-
+import time
 from datetime import datetime
+import math
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+DATETIME_SHORT_FORMAT = "%Y-%m-%d %H:%M"
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -79,5 +82,56 @@ def seconds_for_human(seconds):
     return ' '.join(lst)
 
 
+def time_for_human(time_value):
+    """
+    格式化时间为人类可读的字符串格式
+    :param time_value: {int|string|datetime} time_value 10位时间戳
+    :return: string
+
+    时间格式化为：
+    刚刚
+    1分钟前-56分钟前
+    1小时前-23小时前
+    1天前-7天前
+    2022-10-09 13:33
+    """
+    second = 1
+    minute = second * 60
+    hour = minute * 60
+    day = hour * 24
+    day_8 = day * 8
+
+    if isinstance(time_value, datetime):
+        time_value = time_value.timestamp()
+
+    if isinstance(time_value, str):
+        time_value = time.mktime(time.strptime(time_value, DATETIME_FORMAT))
+
+    now_time = time.time()
+
+    duration = now_time - time_value
+
+    if duration < minute:
+        return '刚刚'
+    elif duration < hour:
+        return str(math.floor(duration / minute)) + '分钟前'
+    elif duration < day:
+        return str(math.floor(duration / hour)) + '小时前'
+    elif duration < day_8:
+        return str(math.floor(duration / day)) + '天前'
+    else:
+        return time.strftime(DATE_FORMAT, time.localtime(time_value))
+
+
 if __name__ == '__main__':
-    print(seconds_for_human(100.010))
+    print(time_for_human(1665381270))
+    # 2天前
+
+    print(time_for_human(datetime.now()))
+    # 刚刚
+
+    print(time_for_human(time.time() - 100))
+    # 1分钟前
+
+    print(time_for_human('2022-10-10 13:33:11'))
+    # 2天前

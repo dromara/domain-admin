@@ -77,7 +77,7 @@ class DomainModel(BaseModel):
 
     @property
     def check_time_label(self):
-        return datetime_util.format_datetime_label(self.check_time)
+        return datetime_util.time_for_human(self.check_time)
 
     @property
     def start_date(self):

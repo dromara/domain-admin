@@ -33,7 +33,7 @@ X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5Nj
 
 POST {{baseUrl}}/api/getDomainList
 Content-Type: application/json
-X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
 
 {
   "page": 1,
