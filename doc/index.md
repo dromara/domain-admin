@@ -68,6 +68,7 @@ X-TOKEN: <token>
 | - | - | -|
 | /api/getAllSystemConfig | 获取所有配置项 | [getAllSystemConfig.md](/doc/system_config/getAllSystemConfig.md) |
 | /api/updateSystemConfig | 更新单个配置 | [updateSystemConfig.md](/doc/system_config/updateSystemConfig.md) |
+| /api/getSystemVersion | 获取当前应用版本号 | [getSystemVersion.md](/doc/system_config/getSystemVersion.md) |
 
 用户管理 (管理员权限)
 

@@ -2,6 +2,7 @@
 
 from flask import request
 
+from domain_admin import version
 from domain_admin.model.system_model import SystemModel
 from domain_admin.service import scheduler_service
 from domain_admin.utils import datetime_util
@@ -39,4 +40,14 @@ def get_all_system_config():
     return {
         'list': lst,
         'total': len(lst)
+    }
+
+
+def get_system_version():
+    """
+    获取当前应用版本号
+    :return:
+    """
+    return {
+        'version': version.VERSION
     }

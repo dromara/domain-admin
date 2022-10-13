@@ -50,6 +50,7 @@ routes = {
     # 系统管理 (管理员权限)
     '/api/getAllSystemConfig': system_api.get_all_system_config,
     '/api/updateSystemConfig': system_api.update_system_config,
+    '/api/getSystemVersion': system_api.get_system_version,
 
     # 用户管理 (管理员权限)
     '/api/getUserList': user_api.get_user_list,

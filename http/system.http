@@ -21,3 +21,11 @@ X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwOD
 
 ###
 
+POST {{baseUrl}}/api/getSystemVersion
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{}
+
+###
+
