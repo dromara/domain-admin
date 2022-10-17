@@ -2,7 +2,7 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api
+from domain_admin.api import cert_api, ip_api, notify_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -57,5 +57,13 @@ routes = {
     '/api/addUser': user_api.add_user,
     '/api/updateUserStatus': user_api.update_user_status,
     '/api/deleteUser': user_api.delete_user,
+
+
+    # 获取ip信息
+    '/api/getIpInfo': ip_api.get_ip_info,
+
+    # 通知方式, 暂不使用
+    '/api/getNotifyOfUser': notify_api.get_notify_of_user,
+    '/api/updateNotifyOfUser': notify_api.update_notify_of_user,
 
 }

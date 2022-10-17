@@ -8,6 +8,7 @@ from domain_admin.model import group_model
 from domain_admin.model import system_model
 from domain_admin.model import user_model
 from domain_admin.model import log_scheduler_model
+from domain_admin.model import notify_model
 
 tables = [
     (system_model.SystemModel, system_model.init_table_data),
@@ -15,6 +16,7 @@ tables = [
     (group_model.GroupModel, None),
     (user_model.UserModel, user_model.init_table_data),
     (log_scheduler_model.LogSchedulerModel, None),
+    (notify_model.NotifyModel, None),
 ]
 
 

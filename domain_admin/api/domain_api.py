@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, g, send_file
+from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.domain_model import DomainModel

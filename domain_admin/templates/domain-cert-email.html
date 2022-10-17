@@ -13,8 +13,8 @@
         <tr>
             <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">序号</th>
             <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名</th>
-            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">开始日期</th>
-            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">结束日期</th>
+<!--            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">开始日期</th>-->
+<!--            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">结束日期</th>-->
             <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">剩余天数</th>
         </tr>
         </thead>
@@ -27,8 +27,8 @@
                 <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">
                     <a href="{{ item.domain }}" target="_blank">{{ item.domain }}</a>
                 </td>
-              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date | default('-') }}</td>
-              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date | default('-')  }}</td>
+<!--              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date | default('-') }}</td>-->
+<!--              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date | default('-')  }}</td>-->
                 {% if item.expire_days%}
                     {% if item.expire_days <= 3 %}
                         <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.expire_days }}</td>
