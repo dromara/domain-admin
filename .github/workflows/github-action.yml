@@ -18,6 +18,7 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           push: true
-          tags: ${{ github.repository }}1b:${{ github.sha }}
+#          tags: ${{ github.repository }}1b:${{ github.sha }}
+          tags: connorzhang123/domain-admin:alpine-test
           cache-from: type=registry,ref=${{ github.repository }}:latest
           cache-to: type=inline
