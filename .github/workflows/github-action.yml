@@ -19,7 +19,7 @@ jobs:
           file: ./docker/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:${{ github.sha }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/domain-admin:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/domain-admin:latest
           cache-from: type=registry,ref=${{ github.repository }}:latest
           cache-to: type=inline
