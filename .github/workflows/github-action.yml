@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: set short sha
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -19,7 +22,7 @@ jobs:
           file: ./docker/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/domain-admin:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/domain-admin:${{ steps.vars.outputs.sha_short }}
             ${{ secrets.DOCKERHUB_USERNAME }}/domain-admin:latest
           cache-from: type=registry,ref=${{ github.repository }}:latest
           cache-to: type=inline
