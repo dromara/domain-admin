@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+通过curl获取域名ssl 证书信息
+"""
 import re
 import subprocess
 from datetime import datetime
@@ -83,4 +86,4 @@ def get_cert_info(domain):
 
 
 if __name__ == '__main__':
-    print(get_cert_info('mp.csdn.net'))
+    print(get_cert_info("www.baidu.com"))

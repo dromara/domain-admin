@@ -12,7 +12,7 @@ from domain_admin.model.user_model import UserModel
 from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
 from domain_admin.service import system_service
-from domain_admin.utils import cert_util, datetime_util, file_util
+from domain_admin.utils import datetime_util, cert_util_v2
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
@@ -57,7 +57,7 @@ def update_domain_cert_info(row):
     info = {}
 
     try:
-        info = cert_util.get_cert_info(row.domain)
+        info = cert_util_v2.get_cert_info(row.domain)
         connect_status = True
     except Exception:
         pass
@@ -118,26 +118,31 @@ def get_domain_info_list(user_id=None):
             DomainModel.user_id == user_id
         )
 
+    query = query.order_by(
+        DomainModel.expire_days.asc(),
+        DomainModel.id.desc()
+    )
+
     lst = list(map(lambda m: model_to_dict(
         model=m,
         exclude=[DomainModel.detail_raw],
         extra_attrs=[
             'start_date',
             'expire_date',
-            'expire_days',
+            # 'expire_days',
         ]
     ), query))
 
-    def compare(a, b):
-        if a['expire_days'] and b['expire_days']:
-            return a['expire_days'] - b['expire_days']
-        else:
-            if a['expire_days']:
-                return a['expire_days']
-            else:
-                return -b['expire_days']
+    # def compare(a, b):
+    #     if a['expire_days'] and b['expire_days']:
+    #         return a['expire_days'] - b['expire_days']
+    #     else:
+    #         if a['expire_days']:
+    #             return a['expire_days']
+    #         else:
+    #             return -b['expire_days']
 
-    lst = sorted(lst, key=cmp_to_key(compare))
+    # lst = sorted(lst, key=cmp_to_key(compare))
 
     return lst
 

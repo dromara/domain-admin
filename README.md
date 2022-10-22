@@ -8,7 +8,7 @@
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/logo.png)
 
-基于Python + Vue.js 技术栈实现的域名SSL证书监测平台
+基于Python + Vue3.js 技术栈实现的域名SSL证书监测平台
 
 核心功能：到期自动邮件提醒
 
@@ -17,6 +17,8 @@
 运行环境：
 
 - Python 3.7.0
+
+支持平台：MacOs、Linux、Windows
 
 安装
 
@@ -34,9 +36,7 @@ $ gunicorn 'domain_admin.main:app'
 
 默认的管理员账号：admin 密码：123456
 
-强烈建议：登录系统后修改默认密码
-
-> 注意：后端服务依赖 `curl`
+> `强烈建议`：登录系统后修改默认密码
 
 ## 项目简介
 
@@ -78,7 +78,7 @@ $ gunicorn 'domain_admin.main:app'
 - 证书监控
     - 定时监控
     - 到期邮件提醒
-    - 微信提供（待开发）
+    - 微信提醒（待开发）
     - 手动/自动更新证书信息
   
 - 监控日志
@@ -166,8 +166,26 @@ git push -u gitee master
 
 将定时器独立出来，单独一个进程控制，行成 scheduler + Flask（master + 多worker）
 
+2、为什么外网访问不到？
+
+```bash
+# 启动运行
+$ gunicorn 'domain_admin.main:app'
+
+# 支持外网可访问，云服务器（阿里云或腾讯云）需要设置安全组 
+# 默认内网访问 --bind 127.0.0.1:8000
+$ gunicorn --bind '0.0.0.0:8000' domain_admin.main:app'
+```
+
+更多设置，可参考[gunicorn](https://docs.gunicorn.org/en/stable/index.html)
+
 ## 问题反馈交流
 
 邀请码：domain-admin
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
+
+## 更新日志
+
+- v0.0.10
+    - 更新域名证书获取方式为socket，替换curl，移除curl依赖，兼容windows

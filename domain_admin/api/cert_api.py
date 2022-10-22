@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request
 
-from domain_admin.utils import cert_util
+from domain_admin.utils import cert_util_v2
 
 
 def get_cert_information():
@@ -15,7 +15,7 @@ def get_cert_information():
         domain = request.json['domain']
 
     try:
-        data = cert_util.get_cert_info(domain)
+        data = cert_util_v2.get_cert_info(domain)
     except Exception as e:
         data = None
 
