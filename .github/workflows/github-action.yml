@@ -7,7 +7,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: benjlevesque/short-sha@v2.0
+      - name: generate-short-sha
+        uses: benjlevesque/short-sha@v2.0
         id: short-sha
         with:
           length: 6
