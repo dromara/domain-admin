@@ -38,6 +38,8 @@ $ gunicorn 'domain_admin.main:app'
 
 > `强烈建议`：登录系统后修改默认密码
 
+感谢[@miss85246](https://github.com/miss85246) 提供Docker支持
+
 ## 项目简介
 
 - https://gitee.com/mouday/domain-admin
