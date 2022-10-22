@@ -40,11 +40,16 @@ $ gunicorn 'domain_admin.main:app'
 
 感谢[@miss85246](https://github.com/miss85246) 提供Docker支持
 
+```bash
+$ docker run mouday/domain-admin
+```
+
 ## 项目简介
 
 - https://gitee.com/mouday/domain-admin
 - https://github.com/mouday/domain-admin
-- https://pypi.org/project/domain-admin/
+- https://pypi.org/project/domain-admin
+- https://hub.docker.com/r/mouday/domain-admin
 
 项目截图
 
