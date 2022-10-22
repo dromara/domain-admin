@@ -1,5 +1,5 @@
 # 伪目标
-.PHONY: dev build clean upload publish
+.PHONY: dev build clean upload publish docker
 
 # 运行开发环境
 dev:
@@ -8,6 +8,10 @@ dev:
 # 打包
 build:
 	python setup.py sdist bdist_wheel
+
+# 制作 docker 镜像
+docker:
+	docker build -t domain-admin:latest -f docker/Dockerfile .
 
 # 清空打包产物
 clean:
@@ -22,5 +26,7 @@ upload:
 publish:
 	make clean
 	make build
+	make docker
 	make upload
 	make clean
+

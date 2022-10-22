@@ -1,0 +1,18 @@
+name: Auto Build Docker Image
+run-name: auto-builder
+on: [ push ]
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          push: true
+          tags: ${{ github.repository }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ github.repository }}:latest
+          cache-to: type=inline
