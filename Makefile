@@ -1,9 +1,13 @@
 # 伪目标
-.PHONY: dev build clean upload publish docker
+.PHONY: dev pro build clean upload publish docker
 
 # 运行开发环境
 dev:
 	gunicorn --bind '127.0.0.1:5000' --reload 'domain_admin.main:app'
+
+# 运行生产环境
+pro:
+	gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
 
 # 打包
 build:
