@@ -108,6 +108,10 @@ $ docker run mouday/domain-admin
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/user-edit.png)
 
+3、批量导入域名
+
+导入文本示例: [/doc/domain.txt](/doc/domain.txt)
+
 ## 二次开发
 
 接口文档：[/doc/index.md](/doc/index.md)
