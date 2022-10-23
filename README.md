@@ -167,7 +167,7 @@ git push -u gitee master
 
 ## 问题
 
-1、暂不支持多进程方式启动
+### 1、暂不支持多进程方式启动
 
 使用 master + 多worker 方式启动应用，会启动多个定时任务Scheduler，导致多次执行任务
 
@@ -177,7 +177,7 @@ git push -u gitee master
 
 将定时器独立出来，单独一个进程控制，行成 scheduler + Flask（master + 多worker）
 
-2、为什么外网访问不到？
+### 2、为什么外网访问不到？
 
 ```bash
 # 启动运行
@@ -189,6 +189,18 @@ $ gunicorn --bind '0.0.0.0:8000' domain_admin.main:app'
 ```
 
 更多设置，可参考[gunicorn](https://docs.gunicorn.org/en/stable/index.html)
+
+### 3、Windows平台启动报错,找不到模块 `fcntl`
+
+gunicorn不支持Windows，可以使用[waitress](https://github.com/Pylons/waitress) 替换
+
+```bash
+$ pip install waitress
+
+$ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
+```
+
+参考：[https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl](https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl)
 
 ## 问题反馈交流
 
