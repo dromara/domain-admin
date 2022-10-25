@@ -43,6 +43,7 @@ X-Token: <token>
         "create_time": "2022-09-24 22:29:02",
         "domain": "www.baidu.com",
         "expire_days": 315,
+        "real_time_expire_days": 314,
         "expire_time": "2023-08-06 13:16:01",
         "group_id": 2,
         "id": 3,

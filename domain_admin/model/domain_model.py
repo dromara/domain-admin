@@ -94,10 +94,15 @@ class DomainModel(BaseModel):
     #     if self.start_time and self.expire_time:
     #         return (self.expire_time - self.start_time).days
 
-    # @property
-    # def expire_days(self):
-    #     if self.expire_time:
-    #         return (self.expire_time - datetime.now()).days
+    @property
+    def real_time_expire_days(self):
+        """
+        实时过期剩余天数
+        expire_days 是更新数据时所计算的时间，有滞后性
+        :return:
+        """
+        if self.expire_time:
+            return (self.expire_time - datetime.now()).days
 
     @property
     def detail(self):

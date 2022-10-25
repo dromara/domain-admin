@@ -27,6 +27,7 @@
 | notify_status | bool  | 域名到期后是否通知
 | total_days | int  | 域名有效期总天数
 | expire_days | int | 域名过期剩余天数
+| real_time_expire_days | int | 域名过期剩余天数（实时计算）
 | detail | object  | 域名信息，同 [getCertInformation.md](/doc/cert/getCertInformation.md)
 | create_time | datetime  | 域名添加时间
 | update_time | datetime  | 域名更新时间
@@ -77,6 +78,7 @@ X-Token: <token>
     },
     "domain": "www.baidu.com",
     "expire_days": 315,
+    "real_time_expire_days": 314,
     "expire_time": "2023-08-06 13:16:01",
     "group": {
       "create_time": "2022-09-24 21:52:42",

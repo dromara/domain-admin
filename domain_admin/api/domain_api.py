@@ -114,6 +114,7 @@ def get_domain_list():
             'expire_days',
             'create_time_label',
             'check_time_label',
+            'real_time_expire_days',
             'domain_url',
         ]
     ), lst))
@@ -143,6 +144,7 @@ def get_domain_by_id():
         extra_attrs=[
             'total_days',
             'expire_days',
+            'real_time_expire_days',
             'detail',
             'group',
             'domain_url',

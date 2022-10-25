@@ -201,7 +201,7 @@ $ gunicorn --bind '0.0.0.0:8000' domain_admin.main:app'
 
 ### 3、Windows平台启动报错,找不到模块 `fcntl`
 
-gunicorn不支持Windows，可以使用[waitress](https://github.com/Pylons/waitress) 替换
+gunicorn不支持Windows，可以使用[waitress](https://github.com/Pylons/waitress) 替换，感谢[@cbr252522489](https://github.com/cbr252522489)提供的解决方案
 
 ```bash
 $ pip install waitress
@@ -218,6 +218,10 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
 
 ## 更新日志
+
+- v0.0.11
+    - 优化前端页面显示，增加页面加载进度条 
+    - 修复有效期天数显示不对的问题
 
 - v0.0.10
     - 更新域名证书获取方式为socket，替换curl，移除curl依赖，兼容windows
