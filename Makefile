@@ -30,7 +30,6 @@ upload:
 publish:
 	make clean
 	make build
-	make docker
 	make upload
 	make clean
 
