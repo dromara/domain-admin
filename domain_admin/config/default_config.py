@@ -33,15 +33,16 @@ SQLITE_DATABASE_PATH = os.path.join(DATABASE_DIR, 'database.db')
 # 日志文件夹
 LOG_DIR = os.path.join(RUNTIME_DIR, 'logs')
 
-if not os.path.exists(TEMP_DIR):
-    os.mkdir(TEMP_DIR)
+# 创建文件夹
+dir_list = [
+    TEMP_DIR,
+    DATABASE_DIR,
+    LOG_DIR
+]
 
-if not os.path.exists(DATABASE_DIR):
-    os.mkdir(DATABASE_DIR)
-
-if not os.path.exists(LOG_DIR):
-    os.mkdir(LOG_DIR)
-
+for dirname in dir_list:
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
 
 # 管理员账号，用户名
 ADMIN_USERNAME = 'admin'
