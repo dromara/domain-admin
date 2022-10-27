@@ -12,6 +12,8 @@
 | before_expire_days | int | 是 | 过期前多少天提醒
 | email_list | string  | 是 | 邮件列表
 
+> 备注：该接口仅更新当前登录用户的信息，token中解析用户id
+
 4、返回参数
 
 无
@@ -19,7 +21,7 @@
 5、请求示例
 
 ```
-POST {{baseUrl}}/api/updateDomainById
+POST {{baseUrl}}/api/updateUserInfo
 Content-Type: application/json
 X-Token: <token>
 
