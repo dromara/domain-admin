@@ -14,8 +14,8 @@ class NotifyModel(BaseModel):
     # 用户id
     user_id = IntegerField(null=False)
 
-    # 键
-    type_id = IntegerField(null=False)
+    # 分类
+    type_id = IntegerField(null=False, default=0)
 
     # 值
     value_raw = TextField(default=None, null=True)

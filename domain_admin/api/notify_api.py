@@ -10,11 +10,12 @@ from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.notify_model import NotifyModel
+from domain_admin.service import notify_service
 
 
 def get_notify_of_user():
     """
-    获取ip地址的信息
+    获取用户通知配置
     :return:
     """
     current_user_id = g.user_id
@@ -38,7 +39,7 @@ def get_notify_of_user():
 
 def update_notify_of_user():
     """
-    获取ip地址的信息
+    更新用户通知配置
     :return:
     """
     current_user_id = g.user_id
@@ -65,3 +66,12 @@ def update_notify_of_user():
             type_id=type_id,
             value_raw=value_raw
         )
+
+def test_webhook_notify_of_user():
+    """
+    测试webhook调用
+    :return:
+    """
+    current_user_id = g.user_id
+
+    return notify_service.notify_webhook_of_user(current_user_id)

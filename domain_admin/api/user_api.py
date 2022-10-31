@@ -38,12 +38,12 @@ def update_user_info():
 
     avatar_url = request.json.get('avatar_url')
     before_expire_days = request.json.get('before_expire_days')
-    email_list = request.json.get('email_list')
+    # email_list = request.json.get('email_list')
 
     UserModel.update({
         'avatar_url': avatar_url,
         'before_expire_days': before_expire_days,
-        'email_list_raw': json.dumps(email_list, ensure_ascii=False),
+        # 'email_list_raw': json.dumps(email_list, ensure_ascii=False),
         'update_time': datetime_util.get_datetime()
     }).where(
         UserModel.id == current_user_id
