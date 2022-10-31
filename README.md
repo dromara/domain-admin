@@ -135,6 +135,10 @@ make dev
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-webhook.png)
 
+推送到微信的webhook第三方工具
+
+- [微信推送消息通知接口汇总](https://blog.csdn.net/mouday/article/details/124135877)
+
 ## 二次开发
 
 接口文档：[/doc/index.md](/doc/index.md)
@@ -224,11 +228,11 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 ## 更新日志
 
 - v0.0.12
-  - 新增webhook通知方式
+  - 新增webhook通知方式，感谢[@star7th](https://github.com/mouday/domain-admin/issues/3) 提出的建议
 
 - v0.0.11
     - 优化前端页面显示，增加页面加载进度条 
     - 修复有效期天数显示不对的问题
 
 - v0.0.10
-    - 更新域名证书获取方式为socket，替换curl，移除curl依赖，兼容windows
+    - 更新域名证书获取方式为socket，替换curl，移除curl依赖，兼容windows，感谢[@cbr252522489](https://github.com/mouday/domain-admin/issues/1) 提出的反馈
