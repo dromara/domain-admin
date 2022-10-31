@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
-from datetime import datetime
-from functools import cmp_to_key
 import traceback
+from datetime import datetime
+
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.log import logger
@@ -11,6 +11,7 @@ from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
+from domain_admin.service import notify_service
 from domain_admin.service import system_service
 from domain_admin.utils import datetime_util, cert_util_v2
 from domain_admin.utils import domain_util
@@ -164,7 +165,8 @@ def check_domain_cert(user_id):
             break
 
     if has_expired_domain:
-        send_domain_list_email(user_id)
+        notify_user(user_id)
+        # send_domain_list_email(user_id)
 
 
 def update_and_check_all_domain_cert():
@@ -226,18 +228,19 @@ def send_domain_list_email(user_id):
     :param user_id:
     :return:
     """
-    user_row = UserModel.get_by_id(user_id)
 
-    if not user_row.email_list:
+    email_list = notify_service.get_notify_email_list_of_user(user_id)
+
+    if not email_list:
         raise AppException('收件邮箱未设置')
 
-    lst = get_domain_info_list(user_row.id)
+    lst = get_domain_info_list(user_id)
 
     content = render_service.render_template('domain-cert-email.html', {'list': lst})
 
     email_service.send_email(
         content=content,
-        to_addresses=user_row.email_list,
+        to_addresses=email_list,
         content_type='html'
     )
 
@@ -289,5 +292,18 @@ def export_domain_to_file(user_id):
     return temp_filename
 
 
-if __name__ == '__main__':
-    print(get_domain_info_list())
+def notify_user(user_id):
+    """
+    尝试通知用户
+    :param user_id:
+    :return:
+    """
+    try:
+        send_domain_list_email(user_id)
+    except:
+        pass
+
+    try:
+        notify_service.notify_webhook_of_user(user_id)
+    except Exception as e:
+        logger.error(traceback.format_exc())

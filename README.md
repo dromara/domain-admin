@@ -123,13 +123,17 @@ make dev
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
 
-2、设置接收邮件的邮箱
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/user-edit.png)
-
-3、批量导入域名
+2、批量导入域名
 
 导入文本示例: [/doc/domain.txt](/doc/domain.txt)
+
+3、设置邮件通知
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png)
+
+4、设置webhook通知
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-webhook.png)
 
 ## 二次开发
 
@@ -218,6 +222,9 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
 
 ## 更新日志
+
+- v0.0.12
+  - 新增webhook通知方式
 
 - v0.0.11
     - 优化前端页面显示，增加页面加载进度条 

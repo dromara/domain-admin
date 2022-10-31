@@ -62,8 +62,9 @@ routes = {
     # 获取ip信息
     '/api/getIpInfo': ip_api.get_ip_info,
 
-    # 通知方式, 暂不使用
+    # 通知方式
     '/api/getNotifyOfUser': notify_api.get_notify_of_user,
     '/api/updateNotifyOfUser': notify_api.update_notify_of_user,
+    '/api/testWebhookNotifyOfUser': notify_api.test_webhook_notify_of_user,
 
 }
