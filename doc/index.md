@@ -54,7 +54,6 @@ X-TOKEN: <token>
 | /api/getUserInfo | 获取当前用户信息 | [getUserInfo.md](/doc/user/getUserInfo.md) | 
 | /api/updateUserInfo | 更新当前用户信息 | [updateUserInfo.md](/doc/user/updateUserInfo.md) | 
 | /api/updateUserPassword | 更新用户密码 | [updateUserPassword.md](/doc/user/updateUserPassword.md) | 
- 
 
 调度日志
 
@@ -85,3 +84,10 @@ X-TOKEN: <token>
 | - | - | -| 
 | /api/getCertInformation | 获取域名证书信息 | [getCertInformation.md](/doc/cert/getCertInformation.md) |
  
+通知配置管理 v0.0.12
+
+| 接口 | 说明 | 文档 | 
+| - | - | -|
+| /api/getNotifyOfUser | 获取用户通知配置 | [getNotifyOfUser.md](/doc/notify/getNotifyOfUser.md) |
+| /api/updateNotifyOfUser | 更新用户通知配置 | [updateNotifyOfUser.md](/doc/notify/updateNotifyOfUser.md) |
+| /api/testWebhookNotifyOfUser | 测试webhook调用 | [testWebhookNotifyOfUser.md](/doc/notify/testWebhookNotifyOfUser.md) |

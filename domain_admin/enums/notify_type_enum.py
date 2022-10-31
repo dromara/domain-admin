@@ -7,11 +7,14 @@
 
 
 class NotifyTypeEnum(object):
+    """
+    通知方式枚举值
+    """
     # 未知
     Unknown = 0
 
     # 邮件
     Email = 1
 
-    # webkook
-    Webkook = 2
+    # webHook
+    WebHook = 2

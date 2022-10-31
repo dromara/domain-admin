@@ -57,7 +57,7 @@ def get_notify_webhook_row_of_user(user_id):
     :param user_id:
     :return:
     """
-    return get_notify_row_value(user_id, NotifyTypeEnum.Webkook)
+    return get_notify_row_value(user_id, NotifyTypeEnum.WebHook)
 
 
 def notify_webhook_of_user(user_id):
