@@ -225,7 +225,17 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
 
+开发计划
+
+- 支持企业微信通知
+- 支持域名分组
+- 增加理员权限，权限分级：root 管理员 普通用户
+
 ## 更新日志
+
+- v0.0.13
+  - 支持非443端口，感谢[@star7th](https://github.com/mouday/domain-admin/issues/7) 提出的建议
+  - 修复前端网络错误没有错误弹窗提示的问题
 
 - v0.0.12
   - 新增webhook通知方式，感谢[@star7th](https://github.com/mouday/domain-admin/issues/3) 提出的建议

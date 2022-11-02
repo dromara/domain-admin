@@ -28,8 +28,34 @@ else:
 
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
+# SSL默认端口
+SSL_DEFAULT_PORT = 443
+
 socket.setdefaulttimeout(5)
 
+
+def parse_domain_with_port(domain_with_port):
+    """
+    解析域名，允许携带端口号
+    :param domain_with_port: str
+        例如：
+        www.domain.com
+        www.domain.com:8888
+    :return: dict
+    """
+    if ':' in domain_with_port:
+        domain, port = domain_with_port.split(':')
+    else:
+        domain = domain_with_port
+        port = SSL_DEFAULT_PORT
+
+    if not isinstance(port, int):
+        port = int(port)
+
+    return {
+        'domain': domain,
+        'port': port,
+    }
 
 def get_domain_ip(domain):
     """
@@ -40,35 +66,40 @@ def get_domain_ip(domain):
     return socket.gethostbyname(domain)
 
 
-def get_domain_cert(domain):
+def get_domain_cert(domain, port=SSL_DEFAULT_PORT):
     """
     获取证书信息
     :param domain: str
+    :param port: int
     :return: dict
     """
     cxt = ssl.create_default_context()
     wrap_socket = cxt.wrap_socket(socket.socket(), server_hostname=domain)
 
-    wrap_socket.connect((domain, 443))
+    wrap_socket.connect((domain, port))
     cert = wrap_socket.getpeercert()
     wrap_socket.close()
 
     return cert
 
 
-def get_cert_info(domain):
+def get_cert_info(domain_with_port):
     """
     获取证书信息
-    :param domain: str
+    :param domain_with_port: str
     :return: dict
     """
-    cert = get_domain_cert(domain)
+    domain_info = parse_domain_with_port(domain_with_port)
+    domain = domain_info.get('domain')
+    port = domain_info.get('port', SSL_DEFAULT_PORT)
+
+    cert = get_domain_cert(domain, port)
 
     issuer = _tuple_to_dict(cert['issuer'])
     subject = _tuple_to_dict(cert['subject'])
 
     return {
-        'domain': domain,
+        'domain': domain_with_port,
         'ip': get_domain_ip(domain),
         'subject': _name_convert(subject),
         'issuer': _name_convert(issuer),
@@ -124,4 +155,4 @@ def _parse_time(time_str):
 
 
 if __name__ == "__main__":
-    print(json.dumps(get_cert_info("www.baidu.com"), ensure_ascii=False, indent=2))
+    print(json.dumps(get_cert_info("dfyun-spare1.showdoc.com.cn:8888"), ensure_ascii=False, indent=2))

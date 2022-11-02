@@ -10,6 +10,7 @@ from domain_admin.model.base_model import db
 from domain_admin.model.database import init_database
 from domain_admin.router import api_map, permission
 from domain_admin.service import scheduler_service
+from domain_admin.service import version_service
 from domain_admin.utils.flask_ext import handler
 from domain_admin.utils.flask_ext import register
 from domain_admin.utils.flask_ext.flask_app import FlaskApp
@@ -68,6 +69,9 @@ def init_app(flask_app):
 
     # 初始化数据库
     init_database()
+
+    # 版本自动升级
+    version_service.update_version()
 
     # 启动定时器
     scheduler_service.init_scheduler()
