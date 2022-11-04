@@ -74,7 +74,7 @@ def init_app(flask_app):
     # fixed: peewee.OperationalError: no such table: tb_version
     # ref: https://github.com/coleifer/peewee/issues/2095
     # 初始化完数据库和表之后等待写入完成
-    time.sleep(0.01)
+    # time.sleep(0.01)
 
     # 版本自动升级
     version_service.update_version()
