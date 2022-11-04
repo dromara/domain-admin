@@ -234,7 +234,7 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 
 ## 更新日志
 
-- v0.0.14
+- v0.0.14 v0.0.15
   - 修复bug: peewee.OperationalError: no such table: tb_version，感谢[@star7th](https://github.com/mouday/domain-admin/issues/7#issuecomment-1300634496) 提出的反馈
 
 - v0.0.13
