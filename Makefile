@@ -1,5 +1,5 @@
 # 伪目标
-.PHONY: dev pro build clean upload publish docker
+.PHONY: dev pro build clean upload publish
 
 # 运行开发环境
 dev:
@@ -14,8 +14,20 @@ build:
 	python setup.py sdist bdist_wheel
 
 # 制作 docker 镜像
-docker:
-	docker build -t domain-admin:latest -f docker/Dockerfile .
+.PHONY: docker-build
+docker-build:
+	docker build -t domain-admin:latest -f Dockerfile .
+
+# 构建并运行 docker 镜像
+.PHONY: docker-run
+docker-run:
+	docker run -p 8000:8000 domain-admin:latest
+
+# 构建并运行 docker 镜像
+.PHONY: docker-build-run
+docker-build-run:
+	make docker-build
+	make docker-run
 
 # 清空打包产物
 clean:

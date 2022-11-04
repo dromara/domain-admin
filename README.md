@@ -234,6 +234,9 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 
 ## 更新日志
 
+- v0.0.14
+  - 修复bug: peewee.OperationalError: no such table: tb_version，感谢[@star7th](https://github.com/mouday/domain-admin/issues/7#issuecomment-1300634496) 提出的反馈
+
 - v0.0.13
   - 支持非443端口，感谢[@star7th](https://github.com/mouday/domain-admin/issues/7) 提出的建议
   - 修复前端网络错误没有错误弹窗提示的问题
