@@ -1,7 +1,9 @@
 graft domain_admin
 include README.md
-include requirements.txt
-prune test
+include requirements/production.txt
+prune tests
+prune doc
+prune image
 global-exclude .DS_Store
 global-exclude *.pyc
 global-exclude *.log
@@ -11,3 +13,7 @@ global-exclude *.db-wal
 global-exclude *.sqlite
 global-exclude .env
 global-exclude .gitignore
+global-exclude .dockerignore
+global-exclude .travis.yml
+global-exclude Dockerfile
+global-exclude Makefile
