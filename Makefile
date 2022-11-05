@@ -31,6 +31,7 @@ docker-build-run:
 
 # 清空打包产物
 clean:
+	rm -rf temp logs database
 	rm -rf dist build *.egg-info
 
 # 上传打包产物到 pypi
