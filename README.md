@@ -5,6 +5,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/domain-admin?label=pypi%20downloads)
 ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/mouday/domain-admin?label=docker%20version&sort=semver)
 ![Docker Pulls](https://img.shields.io/docker/pulls/mouday/domain-admin)
+![travis-ci](https://api.travis-ci.com/mouday/domain-admin.svg?branch=master)
 ![PyPI - License](https://img.shields.io/pypi/l/domain-admin)
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/logo.png)
