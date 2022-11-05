@@ -58,7 +58,7 @@ def update_domain_cert_info(row):
     info = {}
 
     try:
-        info = cert_util_v2.get_cert_info(row.domain)
+        info = cert_util.get_cert_info(row.domain)
         connect_status = True
     except Exception:
         pass

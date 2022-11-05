@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from collections import Iterator
+from typing import Iterator
 
 from flask import Flask
 from peewee import ModelSelect, Model

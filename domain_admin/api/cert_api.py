@@ -15,7 +15,7 @@ def get_cert_information():
         domain = request.json['domain']
 
     try:
-        data = cert_util_v2.get_cert_info(domain)
+        data = cert_util.get_cert_info(domain)
     except Exception as e:
         data = None
 

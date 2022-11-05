@@ -8,7 +8,7 @@ def parse_domain(domain):
     :param domain:
     :return:
     """
-    ret = re.match('.*?//([a-zA-Z\.0-9]+)/?.*?', domain)
+    ret = re.match('.*?//([a-zA-Z\\.0-9]+)/?.*?', domain)
     if ret:
         return ret.groups()[0]
     else:

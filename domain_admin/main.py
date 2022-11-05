@@ -42,6 +42,10 @@ def teardown_request(exc):
 
 @app.get('/')
 def index():
+    """
+    静态首页
+    :return:
+    """
     return send_file('public/index.html')
 
 
