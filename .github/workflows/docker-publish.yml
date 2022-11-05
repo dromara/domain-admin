@@ -9,7 +9,8 @@ name: Docker Publish
 on:
   release:
     types: [published]
-
+  push:
+    branch: ['master']
 jobs:
   docker:
     runs-on: ubuntu-latest
