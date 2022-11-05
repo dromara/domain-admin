@@ -61,7 +61,7 @@ with io.open(version_file, 'rb') as f:
 with io.open("README.md", 'r', encoding='utf-8') as f:
     long_description = f.read()
 
-with io.open("requirements.txt", 'r') as f:
+with io.open("requirements/production.txt", 'r') as f:
     install_requires = f.read().split(os.sep)
 
 setup(

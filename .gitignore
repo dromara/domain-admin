@@ -15,4 +15,5 @@ logs/
 .deta
 temp
 database
+.pytest_cache
 

@@ -5,3 +5,4 @@ database
 doc
 http
 image
+.pytest_cache
