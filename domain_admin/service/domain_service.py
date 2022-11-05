@@ -13,7 +13,7 @@ from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
-from domain_admin.utils import datetime_util, cert_util_v2
+from domain_admin.utils import datetime_util, cert_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request
 
-from domain_admin.utils import cert_util_v2
+from domain_admin.utils import cert_util
 
 
 def get_cert_information():

@@ -1,0 +1,3 @@
+-r production.txt
+
+pytest>=7.2.0

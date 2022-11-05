@@ -46,3 +46,7 @@ publish:
 	make upload
 	make clean
 
+# 运行所有测试
+.PHONY: test
+test:
+	pytest
