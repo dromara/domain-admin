@@ -1,31 +1,24 @@
 language: python
 
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
   - "3.7"
   - "3.8"
   - "3.9"
-  - "3.10"
-  - "3.11"
 
 jobs:
   include:
     - name: "Python 3.8.0 on Xenial Linux"
       python: 3.8
-    - name: "Python 3.6.10 on FreeBSD"
+    - name: "Python 3.8.0 on FreeBSD"
       os: freebsd
       python: 3.8
-    - name: "Python 3.7.4 on macOS"
+    - name: "Python 3.8.0 on macOS"
       os: osx
       osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
       python: 3.8
-      language: shell       # 'language: python' is an error on Travis CI macOS
     - name: "Python 3.8.0 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       python: 3.8
-      language: shell       # 'language: python' is an error on Travis CI Windows
 
 # command to install dependencies
 install:
