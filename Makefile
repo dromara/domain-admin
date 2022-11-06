@@ -16,12 +16,12 @@ build:
 # 制作 docker 镜像
 .PHONY: docker-build
 docker-build:
-	docker build -t domain-admin:latest -f Dockerfile .
+	docker build -t mouday/domain-admin:latest -f Dockerfile .
 
 # 构建并运行 docker 镜像
 .PHONY: docker-run
 docker-run:
-	docker run -p 8000:8000 domain-admin:latest
+	docker run -p 8000:8000 mouday/domain-admin:latest
 
 # 构建并运行 docker 镜像
 .PHONY: docker-build-run
