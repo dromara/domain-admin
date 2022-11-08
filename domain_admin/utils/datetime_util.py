@@ -95,6 +95,9 @@ def time_for_human(time_value):
     1天前-7天前
     2022-10-09 13:33
     """
+    if not time_value:
+        return
+
     second = 1
     minute = second * 60
     hour = minute * 60

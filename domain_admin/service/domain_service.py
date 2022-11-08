@@ -61,7 +61,7 @@ def update_domain_cert_info(row):
         info = cert_util.get_cert_info(row.domain)
         connect_status = True
     except Exception:
-        pass
+        logger.error(traceback.format_exc())
 
     start_date = info.get('start_date')
     expire_date = info.get('expire_date')

@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.7.15-alpine3.16
 
 ADD . /app
 

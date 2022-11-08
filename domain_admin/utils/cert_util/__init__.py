@@ -4,9 +4,11 @@
 @Date    : 2022-11-08
 @Author  : Peng Shiyu
 """
+import traceback
 
 from .cert_socket import get_cert_info as get_cert_info_by_socket
 from .cert_openssl import get_cert_info as get_cert_info_by_openssl
+from domain_admin.log import logger
 
 
 def get_cert_info(domain_with_port):
@@ -20,7 +22,7 @@ def get_cert_info(domain_with_port):
     try:
         cert_info = get_cert_info_by_socket(domain_with_port)
     except:
-        pass
+        logger.error(traceback.format_exc())
 
     if not cert_info:
         cert_info = get_cert_info_by_openssl(domain_with_port)
