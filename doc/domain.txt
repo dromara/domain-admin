@@ -7,3 +7,11 @@ www.toutiao.com
 www.taobao.com
 www.xiaomi.com
 www.apple.com
+expired.badssl.com
+hsts.badssl.com
+self-signed.badssl.com
+sha256.badssl.com
+tls-v1-2.badssl.com:1012
+untrusted-root.badssl.com
+wrong.host.badssl.com
+www.mysite.com

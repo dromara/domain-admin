@@ -233,6 +233,8 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 - 支持域名分组
 - 增加理员权限，权限分级：root 管理员 普通用户
 
+证书测试：https://badssl.com/
+
 ## 更新日志
 
 - v0.0.16
