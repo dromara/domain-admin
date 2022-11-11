@@ -7,7 +7,7 @@
 
 import ssl
 import OpenSSL
-
+import socket
 from domain_admin.utils.cert_util import cert_common, cert_consts
 
 
@@ -20,6 +20,9 @@ def get_cert_info(domain_with_port):
     domain_info = cert_common.parse_domain_with_port(domain_with_port)
     domain = domain_info.get('domain')
     port = domain_info.get('port', cert_consts.SSL_DEFAULT_PORT)
+
+    # 设置默认超时时间，以防查询时间过程
+    socket.setdefaulttimeout(cert_consts.DEFAULT_SOCKET_TIMEOUT)
 
     server_cert = ssl.get_server_certificate((domain, port))
     cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, server_cert)
