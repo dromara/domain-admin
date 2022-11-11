@@ -221,6 +221,41 @@ $ waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 
 参考：[https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl](https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl)
 
+### 4、添加域名数据后系统异常
+
+可按如下步骤删除异常数据
+
+docker 启动方式
+
+```bash
+# 查看容器的运行信息
+$ docker ps
+
+# 进入容器
+$ docker exec -it <容器id> /bin/sh
+
+# 安装依赖
+$ apk add sqlite
+
+# 进入sqlite3
+$ sqlite3
+
+sqlite> .open /app/database/database.db
+
+sqlite> .tables
+log_scheduler  tb_group       tb_system      tb_version
+tb_domain      tb_notify      tb_user
+
+# 查看数据
+sqlite> select * from tb_domain;
+
+# 删除数据
+sqlite> DELETE FROM tb_domain WHERE id = 1;
+
+# 退出
+sqlite> .quit
+```
+
 ## 问题反馈交流
 
 邀请码：domain-admin
