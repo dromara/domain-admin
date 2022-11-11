@@ -256,6 +256,10 @@ sqlite> DELETE FROM tb_domain WHERE id = 1;
 sqlite> .quit
 ```
 
+### 5、邮件发送失败
+
+可尝试更换端口25或465
+
 ## 问题反馈交流
 
 邀请码：domain-admin
@@ -272,7 +276,11 @@ sqlite> .quit
 
 ## 更新日志
 
-- v0.0.16
+- 0.0.18
+  - 修复部分公司邮件校验失败的问题
+  - 修复添加异常域名后系统奔溃的问题
+
+- v0.0.16 v0.017
   - 支持自签名证书，感谢[@star7th](https://github.com/mouday/domain-admin/issues/7#issuecomment-1304415797) 提出的建议
 
 - v0.0.14 v0.0.15
