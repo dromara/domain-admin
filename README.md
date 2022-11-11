@@ -280,7 +280,10 @@ sqlite> .quit
   - 修复部分公司邮件校验失败的问题
   - 修复添加异常域名后系统奔溃的问题
 
-- v0.0.16 v0.017
+- v0.017
+  - 通过openssl支持自签名证书
+
+- v0.0.16 
   - 支持自签名证书，感谢[@star7th](https://github.com/mouday/domain-admin/issues/7#issuecomment-1304415797) 提出的建议
 
 - v0.0.14 v0.0.15
