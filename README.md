@@ -48,6 +48,17 @@ $ gunicorn 'domain_admin.main:app'
 
 ```bash
 $ docker run -p 8000:8000 mouday/domain-admin
+
+# 后台运行
+$ docker run -d -p 8000:8000 mouday/domain-admin
+
+# 本地文件夹和容器文件夹映射
+$ docker run \
+-v $(pwd)/database:/app/database \
+-v $(pwd)/logs:/app/logs \
+-p 8000:8000 \
+--name domain-admin \
+mouday/domain-admin:latest
 ```
 
 ### 方式三：克隆源码运行
