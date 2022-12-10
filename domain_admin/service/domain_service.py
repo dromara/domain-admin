@@ -4,8 +4,9 @@ import traceback
 from datetime import datetime
 
 from playhouse.shortcuts import model_to_dict
-
+from peewee import chunked
 from domain_admin.log import logger
+from domain_admin.model.base_model import db
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
@@ -16,6 +17,7 @@ from domain_admin.service import system_service
 from domain_admin.utils import datetime_util, cert_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
+from concurrent.futures import ThreadPoolExecutor
 
 
 def add_domain(data):
@@ -50,6 +52,7 @@ def update_domain_cert_info(row):
     :param row:
     :return:
     """
+    logger.info('update_domain_cert_info: %s', row.domain)
 
     connect_status = False
     expire_days = 0
@@ -260,24 +263,39 @@ def check_permission_and_get_row(domain_id, user_id):
 
 
 def add_domain_from_file(filename, user_id):
+    logger.info('add_domain_from_file')
+
     lst = domain_util.parse_domain_from_file(filename)
+    lst = [
+        {
+            'domain': domain,
+            'user_id': user_id,
+        } for domain in lst
+    ]
 
-    count = 0
-    for domain in lst:
-        try:
-            row = add_domain({
-                'domain': domain,
-                'user_id': user_id,
-            })
+    for batch in chunked(lst, 500):
+        DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
-            update_domain_cert_info(row)
+    # count = 0
+    # for domain in lst:
+    #     try:
+    #         row = add_domain({
+    #             'domain': domain,
+    #             'user_id': user_id,
+    #         })
+    #
+    #         # 导入后统一查询，避免太过耗时
+    #         # update_domain_cert_info(row)
+    #
+    #         count += 1
+    #     except Exception as e:
+    #         # traceback.print_exc()
+    #         logger.error(traceback.format_exc())
 
-            count += 1
-        except Exception as e:
-            # traceback.print_exc()
-            logger.error(traceback.format_exc())
+    # 查询
+    update_all_domain_cert_info_of_user(user_id=user_id)
 
-    return count
+    # return count
 
 
 def export_domain_to_file(user_id):

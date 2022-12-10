@@ -7,6 +7,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.service import domain_service
 from domain_admin.service import file_service
+from domain_admin.service import async_task_service
 from domain_admin.utils import datetime_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.peewee_ext import model_util
@@ -218,11 +219,14 @@ def import_domain_from_file():
 
     filename = file_service.save_temp_file(update_file)
 
-    count = domain_service.add_domain_from_file(filename, current_user_id)
+    # 异步导入
+    async_task_service.submit_task(fn=domain_service.add_domain_from_file, filename=filename, user_id=current_user_id)
 
-    return {
-        'count': count
-    }
+    # count = domain_service.add_domain_from_file(filename, current_user_id)
+
+    # return {
+    #     'count': count
+    # }
 
 
 def get_all_domain_list_of_user():

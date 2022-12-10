@@ -8,7 +8,7 @@ def parse_domain(domain):
     :param domain:
     :return:
     """
-    ret = re.match('.*?//([a-zA-Z\\.0-9]+)/?.*?', domain)
+    ret = re.match('.*?//([a-zA-Z\\.0-9_:-]+)/?.*?', domain)
     if ret:
         return ret.groups()[0]
     else:
@@ -16,10 +16,7 @@ def parse_domain(domain):
 
 
 def parse_domain_from_file(filename):
-    lst = []
-
+    # lst = []
     with open(filename, 'r') as f:
         for line in f.readlines():
-            lst.append(parse_domain(line.strip()))
-
-    return lst
+            yield parse_domain(line.strip())

@@ -27,7 +27,10 @@ app = FlaskApp(
 def before_request():
     """跨域请求会出现options，直接返回即可"""
     if request.method == 'OPTIONS':
-        return make_response()
+        response = make_response()
+        # 响应的有效时间，单位是【秒】
+        response.headers.set('Access-Control-Max-Age', 60 * 30)
+        return response
 
     permission.check_permission()
 

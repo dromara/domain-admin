@@ -282,12 +282,30 @@ sqlite> .quit
 - 支持企业微信通知
 - 支持域名分组
 - 增加理员权限，权限分级：root 管理员 普通用户
-- 解决批量导入超时问题，支持1000条数据导入 
+- `已完成` 解决批量导入超时问题，支持1000条数据导入 
 
-证书测试：https://badssl.com/
+证书测试：[https://badssl.com/](https://badssl.com/)
+
+获取证书列表
+
+```js
+JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
+```
+
+批量域名列表 (746314个)
+ 
+- [alexa-top-1m.csv.zip](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)
+- [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
 
+- 1.0.0
+  - 修复前端批量导入域名按钮只能导入一次的问题
+  - 增加options请求缓存时间，减少请求
+  - 增加网站连接状态默认值为：未知（黄色）
+  - 修改批量导入为异步导入执行，导入测试文件大小11.8M
+  - 修复导入域名解析错误
+  
 - 0.0.18
   - 修复部分公司邮件校验失败的问题
   - 修复添加异常域名后系统奔溃的问题

@@ -35,7 +35,7 @@ class DomainModel(BaseModel):
     expire_time = DateTimeField(default=None, null=True)
 
     # 连接状态
-    connect_status = BooleanField(default=False, null=True)
+    connect_status = BooleanField(default=None, null=True)
 
     # 过期剩余天数，仅用于排序
     expire_days = IntegerField(default=0, null=False)
