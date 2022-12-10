@@ -4,10 +4,15 @@
 @Date    : 2022-10-22
 @Author  : Peng Shiyu
 """
+import os
 
 from domain_admin.utils import domain_util
 
 
 def test_parse_domain():
-    for line in domain_util.parse_domain_from_file('../../doc/domain.txt'):
-        print(line)
+    filename = '../../doc/domain.txt'
+
+    if os.path.exists(filename):
+        lst = domain_util.parse_domain_from_file('../../doc/domain.txt')
+        for line in lst:
+            print(line)
