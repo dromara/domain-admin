@@ -168,7 +168,9 @@ def update_all_domain_cert_info_of_user():
     :return:
     """
     current_user_id = g.user_id
-    domain_service.update_all_domain_cert_info_of_user(current_user_id)
+    # domain_service.update_all_domain_cert_info_of_user(current_user_id)
+    # 异步更新
+    async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
 
 
 def update_domain_cert_info_by_id():

@@ -299,6 +299,9 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 ## 更新日志
 
+- 1.0.1
+  - 修改批量更新方式为异步更新，避免接口超时
+
 - 1.0.0
   - 修复前端批量导入域名按钮只能导入一次的问题
   - 增加options请求缓存时间，减少请求
