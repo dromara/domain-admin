@@ -31,6 +31,10 @@ class EmailServer(object):
         if self.mail_port == 465:
             # ssl 465端口
             server = smtplib.SMTP_SSL(self.mail_host)
+        elif self.mail_port == 587:
+            # starttls 587端口
+            server = smtplib.SMTP(self.mail_host, self.mail_port)
+            server.starttls()
         else:
             # 25端口
             server = smtplib.SMTP(self.mail_host, self.mail_port)
