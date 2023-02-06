@@ -163,6 +163,10 @@ def check_domain_cert(user_id):
     has_expired_domain = False
 
     for item in lst:
+        # 2023-02-06 如果不检测就跳过
+        if not item['is_monitor']:
+            continue
+
         if not item['expire_days'] or item['expire_days'] <= user_row.before_expire_days:
             has_expired_domain = True
             break

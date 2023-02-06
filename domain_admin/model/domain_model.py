@@ -58,6 +58,9 @@ class DomainModel(BaseModel):
     # 更新时间
     update_time = DateTimeField(default=datetime.now)
 
+    # 是否监测 @since 1.0.3
+    is_monitor = BooleanField(default=True)
+
     class Meta:
 
         table_name = 'tb_domain'

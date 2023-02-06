@@ -298,6 +298,8 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 - [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
+- 1.0.3
+    - 新增单个域名的检测开关，可控制单个域名的证书监测
 
 - 1.0.2
     - 添加SMTP STARTTLS 支持 587端口，感谢[@kudosiscon](https://github.com/kudosiscon)贡献的代码
