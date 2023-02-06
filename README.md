@@ -298,6 +298,9 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 - [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
+- 1.0.4
+    - 修复 `1.0.0=> 1.0.3` 自动更新异常
+    
 - 1.0.3
     - 新增单个域名的检测开关，可控制单个域名的证书监测
 
