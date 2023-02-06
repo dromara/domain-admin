@@ -9,6 +9,12 @@ class VersionEnum(object):
     """
     版本号常量
     """
+    Version_100 = '1.0.0'
+
+    Version_101 = '1.0.1'
+
     Version_102 = '1.0.2'
 
     Version_103 = '1.0.3'
+
+    Version_104 = '1.0.4'

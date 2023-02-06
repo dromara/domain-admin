@@ -45,8 +45,13 @@ def update_version():
 
     if local_version is None:
         pass
-    elif local_version == VersionEnum.Version_102:
-        # 1.0.2 => 1.0.3
+
+    elif local_version in [
+        VersionEnum.Version_100,
+        VersionEnum.Version_101,
+        VersionEnum.Version_102,
+    ]:
+        # 1.0.0 1.0.1 1.0.2 => 1.0.3
         migrate_102_to_103.execute_migrate()
     else:
         raise Exception('version update not support: {} => {}'.format(local_version, current_version))
