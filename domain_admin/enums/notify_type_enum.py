@@ -18,3 +18,6 @@ class NotifyTypeEnum(object):
 
     # webHook
     WebHook = 2
+
+    # 企业微信
+    WORK_WEIXIN = 3

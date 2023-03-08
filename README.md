@@ -27,7 +27,17 @@
 - Python 3.7.0
 
 ```bash
-$ pip install domain_admin
+$ python3 --version
+Python 3.7.0
+
+# 创建名为 venv 的虚拟环境
+$ python3 -m venv venv
+
+# 激活虚拟环境
+$ source venv/bin/activate
+
+# 安装 domain-admin
+$ pip install domain-admin
 
 # 升级到最新版本，可选
 $ pip3 install -U domain-admin -i https://pypi.org/simple
@@ -279,10 +289,11 @@ sqlite> .quit
 
 开发计划
 
-- 支持企业微信通知
+- `已完成` 支持企业微信通知
 - 支持域名分组
 - 增加理员权限，权限分级：root 管理员 普通用户
 - `已完成` 解决批量导入超时问题，支持1000条数据导入 
+- 支持域名备注 
 
 证书测试：[https://badssl.com/](https://badssl.com/)
 
@@ -298,6 +309,10 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 - [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
+
+- 1.0.5
+    - 新增通知方式：企业微信
+
 - 1.0.4
     - 修复 `1.0.0=> 1.0.3` 自动更新异常
     

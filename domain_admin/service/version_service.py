@@ -43,18 +43,24 @@ def update_version():
     if local_version == current_version:
         return
 
-    if local_version is None:
-        pass
+    # 版本不一致才需要升级
+    if local_version is not None:
+        if local_version in [
+            VersionEnum.Version_100,
+            VersionEnum.Version_101,
+            VersionEnum.Version_102,
+        ]:
+            # 1.0.0 1.0.1 1.0.2 => 1.0.3
+            migrate_102_to_103.execute_migrate()
+            local_version = VersionEnum.Version_103
 
-    elif local_version in [
-        VersionEnum.Version_100,
-        VersionEnum.Version_101,
-        VersionEnum.Version_102,
-    ]:
-        # 1.0.0 1.0.1 1.0.2 => 1.0.3
-        migrate_102_to_103.execute_migrate()
-    else:
-        raise Exception('version update not support: {} => {}'.format(local_version, current_version))
+        # if local_version in [
+        #     VersionEnum.Version_103,
+        # ]:
+        #     # 1.0.3 => 1.0.4
+        #     pass
+        # else:
+            # raise Exception('version update not support: {} => {}'.format(local_version, current_version))
 
     # 更新版本号
     VersionModel.create(

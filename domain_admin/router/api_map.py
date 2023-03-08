@@ -66,5 +66,5 @@ routes = {
     '/api/getNotifyOfUser': notify_api.get_notify_of_user,
     '/api/updateNotifyOfUser': notify_api.update_notify_of_user,
     '/api/testWebhookNotifyOfUser': notify_api.test_webhook_notify_of_user,
-
+    '/api/testWorkWeixinNotifyOfUser': notify_api.test_work_weixin_notify_of_user,
 }

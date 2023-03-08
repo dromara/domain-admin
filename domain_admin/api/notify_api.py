@@ -11,6 +11,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.service import notify_service
+from domain_admin.service import work_weixin_service
 
 
 def get_notify_of_user():
@@ -67,6 +68,7 @@ def update_notify_of_user():
             value_raw=value_raw
         )
 
+
 def test_webhook_notify_of_user():
     """
     测试webhook调用
@@ -75,3 +77,12 @@ def test_webhook_notify_of_user():
     current_user_id = g.user_id
 
     return notify_service.notify_webhook_of_user(current_user_id)
+
+
+def test_work_weixin_notify_of_user():
+    """
+    测试webhook调用
+    :return:
+    """
+    current_user_id = g.user_id
+    return work_weixin_service.send_work_weixin_message(current_user_id)
