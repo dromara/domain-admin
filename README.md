@@ -293,7 +293,8 @@ sqlite> .quit
 - 支持域名分组
 - 增加理员权限，权限分级：root 管理员 普通用户
 - `已完成` 解决批量导入超时问题，支持1000条数据导入 
-- 支持域名备注 
+- `已完成` 支持域名备注
+- 支持域名到期数据
 
 证书测试：[https://badssl.com/](https://badssl.com/)
 
@@ -309,6 +310,9 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 - [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
+
+- 1.0.6
+    - 新增域名备注
 
 - 1.0.5
     - 新增通知方式：企业微信
