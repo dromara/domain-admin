@@ -11,7 +11,7 @@ from domain_admin.utils import whois_util
 def test_get_domain_info():
     domain_list = [
         # 'www.baidu.com',
-        'badssl.com',
+        'www.baidu.com',
         # 'dfyun-spare1.showdoc.com.cn'
     ]
     # print(cert_util.get_cert_info('dfyun-spare1.showdoc.com.cn:8888'))

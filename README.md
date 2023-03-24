@@ -20,6 +20,13 @@
 
 ## 安装
 
+如果需要检测域名有效期，需要安装依赖 `whois`
+
+Linux
+```bash
+yum install -y whois
+```
+
 ### 方式一：pip安装
 
 运行环境：
@@ -310,6 +317,9 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 - [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
+
+- 1.1.2
+    - 暂时使用whois模块实现域名过期时间查询
 
 - 1.1.1
     - 修复前端备注不显示的问题
