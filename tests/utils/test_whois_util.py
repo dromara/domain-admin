@@ -12,7 +12,7 @@ def test_get_domain_info():
     domain_list = [
         # 'www.baidu.com',
         'badssl.com',
-        'dfyun-spare1.showdoc.com.cn'
+        # 'dfyun-spare1.showdoc.com.cn'
     ]
     # print(cert_util.get_cert_info('dfyun-spare1.showdoc.com.cn:8888'))
     for domain in domain_list:
@@ -20,4 +20,5 @@ def test_get_domain_info():
 
 
 def test_get_domain_info_by_whois():
-    whois_util.get_domain_info_by_whois('www.baidu.com')
+    res = whois_util.get_domain_info_by_whois('www.baidu.com')
+    print(res)

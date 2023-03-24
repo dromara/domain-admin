@@ -4,15 +4,28 @@
 @Date    : 2023-03-24
 """
 import requests
-import whois
+from parsel import Selector
+from dateutil import parser
 
 
 def get_domain_info_by_whois(domain):
     url = 'https://www.whois.com/whois/' + domain
 
-    res = requests.get(url)
+    data = {}
+
+    res = requests.get(url, timeout=5)
     if res.ok:
-        print(res.content)
+        sel = Selector(res.text)
+        text = sel.css('#registrarData::text').get("")
+        rows = text.split("\n")
+
+        for row in rows:
+            row_split = row.split(': ')
+            if len(row_split) == 2:
+                label, value = row_split
+                data[label] = value
+
+    return data
 
 
 def get_domain_info(domain: str):
@@ -22,9 +35,18 @@ def get_domain_info(domain: str):
     :return:
     """
 
-    domain_info = whois.query(domain, ignore_returncode=True)
+    res = get_domain_info_by_whois(domain)
+
+    start_time = res.get('Creation Date')
+    expire_time = res.get('Registrar Registration Expiration Date')
+
+    if start_time:
+        start_time = parser.parse(start_time)
+
+    if expire_time:
+        expire_time = parser.parse(expire_time)
 
     return {
-        'start_time': domain_info.creation_date,
-        'expire_time': domain_info.expiration_date
+        'start_time': start_time,
+        'expire_time': expire_time
     }
