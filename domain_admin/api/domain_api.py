@@ -101,8 +101,8 @@ def get_domain_list():
         query = query.where(DomainModel.domain.contains(keyword))
 
     lst = query.order_by(
-        DomainModel.domain_expire_days.asc(),
         DomainModel.expire_days.asc(),
+        DomainModel.domain_expire_days.asc(),
         DomainModel.id.desc(),
     ).paginate(page, size)
 

@@ -58,7 +58,7 @@ def get_domain_info_by_request(domain):
 
 
 def get_domain_info_by_whois(domain):
-    domain_info = whois.query(domain, ignore_returncode=True)
+    domain_info = whois.query(domain)
 
     return {
         'start_time': domain_info.creation_date,
@@ -74,5 +74,10 @@ def get_domain_info(domain: str):
     """
 
     res = get_domain_info_by_whois(domain)
+
+    # 解决二级域名查询失败的问题
+    if not res.get('start_time'):
+        domain = ".".join(domain.split(".")[1:])
+        res = get_domain_info_by_whois(domain)
 
     return res

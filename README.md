@@ -318,6 +318,10 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 ## 更新日志
 
+- 1.1.3
+    - 修复二级域名查询失败的问题
+    - 优化域名排序显示 
+    
 - 1.1.2
     - 暂时使用whois模块实现域名过期时间查询
 
