@@ -318,6 +318,9 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 ## 更新日志
 
+- 1.1.4
+    - 修复Linux二级域名报错问题
+    
 - 1.1.3
     - 修复二级域名查询失败的问题
     - 优化域名排序显示 

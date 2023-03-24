@@ -10,6 +10,7 @@ from domain_admin.utils import whois_util
 
 def test_get_domain_info():
     domain_list = [
+        'az.lanque.cn',
         'code.jutu.cn',
         'www.baidu.com',
         # 'dfyun-spare1.showdoc.com.cn'

@@ -3,6 +3,8 @@
 @File    : whois_util.py
 @Date    : 2023-03-24
 """
+import traceback
+
 import requests
 import whois
 
@@ -58,12 +60,20 @@ def get_domain_info_by_request(domain):
 
 
 def get_domain_info_by_whois(domain):
-    domain_info = whois.query(domain)
+    logger.debug('domain whois query: %s', domain)
 
-    return {
-        'start_time': domain_info.creation_date,
-        'expire_time': domain_info.expiration_date
-    }
+    try:
+        domain_info = whois.query(domain)
+
+        return {
+            'start_time': domain_info.creation_date,
+            'expire_time': domain_info.expiration_date
+        }
+
+    except Exception as e:
+        logger.error(traceback.format_exc())
+
+    return None
 
 
 def get_domain_info(domain: str):
@@ -76,7 +86,7 @@ def get_domain_info(domain: str):
     res = get_domain_info_by_whois(domain)
 
     # 解决二级域名查询失败的问题
-    if not res.get('start_time'):
+    if not res:
         domain = ".".join(domain.split(".")[1:])
         res = get_domain_info_by_whois(domain)
 
