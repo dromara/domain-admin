@@ -311,6 +311,10 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 ## 更新日志
 
+- 1.1.0
+    - 优化日志输出文件大小，减少磁盘空间占用
+    - 新增域名到期时间监测，感谢群友 @Roy 提出的建议
+
 - 1.0.6
     - 新增域名备注
 

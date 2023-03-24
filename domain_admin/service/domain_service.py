@@ -14,7 +14,7 @@ from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
-from domain_admin.utils import datetime_util, cert_util
+from domain_admin.utils import datetime_util, cert_util, whois_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 from concurrent.futures import ThreadPoolExecutor
@@ -54,33 +54,52 @@ def update_domain_cert_info(row):
     """
     logger.info('update_domain_cert_info: %s', row.domain)
 
-    connect_status = False
+    now = datetime.now()
+    connect_status = True
     expire_days = 0
     total_days = 0
 
+    # 获取证书信息
     info = {}
 
     try:
         info = cert_util.get_cert_info(row.domain)
-        connect_status = True
+
     except Exception:
         logger.error(traceback.format_exc())
-
+        connect_status = False
     start_date = info.get('start_date')
     expire_date = info.get('expire_date')
 
     if start_date and expire_date:
-        now = datetime.now()
         start_time = datetime_util.parse_datetime(start_date)
         expire_time = datetime_util.parse_datetime(expire_date)
 
         expire_days = (expire_time - now).days
         total_days = (expire_time - start_time).days
 
+    # 获取域名信息
+    domain_info = {}
+    domain_expire_days = 0
+    try:
+        domain_info = whois_util.get_domain_info(row.domain)
+    except Exception:
+        logger.error(traceback.format_exc())
+        connect_status = False
+
+    domain_start_time = domain_info.get('start_time')
+    domain_expire_time = domain_info.get('expire_time')
+
+    if domain_expire_time:
+        domain_expire_days = (domain_expire_time - now).days
+
     DomainModel.update(
         start_time=info.get('start_date'),
         expire_time=info.get('expire_date'),
         expire_days=expire_days,
+        domain_start_time=domain_start_time,
+        domain_expire_time=domain_expire_time,
+        domain_expire_days=domain_expire_days,
         total_days=total_days,
         ip=info.get('ip', ''),
         connect_status=connect_status,
@@ -123,6 +142,7 @@ def get_domain_info_list(user_id=None):
         )
 
     query = query.order_by(
+        DomainModel.domain_expire_days.asc(),
         DomainModel.expire_days.asc(),
         DomainModel.id.desc()
     )
@@ -168,6 +188,10 @@ def check_domain_cert(user_id):
             continue
 
         if not item['expire_days'] or item['expire_days'] <= user_row.before_expire_days:
+            has_expired_domain = True
+            break
+
+        if not item['domain_expire_days'] or item['domain_expire_days'] <= user_row.before_expire_days:
             has_expired_domain = True
             break
 

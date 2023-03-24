@@ -19,7 +19,7 @@ class DomainModel(BaseModel):
     # 用户id
     user_id = IntegerField(default=0)
 
-    # 别名
+    # 别名/备注
     alias = CharField(default="")
 
     # ip
@@ -28,16 +28,25 @@ class DomainModel(BaseModel):
     # 分组
     group_id = IntegerField(default=0)
 
-    # 签发时间
+    # 域名注册时间 @since 1.1.0
+    domain_start_time = DateTimeField(default=None, null=True)
+
+    # 域名过期时间 @since 1.1.0
+    domain_expire_time = DateTimeField(default=None, null=True)
+
+    # 域名过期剩余天数，仅用于排序 @since 1.1.0
+    domain_expire_days = IntegerField(default=0, null=False)
+
+    # SSL签发时间
     start_time = DateTimeField(default=None, null=True)
 
-    # 过期时间
+    # SSL过期时间
     expire_time = DateTimeField(default=None, null=True)
 
     # 连接状态
     connect_status = BooleanField(default=None, null=True)
 
-    # 过期剩余天数，仅用于排序
+    # SSL过期剩余天数，仅用于排序
     expire_days = IntegerField(default=0, null=False)
 
     # 有效期总天数
@@ -100,12 +109,23 @@ class DomainModel(BaseModel):
     @property
     def real_time_expire_days(self):
         """
-        实时过期剩余天数
+        实时ssl过期剩余天数
         expire_days 是更新数据时所计算的时间，有滞后性
         :return:
         """
         if self.expire_time:
             return (self.expire_time - datetime.now()).days
+
+    @property
+    def real_time_domain_expire_days(self):
+        """
+        实时域名过期剩余天数
+        expire_days 是更新数据时所计算的时间，有滞后性
+        @since v1.1.0
+        :return:
+        """
+        if self.domain_expire_time:
+            return (self.domain_expire_time - datetime.now()).days
 
     @property
     def detail(self):

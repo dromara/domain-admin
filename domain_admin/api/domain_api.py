@@ -101,6 +101,7 @@ def get_domain_list():
         query = query.where(DomainModel.domain.contains(keyword))
 
     lst = query.order_by(
+        DomainModel.domain_expire_days.asc(),
         DomainModel.expire_days.asc(),
         DomainModel.id.desc(),
     ).paginate(page, size)
@@ -116,6 +117,7 @@ def get_domain_list():
             'create_time_label',
             'check_time_label',
             'real_time_expire_days',
+            'real_time_domain_expire_days',
             'domain_url',
         ]
     ), lst))
@@ -146,6 +148,7 @@ def get_domain_by_id():
             'total_days',
             'expire_days',
             'real_time_expire_days',
+            'real_time_domain_expire_days',
             'detail',
             'group',
             'domain_url',

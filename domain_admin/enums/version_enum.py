@@ -20,3 +20,7 @@ class VersionEnum(object):
     Version_104 = '1.0.4'
 
     Version_105 = '1.0.5'
+
+    Version_106 = '1.0.6'
+
+    Version_110 = '1.1.0'

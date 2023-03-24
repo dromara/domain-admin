@@ -14,6 +14,10 @@ from domain_admin.model.domain_model import DomainModel
 
 
 def execute_migrate():
+    """
+    版本升级 1.0.2 => 1.0.3
+    :return:
+    """
     migrator = SqliteMigrator(db)
 
     migrate(
