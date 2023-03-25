@@ -20,13 +20,6 @@
 
 ## 安装
 
-如果需要检测域名有效期，需要安装依赖 `whois`
-
-Linux
-```bash
-yum install -y whois
-```
-
 ### 方式一：pip安装
 
 运行环境：
@@ -92,7 +85,7 @@ make pro
 # 启动开发服务
 make dev
 ```
- 
+
 ## 项目简介
 
 - https://gitee.com/mouday/domain-admin
@@ -317,6 +310,10 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 - [doc/top-1m.csv](doc/top-1m.csv)
 
 ## 更新日志
+
+- 1.1.5
+    - 移除whois依赖，使用socket方式替代
+    - 前端域名列表增加字段排序
 
 - 1.1.4
     - 修复Linux二级域名报错问题

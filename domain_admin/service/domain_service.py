@@ -59,6 +59,21 @@ def update_domain_cert_info(row):
     expire_days = 0
     total_days = 0
 
+    # 获取域名信息
+    domain_info = {}
+    domain_expire_days = 0
+    try:
+        domain_info = whois_util.get_domain_info(row.domain)
+    except Exception:
+        logger.error(traceback.format_exc())
+        connect_status = False
+
+    domain_start_time = domain_info.get('start_time')
+    domain_expire_time = domain_info.get('expire_time')
+
+    if domain_expire_time:
+        domain_expire_days = (domain_expire_time - now).days
+
     # 获取证书信息
     info = {}
 
@@ -77,21 +92,6 @@ def update_domain_cert_info(row):
 
         expire_days = (expire_time - now).days
         total_days = (expire_time - start_time).days
-
-    # 获取域名信息
-    domain_info = {}
-    domain_expire_days = 0
-    try:
-        domain_info = whois_util.get_domain_info(row.domain)
-    except Exception:
-        logger.error(traceback.format_exc())
-        connect_status = False
-
-    domain_start_time = domain_info.get('start_time')
-    domain_expire_time = domain_info.get('expire_time')
-
-    if domain_expire_time:
-        domain_expire_days = (domain_expire_time - now).days
 
     DomainModel.update(
         start_time=info.get('start_date'),

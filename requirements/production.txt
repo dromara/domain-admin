@@ -12,5 +12,3 @@ bcrypt>=4.0.0
 python-dotenv>=0.21.0
 pytz>=2022.2.1
 pyOpenSSL>=22.1.0
-parsel>=1.7.0
-whois>=0.9.27

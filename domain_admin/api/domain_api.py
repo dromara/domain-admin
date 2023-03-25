@@ -90,6 +90,9 @@ def get_domain_list():
     keyword = request.json.get('keyword')
     group_id = request.json.get('group_id')
 
+    order_prop = request.json.get('order_prop', 'expire_days')
+    order_type = request.json.get('order_type', 'ascending')
+
     query = DomainModel.select().where(
         DomainModel.user_id == current_user_id
     )
@@ -100,11 +103,22 @@ def get_domain_list():
     if keyword:
         query = query.where(DomainModel.domain.contains(keyword))
 
-    lst = query.order_by(
-        DomainModel.expire_days.asc(),
-        DomainModel.domain_expire_days.asc(),
-        DomainModel.id.desc(),
-    ).paginate(page, size)
+    ordering = []
+    if order_prop == 'expire_days':
+        if order_type == 'descending':
+            ordering.append(DomainModel.expire_days.desc())
+        else:
+            ordering.append(DomainModel.expire_days.asc())
+
+    elif order_prop == 'domain_expire_days':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain_expire_days.desc())
+        else:
+            ordering.append(DomainModel.domain_expire_days.asc())
+
+    ordering.append(DomainModel.id.desc())
+
+    lst = query.order_by(*ordering).paginate(page, size)
 
     total = query.count()
 
