@@ -311,6 +311,9 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 ## 更新日志
 
+- 1.1.6
+    - bugfix: 用户删除token过期天数变量后登录报错
+
 - 1.1.5
     - 移除whois依赖，使用socket方式替代
     - 前端域名列表增加字段排序

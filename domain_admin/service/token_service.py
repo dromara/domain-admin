@@ -19,7 +19,9 @@ def encode_token(payload):
     """
     config = system_service.get_system_config()
     secret_key = config['secret_key']
-    token_expire_days = int(config['token_expire_days'])
+
+    # bugfix 用户删除token过期天数变量后报错
+    token_expire_days = int(config['token_expire_days'] or 7)
 
     # 使用utc时间
     payload['exp'] = datetime.utcnow() + timedelta(days=token_expire_days)
