@@ -312,4 +312,4 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 ## 更新日志
 
-[CHANGELOG.md](https://github.com/mouday/domain-admin/CHANGELOG.md)
+[CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md)

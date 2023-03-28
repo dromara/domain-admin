@@ -1,9 +1,14 @@
 # https://github.com/actions/starter-workflows/blob/main/ci/python-publish.yml
 name: Upload Python Package
 
+#on:
+#  release:
+#    types: [published]
+
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 permissions:
   contents: read

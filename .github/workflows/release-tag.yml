@@ -22,4 +22,4 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           body: |
-            Please refer to [CHANGELOG.md](https://github.com/mouday/domain-admin/CHANGELOG.md) for details.
+            Please refer to [CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md) for details.
