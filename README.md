@@ -10,7 +10,7 @@
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/logo.png)
 
-基于Python + Vue3.js 技术栈实现的域名SSL证书监测平台
+基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台
 
 核心功能：到期自动邮件提醒
 
