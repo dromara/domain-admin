@@ -16,6 +16,7 @@ from domain_admin.service import notify_service
 from domain_admin.service import system_service
 from domain_admin.utils import datetime_util, cert_util, whois_util
 from domain_admin.utils import domain_util
+from domain_admin.utils.domain_util import remove_default_ssl_port
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 from concurrent.futures import ThreadPoolExecutor
 
@@ -32,7 +33,7 @@ def add_domain(data):
     :return:
     """
     user_id = data['user_id']
-    domain = data['domain']
+    domain = remove_default_ssl_port(data['domain'])
     alias = data.get('alias', '')
     group_id = data.get('group_id', 0)
 
@@ -296,7 +297,7 @@ def add_domain_from_file(filename, user_id):
     lst = domain_util.parse_domain_from_file(filename)
     lst = [
         {
-            'domain': domain,
+            'domain': remove_default_ssl_port(domain),
             'user_id': user_id,
         } for domain in lst
     ]
