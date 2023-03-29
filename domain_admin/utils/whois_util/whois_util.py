@@ -65,13 +65,11 @@ def get_domain_info(domain: str):
     # 处理带端口号的域名
     if ':' in domain:
         domain = domain.split(":")[0]
+    # 解决二级域名查询失败的问题
+    if domain.count(".") > 1:
+        domain = ".".join(domain.split(".")[-2:])
 
     res = get_domain_whois(domain)
-
-    # 解决二级域名查询失败的问题
-    if not res:
-        domain = ".".join(domain.split(".")[1:])
-        res = get_domain_whois(domain)
 
     logger.debug(res)
 
