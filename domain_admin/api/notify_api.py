@@ -69,6 +69,16 @@ def update_notify_of_user():
         )
 
 
+def get_template_data():
+    """
+    获取模板参数
+    :return:
+    """
+    current_user_id = g.user_id
+
+    return notify_service.get_template_data(current_user_id)
+
+
 def test_webhook_notify_of_user():
     """
     测试webhook调用

@@ -34,7 +34,7 @@ X-Token: <token>
 
 Webhook配置
 
-```
+```json
 POST {{baseUrl}}/api/updateNotifyOfUser
 Content-Type: application/json
 X-Token: <token>
@@ -52,6 +52,16 @@ X-Token: <token>
 }
 ```
 
+webhook方式提交的body参数支持[jinja2模板语法](http://doc.yonyoucloud.com/doc/jinja2-docs-cn/index.html)
+
+例如
+```json
+{
+  "title": "推送的消息标题",
+  "content": "{% for item in domain_list %} {{item.domain}} - {{item.expire_days}} \n {% endfor %}"
+}
+```
+
 6、返回示例
 
 ```json
@@ -61,4 +71,3 @@ X-Token: <token>
   "msg": "success"
 }
 ```
-

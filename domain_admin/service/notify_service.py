@@ -8,7 +8,9 @@ import requests
 
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
 from domain_admin.model.notify_model import NotifyModel
+from domain_admin.service import domain_service
 from domain_admin.utils.flask_ext.app_exception import AppException
+from jinja2 import Template
 
 
 def get_notify_row_value(user_id, type_id):
@@ -79,7 +81,19 @@ def notify_webhook_of_user(user_id):
     if not url:
         raise AppException('url未设置')
 
-    res = requests.request(method=method, url=url, headers=headers, data=body.encode('utf-8'))
+    # 支持模板变量
+    template = Template(body)
+    body_render = template.render(get_template_data(user_id))
+
+    res = requests.request(method=method, url=url, headers=headers, data=body_render.encode('utf-8'))
     res.encoding = res.apparent_encoding
 
     return res.text
+
+
+def get_template_data(user_id):
+    # 两种参数形式
+    domain_list = domain_service.get_domain_info_list(user_id)
+    return {
+        'domain_list': domain_list
+    }
