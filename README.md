@@ -165,7 +165,7 @@ make dev
 
 ## 二次开发
 
-接口文档：[/doc/index.md](/doc/index.md)
+接口文档：[/docs/index.md](/docs/index.md)
 
 代码推送
 
