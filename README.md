@@ -165,7 +165,7 @@ make dev
 
 ## 二次开发
 
-接口文档：[/docs/index.md](/docs/index.md)
+接口文档：[https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
 
 代码推送
 
