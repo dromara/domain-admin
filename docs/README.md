@@ -5,7 +5,7 @@
 请求方式统一为`POST json`
 
 ```
-POST <api>
+POST /api/<url>
 Content-Type: application/json
 X-TOKEN: <token>
 
@@ -83,8 +83,8 @@ X-TOKEN: <token>
 | 接口 | 说明 | 文档 | 
 | - | - | -| 
 | /api/getCertInformation | 获取域名证书信息 | [getCertInformation.md](/cert/getCertInformation.md) |
- 
-通知配置管理 v0.0.12
+
+通知配置管理 `v0.0.12`
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|
