@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Coding Tree</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="编程学习路上的笔记与知识整理收集" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <link rel="icon" href="img/logo-icon.png" />
+
+    <link rel="stylesheet" href="static/js/vue@4.12.2.min.css" />
+
+    <style>
+      /* 文字大小 */
+      body {
+        font-size: 16px;
+      }
+
+      /* 代码区域文字大小 */
+      .markdown-section
+        > :not(h1):not(h2):not(h3):not(h4):not(h5):not(h6)
+        code {
+        font-size: 0.9rem;
+      }
+
+      .sidebar ul li a {
+        font-size: 14px;
+      }
+
+      :root {
+        --toc-width: 300px;
+      }
+
+      /* 左侧导航 */
+      .sidebar {
+        width: 220px;
+      }
+
+      /* 更新时间 */
+      .last-update-time-wrap {
+        padding: 20px 0;
+      }
+
+      .last-update-time {
+        border-left: 4px solid var(--theme-color, #42b983);
+        color: #858585;
+        margin: 2em 0;
+        padding-left: 20px;
+      }
+
+      /* 右侧目录 */
+      .page_toc {
+        margin-top: 20px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        /* height: 100px; */
+      }
+
+      .page_toc::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .page_toc::-webkit-scrollbar-thumb {
+        background: 0 0;
+        border-radius: 4px;
+      }
+
+      .page_toc:hover::-webkit-scrollbar-thumb {
+        background: hsla(0, 0%, 53.3%, 0.4);
+      }
+
+      .page_toc:hover::-webkit-scrollbar-track {
+        background: hsla(0, 0%, 53.3%, 0.1);
+      }
+
+      img {
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">Please wait...</div>
+
+    <script>
+      window.$docsify = {
+        name: "Domain Admin",
+        // loadSidebar: true,
+
+        // 导航栏
+        // loadNavbar: true,
+
+        // loadNavbar: true,
+        repo: "mouday/domain-admin",
+        // alias: {
+        //   "/.*/_sidebar.md": "/_sidebar.md",
+        // },
+        //搜索插件
+        search: {
+          placeholder: "搜索",
+          noData: "没有结果！",
+        },
+        // 显示更新时间
+        timeUpdater: {
+          // text: ">最后更新时间: {docsify-updated}",
+          text: "<div class='last-update-time-wrap'><div class='last-update-time'>最后更新时间: {docsify-updated}</div></div>",
+          formatUpdated: "{YYYY}-{MM}-{DD} {HH}:{mm}",
+        },
+
+        // 目录
+        toc: {
+          scope: ".markdown-section",
+          headings: "h1, h2, h3, h4, h5, h6",
+          title: "目录",
+        },
+
+        // 解决本地缓存不更新问题
+        requestHeaders: {
+          "cache-control": "no-cache",
+        },
+      };
+    </script>
+    <script src="static/js/docsify@4.12.2.min.js"></script>
+
+    <script src="static/js/prism-java.min.js"></script>
+    <script src="static/js/prism-bash.min.js"></script>
+    <script src="static/js/prism-php.min.js"></script>
+    <script src="static/js/prism-sql.min.js"></script>
+    <script src="static/js/prism-python.min.js"></script>
+    <script src="static/js/prism-less.min.js"></script>
+    <script src="static/js/prism-json@1.26.0.min.js"></script>
+    <script src="static/js/prism-yaml.min.js"></script>
+    <script src="static/js/prism-go.min.js"></script>
+
+    <script src="static/js/search@4.12.2.min.js"></script>
+    <script src="static/js/docsify-copy-code@2.1.1.min.js"></script>
+    <script src="static/js/time-updater@1.min.js"></script>
+
+    <!-- 下载地址 -->
+    <!-- https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js -->
+
+  </body>
+</html>
