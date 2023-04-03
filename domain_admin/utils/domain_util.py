@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
+import tldextract
+from tldextract.tldextract import ExtractResult
 
 
 def parse_domain(domain):
@@ -20,3 +22,12 @@ def parse_domain_from_file(filename):
     with open(filename, 'r') as f:
         for line in f.readlines():
             yield parse_domain(line.strip())
+
+
+def extract_domain(domain: str) -> ExtractResult:
+    """
+    解析域名
+    :param domain:
+    :return:
+    """
+    return tldextract.extract(domain)

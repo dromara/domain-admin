@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 import traceback
 from datetime import datetime
 
@@ -46,43 +47,51 @@ def add_domain(data):
     return row
 
 
-def update_domain_cert_info(row):
+def update_domain_cert_info(row, cache=None):
     """
-    更新域名的证书信息
+    更新域名和证书信息
     :param row:
     :return:
     """
     logger.info('update_domain_cert_info: %s', row.domain)
 
-    now = datetime.now()
-    connect_status = True
-    expire_days = 0
-    total_days = 0
-
     # 获取域名信息
-    domain_info = {}
-    domain_expire_days = 0
-    try:
-        domain_info = whois_util.get_domain_info(row.domain)
-    except Exception:
-        logger.error(traceback.format_exc())
-        connect_status = False
-
-    domain_start_time = domain_info.get('start_time')
-    domain_expire_time = domain_info.get('expire_time')
-
-    if domain_expire_time:
-        domain_expire_days = (domain_expire_time - now).days
+    domain_info = get_domain_info(row.domain, cache)
 
     # 获取证书信息
+    cert_info = get_cert_info(row.domain)
+
+    DomainModel.update(
+        start_time=cert_info.get('start_date'),
+        expire_time=cert_info.get('expire_date'),
+        expire_days=cert_info.get('expire_days'),
+        domain_start_time=domain_info['start_time'],
+        domain_expire_time=domain_info['expire_time'],
+        domain_expire_days=domain_info['expire_days'],
+        total_days=cert_info.get('total_days'),
+        ip=cert_info.get('ip', ''),
+        connect_status=cert_info.get('connect_status'),
+        detail_raw=json.dumps(cert_info.get('info'), ensure_ascii=False),
+        check_time=datetime_util.get_datetime(),
+    ).where(
+        DomainModel.id == row.id
+    ).execute()
+
+
+def get_cert_info(domain: str):
+    now = datetime.now()
     info = {}
+    expire_days = 0
+    total_days = 0
+    connect_status = True
 
     try:
-        info = cert_util.get_cert_info(row.domain)
+        info = cert_util.get_cert_info(domain)
 
     except Exception:
         logger.error(traceback.format_exc())
         connect_status = False
+
     start_date = info.get('start_date')
     expire_date = info.get('expire_date')
 
@@ -93,21 +102,58 @@ def update_domain_cert_info(row):
         expire_days = (expire_time - now).days
         total_days = (expire_time - start_time).days
 
-    DomainModel.update(
-        start_time=info.get('start_date'),
-        expire_time=info.get('expire_date'),
-        expire_days=expire_days,
-        domain_start_time=domain_start_time,
-        domain_expire_time=domain_expire_time,
-        domain_expire_days=domain_expire_days,
-        total_days=total_days,
-        ip=info.get('ip', ''),
-        connect_status=connect_status,
-        detail_raw=json.dumps(info, ensure_ascii=False),
-        check_time=datetime_util.get_datetime(),
-    ).where(
-        DomainModel.id == row.id
-    ).execute()
+    return {
+        'start_date': start_date,
+        'expire_date': expire_date,
+        'expire_days': expire_days,
+        'total_days': total_days,
+        'connect_status': connect_status,
+        'ip': info.get('ip', ''),
+        'info': info,
+    }
+
+
+def get_domain_info(domain: str, cache=None):
+    """
+    获取域名注册信息
+    :param domain: 域名
+    :param cache: 查询缓存字典
+    :return:
+    """
+
+    now = datetime.now()
+
+    # 获取域名信息
+    domain_info = {}
+    domain_expire_days = 0
+
+    # 解析出域名和顶级后缀
+    extract_result = domain_util.extract_domain(domain)
+    domain_and_suffix = '.'.join([extract_result.domain, extract_result.suffix])
+
+    if cache:
+        domain_info = cache.get(domain_and_suffix)
+
+    if not domain_info:
+        try:
+            domain_info = whois_util.get_domain_info(domain_and_suffix)
+            if cache:
+                cache[domain_and_suffix] = domain_info
+
+        except Exception:
+            logger.error(traceback.format_exc())
+
+    domain_start_time = domain_info.get('start_time')
+    domain_expire_time = domain_info.get('expire_time')
+
+    if domain_expire_time:
+        domain_expire_days = (domain_expire_time - now).days
+
+    return {
+        'start_time': domain_start_time,
+        'expire_time': domain_expire_time,
+        'expire_days': domain_expire_days
+    }
 
 
 def update_all_domain_cert_info():
@@ -116,8 +162,22 @@ def update_all_domain_cert_info():
     :return:
     """
     lst = DomainModel.select()
-    for row in lst:
-        update_domain_cert_info(row)
+    update_domain_list_info(lst)
+
+
+def update_domain_list_info(rows):
+    """
+    更新列表数据
+    :param rows:
+    :return:
+    """
+    # 增加缓存，提升查询效率
+    cache = {}
+
+    for row in rows:
+        update_domain_cert_info(row, cache)
+        # 请求过于频繁
+        time.sleep(0.5)
 
 
 def update_all_domain_cert_info_of_user(user_id):
@@ -129,8 +189,7 @@ def update_all_domain_cert_info_of_user(user_id):
         DomainModel.user_id == user_id
     )
 
-    for row in lst:
-        update_domain_cert_info(row)
+    update_domain_list_info(lst)
 
 
 def get_domain_info_list(user_id=None):
@@ -353,3 +412,10 @@ def notify_user(user_id):
         notify_service.notify_webhook_of_user(user_id)
     except Exception as e:
         logger.error(traceback.format_exc())
+
+
+def update_and_check_domain_cert(user_id):
+    # 先更新，再检查
+    update_all_domain_cert_info_of_user(user_id)
+
+    check_domain_cert(user_id)

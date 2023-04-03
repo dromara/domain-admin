@@ -10,9 +10,18 @@ from domain_admin.utils import domain_util
 
 
 def test_parse_domain():
-    filename = '../../doc/domain.txt'
+    filename = '../../docs/domain.txt'
 
     if os.path.exists(filename):
-        lst = domain_util.parse_domain_from_file('../../doc/domain.txt')
+        lst = domain_util.parse_domain_from_file(filename)
         for line in lst:
             print(line)
+
+
+def test_extract_domain():
+    filename = '../../docs/domain.txt'
+
+    if os.path.exists(filename):
+        lst = domain_util.parse_domain_from_file(filename)
+        for line in lst:
+            print(domain_util.extract_domain(line))

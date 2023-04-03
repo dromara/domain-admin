@@ -221,10 +221,12 @@ def check_domain_cert():
     """
     current_user_id = g.user_id
 
-    # 先更新，再检查
-    domain_service.update_all_domain_cert_info_of_user(current_user_id)
-
-    domain_service.check_domain_cert(current_user_id)
+    # # 先更新，再检查
+    # domain_service.update_all_domain_cert_info_of_user(current_user_id)
+    #
+    # domain_service.check_domain_cert(current_user_id)
+    # 异步检查更新
+    async_task_service.submit_task(fn=domain_service.update_and_check_domain_cert, user_id=current_user_id)
 
 
 def import_domain_from_file():

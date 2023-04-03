@@ -17,15 +17,18 @@ def get_whois_config(domain: str) -> [str, None]:
     :param domain:
     :return:
     """
+    logger.debug('get_whois_config %s', domain)
     root = domain.split('.')[-1]
 
     if root in WHOIS_CONFIGS:
         return WHOIS_CONFIGS.get(root)
     else:
-        raise Exception('not support')
+        raise Exception(f'not support {root}')
 
 
 def get_domain_whois(domain):
+    logger.debug('get_domain_whois %s', domain)
+
     whois_config = get_whois_config(domain)
 
     whois_server = whois_config['whois_server']
@@ -63,15 +66,15 @@ def get_domain_info(domain: str):
     :return:
     """
     # 处理带端口号的域名
-    if ':' in domain:
-        domain = domain.split(":")[0]
+    # if ':' in domain:
+    #     domain = domain.split(":")[0]
 
     res = get_domain_whois(domain)
 
     # 解决二级域名查询失败的问题
-    if not res:
-        domain = ".".join(domain.split(".")[1:])
-        res = get_domain_whois(domain)
+    # if not res:
+    #     domain = ".".join(domain.split(".")[1:])
+    #     res = get_domain_whois(domain)
 
     logger.debug(res)
 
