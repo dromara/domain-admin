@@ -176,6 +176,7 @@ def update_domain_list_info(rows):
 
     for row in rows:
         update_domain_cert_info(row, cache)
+        # bugfix: ConnectionResetError: [Errno 104] Connection reset by peer
         # 请求过于频繁
         time.sleep(0.5)
 
