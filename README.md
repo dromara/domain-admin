@@ -297,6 +297,7 @@ sqlite> .quit
 - `已完成` 支持域名备注
 - `已完成` 支持域名到期数据
 - `已完成` webhook支持变量
+- 异步操作的前端状态显示 
 
 证书测试：[https://badssl.com/](https://badssl.com/)
 
