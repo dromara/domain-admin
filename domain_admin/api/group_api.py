@@ -32,10 +32,9 @@ def update_group_by_id():
     current_user_id = g.user_id
 
     group_id = request.json['id']
+    name = request.json.get('name')
 
     group_service.check_group_permission(group_id, current_user_id)
-
-    name = request.json.get('name')
 
     GroupModel.update(
         name=name,
@@ -63,21 +62,25 @@ def get_group_list():
     获取域名列表
     :return:
     """
-    # page = request.json.get('page', 1)
-    # size = request.json.get('size', 10)
+    page = request.json.get('page', 1)
+    size = request.json.get('size', 10)
+    keyword = request.json.get('keyword')
 
     current_user_id = g.user_id
 
-    lst = GroupModel.select().where(
+    query = GroupModel.select().where(
         GroupModel.user_id == current_user_id
-    ).order_by(
-        GroupModel.create_time.asc(),
-        GroupModel.id.asc()
     )
 
-    total = GroupModel.select().where(
-        GroupModel.user_id == current_user_id
-    ).count()
+    if keyword:
+        query = query.where(GroupModel.name.contains(keyword))
+
+    total = query.count()
+
+    lst = query.order_by(
+        GroupModel.create_time.asc(),
+        GroupModel.id.asc()
+    ).paginate(page, size)
 
     return {
         'list': lst,

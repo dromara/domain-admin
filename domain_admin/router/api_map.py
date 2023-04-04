@@ -31,6 +31,8 @@ routes = {
     "/api/checkDomainCert": domain_api.check_domain_cert,
     "/api/importDomainFromFile": domain_api.import_domain_from_file,
     "/api/getAllDomainListOfUser": domain_api.get_all_domain_list_of_user,
+    "/api/getUpdateDomainStatusOfUser": domain_api.get_update_domain_status_of_user,
+    "/api/getCheckDomainStatusOfUser": domain_api.get_check_domain_status_of_user,
 
     # 分组管理
     "/api/addGroup": group_api.add_group,
@@ -57,7 +59,6 @@ routes = {
     '/api/addUser': user_api.add_user,
     '/api/updateUserStatus': user_api.update_user_status,
     '/api/deleteUser': user_api.delete_user,
-
 
     # 获取ip信息
     '/api/getIpInfo': ip_api.get_ip_info,

@@ -5,7 +5,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import domain_service
+from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.service import async_task_service
 from domain_admin.utils import datetime_util
@@ -136,7 +136,7 @@ def get_domain_list():
         ]
     ), lst))
 
-    lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
+    # lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
 
     return {
         'list': lst,
@@ -187,7 +187,39 @@ def update_all_domain_cert_info_of_user():
     current_user_id = g.user_id
     # domain_service.update_all_domain_cert_info_of_user(current_user_id)
     # 异步更新
+    key = f'update_domain_status:{current_user_id}'
+    global_data_service.set_value(key, True)
     async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
+
+
+def get_update_domain_status_of_user():
+    """
+    获取域名信息更新状态
+    true：正在更新
+    false：更新完毕
+    :return:
+    """
+    current_user_id = g.user_id
+    key = f'update_domain_status:{current_user_id}'
+
+    return {
+        'status': global_data_service.get_value(key)
+    }
+
+
+def get_check_domain_status_of_user():
+    """
+    获取证书检查状态
+    true：正在更新
+    false：更新完毕
+    :return:
+    """
+    current_user_id = g.user_id
+    key = f'check_domain_status:{current_user_id}'
+
+    return {
+        'status': global_data_service.get_value(key)
+    }
 
 
 def update_domain_cert_info_by_id():
@@ -220,6 +252,9 @@ def check_domain_cert():
     :return:
     """
     current_user_id = g.user_id
+
+    key = f'check_domain_status:{current_user_id}'
+    global_data_service.set_value(key, True)
 
     # # 先更新，再检查
     # domain_service.update_all_domain_cert_info_of_user(current_user_id)

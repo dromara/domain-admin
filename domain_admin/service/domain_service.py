@@ -11,7 +11,7 @@ from domain_admin.model.base_model import db
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import email_service, render_service
+from domain_admin.service import email_service, render_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
@@ -47,16 +47,17 @@ def add_domain(data):
     return row
 
 
-def update_domain_cert_info(row, cache=None):
+def update_domain_cert_info(row):
     """
     更新域名和证书信息
+    :param cache:
     :param row:
     :return:
     """
     logger.info('update_domain_cert_info: %s', row.domain)
 
     # 获取域名信息
-    domain_info = get_domain_info(row.domain, cache)
+    domain_info = get_domain_info(row.domain)
 
     # 获取证书信息
     cert_info = get_cert_info(row.domain)
@@ -113,13 +114,15 @@ def get_cert_info(domain: str):
     }
 
 
-def get_domain_info(domain: str, cache=None):
+def get_domain_info(domain: str):
     """
     获取域名注册信息
     :param domain: 域名
     :param cache: 查询缓存字典
     :return:
     """
+
+    cache = global_data_service.get_value('update_domain_list_info_cache')
 
     now = datetime.now()
 
@@ -173,12 +176,15 @@ def update_domain_list_info(rows):
     """
     # 增加缓存，提升查询效率
     cache = {}
+    global_data_service.set_value('update_domain_list_info_cache', cache)
 
     for row in rows:
-        update_domain_cert_info(row, cache)
+        update_domain_cert_info(row)
         # bugfix: ConnectionResetError: [Errno 104] Connection reset by peer
         # 请求过于频繁
         time.sleep(0.5)
+
+    global_data_service.remove_value('update_domain_list_info_cache')
 
 
 def update_all_domain_cert_info_of_user(user_id):
@@ -191,6 +197,9 @@ def update_all_domain_cert_info_of_user(user_id):
     )
 
     update_domain_list_info(lst)
+
+    key = f'update_domain_status:{user_id}'
+    global_data_service.set_value(key, False)
 
 
 def get_domain_info_list(user_id=None):
@@ -420,3 +429,6 @@ def update_and_check_domain_cert(user_id):
     update_all_domain_cert_info_of_user(user_id)
 
     check_domain_cert(user_id)
+
+    key = f'check_domain_status:{user_id}'
+    global_data_service.set_value(key, False)
