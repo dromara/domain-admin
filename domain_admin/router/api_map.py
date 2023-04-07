@@ -33,6 +33,8 @@ routes = {
     "/api/getAllDomainListOfUser": domain_api.get_all_domain_list_of_user,
     "/api/getUpdateDomainStatusOfUser": domain_api.get_update_domain_status_of_user,
     "/api/getCheckDomainStatusOfUser": domain_api.get_check_domain_status_of_user,
+    "/api/exportDomainFile": domain_api.export_domain_file,
+    '/api/domainRelationGroup': domain_api.domain_relation_group,
 
     # 分组管理
     "/api/addGroup": group_api.add_group,
@@ -69,4 +71,5 @@ routes = {
     '/api/testWebhookNotifyOfUser': notify_api.test_webhook_notify_of_user,
     '/api/testWorkWeixinNotifyOfUser': notify_api.test_work_weixin_notify_of_user,
     '/api/getTemplateData': notify_api.get_template_data,
+
 }

@@ -13,7 +13,7 @@ dist/
 config.yml
 logs/
 .deta
-temp
+/temp
 database
 .pytest_cache
 

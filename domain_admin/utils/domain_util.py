@@ -21,7 +21,16 @@ def parse_domain_from_file(filename):
     # lst = []
     with open(filename, 'r') as f:
         for line in f.readlines():
-            yield parse_domain(line.strip())
+            # 域名,域名天数,证书天数,分组,备注
+            fields = line.split(',')
+
+            if len(fields) > 0:
+                domain = parse_domain(fields[0].strip())
+
+            if domain:
+                yield {
+                    'domain': domain,
+                }
 
 
 def extract_domain(domain: str) -> ExtractResult:

@@ -15,7 +15,8 @@ def resolve_log_file(filename):
 
 
 def resolve_temp_url(filename):
-    return urljoin(TEMP_DIR_BASE_URL, filename)
+    # return urljoin(TEMP_DIR_BASE_URL, filename)
+    return TEMP_DIR_BASE_URL + '/' + filename
 
 
 def get_temp_filename(ext):

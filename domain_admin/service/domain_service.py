@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import os
 import time
 import traceback
 from datetime import datetime
@@ -9,13 +10,14 @@ from peewee import chunked
 from domain_admin.log import logger
 from domain_admin.model.base_model import db
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import email_service, render_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
-from domain_admin.utils import datetime_util, cert_util, whois_util
+from domain_admin.utils import datetime_util, cert_util, whois_util, file_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 from concurrent.futures import ThreadPoolExecutor
@@ -365,9 +367,9 @@ def add_domain_from_file(filename, user_id):
     lst = domain_util.parse_domain_from_file(filename)
     lst = [
         {
-            'domain': domain,
+            'domain': item['domain'],
             'user_id': user_id,
-        } for domain in lst
+        } for item in lst
     ]
 
     for batch in chunked(lst, 500):
@@ -396,15 +398,42 @@ def add_domain_from_file(filename, user_id):
 
 
 def export_domain_to_file(user_id):
-    rows = DomainModel.select().where(DomainModel.user_id == user_id)
-    lst = [row.domain for row in rows]
+    """
+    导出域名到文件
+    :param user_id:
+    :return:
+    """
+    # 域名数据
+    rows = DomainModel.select().where(
+        DomainModel.user_id == user_id
+    ).order_by(
+        DomainModel.expire_days.desc(),
+        DomainModel.id.desc(),
+    )
 
-    temp_filename = file_service.get_temp_filename('txt')
+    #  分组数据
+    group_rows = GroupModel.select().where(
+        GroupModel.user_id == user_id
+    )
 
+    group_map = {row.id: row.name for row in group_rows}
+
+    filename = file_util.get_random_filename('csv')
+    temp_filename = file_service.resolve_temp_file(filename)
+    # print(temp_filename)
     with open(temp_filename, 'w') as f:
-        f.writelines(lst)
+        # 标题
+        f.write("域名,域名天数,证书天数,分组,备注\n")
 
-    return temp_filename
+        for row in rows:
+            f.write(','.join([
+                row.domain,
+                str(row.real_time_domain_expire_days),
+                str(row.real_time_expire_days),
+                group_map.get(row.group_id, ''),
+                row.alias]) + '\n')
+
+    return filename
 
 
 def notify_user(user_id):

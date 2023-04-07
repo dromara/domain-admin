@@ -304,3 +304,36 @@ def get_all_domain_list_of_user():
         'list': lst,
         'total': len(lst)
     }
+
+
+def export_domain_file():
+    """
+    导出域名文件
+    :return:
+    """
+    current_user_id = g.user_id
+    # temp_filename = domain_service.export_domain_to_file(current_user_id)
+
+    ret = domain_service.export_domain_to_file(current_user_id)
+
+    return {
+        'ret': ret,
+        'url': file_service.resolve_temp_url(ret)
+    }
+
+
+def domain_relation_group():
+    """
+    分组关联域名
+    :return:
+    """
+    current_user_id = g.user_id
+    # temp_filename = domain_service.export_domain_to_file(current_user_id)
+    domain_ids = request.json['domain_ids']
+    group_id = request.json['group_id']
+
+    DomainModel.update(
+        group_id=group_id
+    ).where(
+        DomainModel.id.in_(domain_ids)
+    ).execute()
