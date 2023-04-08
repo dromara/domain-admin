@@ -408,7 +408,7 @@ def export_domain_to_file(user_id):
     rows = DomainModel.select().where(
         DomainModel.user_id == user_id
     ).order_by(
-        DomainModel.expire_days.desc(),
+        DomainModel.expire_days.asc(),
         DomainModel.id.desc(),
     )
 
