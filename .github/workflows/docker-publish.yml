@@ -40,16 +40,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Clone GuillaumeFalourd/formulas-training PRIVATE repository
-        uses: GuillaumeFalourd/clone-github-repo-action@v2
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          owner: 'mouday'
           repository: 'domain-admin-web'
-          access-token: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Move Web Dist code
-        run: |
-          mv domain-admin-web domain_admin/public
+          ref: 'dist'
+          path: 'domain_admin/public'
 
       - name: Build Docker Image
         uses: docker/build-push-action@v2
