@@ -26,7 +26,7 @@ jobs:
           repository: 'domain-admin-web'
           access-token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Move Web Dist
+      - name: Move Web Dist code
         run: |
           mv domain-admin-web domain_admin/public
 
