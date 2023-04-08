@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+
+      - name: Pull Web Dist
+          run: |
+            git clone git@github.com:mouday/domain-admin-web.git domain_admin/public
+
       - name: Create Release for Tag
         id: release_tag
         uses: yyx990803/release-tag@master
