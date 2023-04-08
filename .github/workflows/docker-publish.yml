@@ -43,7 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          repository: 'domain-admin-web'
+          repository: 'mouday/domain-admin-web'
           ref: 'dist'
           path: 'domain_admin/public'
 

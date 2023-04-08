@@ -7,8 +7,12 @@ name: Upload Python Package
 
 on:
   push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branch: ['master']
+
+#on:
+#  push:
+#    tags:
+#      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 permissions:
   contents: read
@@ -35,7 +39,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          repository: 'domain-admin-web'
+          repository: 'mouday/domain-admin-web'
           ref: 'dist'
           path: 'domain_admin/public'
 
