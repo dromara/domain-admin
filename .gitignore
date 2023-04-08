@@ -4,6 +4,7 @@ __pycache__
 *.sqlite
 *.db
 build/
+domain_admin/public/
 dist/
 *.egg-info/
 *.log
