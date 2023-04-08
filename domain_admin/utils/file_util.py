@@ -9,3 +9,12 @@ def get_random_filename(ext):
     :return:
     """
     return str(uuid.uuid4()) + '.' + ext
+
+
+def get_filename_ext(filename):
+    """
+    获取文件名的扩展名
+    :param filename:
+    :return:
+    """
+    return filename.split('.')[-1]

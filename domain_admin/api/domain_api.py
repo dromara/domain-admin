@@ -23,7 +23,7 @@ def add_domain():
 
     domain = request.json.get('domain')
     alias = request.json.get('alias', '')
-    group_id = request.json.get('group_id', 0)
+    group_id = request.json.get('group_id') or 0
 
     if not domain:
         raise AppException('参数缺失：domain')
@@ -54,6 +54,7 @@ def update_domain_by_id():
     domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
     data['update_time'] = datetime_util.get_datetime()
+    data['group_id'] = data.get('group_id') or 0
 
     DomainModel.update(data).where(
         DomainModel.id == domain_id
@@ -264,27 +265,6 @@ def check_domain_cert():
     async_task_service.submit_task(fn=domain_service.update_and_check_domain_cert, user_id=current_user_id)
 
 
-def import_domain_from_file():
-    """
-    从文件导入域名
-    :return:
-    """
-    current_user_id = g.user_id
-
-    update_file = request.files.get('file')
-
-    filename = file_service.save_temp_file(update_file)
-
-    # 异步导入
-    async_task_service.submit_task(fn=domain_service.add_domain_from_file, filename=filename, user_id=current_user_id)
-
-    # count = domain_service.add_domain_from_file(filename, current_user_id)
-
-    # return {
-    #     'count': count
-    # }
-
-
 def get_all_domain_list_of_user():
     """
     获取用户的所有域名数据
@@ -306,19 +286,34 @@ def get_all_domain_list_of_user():
     }
 
 
-def export_domain_file():
+def import_domain_from_file():
     """
-    导出域名文件
+    从文件导入域名
+    支持 txt 和 csv格式
     :return:
     """
     current_user_id = g.user_id
-    # temp_filename = domain_service.export_domain_to_file(current_user_id)
 
-    ret = domain_service.export_domain_to_file(current_user_id)
+    update_file = request.files.get('file')
+
+    filename = file_service.save_temp_file(update_file)
+
+    # 异步导入
+    async_task_service.submit_task(fn=domain_service.add_domain_from_file, filename=filename, user_id=current_user_id)
+
+
+def export_domain_file():
+    """
+    导出域名文件
+    csv格式
+    :return:
+    """
+    current_user_id = g.user_id
+
+    filename = domain_service.export_domain_to_file(current_user_id)
 
     return {
-        'ret': ret,
-        'url': file_service.resolve_temp_url(ret)
+        'url': file_service.resolve_temp_url(filename)
     }
 
 

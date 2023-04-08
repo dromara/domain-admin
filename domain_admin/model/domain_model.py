@@ -26,7 +26,7 @@ class DomainModel(BaseModel):
     ip = CharField(default="")
 
     # 分组
-    group_id = IntegerField(default=0)
+    group_id = IntegerField(default=0, null=False)
 
     # 域名注册时间 @since 1.1.0
     domain_start_time = DateTimeField(default=None, null=True)

@@ -213,8 +213,8 @@ def get_domain_info_list(user_id=None):
         )
 
     query = query.order_by(
-        DomainModel.domain_expire_days.asc(),
         DomainModel.expire_days.asc(),
+        DomainModel.domain_expire_days.asc(),
         DomainModel.id.desc()
     )
 
@@ -368,6 +368,7 @@ def add_domain_from_file(filename, user_id):
     lst = [
         {
             'domain': item['domain'],
+            'alias': item.get('alias', ''),
             'user_id': user_id,
         } for item in lst
     ]
@@ -418,20 +419,18 @@ def export_domain_to_file(user_id):
 
     group_map = {row.id: row.name for row in group_rows}
 
+    lst = []
+    for row in list(rows):
+        row.group_name = group_map.get(row.group_id, '')
+        lst.append(row)
+
+    content = render_service.render_template('domain-export.csv', {'list': lst})
+
     filename = file_util.get_random_filename('csv')
     temp_filename = file_service.resolve_temp_file(filename)
     # print(temp_filename)
     with open(temp_filename, 'w') as f:
-        # 标题
-        f.write("域名,域名天数,证书天数,分组,备注\n")
-
-        for row in rows:
-            f.write(','.join([
-                row.domain,
-                str(row.real_time_domain_expire_days),
-                str(row.real_time_expire_days),
-                group_map.get(row.group_id, ''),
-                row.alias]) + '\n')
+        f.write(content)
 
     return filename
 
