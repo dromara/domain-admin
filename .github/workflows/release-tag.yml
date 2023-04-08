@@ -26,9 +26,9 @@ jobs:
           repository: 'domain-admin-web'
           access-token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Move Web Dist code
-        run: |
-          mv domain-admin-web domain_admin/public
+#      - name: Move Web Dist code
+#        run: |
+#          mv domain-admin-web domain_admin/public
 
       - name: Create Release for Tag
         id: release_tag
