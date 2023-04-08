@@ -19,9 +19,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      - name: Pull Web Dist
+      - name: Clone GuillaumeFalourd/formulas-training PRIVATE repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
+        with:
+          owner: 'mouday'
+          repository: 'domain-admin-web'
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Move Web Dist
         run: |
-            git clone git@github.com:mouday/domain-admin-web.git domain_admin/public
+          mv domain-admin-web domain_admin/public
 
       - name: Create Release for Tag
         id: release_tag
