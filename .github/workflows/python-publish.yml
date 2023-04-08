@@ -41,6 +41,7 @@ jobs:
         with:
           repository: 'mouday/domain-admin-web'
           ref: 'dist'
+          token: ${{ secrets.GH_PAT }}
           path: 'domain_admin/public'
 
       - name: Build and publish
