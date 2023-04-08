@@ -2,10 +2,14 @@
 
 name: Create Release
 
+#on:
+#  push:
+#    tags:
+#      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
 on:
   push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branch: ['master']
 
 jobs:
   build:
@@ -16,7 +20,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Pull Web Dist
-          run: |
+        run: |
             git clone git@github.com:mouday/domain-admin-web.git domain_admin/public
 
       - name: Create Release for Tag
