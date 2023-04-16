@@ -7,6 +7,13 @@ www.toutiao.com
 www.taobao.com
 www.xiaomi.com
 www.apple.com
+www.bilibili.tv
+www.baidu.com
+www.python.org
+www.pconline.com.cn
+www.xiaomi.cn
+www.csdn.net
+www.gov.xyz
 expired.badssl.com
 hsts.badssl.com
 self-signed.badssl.com
