@@ -9,9 +9,9 @@ ROOT_SERVER = 'whois.iana.org'
 
 # 默认的配置，适用于大部分域名查询
 DEFAULT_WHOIS_CONFIG = {
-    'whois_server': '',                    # whois查询服务器
+    'whois_server': '',  # whois查询服务器
     # 'error': 'No match',                   # 错误信息
-    'registry_time': 'Creation Date',      # 注册时间
+    'registry_time': 'Creation Date',  # 注册时间
     'expire_time': 'Registry Expiry Date'  # 过期时间
 }
 
@@ -22,8 +22,14 @@ DEFAULT_WHOIS_CONFIG = {
 CUSTOM_WHOIS_CONFIGS = {
     'cn': {
         'whois_server': 'whois.cnnic.cn',
-        # 'error': 'Invalid parameter',
         'registry_time': 'Registration Time',
         'expire_time': 'Expiration Time',
+    },
+    'hk': {
+        'whois_server': 'whois.hkirc.hk',
+        'registry_time': 'Domain Name Commencement Date',
+        "registry_time_format": '%d-%m-%Y',
+        'expire_time': 'Expiry Date',
+        "expire_time_format": '%d-%m-%Y',
     }
 }

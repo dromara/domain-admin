@@ -5,6 +5,7 @@
 """
 import json
 from copy import deepcopy
+from datetime import datetime
 
 from dateutil import parser
 
@@ -14,6 +15,21 @@ from domain_admin.utils.whois_util.config import CUSTOM_WHOIS_CONFIGS, DEFAULT_W
 from domain_admin.utils.whois_util.util import parse_whois_raw, get_whois_raw, load_whois_servers
 
 WHOIS_CONFIGS = None
+
+
+def parse_time(time_str, time_format=None):
+    """
+    解析时间字符串为时间对象
+    :param time_str:
+    :param time_format:
+    :return:
+    """
+    if time_format:
+        time_parsed = datetime.strptime(time_str, time_format)
+    else:
+        time_parsed = parser.parse(time_str).replace(tzinfo=None)
+
+    return time_parsed
 
 
 def load_whois_servers_config():
@@ -69,6 +85,8 @@ def get_domain_whois(domain):
     # error = whois_config['error']
     registry_time = whois_config['registry_time']
     expire_time = whois_config['expire_time']
+    registry_time_format = whois_config.get('registry_time_format')
+    expire_time_format = whois_config.get('expire_time_format')
 
     raw_data = get_whois_raw(domain, whois_server, timeout=10)
     logger.debug(raw_data)
@@ -83,9 +101,10 @@ def get_domain_whois(domain):
     expire_time = data.get(expire_time)
 
     if start_time:
-        start_time = parser.parse(start_time).replace(tzinfo=None)
+        start_time = parse_time(start_time, registry_time_format)
+
     if expire_time:
-        expire_time = parser.parse(expire_time).replace(tzinfo=None)
+        expire_time = parse_time(expire_time, expire_time_format)
 
     if start_time and expire_time:
         return {

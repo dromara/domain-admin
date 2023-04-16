@@ -25,8 +25,11 @@ def test_get_domain_info():
         # '126.net'
 
         # biz
-        'all.biz'
+        # 'all.biz'
+
+        'dot.tk'
     ]
+
 
     for domain in domain_list:
         # print(parse_whois_raw(get_whois_raw(domain, ROOT_SERVER)))

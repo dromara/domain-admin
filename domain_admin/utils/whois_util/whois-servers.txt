@@ -195,7 +195,7 @@ tel whois.nic.tel
 tf whois.nic.tf
 th whois.thnic.net
 tj whois.nic.tj
-tk whois.nic.tk
+tk whois.dot.tk
 tl whois.domains.tl
 tm whois.nic.tm
 tn whois.ati.tn
