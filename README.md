@@ -284,6 +284,8 @@ sqlite> .quit
 
 ## 问题反馈交流
 
+群号:731742868
+
 邀请码：domain-admin
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">

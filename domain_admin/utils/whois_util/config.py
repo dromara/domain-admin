@@ -7,20 +7,23 @@
 # 根服务器地址
 ROOT_SERVER = 'whois.iana.org'
 
+# 默认的配置，适用于大部分域名查询
+DEFAULT_WHOIS_CONFIG = {
+    'whois_server': '',                    # whois查询服务器
+    # 'error': 'No match',                   # 错误信息
+    'registry_time': 'Creation Date',      # 注册时间
+    'expire_time': 'Registry Expiry Date'  # 过期时间
+}
+
 # https://www.nirsoft.net/whois-servers.txt
 # https://www.iana.org/domains/root/db
-WHOIS_CONFIGS = {
+
+# 自定义配置
+CUSTOM_WHOIS_CONFIGS = {
     'cn': {
         'whois_server': 'whois.cnnic.cn',
-        'error': 'Invalid parameter',
+        # 'error': 'Invalid parameter',
         'registry_time': 'Registration Time',
         'expire_time': 'Expiration Time',
-    },
-
-    'com': {
-        'whois_server': 'whois.verisign-grs.com',
-        'error': 'No match',
-        'registry_time': 'Creation Date',
-        'expire_time': 'Registry Expiry Date'
     }
 }

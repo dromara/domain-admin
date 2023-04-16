@@ -4,6 +4,7 @@
 @Date    : 2023-03-25
 """
 import socket
+from os import path
 
 
 def parse_whois_raw(whois_raw: str):
@@ -49,3 +50,27 @@ def get_whois_raw(domain: str, server: str, port=43, timeout=5) -> str:
     sock.close()
 
     return buff.decode("utf-8")
+
+
+def load_whois_servers():
+    """
+    加载域名查询服务器配置
+    :return: dict {
+        root: server
+        ...
+    }
+    """
+    dct = {}
+
+    with open(path.join(path.dirname(__file__), 'whois-servers.txt'), 'r') as f:
+        for line in f:
+            if line.startswith(";"):
+                pass
+
+            split_line = line.split(" ")
+
+            if len(split_line) == 2:
+                root, server = split_line
+                dct[root.strip()] = server.strip()
+
+    return dct
