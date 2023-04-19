@@ -88,10 +88,10 @@ make dev
 
 ## 项目简介
 
-- https://gitee.com/mouday/domain-admin
-- https://github.com/mouday/domain-admin
-- https://pypi.org/project/domain-admin
-- https://hub.docker.com/r/mouday/domain-admin
+- 项目地址：https://github.com/mouday/domain-admin
+- 国内镜像：https://gitee.com/mouday/domain-admin
+- pypi：https://pypi.org/project/domain-admin
+- docker：https://hub.docker.com/r/mouday/domain-admin
 
 项目截图
 
@@ -149,7 +149,7 @@ make dev
 
 2、批量导入域名
 
-导入文本示例: [/doc/domain.txt](/doc/domain.txt)
+导入文本示例: [/docs/domain.txt](/docs/domain.txt)
 
 3、设置邮件通知
 
@@ -313,7 +313,7 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 批量域名列表 (746314个)
  
 - [alexa-top-1m.csv.zip](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)
-- [doc/top-1m.csv](doc/top-1m.csv)
+- [docs/top-1m.csv](docs/top-1m.csv)
 
 ## 更新日志
 
