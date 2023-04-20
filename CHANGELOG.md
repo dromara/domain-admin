@@ -1,5 +1,8 @@
 ## 更新日志
 
+- v1.2.11(2023-04-20)
+    - 更新whois-servers.txt，感谢[@poctopus](https://github.com/poctopus)贡献代码 
+    
 - v1.2.10 (2023-04-16)
     - 新增域名后缀的支持：.hk
 
