@@ -1,3 +1,8 @@
+;WHOIS Servers List
+;old list: http://www.nirsoft.net/whois_servers_list.html
+;this list from: https://github.com/WooMai/whois-servers/blob/master/list.txt
+;update by: https://github.com/poctopus
+;Last updated on 2023-04-20
 ae whois.aeda.net.ae
 aero whois.aero
 adult whois.registrar.adult
