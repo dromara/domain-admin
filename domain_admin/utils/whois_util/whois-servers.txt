@@ -197,6 +197,7 @@ pe kero.yachay.pe
 pink whois.afilias.net
 pl whois.dns.pl
 play whois.nic.google
+plus whois.nic.plus
 pm whois.nic.pm
 porn whois.registrar.adult
 pr whois.nic.pr
@@ -209,6 +210,7 @@ re whois.nic.re
 red whois.afilias.net
 ren whois.nic.ren
 rentals whois.nic.rentals
+rest whois.nic.rest
 review whois.nic.review
 ro whois.rotld.ro
 rocks whois.nic.rocks
