@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from domain_admin.log import logger
 from domain_admin.service import system_service
 from domain_admin.utils.email_util import EmailServer
-from domain_admin.utils.flask_ext.app_exception import AppException
 
 
-def send_email(content: str,
-               to_addresses: list,
-               content_type: str = 'plain'):
+def send_email(
+        content: str,
+        to_addresses: list,
+        content_type: str = 'plain'
+):
     """
     发送邮件
     :param content:

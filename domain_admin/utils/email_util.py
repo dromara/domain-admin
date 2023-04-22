@@ -6,7 +6,16 @@ from email.utils import formataddr
 
 
 class EmailServer(object):
-    def __init__(self, mail_host, mail_port,mail_alias, mail_username, mail_password):
+    """
+    邮件发送
+    """
+
+    def __init__(self,
+                 mail_host,
+                 mail_port,
+                 mail_alias,
+                 mail_username,
+                 mail_password):
         self.mail_host = mail_host
         self.mail_port = mail_port
         self.mail_alias = mail_alias
@@ -23,6 +32,11 @@ class EmailServer(object):
             self._server = self.get_server()
 
         return self._server
+
+    def quit(self):
+        if self.server:
+            self.server.quit()
+            self._server = None
 
     def get_server(self):
         """
@@ -47,15 +61,11 @@ class EmailServer(object):
 
         return server
 
-    def quit(self):
-        if self.server:
-            self.server.quit()
-
     def get_email_content(self, subject, content, content_type='plain'):
         # 构造邮件
         msg = MIMEText(content, content_type, 'utf-8')
         # 邮箱昵称、发件人邮箱账号
-        msg['From'] = formataddr([self.mail_alias, self.mail_username])
+        msg['From'] = formataddr((self.mail_alias, self.mail_username))
         # msg['To'] = to_addresses.join(',')
         msg['Subject'] = subject
         return msg

@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 
 from domain_admin.model.cache_domain_info_model import CacheDomainInfoModel
 from domain_admin.utils import domain_util
-from domain_admin.utils import domain_util
 from domain_admin.utils.whois_util import whois_util
 
 
@@ -34,7 +33,7 @@ def get_domain_info(domain: str) -> CacheDomainInfoModel:
             domain=root_domain,
             domain_start_time=domain_whois['start_time'],
             domain_expire_time=domain_whois['expire_time'],
-            expire_time=datetime.now() + timedelta(hours=1)
+            expire_time=domain_whois['expire_time'] - timedelta(minutes=3)
         )
 
     return row

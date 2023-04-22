@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-import json
-import os
 import time
 import traceback
 import warnings
 from datetime import datetime
 
-from playhouse.shortcuts import model_to_dict
 from peewee import chunked
+from playhouse.shortcuts import model_to_dict
+
 from domain_admin.log import logger
-from domain_admin.model.base_model import db
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
@@ -22,7 +20,6 @@ from domain_admin.utils import datetime_util, cert_util, whois_util, file_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.cert_util import cert_common
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
-from concurrent.futures import ThreadPoolExecutor
 
 
 def add_domain(data):
