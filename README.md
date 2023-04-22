@@ -18,6 +18,21 @@
 
 支持平台：macOS、Linux、Windows
 
+- 项目地址：https://github.com/mouday/domain-admin
+- 国内镜像：https://gitee.com/mouday/domain-admin
+- pypi：https://pypi.org/project/domain-admin
+- docker：https://hub.docker.com/r/mouday/domain-admin
+
+## 项目截图
+
+网页版：
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png)
+
+桌面端：
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-desktop.png)
+
 ## 安装
 
 ### 方式一：pip安装
@@ -87,22 +102,6 @@ make dev
 ```
 
 ## 项目简介
-
-- 项目地址：https://github.com/mouday/domain-admin
-- 国内镜像：https://gitee.com/mouday/domain-admin
-- pypi：https://pypi.org/project/domain-admin
-- docker：https://hub.docker.com/r/mouday/domain-admin
-
-项目截图
-
-
-网页版：
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png)
-
-桌面端：
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-desktop.png)
 
 功能：
 
@@ -198,13 +197,13 @@ git push -u gitee master
 后端选型
 
 - Python3.7.0
-- Flask https://flask.palletsprojects.com/en/2.2.x/
-- jinja2 https://jinja.palletsprojects.com/en/3.1.x/
-- peewee（sqlite） http://docs.peewee-orm.com/en/latest/index.html#
-- apscheduler https://apscheduler.readthedocs.io/en/3.x/
-- supervisord http://supervisord.org/index.html
-- gunicorn https://docs.gunicorn.org/
-
+- [Flask](https://flask.palletsprojects.com/en/2.2.x/) 
+- [jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
+- [peewee（sqlite）](http://docs.peewee-orm.com/en/latest/index.html#)
+- [apscheduler](https://apscheduler.readthedocs.io/en/3.x/)
+- [supervisord](http://supervisord.org/index.html) 部署推荐
+- [gunicorn](https://docs.gunicorn.org/) mac/linux 推荐
+- [waitress](https://github.com/Pylons/waitress) windows 推荐
 
 ## 问题
 
@@ -282,6 +281,22 @@ sqlite> .quit
 
 可尝试更换端口25或465
 
+### 6、webhook模板
+
+可以参考接口文档：[更新用户通知配置](docs/notify/updateNotifyOfUser.md)
+
+### 7、监控域名非443的端口
+
+域名格式
+
+```
+域名:端口
+
+eg:
+
+www.baidu.com:8080
+```
+
 ## 问题反馈交流
 
 群号:731742868
@@ -299,8 +314,9 @@ sqlite> .quit
 - `已完成` 支持域名备注
 - `已完成` 支持域名到期数据
 - `已完成` webhook支持变量
-- `已完成` 异步操作的前端状态显示 
+- `已完成` 异步操作的前端状态显示  
 - 暗黑模式
+- 支持内网用户自己设置过期时间
 
 证书测试：[https://badssl.com/](https://badssl.com/)
 

@@ -3,6 +3,7 @@ import json
 import os
 import time
 import traceback
+import warnings
 from datetime import datetime
 
 from playhouse.shortcuts import model_to_dict
@@ -13,12 +14,13 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import email_service, render_service, global_data_service
+from domain_admin.service import email_service, render_service, global_data_service, cache_domain_info_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
 from domain_admin.utils import datetime_util, cert_util, whois_util, file_util
 from domain_admin.utils import domain_util
+from domain_admin.utils.cert_util import cert_common
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 from concurrent.futures import ThreadPoolExecutor
 
@@ -49,7 +51,66 @@ def add_domain(data):
     return row
 
 
-def update_domain_cert_info(row):
+def update_domain_info(row: DomainModel):
+    """
+    更新域名信息
+    :param row:
+    :return:
+    """
+    # 获取域名信息
+    domain_info = cache_domain_info_service.get_domain_info(row.domain)
+
+    DomainModel.update(
+        domain_start_time=domain_info.domain_start_time,
+        domain_expire_time=domain_info.domain_expire_time,
+        domain_expire_days=domain_info.domain_expire_days,
+        domain_check_time=datetime_util.get_datetime(),
+    ).where(
+        DomainModel.id == row.id
+    ).execute()
+
+
+def update_ip_info(row: DomainModel):
+    """
+    更新ip信息
+    :param row:
+    :return:
+    """
+    # 获取ip地址
+    domain_ip = cert_common.get_domain_ip(row.domain)
+
+    DomainModel.update(
+        ip=domain_ip,
+        ip_check_time=datetime_util.get_datetime(),
+    ).where(
+        DomainModel.id == row.id
+    ).execute()
+
+
+def update_cert_info(row: DomainModel):
+    """
+    更新证书信息
+    :param row:
+    :return:
+    """
+    # 获取证书信息
+    cert_info = get_cert_info(row.domain)
+
+    DomainModel.update(
+        start_time=cert_info.get('start_date'),
+        expire_time=cert_info.get('expire_date'),
+        expire_days=cert_info.get('expire_days'),
+        total_days=cert_info.get('total_days'),
+        # ip=cert_info.get('ip', ''),
+        connect_status=cert_info.get('connect_status'),
+        detail_raw="",
+        check_time=datetime_util.get_datetime(),
+    ).where(
+        DomainModel.id == row.id
+    ).execute()
+
+
+def update_domain_cert_info(row: DomainModel):
     """
     更新域名和证书信息
     :param cache:
@@ -58,27 +119,14 @@ def update_domain_cert_info(row):
     """
     logger.info('update_domain_cert_info: %s', row.domain)
 
-    # 获取域名信息
-    domain_info = get_domain_info(row.domain)
+    # 域名信息 如果还没有过期，可以不更新
+    update_domain_info(row)
 
-    # 获取证书信息
-    cert_info = get_cert_info(row.domain)
+    # ip信息
+    update_ip_info(row)
 
-    DomainModel.update(
-        start_time=cert_info.get('start_date'),
-        expire_time=cert_info.get('expire_date'),
-        expire_days=cert_info.get('expire_days'),
-        domain_start_time=domain_info['start_time'],
-        domain_expire_time=domain_info['expire_time'],
-        domain_expire_days=domain_info['expire_days'],
-        total_days=cert_info.get('total_days'),
-        ip=cert_info.get('ip', ''),
-        connect_status=cert_info.get('connect_status'),
-        detail_raw=json.dumps(cert_info.get('info'), ensure_ascii=False),
-        check_time=datetime_util.get_datetime(),
-    ).where(
-        DomainModel.id == row.id
-    ).execute()
+    # 证书信息
+    update_cert_info(row)
 
 
 def get_cert_info(domain: str):
@@ -111,7 +159,7 @@ def get_cert_info(domain: str):
         'expire_days': expire_days,
         'total_days': total_days,
         'connect_status': connect_status,
-        'ip': info.get('ip', ''),
+        # 'ip': info.get('ip', ''),
         'info': info,
     }
 
@@ -123,8 +171,9 @@ def get_domain_info(domain: str):
     :param cache: 查询缓存字典
     :return:
     """
+    warnings.warn("use cache_domain_info_service.get_domain_info", DeprecationWarning)
 
-    cache = global_data_service.get_value('update_domain_list_info_cache')
+    # cache = global_data_service.get_value('update_domain_list_info_cache')
 
     now = datetime.now()
 
@@ -136,14 +185,14 @@ def get_domain_info(domain: str):
     extract_result = domain_util.extract_domain(domain)
     domain_and_suffix = '.'.join([extract_result.domain, extract_result.suffix])
 
-    if cache:
-        domain_info = cache.get(domain_and_suffix)
+    # if cache:
+    #     domain_info = cache.get(domain_and_suffix)
 
     if not domain_info:
         try:
             domain_info = whois_util.get_domain_info(domain_and_suffix)
-            if cache:
-                cache[domain_and_suffix] = domain_info
+            # if cache:
+            #     cache[domain_and_suffix] = domain_info
 
         except Exception:
             logger.error(traceback.format_exc())
@@ -177,8 +226,8 @@ def update_domain_list_info(rows):
     :return:
     """
     # 增加缓存，提升查询效率
-    cache = {}
-    global_data_service.set_value('update_domain_list_info_cache', cache)
+    # cache = {}
+    # global_data_service.set_value('update_domain_list_info_cache', cache)
 
     for row in rows:
         update_domain_cert_info(row)
@@ -186,7 +235,7 @@ def update_domain_list_info(rows):
         # 请求过于频繁
         time.sleep(0.5)
 
-    global_data_service.remove_value('update_domain_list_info_cache')
+    # global_data_service.remove_value('update_domain_list_info_cache')
 
 
 def update_all_domain_cert_info_of_user(user_id):
@@ -272,6 +321,7 @@ def check_domain_cert(user_id):
 
 
 def update_and_check_all_domain_cert():
+    # 开始执行
     log_row = LogSchedulerModel.create()
 
     error_message = ''
@@ -281,40 +331,41 @@ def update_and_check_all_domain_cert():
     # 更新全部域名证书信息
     update_all_domain_cert_info()
 
-    # 配置检查
-    config = system_service.get_system_config()
-    try:
-        system_service.check_email_config(config)
-    except Exception as e:
-        logger.error(traceback.format_exc())
+    # 配置检查 跳过邮件检查 可能已经配置了webhook
+    # config = system_service.get_system_config()
+    # try:
+    #     system_service.check_email_config(config)
+    # except Exception as e:
+    #     logger.error(traceback.format_exc())
+    #
+    #     status = False
+    #
+    #     if isinstance(e, AppException):
+    #         error_message = e.message
+    #     else:
+    #         error_message = str(e)
 
-        status = False
+    # 全员检查并发送用户通知
+    # if status:
+    rows = UserModel.select()
 
-        if isinstance(e, AppException):
-            error_message = e.message
-        else:
-            error_message = str(e)
+    for row in rows:
 
-    # 全员发送
-    if status:
-        rows = UserModel.select()
+        # 内层捕获单个用户发送错误
+        try:
+            check_domain_cert(row.id)
+        except Exception as e:
+            # traceback.print_exc()
+            logger.error(traceback.format_exc())
 
-        for row in rows:
+            # status = False
+            #
+            # if isinstance(e, AppException):
+            #     error_message = e.message
+            # else:
+            #     error_message = str(e)
 
-            # 内层捕获单个用户发送错误
-            try:
-                check_domain_cert(row.id)
-            except Exception as e:
-                # traceback.print_exc()
-                logger.error(traceback.format_exc())
-
-                status = False
-
-                if isinstance(e, AppException):
-                    error_message = e.message
-                else:
-                    error_message = str(e)
-
+    # 执行完毕
     LogSchedulerModel.update({
         'status': status,
         'error_message': error_message,
@@ -330,6 +381,11 @@ def send_domain_list_email(user_id):
     :param user_id:
     :return:
     """
+
+    # 配置检查
+    config = system_service.get_system_config()
+
+    system_service.check_email_config(config)
 
     email_list = notify_service.get_notify_email_list_of_user(user_id)
 

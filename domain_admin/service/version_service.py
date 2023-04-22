@@ -8,6 +8,7 @@ from domain_admin.enums.version_enum import VersionEnum
 from domain_admin.log import logger
 from domain_admin.migrate import migrate_102_to_103
 from domain_admin.migrate import migrate_106_to_110
+from domain_admin.migrate import migrate_110_to_1212
 from domain_admin.model.version_model import VersionModel
 from domain_admin.version import VERSION
 
@@ -67,11 +68,36 @@ def update_version():
             # 1.0.3 1.0.4 1.0.5 1.0.6 => 1.1.0
             logger.info('update version: %s => %s', local_version, VersionEnum.Version_110)
             migrate_106_to_110.execute_migrate()
+
             local_version = VersionEnum.Version_110
 
-        # else:
-            # raise Exception('version update not support: {} => {}'.format(local_version, current_version))
-
+        # 2023-04-22
+        if local_version in [
+            VersionEnum.Version_110,
+            VersionEnum.Version_111,
+            VersionEnum.Version_112,
+            VersionEnum.Version_113,
+            VersionEnum.Version_114,
+            VersionEnum.Version_115,
+            VersionEnum.Version_116,
+            VersionEnum.Version_117,
+            VersionEnum.Version_118,
+            VersionEnum.Version_119,
+            VersionEnum.Version_1110,
+            VersionEnum.Version_120,
+            VersionEnum.Version_121,
+            VersionEnum.Version_122,
+            VersionEnum.Version_123,
+            VersionEnum.Version_124,
+            VersionEnum.Version_128,
+            VersionEnum.Version_129,
+            VersionEnum.Version_1210,
+            VersionEnum.Version_1211,
+        ]:
+            # some => 1.2.12
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_1212)
+            migrate_110_to_1212.execute_migrate()
+            local_version = VersionEnum.Version_1212
 
     # 更新版本号
     VersionModel.create(

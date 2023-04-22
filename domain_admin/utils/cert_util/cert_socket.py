@@ -62,7 +62,7 @@ def get_cert_info(domain_with_port):
 
     return {
         'domain': domain_with_port,
-        'ip': cert_common.get_domain_ip(domain),
+        # 'ip': cert_common.get_domain_ip(domain),
         'subject': cert_common.short_name_convert(subject),
         'issuer': cert_common.short_name_convert(issuer),
         # 'version': cert['version'],

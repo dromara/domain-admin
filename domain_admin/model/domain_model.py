@@ -13,17 +13,20 @@ class DomainModel(BaseModel):
     """域名"""
     id = IntegerField(primary_key=True)
 
-    # 域名
-    domain = CharField()
-
     # 用户id
     user_id = IntegerField(default=0)
+
+    # 域名
+    domain = CharField()
 
     # 别名/备注
     alias = CharField(default="")
 
     # ip
     ip = CharField(default="")
+
+    # ip信息检查时间 @since 1.2.12
+    ip_check_time = DateTimeField(default=None, null=True)
 
     # 分组
     group_id = IntegerField(default=0, null=False)
@@ -37,17 +40,23 @@ class DomainModel(BaseModel):
     # 域名过期剩余天数，仅用于排序 @since 1.1.0
     domain_expire_days = IntegerField(default=0, null=False)
 
+    # 域名信息检查时间 @since 1.2.12
+    domain_check_time = DateTimeField(default=None, null=True)
+
     # SSL签发时间
     start_time = DateTimeField(default=None, null=True)
 
     # SSL过期时间
     expire_time = DateTimeField(default=None, null=True)
 
-    # 连接状态
-    connect_status = BooleanField(default=None, null=True)
-
     # SSL过期剩余天数，仅用于排序
     expire_days = IntegerField(default=0, null=False)
+
+    # 最后检查时间
+    check_time = DateTimeField(default=None, null=True)
+
+    # 连接状态
+    connect_status = BooleanField(default=None, null=True)
 
     # 有效期总天数
     total_days = IntegerField(default=0, null=False)
@@ -55,10 +64,12 @@ class DomainModel(BaseModel):
     # 通知状态
     notify_status = BooleanField(default=True)
 
-    # 最后检查时间
-    check_time = DateTimeField(default=None, null=True)
+    # 是否监测 @since 1.0.3
+    is_monitor = BooleanField(default=True)
+
 
     # 详细信息
+    # @Deprecated
     detail_raw = TextField(default=None, null=True)
 
     # 创建时间
@@ -66,9 +77,6 @@ class DomainModel(BaseModel):
 
     # 更新时间
     update_time = DateTimeField(default=datetime.now)
-
-    # 是否监测 @since 1.0.3
-    is_monitor = BooleanField(default=True)
 
     class Meta:
 

@@ -262,7 +262,7 @@ tr whois.nic.tr
 trade whois.nic.trade
 travel whois.nic.travel
 tube whois.nic.tube
-tv tvwhois.verisign-grs.com
+tv whois.nic.tv
 tw whois.twnic.net
 ua whois.net.ua
 ug whois.co.ug

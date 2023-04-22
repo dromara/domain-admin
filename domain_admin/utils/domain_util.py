@@ -89,3 +89,13 @@ def extract_domain(domain: str) -> ExtractResult:
     :return:
     """
     return tldextract.extract(domain)
+
+
+def get_root_domain(domain: str) -> str:
+    """
+    解析出域名和顶级后缀
+    :param domain:
+    :return:
+    """
+    extract_result = extract_domain(domain)
+    return '.'.join([extract_result.domain, extract_result.suffix])

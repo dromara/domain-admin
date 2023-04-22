@@ -62,6 +62,8 @@ webhook方式提交的body参数支持[jinja2模板语法](http://doc.yonyouclou
 }
 ```
 
+模板变量同 [获取域名列表](/domain/getDomainList.md)
+
 6、返回示例
 
 ```json
