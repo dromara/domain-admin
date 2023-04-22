@@ -29,11 +29,18 @@ def get_domain_info(domain: str) -> CacheDomainInfoModel:
         if domain_whois is None:
             raise Exception("域名信息获取失败")
 
-        row = CacheDomainInfoModel.create(
-            domain=root_domain,
-            domain_start_time=domain_whois['start_time'],
-            domain_expire_time=domain_whois['expire_time'],
-            expire_time=domain_whois['expire_time'] - timedelta(minutes=3)
-        )
+        data = {
+            "domain": root_domain,
+            "domain_start_time": domain_whois['start_time'],
+            "domain_expire_time": domain_whois['expire_time'],
+            "expire_time": domain_whois['expire_time'] - timedelta(minutes=3)
+        }
+
+        if not row:
+            row = CacheDomainInfoModel.create(**data)
+        else:
+            CacheDomainInfoModel.update(data).where(
+                CacheDomainInfoModel.id == row.id
+            ).execute()
 
     return row
