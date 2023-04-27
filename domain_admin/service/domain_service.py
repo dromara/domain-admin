@@ -22,32 +22,6 @@ from domain_admin.utils.cert_util import cert_common
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
 
-def add_domain(data):
-    """
-    添加域名
-    :param data: {
-        'domain': '必传',
-        'user_id': '必传',
-        'alias': '可选，默认 ""'
-        'group_id': '可选，默认 0'
-     }
-    :return:
-    """
-    user_id = data['user_id']
-    domain = data['domain']
-    alias = data.get('alias', '')
-    group_id = data.get('group_id', 0)
-
-    row = DomainModel.create(
-        user_id=user_id,
-        domain=domain,
-        alias=alias,
-        group_id=group_id
-    )
-
-    return row
-
-
 def update_domain_info(row: DomainModel):
     """
     更新域名信息
@@ -55,13 +29,30 @@ def update_domain_info(row: DomainModel):
     :return:
     """
     # 获取域名信息
-    domain_info = cache_domain_info_service.get_domain_info(row.domain)
+    domain_info = None
+
+    try:
+        domain_info = cache_domain_info_service.get_domain_info(row.domain)
+    except Exception as e:
+        pass
+
+    update_data = {
+        'domain_start_time': None,
+        "domain_expire_time": None,
+        'domain_expire_days': 0,
+    }
+
+    if domain_info:
+        update_data = {
+            'domain_start_time': domain_info.domain_start_time,
+            "domain_expire_time": domain_info.domain_expire_time,
+            'domain_expire_days': domain_info.domain_expire_days,
+        }
 
     DomainModel.update(
-        domain_start_time=domain_info.domain_start_time,
-        domain_expire_time=domain_info.domain_expire_time,
-        domain_expire_days=domain_info.domain_expire_days,
+        **update_data,
         domain_check_time=datetime_util.get_datetime(),
+        update_time=datetime_util.get_datetime(),
     ).where(
         DomainModel.id == row.id
     ).execute()
@@ -74,11 +65,17 @@ def update_ip_info(row: DomainModel):
     :return:
     """
     # 获取ip地址
-    domain_ip = cert_common.get_domain_ip(row.domain)
+    domain_ip = ''
+
+    try:
+        domain_ip = cert_common.get_domain_ip(row.domain)
+    except Exception as e:
+        pass
 
     DomainModel.update(
         ip=domain_ip,
         ip_check_time=datetime_util.get_datetime(),
+        update_time=datetime_util.get_datetime(),
     ).where(
         DomainModel.id == row.id
     ).execute()
@@ -91,39 +88,47 @@ def update_cert_info(row: DomainModel):
     :return:
     """
     # 获取证书信息
-    cert_info = get_cert_info(row.domain)
+    cert_info = {}
+
+    try:
+        cert_info = get_cert_info(row.domain)
+    except Exception as e:
+        pass
 
     DomainModel.update(
         start_time=cert_info.get('start_date'),
         expire_time=cert_info.get('expire_date'),
-        expire_days=cert_info.get('expire_days'),
-        total_days=cert_info.get('total_days'),
+        expire_days=cert_info.get('expire_days', 0),
+        total_days=cert_info.get('total_days', 0),
         # ip=cert_info.get('ip', ''),
         connect_status=cert_info.get('connect_status'),
         detail_raw="",
         check_time=datetime_util.get_datetime(),
+        update_time=datetime_util.get_datetime(),
     ).where(
         DomainModel.id == row.id
     ).execute()
 
 
-def update_domain_cert_info(row: DomainModel):
+def update_domain_row(row: DomainModel):
     """
-    更新域名和证书信息
-    :param cache:
+    更新域名相关数据
     :param row:
     :return:
     """
-    logger.info('update_domain_cert_info: %s', row.domain)
+    # 如果自动更新禁用，则不更新
+    if row.domain_auto_update is True:
+        # 域名信息 如果还没有过期，可以不更新
+        update_domain_info(row)
 
-    # 域名信息 如果还没有过期，可以不更新
-    update_domain_info(row)
+    # 如果自动更新禁用，则不更新
+    if row.auto_update is True:
+        # 证书信息
+        update_cert_info(row)
 
     # ip信息
-    update_ip_info(row)
-
-    # 证书信息
-    update_cert_info(row)
+    if row.ip_auto_update is True:
+        update_ip_info(row)
 
 
 def get_cert_info(domain: str):
@@ -212,27 +217,9 @@ def update_all_domain_cert_info():
     更新所有域名信息
     :return:
     """
-    lst = DomainModel.select()
-    update_domain_list_info(lst)
-
-
-def update_domain_list_info(rows):
-    """
-    更新列表数据
-    :param rows:
-    :return:
-    """
-    # 增加缓存，提升查询效率
-    # cache = {}
-    # global_data_service.set_value('update_domain_list_info_cache', cache)
-
+    rows = DomainModel.select()
     for row in rows:
-        update_domain_cert_info(row)
-        # bugfix: ConnectionResetError: [Errno 104] Connection reset by peer
-        # 请求过于频繁
-        time.sleep(0.5)
-
-    # global_data_service.remove_value('update_domain_list_info_cache')
+        update_domain_row(row)
 
 
 def update_all_domain_cert_info_of_user(user_id):
@@ -240,11 +227,12 @@ def update_all_domain_cert_info_of_user(user_id):
     更新用户的所有域名信息
     :return:
     """
-    lst = DomainModel.select().where(
+    rows = DomainModel.select().where(
         DomainModel.user_id == user_id
     )
 
-    update_domain_list_info(lst)
+    for row in rows:
+        update_domain_row(row)
 
     key = f'update_domain_status:{user_id}'
     global_data_service.set_value(key, False)
@@ -496,8 +484,8 @@ def notify_user(user_id):
     """
     try:
         send_domain_list_email(user_id)
-    except:
-        pass
+    except Exception as e:
+        logger.error(traceback.format_exc())
 
     try:
         notify_service.notify_webhook_of_user(user_id)
@@ -507,7 +495,7 @@ def notify_user(user_id):
 
 def update_and_check_domain_cert(user_id):
     # 先更新，再检查
-    update_all_domain_cert_info_of_user(user_id)
+    # update_all_domain_cert_info_of_user(user_id)
 
     check_domain_cert(user_id)
 

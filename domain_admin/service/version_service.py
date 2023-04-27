@@ -9,6 +9,7 @@ from domain_admin.log import logger
 from domain_admin.migrate import migrate_102_to_103
 from domain_admin.migrate import migrate_106_to_110
 from domain_admin.migrate import migrate_110_to_1212
+from domain_admin.migrate import migrate_1212_to_1213
 from domain_admin.model.version_model import VersionModel
 from domain_admin.version import VERSION
 
@@ -98,6 +99,13 @@ def update_version():
             logger.info('update version: %s => %s', local_version, VersionEnum.Version_1212)
             migrate_110_to_1212.execute_migrate()
             local_version = VersionEnum.Version_1212
+
+        # 2023-04-26
+        if local_version in [VersionEnum.Version_1212]:
+            # 1.2.12 => 1.2.13
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_1213)
+            migrate_1212_to_1213.execute_migrate()
+            local_version = VersionEnum.Version_1213
 
     # 更新版本号
     VersionModel.create(

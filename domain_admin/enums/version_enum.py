@@ -52,3 +52,5 @@ class VersionEnum(object):
     Version_1211 = '1.2.11'
 
     Version_1212 = '1.2.12'
+
+    Version_1213 = '1.2.13'

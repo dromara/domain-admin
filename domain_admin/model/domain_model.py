@@ -28,6 +28,9 @@ class DomainModel(BaseModel):
     # ip信息检查时间 @since 1.2.12
     ip_check_time = DateTimeField(default=None, null=True)
 
+    # 域名信息自动更新 @since v1.2.13
+    ip_auto_update = BooleanField(default=True)
+
     # 分组
     group_id = IntegerField(default=0, null=False)
 
@@ -43,6 +46,9 @@ class DomainModel(BaseModel):
     # 域名信息检查时间 @since 1.2.12
     domain_check_time = DateTimeField(default=None, null=True)
 
+    # 域名信息自动更新 @since v1.2.13
+    domain_auto_update = BooleanField(default=True)
+
     # SSL签发时间
     start_time = DateTimeField(default=None, null=True)
 
@@ -55,6 +61,9 @@ class DomainModel(BaseModel):
     # 最后检查时间
     check_time = DateTimeField(default=None, null=True)
 
+    # SSL证书信息自动更新 @since v1.2.13
+    auto_update = BooleanField(default=True)
+
     # 连接状态
     connect_status = BooleanField(default=None, null=True)
 
@@ -66,7 +75,6 @@ class DomainModel(BaseModel):
 
     # 是否监测 @since 1.0.3
     is_monitor = BooleanField(default=True)
-
 
     # 详细信息
     # @Deprecated
@@ -100,6 +108,10 @@ class DomainModel(BaseModel):
         return datetime_util.time_for_human(self.check_time)
 
     @property
+    def update_time_label(self):
+        return datetime_util.time_for_human(self.update_time)
+
+    @property
     def start_date(self):
         if self.start_time and isinstance(self.start_time, datetime):
             return self.start_time.strftime('%Y-%m-%d')
@@ -121,7 +133,7 @@ class DomainModel(BaseModel):
         expire_days 是更新数据时所计算的时间，有滞后性
         :return:
         """
-        if self.expire_time:
+        if self.expire_time and isinstance(self.expire_time, datetime):
             return (self.expire_time - datetime.now()).days
 
     @property
@@ -132,7 +144,7 @@ class DomainModel(BaseModel):
         @since v1.1.0
         :return:
         """
-        if self.domain_expire_time:
+        if self.domain_expire_time and isinstance(self.domain_expire_time, datetime):
             return (self.domain_expire_time - datetime.now()).days
 
     @property
