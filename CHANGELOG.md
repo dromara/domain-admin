@@ -1,4 +1,7 @@
 ## 更新日志
+- v1.2.15(2023-04-28)
+    - 优化：更新whois-servers.txt，感谢[@poctopus](https://github.com/poctopus)贡献代码
+
 - v1.2.14(2023-04-28)
     - 修复：邮件正文字段空白的问题
 
