@@ -258,6 +258,8 @@ def get_domain_info_list(user_id=None):
         extra_attrs=[
             'start_date',
             'expire_date',
+            'real_time_domain_expire_days',
+            'real_time_expire_days',
             # 'expire_days',
         ]
     ), query))
