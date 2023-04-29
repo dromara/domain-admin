@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from flask import request, g
+from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.service import async_task_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
@@ -110,6 +112,22 @@ def delete_domain_by_id():
     DomainModel.delete_by_id(domain_id)
 
 
+def delete_domain_by_ids():
+    """
+    批量删除
+    @since v1.2.16
+    :return:
+    """
+    current_user_id = g.user_id
+
+    domain_ids = request.json['ids']
+
+    DomainModel.delete().where(
+        DomainModel.id.in_(domain_ids),
+        DomainModel.user_id == current_user_id
+    ).execute()
+
+
 def get_domain_list():
     """
     获取域名列表
@@ -124,6 +142,10 @@ def get_domain_list():
 
     order_prop = request.json.get('order_prop', 'expire_days')
     order_type = request.json.get('order_type', 'ascending')
+    group_ids = request.json.get('group_ids')
+    expire_days = request.json.get('expire_days')
+    domain_expire_days = request.json.get('domain_expire_days')
+    connect_status = request.json.get('connect_status')
 
     query = DomainModel.select().where(
         DomainModel.user_id == current_user_id
@@ -134,6 +156,38 @@ def get_domain_list():
 
     if keyword:
         query = query.where(DomainModel.domain.contains(keyword))
+
+    if group_ids:
+        query = query.where(DomainModel.group_id.in_(group_ids))
+
+    if expire_days is not None:
+        if expire_days[0] is None:
+            query = query.where(DomainModel.expire_days <= expire_days[1])
+        elif expire_days[1] is None:
+            query = query.where(DomainModel.expire_days >= expire_days[0])
+        else:
+            query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
+
+    if domain_expire_days is not None:
+        if domain_expire_days[0] is None:
+            query = query.where(DomainModel.domain_expire_days <= domain_expire_days[1])
+        elif domain_expire_days[1] is None:
+            query = query.where(DomainModel.domain_expire_days >= domain_expire_days[0])
+        else:
+            query = query.where(DomainModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
+
+    if connect_status is not None:
+        # 连接正常
+        if connect_status == 'success':
+            connect_status = True
+        # 连接异常
+        elif connect_status == 'error':
+            connect_status = False
+        # 状态未知
+        elif connect_status == 'unknown':
+            connect_status = None
+
+        query = query.where(DomainModel.connect_status == connect_status)
 
     ordering = []
     if order_prop == 'expire_days':

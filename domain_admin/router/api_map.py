@@ -22,6 +22,7 @@ routes = {
     "/api/addDomain": domain_api.add_domain,
     "/api/updateDomainById": domain_api.update_domain_by_id,
     "/api/deleteDomainById": domain_api.delete_domain_by_id,
+    "/api/deleteDomainByIds": domain_api.delete_domain_by_ids,
     "/api/getDomainList": domain_api.get_domain_list,
     "/api/getDomainById": domain_api.get_domain_by_id,
     "/api/updateDomainCertInfoById": domain_api.update_domain_cert_info_by_id,

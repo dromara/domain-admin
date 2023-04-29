@@ -8,6 +8,8 @@
 import ssl
 import OpenSSL
 import socket
+
+from domain_admin.log import logger
 from domain_admin.utils.cert_util import cert_common, cert_consts
 
 
