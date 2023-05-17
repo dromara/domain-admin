@@ -95,7 +95,7 @@ def get_domain_whois(domain):
     #     return None
 
     data = parse_whois_raw(raw_data)
-    logger.debug(json.dumps(data, indent=2))
+    logger.debug(json.dumps(data, indent=2, ensure_ascii=False))
 
     start_time = data.get(registry_time)
     expire_time = data.get(expire_time)
@@ -132,6 +132,6 @@ def get_domain_info(domain: str):
     #     domain = ".".join(domain.split(".")[1:])
     #     res = get_domain_whois(domain)
 
-    logger.debug(json_util.json_encode(res, indent=2))
+    logger.debug(json_util.json_encode(res, indent=2, ensure_ascii=False))
 
     return res

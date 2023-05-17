@@ -28,9 +28,11 @@ def test_get_domain_info():
         # 'all.biz'
 
         # 'dot.tk'
-        'bilibili.tv'
+        # 'bilibili.tv'
+        # 'wowma.jp'
+        'www.otto.de'
     ]
 
     for domain in domain_list:
-        print(parse_whois_raw(get_whois_raw(domain, ROOT_SERVER)))
+        # print(parse_whois_raw(get_whois_raw(domain, ROOT_SERVER)))
         print(whois_util.get_domain_info(domain))

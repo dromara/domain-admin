@@ -15,7 +15,11 @@ def parse_whois_raw(whois_raw: str):
     """
     data = {}
     for row in whois_raw.split("\n"):
-        row_split = row.split(":", maxsplit=1)
+        if ":" in row:
+            row_split = row.split(":", maxsplit=1)
+        else:
+            row_split = row.split(" ", maxsplit=1)
+
         if len(row_split) == 2:
             key, value = row_split
             data[key.strip()] = value.strip()
