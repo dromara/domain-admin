@@ -32,6 +32,13 @@ CUSTOM_WHOIS_CONFIGS = {
         'expire_time': 'Expiry Date',
         "expire_time_format": '%d-%m-%Y',
     },
+    'sg': {
+        'whois_server': 'whois.sgnic.sg',
+        'registry_time': 'Creation Date',
+        "registry_time_format": '%d-%m-%Y',
+        'expire_time': 'Expiration Date',
+        "expire_time_format": '%d-%m-%Y',
+    },    
     'jp': {
         'whois_server': 'whois.jprs.jp',
         'registry_time': '[登録年月日]',
