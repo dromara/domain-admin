@@ -88,18 +88,29 @@ mouday/domain-admin:latest
 
 ### 方式三：克隆源码运行
 
+本方式仅适用于二次开发，推荐采用 pip安装 或者 docker启动 的方式体验
+
 ```bash
+# 后端项目
 git clone https://github.com/mouday/domain-admin.git
 
 # 安装依赖
 pip install -r requirements.txt
 
-# 启动生产服务
-make pro
+# 启动开发服务
+make dev
+
+
+# 前端项目
+git clone https://github.com/mouday/domain-admin-web.git
 
 # 启动开发服务
 make dev
 ```
+
+为了更多地人参与到项目中来，现已开放前端代码
+
+前端项目地址：[https://github.com/mouday/domain-admin-web](https://github.com/mouday/domain-admin-web)
 
 ## 项目简介
 
