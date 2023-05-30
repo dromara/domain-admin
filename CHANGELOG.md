@@ -1,4 +1,8 @@
 ## 更新日志
+- v1.2.19(2023-05-30)
+    - 修复：`ModuleNotFoundError: No module named 'pytz_deprecation_shim'`
+    - 固定依赖版本号
+
 - v1.2.18(2023-05-29)
     - 新增：增加对.sg后缀的域名到期时间支持，感谢[@poctopus](https://github.com/poctopus)贡献代码
 

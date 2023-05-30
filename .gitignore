@@ -17,4 +17,5 @@ logs/
 /temp
 database
 .pytest_cache
+venv/
 
