@@ -1,6 +1,7 @@
 ## 更新日志
-- v1.2.20(2023-05-30)
+- v1.2.21(2023-05-30)
     - 修复：`ModuleNotFoundError: No module named 'pytz_deprecation_shim'`
+    - 移除依赖`pytz`
     - 固定依赖版本号
 
 - v1.2.18(2023-05-29)

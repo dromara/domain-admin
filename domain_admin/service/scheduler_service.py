@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 import logging
-import warnings
+# import warnings
 from logging.handlers import RotatingFileHandler
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from pytz_deprecation_shim import PytzUsageWarning
+# from pytz_deprecation_shim import PytzUsageWarning
+# pytz==2022.2.1
 
 from domain_admin.service import system_service, domain_service
 from domain_admin.service.file_service import resolve_log_file
 
-warnings.filterwarnings(action="ignore", category=PytzUsageWarning)
+# warnings.filterwarnings(action="ignore", category=PytzUsageWarning)
 
 apscheduler_logger = logging.getLogger('apscheduler')
 
