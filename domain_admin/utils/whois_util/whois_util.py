@@ -10,11 +10,34 @@ from datetime import datetime
 from dateutil import parser
 
 from domain_admin.log import logger
-from domain_admin.utils import json_util
+from domain_admin.utils import json_util, text_util, domain_util
 from domain_admin.utils.whois_util.config import CUSTOM_WHOIS_CONFIGS, DEFAULT_WHOIS_CONFIG
 from domain_admin.utils.whois_util.util import parse_whois_raw, get_whois_raw, load_whois_servers
 
 WHOIS_CONFIGS = None
+
+
+def resolve_domain(domain: str) -> str:
+    """
+    域名转换
+    :param domain:
+    :return:
+    """
+    # 解析出域名和顶级后缀
+    extract_result = domain_util.extract_domain(domain)
+
+    root_domain = extract_result.domain
+    suffix = extract_result.suffix
+
+    # 处理包含中文的域名
+    if text_util.has_chinese(root_domain):
+        chinese = text_util.extract_chinese(root_domain)
+        punycode = chinese.encode('punycode').decode()
+        root_domain = f"xn--{punycode}"
+
+    domain_and_suffix = '.'.join([root_domain, suffix])
+
+    return domain_and_suffix
 
 
 def parse_time(time_str, time_format=None):
@@ -124,6 +147,8 @@ def get_domain_info(domain: str):
     # 处理带端口号的域名
     # if ':' in domain:
     #     domain = domain.split(":")[0]
+    domain = resolve_domain(domain)
+    logger.debug("resolve_domain: %s", domain)
 
     res = get_domain_whois(domain)
 

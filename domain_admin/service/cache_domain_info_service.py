@@ -24,7 +24,7 @@ def get_domain_info(domain: str) -> CacheDomainInfoModel:
 
     # 不存在或者已过期，重新获取
     if not row or row.is_expired is True:
-        domain_whois = whois_util.get_domain_whois(root_domain)
+        domain_whois = whois_util.get_domain_info(root_domain)
 
         if domain_whois is None:
             raise Exception("域名信息获取失败")
