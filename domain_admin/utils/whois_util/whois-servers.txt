@@ -1128,3 +1128,6 @@ zip whois.nic.google
 zm whois.zicta.zm
 zone whois.nic.zone
 zuerich whois.nic.zuerich
+中国 cwhois.cnnic.cn
+公司 whois.ngtld.cn
+网络 whois.ngtld.cn

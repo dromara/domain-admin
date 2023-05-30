@@ -38,12 +38,18 @@ CUSTOM_WHOIS_CONFIGS = {
         "registry_time_format": '%d-%m-%Y',
         'expire_time': 'Expiration Date',
         "expire_time_format": '%d-%m-%Y',
-    },    
+    },
     'jp': {
         'whois_server': 'whois.jprs.jp',
         'registry_time': '[登録年月日]',
         "registry_time_format": '%Y/%m/%d',
         'expire_time': '[有効期限]',
         "expire_time_format": '%Y/%m/%d',
+    },
+
+    '中国': {
+        'whois_server': 'cwhois.cnnic.cn',
+        'registry_time': 'Registration Time',
+        'expire_time': 'Expiration Time',
     }
 }

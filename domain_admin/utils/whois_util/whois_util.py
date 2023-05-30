@@ -30,7 +30,10 @@ def resolve_domain(domain: str) -> str:
     suffix = extract_result.suffix
 
     # 处理包含中文的域名
-    if text_util.has_chinese(root_domain):
+    if text_util.has_chinese(suffix):
+        pass
+
+    elif text_util.has_chinese(root_domain):
         chinese = text_util.extract_chinese(root_domain)
         punycode = chinese.encode('punycode').decode()
         root_domain = f"xn--{punycode}"
@@ -91,6 +94,8 @@ def get_whois_config(domain: str) -> [str, None]:
 
     if WHOIS_CONFIGS is None:
         WHOIS_CONFIGS = load_whois_servers_config()
+
+    print(WHOIS_CONFIGS)
 
     if root in WHOIS_CONFIGS:
         return WHOIS_CONFIGS.get(root)

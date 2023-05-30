@@ -33,7 +33,11 @@ def test_get_domain_info():
         # 'bilibili.tv'
         # 'wowma.jp'
         # 'www.otto.de',
-        'www.米梵家居.com'
+        # 'www.米梵家居.com'
+        '中万.中国',
+        '中万.公司',
+        '中万.网络',
+        '中万.cn',
     ]
 
     for domain in domain_list:
