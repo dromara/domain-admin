@@ -1,4 +1,7 @@
 ## 更新日志
+- v1.2.22(2023-05-30)
+    - 新增 中文域名的支持
+
 - v1.2.21(2023-05-30)
     - 修复：`ModuleNotFoundError: No module named 'pytz_deprecation_shim'`
     - 移除依赖`pytz`
