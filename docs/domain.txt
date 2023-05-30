@@ -21,7 +21,7 @@ sha256.badssl.com
 tls-v1-2.badssl.com:1012
 untrusted-root.badssl.com
 wrong.host.badssl.com
-www.mysite.com
+http://www.mysite.com
 https://expired.badssl.com/
 https://wrong.host.badssl.com/
 https://self-signed.badssl.com/
@@ -96,3 +96,4 @@ https://sha1-2017.badssl.com/
 https://sha1-intermediate.badssl.com/
 https://invalid-expected-sct.badssl.com/
 https://testsafebrowsing.appspot.com/
+www.米梵家居.com

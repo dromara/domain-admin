@@ -12,9 +12,12 @@ def parse_domain(domain):
     :param domain:
     :return:
     """
-    ret = re.match('.*?/?/?([a-zA-Z\\.0-9_:-]+)/?.*?', domain)
+    # print(domain)
+
+    ret = re.match('((http(s)?:)?//)?(?P<domain>[\\w\\._:-]+)/?.*?', domain)
     if ret:
-        return ret.groups()[0]
+        # print(ret.groups())
+        return ret.groupdict().get("domain")
     else:
         return None
 
