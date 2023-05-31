@@ -36,6 +36,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
 
+      # 拉取前端最新的dist代码
       - name: Checkout
         uses: actions/checkout@v3
         with:
