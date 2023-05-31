@@ -2,14 +2,14 @@
 
 name: Create Release
 
-#on:
-#  push:
-#    tags:
-#      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
 on:
   push:
-    branch: ['master']
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+#on:
+#  push:
+#    branch: ['master']
 
 jobs:
   build:
@@ -40,11 +40,8 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
-#        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name: test
-          files: |
-            domain_admin/public/*
           body: Please refer to [CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md) for details.
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
