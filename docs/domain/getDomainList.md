@@ -14,7 +14,7 @@
 
 4、返回参数
 
-参见：[getDomainById.md](/doc/domain/getDomainById.md)
+参见：[getDomainById.md](/domain/getDomainById.md)
 
 5、请求示例
 

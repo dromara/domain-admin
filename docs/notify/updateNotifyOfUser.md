@@ -8,7 +8,7 @@
 
 | 参数  | 类型   | 必须 | 说明 |
 | -| - | - | - | 
-| type_id | int | 是 | 通知类型id [NotifyTypeEnum](/doc/enums/NotifyTypeEnum.md)
+| type_id | int | 是 | 通知类型id [NotifyTypeEnum](/enums/NotifyTypeEnum.md)
 | value | object | 是 | 通知配置参数，见示例
 
 4、返回参数

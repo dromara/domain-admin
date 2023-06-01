@@ -118,3 +118,12 @@ X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwOD
 {}
 
 ###
+POST {{baseUrl}}/api/getWhoisRaw
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODYyMDkzMzJ9.azNxgF_GDa-4aI_XOUm8sQbNhJfkY3rNvEaIgn8DUiI
+
+{
+  "domain": "www.baidu.com"
+}
+
+###

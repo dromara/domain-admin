@@ -19,7 +19,7 @@
 | ip | string  | 域名ip地址
 | alias | string  | 域名别名
 | group_id | int  | 域名分组id
-| group | object/null  | 域名分组对象，同 [getGroupById.md](/doc/group/getGroupById.md)
+| group | object/null  | 域名分组对象，同 [getGroupById.md](/group/getGroupById.md)
 | start_time | datetime  | 证书颁发时间
 | expire_time | datetime  | 证书过期时间
 | check_time | datetime  | 证书检查时间
@@ -28,7 +28,7 @@
 | total_days | int  | 域名有效期总天数
 | expire_days | int | 域名过期剩余天数
 | real_time_expire_days | int | 域名过期剩余天数（实时计算）
-| detail | object  | 域名信息，同 [getCertInformation.md](/doc/cert/getCertInformation.md)
+| detail | object  | 域名信息，同 [getCertInformation.md](/cert/getCertInformation.md)
 | create_time | datetime  | 域名添加时间
 | update_time | datetime  | 域名更新时间
 

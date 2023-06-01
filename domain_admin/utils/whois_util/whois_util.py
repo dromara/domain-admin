@@ -4,6 +4,7 @@
 @Date    : 2023-03-24
 """
 import json
+import re
 from copy import deepcopy
 from datetime import datetime
 
@@ -11,7 +12,7 @@ from dateutil import parser
 
 from domain_admin.log import logger
 from domain_admin.utils import json_util, text_util, domain_util
-from domain_admin.utils.whois_util.config import CUSTOM_WHOIS_CONFIGS, DEFAULT_WHOIS_CONFIG
+from domain_admin.utils.whois_util.config import CUSTOM_WHOIS_CONFIGS, DEFAULT_WHOIS_CONFIG, ROOT_SERVER
 from domain_admin.utils.whois_util.util import parse_whois_raw, get_whois_raw, load_whois_servers
 
 WHOIS_CONFIGS = None
@@ -68,17 +69,13 @@ def load_whois_servers_config():
     config = {}
 
     for root, server in whois_servers.items():
+        # 通用配置
+        server_config = deepcopy(DEFAULT_WHOIS_CONFIG)
+        server_config['whois_server'] = server
+        config[root] = server_config
 
-        if root in CUSTOM_WHOIS_CONFIGS:
-            # 自定义配置优先
-            config[root] = CUSTOM_WHOIS_CONFIGS[root]
-        else:
-            # 通用配置
-            server_config = deepcopy(DEFAULT_WHOIS_CONFIG)
-            server_config['whois_server'] = server
-            config[root] = server_config
-
-    return config
+    # 合并配置自定义配置优先
+    return {**config, **CUSTOM_WHOIS_CONFIGS}
 
 
 def get_whois_config(domain: str) -> [str, None]:
@@ -100,12 +97,49 @@ def get_whois_config(domain: str) -> [str, None]:
     if root in WHOIS_CONFIGS:
         return WHOIS_CONFIGS.get(root)
     else:
-        # TODO：从根服务器查询域名信息服务器
-        raise Exception(f'not support {root}')
+        # 从根服务器查询域名信息服务器
+        domain_whois_server = get_domain_whois_server_from_root(domain)
+        if domain_whois_server:
+            server_config = deepcopy(DEFAULT_WHOIS_CONFIG)
+            server_config['whois_server'] = domain_whois_server
+            return server_config
+        else:
+            raise Exception(f'not support {root}')
+
+
+def get_domain_whois_server_from_root(domain):
+    """
+    从根服务器获取域名的查询服务器
+    :param domain:
+    :return:
+    """
+    raw_data = get_whois_raw(domain, ROOT_SERVER, timeout=10)
+
+    result = re.findall("refer:(.*)", raw_data)
+    if result and len(result) > 0:
+        return result[0].strip()
+
+
+def get_domain_raw_whois(domain):
+    whois_config = get_whois_config(domain)
+
+    whois_server = whois_config['whois_server']
+
+    raw_data = get_whois_raw(domain, whois_server, timeout=10)
+    logger.debug(raw_data)
+    return raw_data
 
 
 def get_domain_whois(domain):
     logger.debug('get_domain_whois %s', domain)
+
+    raw_data = get_domain_raw_whois(domain)
+
+    # if error in raw_data:
+    #     return None
+
+    data = parse_whois_raw(raw_data)
+    logger.debug(json.dumps(data, indent=2, ensure_ascii=False))
 
     whois_config = get_whois_config(domain)
 
@@ -115,15 +149,6 @@ def get_domain_whois(domain):
     expire_time = whois_config['expire_time']
     registry_time_format = whois_config.get('registry_time_format')
     expire_time_format = whois_config.get('expire_time_format')
-
-    raw_data = get_whois_raw(domain, whois_server, timeout=10)
-    logger.debug(raw_data)
-
-    # if error in raw_data:
-    #     return None
-
-    data = parse_whois_raw(raw_data)
-    logger.debug(json.dumps(data, indent=2, ensure_ascii=False))
 
     start_time = data.get(registry_time)
     expire_time = data.get(expire_time)

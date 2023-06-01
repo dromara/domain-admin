@@ -8,7 +8,7 @@
 
 | 参数  | 类型   | 必须 | 说明 |
 | -| - | - | - |
-|type_id | int | 是 | 通知类型 [NotifyTypeEnum](/doc/enums/NotifyTypeEnum.md)
+|type_id | int | 是 | 通知类型 [NotifyTypeEnum](/enums/NotifyTypeEnum.md)
 
 4、返回参数
 
@@ -16,7 +16,7 @@
 | -| - | - |
 | id | int | 主键id
 | user_id | int | 用户id
-| type_id | int | 通知类型id [NotifyTypeEnum](/doc/enums/NotifyTypeEnum.md)
+| type_id | int | 通知类型id [NotifyTypeEnum](/enums/NotifyTypeEnum.md)
 | value | object  | 通知配置参数，见返回示例
 | create_time | datetime  | 域名添加时间
 | update_time | datetime  | 域名更新时间

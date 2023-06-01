@@ -2,7 +2,7 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api, ip_api, notify_api
+from domain_admin.api import cert_api, ip_api, notify_api, whois_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -75,5 +75,8 @@ routes = {
     '/api/testWebhookNotifyOfUser': notify_api.test_webhook_notify_of_user,
     '/api/testWorkWeixinNotifyOfUser': notify_api.test_work_weixin_notify_of_user,
     '/api/getTemplateData': notify_api.get_template_data,
+
+    # 实验室
+    '/api/getWhoisRaw': whois_api.get_whois_raw,
 
 }
