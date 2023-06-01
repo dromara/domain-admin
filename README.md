@@ -29,9 +29,9 @@
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png)
 
-桌面端：
+预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
 
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-desktop.png)
+账号密码随意，预览模式仅提供模拟数据，无法操作修改
 
 ## 安装
 
