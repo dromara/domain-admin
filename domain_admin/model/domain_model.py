@@ -20,7 +20,7 @@ class DomainModel(BaseModel):
     domain = CharField()
 
     # 端口 @since v1.2.24
-    port = IntegerField(default=0)
+    port = IntegerField(default=443)
 
     # 别名/备注
     alias = CharField(default="")
