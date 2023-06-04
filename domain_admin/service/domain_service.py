@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+domain_service.py
+"""
 import time
 import traceback
 import warnings
@@ -8,6 +11,7 @@ from peewee import chunked
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.log import logger
+from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
@@ -16,23 +20,25 @@ from domain_admin.service import email_service, render_service, global_data_serv
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
-from domain_admin.utils import datetime_util, cert_util, whois_util, file_util
+from domain_admin.utils import datetime_util, cert_util, whois_util, file_util, time_util
 from domain_admin.utils import domain_util
-from domain_admin.utils.cert_util import cert_common
+from domain_admin.utils.cert_util import cert_common, cert_socket_v2
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
 
-def update_domain_info(row: DomainModel):
+def update_domain_info(domain_row: DomainModel):
     """
     更新域名信息
     :param row:
     :return:
     """
+    logger.info("%s", model_to_dict(domain_row))
+
     # 获取域名信息
     domain_info = None
 
     try:
-        domain_info = cache_domain_info_service.get_domain_info(row.domain)
+        domain_info = cache_domain_info_service.get_domain_info(domain_row.domain)
     except Exception as e:
         pass
 
@@ -54,7 +60,7 @@ def update_domain_info(row: DomainModel):
         domain_check_time=datetime_util.get_datetime(),
         update_time=datetime_util.get_datetime(),
     ).where(
-        DomainModel.id == row.id
+        DomainModel.id == domain_row.id
     ).execute()
 
 
@@ -78,6 +84,157 @@ def update_ip_info(row: DomainModel):
         update_time=datetime_util.get_datetime(),
     ).where(
         DomainModel.id == row.id
+    ).execute()
+
+
+def update_ip_info_v2(domain_row: DomainModel):
+    """
+    更新ip信息
+    :param row:
+    :return:
+    @since v1.2.24
+    """
+    logger.info("%s", model_to_dict(domain_row))
+
+    domain_host_list = []
+
+    try:
+        domain_host_list = cert_socket_v2.get_domain_host_list(domain_row.domain, domain_row.port)
+    except Exception as e:
+        pass
+
+    for domain_host in domain_host_list:
+        exist = AddressModel.select().where(
+            AddressModel.domain_id == domain_row.id,
+            AddressModel.host == domain_host
+        ).first()
+
+        if not exist:
+            AddressModel.insert({
+                'domain_id': domain_row.id,
+                'host': domain_host
+            }).execute()
+
+    #
+    # DomainModel.update(
+    #     ip=domain_ip,
+    #     ip_check_time=datetime_util.get_datetime(),
+    #     update_time=datetime_util.get_datetime(),
+    # ).where(
+    #     DomainModel.id == row.id
+    # ).execute()
+
+
+def update_cert_info_v2(domain_row: DomainModel):
+    """
+    更新证书信息
+    :return:
+    """
+    logger.info("%s", model_to_dict(domain_row))
+
+    lst = AddressModel.select().where(
+        AddressModel.domain_id == domain_row.id
+    )
+
+    for address_row in lst:
+        update_address_row_info(address_row, domain_row)
+
+    sync_address_info_to_domain_info(domain_row)
+
+
+def update_address_row_info(address_row, domain_row):
+    """
+    更新单个地址信息
+    :param domain_row:
+    :param address_row:
+    :return:
+    """
+    logger.info("update_cert_info_v2: %s - %s", domain_row.domain, address_row.host)
+
+    # 如果不自动更新证书则跳过
+    if address_row.ssl_auto_update is False:
+        logger.info("skip ssl_auto_update: %s - %s", domain_row.domain, address_row.host)
+
+    # 获取证书信息
+    cert_info = {}
+
+    try:
+        cert_info = cert_socket_v2.get_ssl_cert_info(
+            domain=domain_row.domain,
+            host=address_row.host,
+            port=domain_row.port
+        )
+    except Exception as e:
+        logger.error(traceback.format_exc())
+
+    address = AddressModel()
+    address.ssl_start_time = cert_info.get('start_date')
+    address.ssl_expire_time = cert_info.get('expire_date')
+
+    AddressModel.update(
+        ssl_start_time=address.ssl_start_time,
+        ssl_expire_time=address.ssl_expire_time,
+        ssl_expire_days=address.real_time_ssl_expire_days,
+        ssl_check_time=datetime_util.get_datetime(),
+        update_time=datetime_util.get_datetime(),
+    ).where(
+        AddressModel.id == address_row.id
+    ).execute()
+
+
+def update_address_row_info_with_sync_domain_row(address_id: int):
+    """
+    更新主机信息并同步到与名表
+    :param address_id:
+    :return:
+    """
+    address_row = AddressModel.get_by_id(address_id)
+
+    domain_row = DomainModel.select().where(
+        DomainModel.id == address_row.domain_id
+    ).first()
+
+    update_address_row_info(address_row, domain_row)
+
+    sync_address_info_to_domain_info(domain_row)
+
+
+def sync_address_info_to_domain_info(domain_row: DomainModel):
+    """
+    同步主机信息到域名信息表
+    :return:
+    """
+    first_address_row = AddressModel.select().where(
+        AddressModel.domain_id == domain_row.id
+    ).order_by(
+        AddressModel.ssl_expire_days.asc()
+    ).first()
+
+    logger.info("%s", model_to_dict(
+        model=first_address_row,
+        extra_attrs=[
+            'real_time_ssl_expire_days'
+        ]
+    ))
+
+    connect_status = False
+
+    if first_address_row is None:
+        first_address_row = AddressModel()
+        first_address_row.ssl_start_time = None
+        first_address_row.ssl_expire_time = None
+
+    elif first_address_row.real_time_ssl_expire_days > 0:
+        connect_status = True
+
+    DomainModel.update(
+        start_time=first_address_row.ssl_start_time,
+        expire_time=first_address_row.ssl_expire_time,
+        expire_days=first_address_row.real_time_ssl_expire_days,
+        connect_status=connect_status,
+        update_time=datetime_util.get_datetime(),
+    ).where(
+        DomainModel.id == domain_row.id
     ).execute()
 
 
@@ -110,25 +267,45 @@ def update_cert_info(row: DomainModel):
     ).execute()
 
 
-def update_domain_row(row: DomainModel):
+def update_domain_row(domain_row: DomainModel):
     """
     更新域名相关数据
     :param row:
     :return:
     """
-    # 如果自动更新禁用，则不更新
-    if row.domain_auto_update is True:
-        # 域名信息 如果还没有过期，可以不更新
-        update_domain_info(row)
+    logger.info("%s", model_to_dict(domain_row))
 
     # 如果自动更新禁用，则不更新
-    if row.auto_update is True:
-        # 证书信息
-        update_cert_info(row)
+    if domain_row.domain_auto_update is True:
+        # 域名信息 如果还没有过期，可以不更新
+        update_domain_info(domain_row)
+
+    # # 如果自动更新禁用，则不更新
+    # if row.auto_update is True:
+    #     # 证书信息
+    #     update_cert_info(row)
+
+    # # ip信息
+    # if row is True:
+    #     update_ip_info(row)
+
+    # total = AddressModel.select().where(
+    #     AddressModel.domain_id == domain_row.id
+    # ).count()
+
+    #  主机列表，不存在则更新
+    # if total == 0:
+    update_domain_address_info(domain_row)
+
+
+def update_domain_address_info(domain_row: DomainModel):
+    logger.info("%s", model_to_dict(domain_row))
 
     # ip信息
-    if row.ip_auto_update is True:
-        update_ip_info(row)
+    update_ip_info_v2(domain_row)
+
+    # 证书信息
+    update_cert_info_v2(domain_row)
 
 
 def get_cert_info(domain: str):
@@ -405,12 +582,14 @@ def check_permission_and_get_row(domain_id, user_id):
 
 
 def add_domain_from_file(filename, user_id):
-    logger.info('add_domain_from_file')
+    logger.info('user_id: %s, filename: %s', user_id, filename)
 
     lst = domain_util.parse_domain_from_file(filename)
+
     lst = [
         {
             'domain': item['domain'],
+            'port': item['port'],
             'alias': item.get('alias', ''),
             'user_id': user_id,
         } for item in lst
@@ -434,9 +613,6 @@ def add_domain_from_file(filename, user_id):
     #     except Exception as e:
     #         # traceback.print_exc()
     #         logger.error(traceback.format_exc())
-
-    # 查询
-    update_all_domain_cert_info_of_user(user_id=user_id)
 
     # return count
 

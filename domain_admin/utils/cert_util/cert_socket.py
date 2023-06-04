@@ -13,8 +13,10 @@ https://linuxeye.com/479.html
 
 import socket
 import ssl
-
+import warnings
 from domain_admin.utils.cert_util import cert_consts, cert_common
+
+warnings.warn("cert_socket.py is Deprecated, please use cert_socket_v2.py")
 
 
 def create_ssl_context():
@@ -33,6 +35,7 @@ def get_domain_cert(
 ):
     """
     获取证书信息
+    存在问题：没有指定主机ip，不一定能获取到正确的证书信息
     :param host: str
     :param port: int
     :param timeout: int

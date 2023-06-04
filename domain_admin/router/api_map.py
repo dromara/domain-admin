@@ -2,7 +2,7 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api, ip_api, notify_api, whois_api
+from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -26,6 +26,7 @@ routes = {
     "/api/getDomainList": domain_api.get_domain_list,
     "/api/getDomainById": domain_api.get_domain_by_id,
     "/api/updateDomainCertInfoById": domain_api.update_domain_cert_info_by_id,
+    "/api/updateDomainRowInfoById": domain_api.update_domain_row_info_by_id,
     "/api/updateAllDomainCertInfo": domain_api.update_all_domain_cert_info,
 
     "/api/updateDomainSetting": domain_api.update_domain_setting,
@@ -78,5 +79,14 @@ routes = {
 
     # 实验室
     '/api/getWhoisRaw': whois_api.get_whois_raw,
+
+    # 主机地址
+    '/api/getAddressListByDomainId': address_api.get_address_list_by_domain_id,
+    '/api/addAddress': address_api.add_address,
+    '/api/getAddressById': address_api.get_address_by_id,
+    '/api/deleteAddressById': address_api.delete_address_by_id,
+    '/api/updateAddressById': address_api.update_address_by_id,
+    '/api/updateAddressListInfoByDomainId': address_api.update_address_list_info_by_domain_id,
+    '/api/updateAddressRowInfoById': address_api.update_address_row_info_by_id,
 
 }

@@ -4,6 +4,7 @@ import tldextract
 from tldextract.tldextract import ExtractResult
 
 from domain_admin.utils import file_util
+from domain_admin.utils.cert_util import cert_consts
 
 
 def parse_domain(domain):
@@ -50,9 +51,16 @@ def parse_domain_from_csv_file(filename):
             if len(fields) > alias_index:
                 alias = fields[alias_index].strip()
 
+            if ':' in domain:
+                domain, port = domain.split(":")
+            else:
+                # SSL默认端口
+                port = cert_consts.SSL_DEFAULT_PORT
+
             if domain:
                 item = {
                     'domain': domain,
+                    'port': port,
                     'alias': alias,
                 }
                 yield item
@@ -69,9 +77,16 @@ def parse_domain_from_txt_file(filename):
 
             domain = parse_domain(line.strip())
 
+            if ':' in domain:
+                domain, port = domain.split(":")
+            else:
+                # SSL默认端口
+                port = cert_consts.SSL_DEFAULT_PORT
+
             if domain:
                 yield {
                     'domain': domain,
+                    'port': port,
                 }
 
 

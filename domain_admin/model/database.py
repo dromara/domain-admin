@@ -3,7 +3,7 @@
 # 创建表
 from domain_admin.log import logger
 from domain_admin.model.base_model import db
-from domain_admin.model import domain_model
+from domain_admin.model import domain_model, address_model
 from domain_admin.model import group_model
 from domain_admin.model import system_model
 from domain_admin.model import user_model
@@ -23,6 +23,7 @@ tables = [
     (domain_model.DomainModel, None),
     (notify_model.NotifyModel, None),
     (cache_domain_info_model.CacheDomainInfoModel, None),
+    (address_model.AddressModel, None),
 ]
 
 

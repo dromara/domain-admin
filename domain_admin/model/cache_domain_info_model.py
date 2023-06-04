@@ -4,6 +4,7 @@ from datetime import datetime
 from peewee import CharField, IntegerField, DateTimeField
 
 from domain_admin.model.base_model import BaseModel
+from domain_admin.utils import time_util
 
 
 class CacheDomainInfoModel(BaseModel):
@@ -46,9 +47,6 @@ class CacheDomainInfoModel(BaseModel):
             return None
 
     @property
-    def domain_expire_days(self) -> [int, None]:
+    def domain_expire_days(self) -> int:
         """域名过期天数"""
-        if self.domain_expire_time:
-            return (self.domain_expire_time - datetime.now()).days
-        else:
-            return None
+        return time_util.get_diff_days(datetime.now(), self.domain_expire_time)

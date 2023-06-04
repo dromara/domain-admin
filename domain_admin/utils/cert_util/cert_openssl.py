@@ -5,17 +5,21 @@
 @Author  : Peng Shiyu
 """
 
-import ssl
-import OpenSSL
 import socket
+import ssl
+import warnings
 
-from domain_admin.log import logger
+import OpenSSL
+
 from domain_admin.utils.cert_util import cert_common, cert_consts
+
+warnings.warn("cert_openssl.py is Deprecated, please use cert_socket_v2.py")
 
 
 def get_cert_info(domain_with_port):
     """
     获取证书信息
+    存在问题：没有指定主机ip，不一定能获取到正确的证书信息
     :param domain_with_port: str
     :return: dict
     """

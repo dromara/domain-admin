@@ -4,12 +4,14 @@ from flask import request, g
 from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.service import async_task_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util
+from domain_admin.utils.cert_util import cert_consts
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -28,11 +30,13 @@ def add_domain():
 
     alias = request.json.get('alias', '')
     group_id = request.json.get('group_id') or 0
+    port = request.json.get('port') or cert_consts.SSL_DEFAULT_PORT
 
     data = {
         # 基本信息
         'user_id': current_user_id,
         'domain': domain,
+        'port': port,
         'alias': alias,
         'group_id': group_id,
     }
@@ -59,12 +63,14 @@ def update_domain_setting():
         'domain_start_time': request.json.get('domain_start_time'),
         'domain_expire_time': request.json.get('domain_expire_time'),
         'domain_auto_update': request.json.get('domain_auto_update'),
+        'domain_expire_monitor': request.json.get('domain_expire_monitor'),
 
         # 证书信息
-        'start_time': request.json.get('start_time'),
-        'expire_time': request.json.get('expire_time'),
-        'auto_update': request.json.get('auto_update'),
+        # 'start_time': request.json.get('start_time'),
+        # 'expire_time': request.json.get('expire_time'),
+        # 'auto_update': request.json.get('auto_update'),
 
+        'domain_check_time': datetime_util.get_datetime(),
         'update_time': datetime_util.get_datetime()
     }
 
@@ -111,6 +117,11 @@ def delete_domain_by_id():
 
     DomainModel.delete_by_id(domain_id)
 
+    # 同时移除主机信息
+    AddressModel.delete().where(
+        AddressModel.domain_id == domain_id
+    ).execute()
+
 
 def delete_domain_by_ids():
     """
@@ -125,6 +136,11 @@ def delete_domain_by_ids():
     DomainModel.delete().where(
         DomainModel.id.in_(domain_ids),
         DomainModel.user_id == current_user_id
+    ).execute()
+
+    # 同时移除主机信息
+    AddressModel.delete().where(
+        AddressModel.domain_id.in_(domain_ids)
     ).execute()
 
 
@@ -217,6 +233,8 @@ def get_domain_list():
             'create_time_label',
             'check_time_label',
             'real_time_expire_days',
+            'real_time_ssl_total_days',
+            'real_time_ssl_expire_days',
             'real_time_domain_expire_days',
             'domain_url',
             'update_time_label',
@@ -253,6 +271,7 @@ def get_domain_by_id():
             'detail',
             'group',
             'domain_url',
+            'domain_check_time_label',
         ]
     )
 
@@ -316,7 +335,25 @@ def update_domain_cert_info_by_id():
     """
     current_user_id = g.user_id
 
-    domain_id = request.json['id']
+    # @since v1.2.24 支持参数 domain_id
+    domain_id = request.json.get('domain_id') or request.json['id']
+
+    row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
+
+    # domain_service.update_domain_row(row)
+    domain_service.update_domain_info(row)
+
+
+def update_domain_row_info_by_id():
+    """
+    更新域名信息及其关联的证书信息
+    :return:
+    @since v1.3.1
+    """
+    current_user_id = g.user_id
+
+    # @since v1.2.24 支持参数 domain_id
+    domain_id = request.json.get('domain_id') or request.json['id']
 
     row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
@@ -384,8 +421,15 @@ def import_domain_from_file():
 
     filename = file_service.save_temp_file(update_file)
 
+    # 导入数据
+    domain_service.add_domain_from_file(filename, current_user_id)
+
     # 异步导入
-    async_task_service.submit_task(fn=domain_service.add_domain_from_file, filename=filename, user_id=current_user_id)
+    # async_task_service.submit_task(fn=domain_service.add_domain_from_file, filename=filename, user_id=current_user_id)
+
+    # 异步查询
+    async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
+
 
 
 def export_domain_file():

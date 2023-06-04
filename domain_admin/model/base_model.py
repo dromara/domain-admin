@@ -2,7 +2,8 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
-from peewee import Model
+from peewee import Model, SqliteDatabase
+from playhouse.sqlite_ext import SqliteExtDatabase
 from playhouse.sqliteq import SqliteQueueDatabase
 
 from domain_admin.config import SQLITE_DATABASE_PATH
@@ -19,8 +20,11 @@ handler = RotatingFileHandler(resolve_log_file("peewee.log"), maxBytes=1024 * 10
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
+# 多线程写入方式，会造成读取不到刚写入的数据
 # db = connect(SQLITE_DATABASE_URL)
-db = SqliteQueueDatabase(database=SQLITE_DATABASE_PATH)
+# db = SqliteQueueDatabase(database=SQLITE_DATABASE_PATH)
+# db = SqliteExtDatabase(database=SQLITE_DATABASE_PATH)
+db = SqliteDatabase(database=SQLITE_DATABASE_PATH)
 
 
 class BaseModel(Model):
