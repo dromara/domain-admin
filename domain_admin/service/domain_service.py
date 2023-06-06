@@ -32,7 +32,7 @@ def update_domain_info(domain_row: DomainModel):
     :param row:
     :return:
     """
-    logger.info("%s", model_to_dict(domain_row))
+    # logger.info("%s", model_to_dict(domain_row))
 
     # 获取域名信息
     domain_info = None
@@ -94,7 +94,7 @@ def update_ip_info_v2(domain_row: DomainModel):
     :return:
     @since v1.2.24
     """
-    logger.info("%s", model_to_dict(domain_row))
+    # logger.info("%s", model_to_dict(domain_row))
 
     domain_host_list = []
 
@@ -130,7 +130,7 @@ def update_cert_info_v2(domain_row: DomainModel):
     更新证书信息
     :return:
     """
-    logger.info("%s", model_to_dict(domain_row))
+    # logger.info("%s", model_to_dict(domain_row))
 
     lst = AddressModel.select().where(
         AddressModel.domain_id == domain_row.id
@@ -149,7 +149,6 @@ def update_address_row_info(address_row, domain_row):
     :param address_row:
     :return:
     """
-    logger.info("update_cert_info_v2: %s - %s", domain_row.domain, address_row.host)
 
     # 如果不自动更新证书则跳过
     if address_row.ssl_auto_update is False:
@@ -210,12 +209,15 @@ def sync_address_info_to_domain_info(domain_row: DomainModel):
         AddressModel.ssl_expire_days.asc()
     ).first()
 
-    logger.info("%s", model_to_dict(
-        model=first_address_row,
-        extra_attrs=[
-            'real_time_ssl_expire_days'
-        ]
-    ))
+    if first_address_row is not None:
+        pass
+
+        # logger.info("%s", model_to_dict(
+        #     model=first_address_row,
+        #     extra_attrs=[
+        #         'real_time_ssl_expire_days'
+        #     ]
+        # ))
 
     connect_status = False
 
@@ -273,7 +275,7 @@ def update_domain_row(domain_row: DomainModel):
     :param row:
     :return:
     """
-    logger.info("%s", model_to_dict(domain_row))
+    # logger.info("%s", model_to_dict(domain_row))
 
     # 如果自动更新禁用，则不更新
     if domain_row.domain_auto_update is True:
@@ -299,7 +301,7 @@ def update_domain_row(domain_row: DomainModel):
 
 
 def update_domain_address_info(domain_row: DomainModel):
-    logger.info("%s", model_to_dict(domain_row))
+    # logger.info("%s", model_to_dict(domain_row))
 
     # ip信息
     update_ip_info_v2(domain_row)
@@ -468,14 +470,14 @@ def check_domain_cert(user_id):
 
     for item in lst:
         # 2023-02-06 如果不检测就跳过
-        if not item['is_monitor']:
+        if not item['domain_expire_monitor']:
             continue
 
-        if not item['expire_days'] or item['expire_days'] <= user_row.before_expire_days:
+        if not item['real_time_expire_days'] or item['real_time_expire_days'] <= user_row.before_expire_days:
             has_expired_domain = True
             break
 
-        if not item['domain_expire_days'] or item['domain_expire_days'] <= user_row.before_expire_days:
+        if not item['real_time_domain_expire_days'] or item['real_time_domain_expire_days'] <= user_row.before_expire_days:
             has_expired_domain = True
             break
 

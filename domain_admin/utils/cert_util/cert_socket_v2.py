@@ -41,7 +41,7 @@ def get_ssl_cert(domain: str, host: str = None, port: int = 443, timeout: int = 
     :param timeout:
     :return:
     """
-    logger.info("get_ssl_cert: \ndomain: %s\nhost: %s\nport: %s\ntimeout: %s", domain, host, port, timeout)
+    # logger.info("get_ssl_cert: \ndomain: %s\nhost: %s\nport: %s\ntimeout: %s", domain, host, port, timeout)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((host, port))

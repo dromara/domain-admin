@@ -92,7 +92,7 @@ def get_whois_config(domain: str) -> [str, None]:
     if WHOIS_CONFIGS is None:
         WHOIS_CONFIGS = load_whois_servers_config()
 
-    print(WHOIS_CONFIGS)
+    # print(WHOIS_CONFIGS)
 
     if root in WHOIS_CONFIGS:
         return WHOIS_CONFIGS.get(root)
