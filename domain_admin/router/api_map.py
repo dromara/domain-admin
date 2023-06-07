@@ -21,6 +21,7 @@ routes = {
     # 域名
     "/api/addDomain": domain_api.add_domain,
     "/api/updateDomainById": domain_api.update_domain_by_id,
+    "/api/updateDomainExpireMonitorById": domain_api.update_domain_expire_monitor_by_id,
     "/api/deleteDomainById": domain_api.delete_domain_by_id,
     "/api/deleteDomainByIds": domain_api.delete_domain_by_ids,
     "/api/getDomainList": domain_api.get_domain_list,
@@ -55,6 +56,7 @@ routes = {
 
     # 调度日志
     '/api/getLogSchedulerList': log_scheduler_api.get_log_scheduler_list,
+    '/api/clearLogSchedulerList': log_scheduler_api.clear_log_scheduler_list,
 
     # 系统管理 (管理员权限)
     '/api/getAllSystemConfig': system_api.get_all_system_config,

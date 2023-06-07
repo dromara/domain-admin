@@ -37,9 +37,12 @@ def update_domain_info(domain_row: DomainModel):
     # 获取域名信息
     domain_info = None
 
+    err = ''
+
     try:
         domain_info = cache_domain_info_service.get_domain_info(domain_row.domain)
     except Exception as e:
+        err = e.__str__()
         pass
 
     update_data = {
@@ -62,6 +65,8 @@ def update_domain_info(domain_row: DomainModel):
     ).where(
         DomainModel.id == domain_row.id
     ).execute()
+
+    return err
 
 
 def update_ip_info(row: DomainModel):
@@ -136,10 +141,12 @@ def update_cert_info_v2(domain_row: DomainModel):
         AddressModel.domain_id == domain_row.id
     )
 
+    err = ''
     for address_row in lst:
-        update_address_row_info(address_row, domain_row)
+        err = update_address_row_info(address_row, domain_row)
 
     sync_address_info_to_domain_info(domain_row)
+    return err
 
 
 def update_address_row_info(address_row, domain_row):
@@ -157,6 +164,7 @@ def update_address_row_info(address_row, domain_row):
     # 获取证书信息
     cert_info = {}
 
+    err = ''
     try:
         cert_info = cert_socket_v2.get_ssl_cert_info(
             domain=domain_row.domain,
@@ -164,6 +172,7 @@ def update_address_row_info(address_row, domain_row):
             port=domain_row.port
         )
     except Exception as e:
+        err = e.__str__()
         logger.error(traceback.format_exc())
 
     address = AddressModel()
@@ -179,6 +188,8 @@ def update_address_row_info(address_row, domain_row):
     ).where(
         AddressModel.id == address_row.id
     ).execute()
+
+    return err
 
 
 def update_address_row_info_with_sync_domain_row(address_id: int):
@@ -276,11 +287,12 @@ def update_domain_row(domain_row: DomainModel):
     :return:
     """
     # logger.info("%s", model_to_dict(domain_row))
+    err1 = ''
 
     # 如果自动更新禁用，则不更新
     if domain_row.domain_auto_update is True:
         # 域名信息 如果还没有过期，可以不更新
-        update_domain_info(domain_row)
+        err1 = update_domain_info(domain_row)
 
     # # 如果自动更新禁用，则不更新
     # if row.auto_update is True:
@@ -297,7 +309,8 @@ def update_domain_row(domain_row: DomainModel):
 
     #  主机列表，不存在则更新
     # if total == 0:
-    update_domain_address_info(domain_row)
+    err2 = update_domain_address_info(domain_row)
+    return err1 or err2
 
 
 def update_domain_address_info(domain_row: DomainModel):
@@ -307,7 +320,8 @@ def update_domain_address_info(domain_row: DomainModel):
     update_ip_info_v2(domain_row)
 
     # 证书信息
-    update_cert_info_v2(domain_row)
+    err = update_cert_info_v2(domain_row)
+    return err
 
 
 def get_cert_info(domain: str):
@@ -477,7 +491,8 @@ def check_domain_cert(user_id):
             has_expired_domain = True
             break
 
-        if not item['real_time_domain_expire_days'] or item['real_time_domain_expire_days'] <= user_row.before_expire_days:
+        if not item['real_time_domain_expire_days'] or item[
+            'real_time_domain_expire_days'] <= user_row.before_expire_days:
             has_expired_domain = True
             break
 
@@ -487,6 +502,11 @@ def check_domain_cert(user_id):
 
 
 def update_and_check_all_domain_cert():
+    """
+    更新并检查所域名信息和证书信息
+    :return:
+    """
+
     # 开始执行
     log_row = LogSchedulerModel.create()
 
@@ -495,7 +515,11 @@ def update_and_check_all_domain_cert():
     status = True
 
     # 更新全部域名证书信息
-    update_all_domain_cert_info()
+    try:
+        update_all_domain_cert_info()
+    except Exception as e:
+        error_message = str(e)
+        logger.error(traceback.format_exc())
 
     # 配置检查 跳过邮件检查 可能已经配置了webhook
     # config = system_service.get_system_config()
@@ -521,6 +545,7 @@ def update_and_check_all_domain_cert():
         try:
             check_domain_cert(row.id)
         except Exception as e:
+            error_message = str(e)
             # traceback.print_exc()
             logger.error(traceback.format_exc())
 
@@ -537,7 +562,7 @@ def update_and_check_all_domain_cert():
         'error_message': error_message,
         'update_time': datetime_util.get_datetime(),
     }).where(
-        LogSchedulerModel.id == log_row
+        LogSchedulerModel.id == log_row.id
     ).execute()
 
 

@@ -13,7 +13,7 @@ import OpenSSL
 
 from domain_admin.utils.cert_util import cert_common, cert_consts
 
-warnings.warn("cert_openssl.py is Deprecated, please use cert_socket_v2.py")
+# warnings.warn("cert_openssl.py is Deprecated, please use cert_socket_v2.py")
 
 
 def get_cert_info(domain_with_port):

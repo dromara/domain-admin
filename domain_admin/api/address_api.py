@@ -27,24 +27,31 @@ def get_address_list_by_domain_id():
     current_user_id = g.user_id
 
     domain_id = request.json['domain_id']
+    page = request.json.get('page', 1)
+    size = request.json.get('size', 10)
 
-    rows = AddressModel.select().where(
+    query = AddressModel.select().where(
         AddressModel.domain_id == domain_id
     )
 
-    lst = list(map(lambda m: model_to_dict(
-        model=m,
-        extra_attrs=[
-            'ssl_start_date',
-            'ssl_expire_date',
-            'real_time_ssl_expire_days',
-            'ssl_check_time_label',
-        ]
-    ), rows))
+    total = query.count()
+    if total > 0:
+        rows = query.paginate(page, size)
+        lst = list(map(lambda m: model_to_dict(
+            model=m,
+            extra_attrs=[
+                'ssl_start_date',
+                'ssl_expire_date',
+                'real_time_ssl_expire_days',
+                'ssl_check_time_label',
+            ]
+        ), rows))
+    else:
+        lst = []
 
     return {
         "list": lst,
-        "total": len(lst)
+        "total": total
     }
 
 
@@ -146,7 +153,11 @@ def update_address_list_info_by_domain_id():
 
     domain_id = request.json['domain_id']
     domain_row = DomainModel.get_by_id(domain_id)
-    domain_service.update_domain_address_info(domain_row)
+    err = domain_service.update_domain_address_info(domain_row)
+
+    if err:
+        raise AppException(err)
+
 
 def update_address_row_info_by_id():
     """
@@ -160,4 +171,3 @@ def update_address_row_info_by_id():
     address_id = request.json['address_id']
 
     domain_service.update_address_row_info_with_sync_domain_row(address_id)
-

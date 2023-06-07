@@ -16,7 +16,7 @@ import ssl
 import warnings
 from domain_admin.utils.cert_util import cert_consts, cert_common
 
-warnings.warn("cert_socket.py is Deprecated, please use cert_socket_v2.py")
+# warnings.warn("cert_socket.py is Deprecated, please use cert_socket_v2.py")
 
 
 def create_ssl_context():

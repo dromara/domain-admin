@@ -19,22 +19,34 @@ def get_log_scheduler_list():
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
 
-    lst = LogSchedulerModel.select().order_by(
-        LogSchedulerModel.create_time.desc(),
-        LogSchedulerModel.id.desc(),
-    ).paginate(page, size)
+    query = LogSchedulerModel.select()
 
-    total = LogSchedulerModel.select().count()
+    total = query.count()
 
-    rows = list(map(lambda m: model_to_dict(
-        model=m,
-        extra_attrs=[
-            'total_time',
-            'total_time_label',
-        ]
-    ), lst))
+    lst = []
+    if total > 0:
+        rows = query.order_by(
+            LogSchedulerModel.create_time.desc(),
+            LogSchedulerModel.id.desc(),
+        ).paginate(page, size)
+
+        lst = list(map(lambda m: model_to_dict(
+            model=m,
+            extra_attrs=[
+                'total_time',
+                'total_time_label',
+            ]
+        ), rows))
 
     return {
-        'list': rows,
+        'list': lst,
         'total': total
     }
+
+
+def clear_log_scheduler_list():
+    """
+    清空日志
+    :return:
+    """
+    LogSchedulerModel.truncate_table()

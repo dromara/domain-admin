@@ -90,7 +90,7 @@ def update_domain_by_id():
     data = request.json
     domain_id = data.pop('id')
 
-    domain_service.check_permission_and_get_row(domain_id, current_user_id)
+    # domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
     data['update_time'] = datetime_util.get_datetime()
     data['group_id'] = data.get('group_id') or 0
@@ -102,6 +102,26 @@ def update_domain_by_id():
     domain_row = DomainModel.get_by_id(domain_id)
 
     domain_service.update_domain_row(domain_row)
+
+
+def update_domain_expire_monitor_by_id():
+    """
+    更新监控状态
+    :return:
+    """
+    current_user_id = g.user_id
+
+    domain_id = request.json.get('domain_id')
+
+    data = {
+        "domain_expire_monitor": request.json.get('domain_expire_monitor', True)
+    }
+
+    DomainModel.update(
+        data
+    ).where(
+        DomainModel.id == domain_id
+    ).execute()
 
 
 def delete_domain_by_id():
@@ -206,17 +226,62 @@ def get_domain_list():
         query = query.where(DomainModel.connect_status == connect_status)
 
     ordering = []
+
+    # order by expire_days
     if order_prop == 'expire_days':
         if order_type == 'descending':
             ordering.append(DomainModel.expire_days.desc())
         else:
             ordering.append(DomainModel.expire_days.asc())
 
+    # order by domain_expire_days
     elif order_prop == 'domain_expire_days':
         if order_type == 'descending':
             ordering.append(DomainModel.domain_expire_days.desc())
         else:
             ordering.append(DomainModel.domain_expire_days.asc())
+
+    # order by connect_status
+    elif order_prop == 'connect_status':
+        if order_type == 'descending':
+            ordering.append(DomainModel.connect_status.desc())
+        else:
+            ordering.append(DomainModel.connect_status.asc())
+
+    # order by domain
+    elif order_prop == 'domain':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain.desc())
+        else:
+            ordering.append(DomainModel.domain.asc())
+
+    # order by group_id
+    elif order_prop == 'group_name':
+        if order_type == 'descending':
+            ordering.append(DomainModel.group_id.desc())
+        else:
+            ordering.append(DomainModel.group_id.asc())
+
+    # order by port
+    elif order_prop == 'port':
+        if order_type == 'descending':
+            ordering.append(DomainModel.port.desc())
+        else:
+            ordering.append(DomainModel.port.asc())
+
+    # order by update_time
+    elif order_prop == 'update_time':
+        if order_type == 'descending':
+            ordering.append(DomainModel.update_time.desc())
+        else:
+            ordering.append(DomainModel.update_time.asc())
+
+    # order by domain_expire_monitor
+    elif order_prop == 'domain_expire_monitor':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain_expire_monitor.desc())
+        else:
+            ordering.append(DomainModel.domain_expire_monitor.asc())
 
     ordering.append(DomainModel.id.desc())
 
@@ -341,7 +406,7 @@ def update_domain_cert_info_by_id():
     row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
     # domain_service.update_domain_row(row)
-    domain_service.update_domain_info(row)
+    err = domain_service.update_domain_info(row)
 
 
 def update_domain_row_info_by_id():
@@ -357,7 +422,9 @@ def update_domain_row_info_by_id():
 
     row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
-    domain_service.update_domain_row(row)
+    err = domain_service.update_domain_row(row)
+    if err:
+        raise AppException(err)
 
 
 def send_domain_info_list_email():
@@ -429,7 +496,6 @@ def import_domain_from_file():
 
     # 异步查询
     async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
-
 
 
 def export_domain_file():
