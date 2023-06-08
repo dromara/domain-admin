@@ -72,7 +72,7 @@ def init_table_data():
             'value': '',
             'label': '发件人邮箱密码',
             'placeholder': '发件人邮箱密码',
-            'is_show_value': False,
+            'is_show_value': True,
         },
 
         {
@@ -80,7 +80,7 @@ def init_table_data():
             'value': '[ssl]证书过期时间汇总',
             'label': '邮件标题',
             'placeholder': '邮件标题',
-            'is_show_value': False,
+            'is_show_value': True,
         },
 
         # 分 时 日 月 周，默认每天上午 10: 30 检测
