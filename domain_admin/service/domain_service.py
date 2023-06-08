@@ -510,7 +510,7 @@ def update_and_check_all_domain_cert():
     # 开始执行
     log_row = LogSchedulerModel.create()
 
-    error_message = ''
+    err1 = ''
 
     status = True
 
@@ -518,7 +518,7 @@ def update_and_check_all_domain_cert():
     try:
         update_all_domain_cert_info()
     except Exception as e:
-        error_message = str(e)
+        err1 = str(e)
         logger.error(traceback.format_exc())
 
     # 配置检查 跳过邮件检查 可能已经配置了webhook
@@ -538,14 +538,14 @@ def update_and_check_all_domain_cert():
     # 全员检查并发送用户通知
     # if status:
     rows = UserModel.select()
-
+    err2 = []
     for row in rows:
 
         # 内层捕获单个用户发送错误
         try:
             check_domain_cert(row.id)
         except Exception as e:
-            error_message = str(e)
+            err2 = str(e)
             # traceback.print_exc()
             logger.error(traceback.format_exc())
 
@@ -556,10 +556,12 @@ def update_and_check_all_domain_cert():
             # else:
             #     error_message = str(e)
 
+    error_message = [err1, err2]
+
     # 执行完毕
     LogSchedulerModel.update({
         'status': status,
-        'error_message': error_message,
+        'error_message': "、".join(error_message),
         'update_time': datetime_util.get_datetime(),
     }).where(
         LogSchedulerModel.id == log_row.id

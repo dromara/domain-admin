@@ -37,6 +37,9 @@ def get_all_system_config():
     """
     lst = SystemModel.select()
 
+    # 隐藏关键信息
+    lst = [item for item in lst if item.key != 'secret_key' ]
+
     return {
         'list': lst,
         'total': len(lst)
