@@ -9,6 +9,11 @@ dev:
 pro:
 	gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
 
+# 发布 make release
+.PHONY: release
+release:
+	python version-cli/auto_release.py
+
 # 打包
 build:
 	python setup.py sdist bdist_wheel
