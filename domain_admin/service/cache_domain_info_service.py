@@ -33,7 +33,7 @@ def get_domain_info(domain: str) -> CacheDomainInfoModel:
             "domain": root_domain,
             "domain_start_time": domain_whois['start_time'],
             "domain_expire_time": domain_whois['expire_time'],
-            "expire_time": domain_whois['expire_time'] - timedelta(minutes=3)
+            "expire_time": datetime.now() - timedelta(minutes=3)
         }
 
         if not row:

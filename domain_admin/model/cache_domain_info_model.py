@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField
+from peewee import CharField, IntegerField, DateTimeField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import time_util
@@ -12,7 +12,7 @@ class CacheDomainInfoModel(BaseModel):
     域名信息缓存表
     @since 1.2.12
     """
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 域名
     domain = CharField(unique=True)

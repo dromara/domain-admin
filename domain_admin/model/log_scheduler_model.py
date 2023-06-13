@@ -2,7 +2,7 @@
 import math
 from datetime import datetime
 
-from peewee import IntegerField, DateTimeField, BooleanField, TextField
+from peewee import IntegerField, DateTimeField, BooleanField, TextField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util
@@ -10,7 +10,7 @@ from domain_admin.utils import datetime_util
 
 class LogSchedulerModel(BaseModel):
     """日志"""
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 状态
     status = BooleanField(default=False)

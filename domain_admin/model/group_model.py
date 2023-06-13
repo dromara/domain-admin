@@ -2,12 +2,12 @@
 from datetime import datetime
 
 from domain_admin.model.base_model import BaseModel
-from peewee import CharField, IntegerField, DateTimeField, BooleanField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
 
 
 class GroupModel(BaseModel):
     """分组"""
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 名称
     name = CharField()

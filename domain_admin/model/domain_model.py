@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.model.group_model import GroupModel
@@ -11,7 +11,7 @@ from domain_admin.utils import datetime_util, time_util
 
 class DomainModel(BaseModel):
     """域名"""
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 用户id
     user_id = IntegerField(default=0)

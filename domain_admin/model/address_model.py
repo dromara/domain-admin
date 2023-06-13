@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, BooleanField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util, time_util
@@ -12,7 +12,7 @@ class AddressModel(BaseModel):
     域名主机ip地址
     @since v1.2.24
     """
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 域名
     domain_id = CharField(null=False)

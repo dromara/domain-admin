@@ -2,14 +2,14 @@
 import json
 from datetime import datetime
 
-from peewee import IntegerField, DateTimeField, TextField
+from peewee import IntegerField, DateTimeField, TextField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 
 
 class NotifyModel(BaseModel):
     """通知配置"""
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 用户id
     user_id = IntegerField(null=False)

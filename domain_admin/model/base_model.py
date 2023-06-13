@@ -2,11 +2,12 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
-from peewee import Model, SqliteDatabase
+from peewee import Model, SqliteDatabase, MySQLDatabase
+from playhouse.db_url import connect
 from playhouse.sqlite_ext import SqliteExtDatabase
 from playhouse.sqliteq import SqliteQueueDatabase
 
-from domain_admin.config import SQLITE_DATABASE_PATH
+from domain_admin.config import SQLITE_DATABASE_PATH, DB_CONNECT_URL
 
 # 打印日志
 from domain_admin.service.file_service import resolve_log_file
@@ -24,7 +25,9 @@ logger.setLevel(logging.DEBUG)
 # db = connect(SQLITE_DATABASE_URL)
 # db = SqliteQueueDatabase(database=SQLITE_DATABASE_PATH)
 # db = SqliteExtDatabase(database=SQLITE_DATABASE_PATH)
-db = SqliteDatabase(database=SQLITE_DATABASE_PATH)
+# db = SqliteDatabase(database=SQLITE_DATABASE_PATH)
+
+db = connect(url=DB_CONNECT_URL)
 
 
 class BaseModel(Model):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, BooleanField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import secret_util
@@ -9,7 +9,7 @@ from domain_admin.utils import secret_util
 
 class SystemModel(BaseModel):
     """系统配置"""
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 键
     key = CharField(unique=True)

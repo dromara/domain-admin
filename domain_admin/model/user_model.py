@@ -4,14 +4,14 @@ from datetime import datetime
 import warnings
 from domain_admin.config import ADMIN_USERNAME
 from domain_admin.model.base_model import BaseModel
-from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField, AutoField
 
 from domain_admin.utils import bcrypt_util
 
 
 class UserModel(BaseModel):
     """用户"""
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
 
     # 用户名
     username = CharField(unique=True, null=None)

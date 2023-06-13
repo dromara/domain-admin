@@ -308,9 +308,21 @@ eg:
 www.baidu.com:8080
 ```
 
+### 8、修改数据库链接
+
+通过配置`.env` 文件或者直接设置系统环境变量
+
+```bash
+# sqlite 默认
+DB_CONNECT_URL=sqlite:///database/database.db
+
+# mysql
+DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
+```
+
 ## 问题反馈交流
 
-群号:731742868
+QQ群号:731742868
 
 邀请码：domain-admin
 

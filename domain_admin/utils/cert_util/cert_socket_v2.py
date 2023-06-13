@@ -23,7 +23,11 @@ def get_domain_host_list(domain: str, port: int = 80) -> typing.List[str]:
     :param port: 端口
     :return: 主机地址列表
     """
-    ret = socket.getaddrinfo(host=domain, port=port, proto=socket.IPPROTO_TCP)
+    ret = socket.getaddrinfo(
+        host=domain,
+        port=port,
+        family=socket.AF_INET,  # 限制仅返回IPv4
+        proto=socket.IPPROTO_TCP)
 
     lst = []
     for item in ret:

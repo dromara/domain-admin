@@ -90,7 +90,7 @@ def get_group_list():
     # 域名分组统计
     domain_groups = DomainModel.select(
         DomainModel.group_id,
-        fn.COUNT().alias('count')
+        fn.COUNT(1).alias('count')
     ).group_by(DomainModel.group_id)
 
     domain_groups_map = {
