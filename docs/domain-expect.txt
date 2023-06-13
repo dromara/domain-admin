@@ -97,3 +97,4 @@ sha1-intermediate.badssl.com
 invalid-expected-sct.badssl.com
 testsafebrowsing.appspot.com
 www.米梵家居.com
+cloud.gavincent.cn

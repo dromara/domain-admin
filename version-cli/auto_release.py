@@ -4,13 +4,7 @@
 @Date    : 2023-06-09
 """
 
-# -*- coding: utf-8 -*-
 import glob
-
-"""
-@File    : demo.py
-@Date    : 2023-06-09
-"""
 import os
 import re
 from packaging import version
@@ -66,7 +60,7 @@ def main():
     print(new_version)
 
     # 提交代码
-    os.system(f"git add . && git commit 'auto release' && git tag v{new_version} && git push --tag")
+    os.system(f"git add . && git commit -m 'auto release' && git tag v{new_version} && git push --tag")
 
 
 if __name__ == '__main__':

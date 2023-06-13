@@ -36,7 +36,8 @@ def add_domain():
         # 基本信息
         'user_id': current_user_id,
         'domain': domain,
-        'port': port,
+        'port': int(port),  # fix: TypeError: an integer is required (got type str)
+
         'alias': alias,
         'group_id': group_id,
     }
