@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+domain_util.py
+"""
+
 import re
 import tldextract
 from tldextract.tldextract import ExtractResult

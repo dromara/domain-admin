@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+由于历史原因，domain指代 SSL证书的域名
+"""
 
 from flask import request, g
-from peewee import fn
-from playhouse.shortcuts import model_to_dict
+from playhouse.shortcuts import model_to_dict, fn
 
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_model import DomainModel
-from domain_admin.model.group_model import GroupModel
 from domain_admin.service import async_task_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
-from domain_admin.utils import datetime_util
+from domain_admin.utils import datetime_util, domain_util
 from domain_admin.utils.cert_util import cert_consts
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -37,7 +38,7 @@ def add_domain():
         'user_id': current_user_id,
         'domain': domain,
         'port': int(port),  # fix: TypeError: an integer is required (got type str)
-
+        'root_domain': domain_util.get_root_domain(domain),
         'alias': alias,
         'group_id': group_id,
     }
@@ -163,156 +164,6 @@ def delete_domain_by_ids():
     AddressModel.delete().where(
         AddressModel.domain_id.in_(domain_ids)
     ).execute()
-
-
-def get_domain_list():
-    """
-    获取域名列表
-    :return:
-    """
-    current_user_id = g.user_id
-
-    page = request.json.get('page', 1)
-    size = request.json.get('size', 10)
-    keyword = request.json.get('keyword')
-    group_id = request.json.get('group_id')
-
-    order_prop = request.json.get('order_prop', 'expire_days')
-    order_type = request.json.get('order_type', 'ascending')
-    group_ids = request.json.get('group_ids')
-    expire_days = request.json.get('expire_days')
-    domain_expire_days = request.json.get('domain_expire_days')
-    connect_status = request.json.get('connect_status')
-
-    query = DomainModel.select().where(
-        DomainModel.user_id == current_user_id
-    )
-
-    if isinstance(group_id, int):
-        query = query.where(DomainModel.group_id == group_id)
-
-    if keyword:
-        query = query.where(DomainModel.domain.contains(keyword))
-
-    if group_ids:
-        query = query.where(DomainModel.group_id.in_(group_ids))
-
-    if expire_days is not None:
-        if expire_days[0] is None:
-            query = query.where(DomainModel.expire_days <= expire_days[1])
-        elif expire_days[1] is None:
-            query = query.where(DomainModel.expire_days >= expire_days[0])
-        else:
-            query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
-
-    if domain_expire_days is not None:
-        if domain_expire_days[0] is None:
-            query = query.where(DomainModel.domain_expire_days <= domain_expire_days[1])
-        elif domain_expire_days[1] is None:
-            query = query.where(DomainModel.domain_expire_days >= domain_expire_days[0])
-        else:
-            query = query.where(DomainModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
-
-    if connect_status is not None:
-        # 连接正常
-        if connect_status == 'success':
-            connect_status = True
-        # 连接异常
-        elif connect_status == 'error':
-            connect_status = False
-        # 状态未知
-        elif connect_status == 'unknown':
-            connect_status = None
-
-        query = query.where(DomainModel.connect_status == connect_status)
-
-    ordering = []
-
-    # order by expire_days
-    if order_prop == 'expire_days':
-        if order_type == 'descending':
-            ordering.append(DomainModel.expire_days.desc())
-        else:
-            ordering.append(DomainModel.expire_days.asc())
-
-    # order by domain_expire_days
-    elif order_prop == 'domain_expire_days':
-        if order_type == 'descending':
-            ordering.append(DomainModel.domain_expire_days.desc())
-        else:
-            ordering.append(DomainModel.domain_expire_days.asc())
-
-    # order by connect_status
-    elif order_prop == 'connect_status':
-        if order_type == 'descending':
-            ordering.append(DomainModel.connect_status.desc())
-        else:
-            ordering.append(DomainModel.connect_status.asc())
-
-    # order by domain
-    elif order_prop == 'domain':
-        if order_type == 'descending':
-            ordering.append(DomainModel.domain.desc())
-        else:
-            ordering.append(DomainModel.domain.asc())
-
-    # order by group_id
-    elif order_prop == 'group_name':
-        if order_type == 'descending':
-            ordering.append(DomainModel.group_id.desc())
-        else:
-            ordering.append(DomainModel.group_id.asc())
-
-    # order by port
-    elif order_prop == 'port':
-        if order_type == 'descending':
-            ordering.append(DomainModel.port.desc())
-        else:
-            ordering.append(DomainModel.port.asc())
-
-    # order by update_time
-    elif order_prop == 'update_time':
-        if order_type == 'descending':
-            ordering.append(DomainModel.update_time.desc())
-        else:
-            ordering.append(DomainModel.update_time.asc())
-
-    # order by domain_expire_monitor
-    elif order_prop == 'domain_expire_monitor':
-        if order_type == 'descending':
-            ordering.append(DomainModel.domain_expire_monitor.desc())
-        else:
-            ordering.append(DomainModel.domain_expire_monitor.asc())
-
-    ordering.append(DomainModel.id.desc())
-
-    lst = query.order_by(*ordering).paginate(page, size)
-
-    total = query.count()
-
-    lst = list(map(lambda m: model_to_dict(
-        model=m,
-        exclude=[DomainModel.detail_raw],
-        extra_attrs=[
-            'total_days',
-            'expire_days',
-            'create_time_label',
-            'check_time_label',
-            'real_time_expire_days',
-            'real_time_ssl_total_days',
-            'real_time_ssl_expire_days',
-            'real_time_domain_expire_days',
-            'domain_url',
-            'update_time_label',
-        ]
-    ), lst))
-
-    # lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
-
-    return {
-        'list': lst,
-        'total': total
-    }
 
 
 def get_domain_by_id():
@@ -529,3 +380,171 @@ def domain_relation_group():
     ).where(
         DomainModel.id.in_(domain_ids)
     ).execute()
+
+
+def get_domain_list():
+    """
+    获取域名列表
+    :return:
+    """
+    current_user_id = g.user_id
+
+    page = request.json.get('page', 1)
+    size = request.json.get('size', 10)
+    keyword = request.json.get('keyword')
+    group_id = request.json.get('group_id')
+
+    order_prop = request.json.get('order_prop', 'expire_days')
+    order_type = request.json.get('order_type', 'ascending')
+    group_ids = request.json.get('group_ids')
+    expire_days = request.json.get('expire_days')
+    domain_expire_days = request.json.get('domain_expire_days')
+    connect_status = request.json.get('connect_status')
+
+    query = DomainModel.select().where(
+        DomainModel.user_id == current_user_id
+    )
+
+    if isinstance(group_id, int):
+        query = query.where(DomainModel.group_id == group_id)
+
+    if keyword:
+        query = query.where(DomainModel.domain.contains(keyword))
+
+    if group_ids:
+        query = query.where(DomainModel.group_id.in_(group_ids))
+
+    if expire_days is not None:
+        if expire_days[0] is None:
+            query = query.where(DomainModel.expire_days <= expire_days[1])
+        elif expire_days[1] is None:
+            query = query.where(DomainModel.expire_days >= expire_days[0])
+        else:
+            query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
+
+    if domain_expire_days is not None:
+        if domain_expire_days[0] is None:
+            query = query.where(DomainModel.domain_expire_days <= domain_expire_days[1])
+        elif domain_expire_days[1] is None:
+            query = query.where(DomainModel.domain_expire_days >= domain_expire_days[0])
+        else:
+            query = query.where(DomainModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
+
+    if connect_status is not None:
+        # 连接正常
+        if connect_status == 'success':
+            connect_status = True
+        # 连接异常
+        elif connect_status == 'error':
+            connect_status = False
+        # 状态未知
+        elif connect_status == 'unknown':
+            connect_status = None
+
+        query = query.where(DomainModel.connect_status == connect_status)
+
+    ordering = []
+
+    # order by expire_days
+    if order_prop == 'expire_days':
+        if order_type == 'descending':
+            ordering.append(DomainModel.expire_days.desc())
+        else:
+            ordering.append(DomainModel.expire_days.asc())
+
+    # order by domain_expire_days
+    elif order_prop == 'domain_expire_days':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain_expire_days.desc())
+        else:
+            ordering.append(DomainModel.domain_expire_days.asc())
+
+    # order by connect_status
+    elif order_prop == 'connect_status':
+        if order_type == 'descending':
+            ordering.append(DomainModel.connect_status.desc())
+        else:
+            ordering.append(DomainModel.connect_status.asc())
+
+    # order by domain
+    elif order_prop == 'domain':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain.desc())
+        else:
+            ordering.append(DomainModel.domain.asc())
+
+    # order by group_id
+    elif order_prop == 'group_name':
+        if order_type == 'descending':
+            ordering.append(DomainModel.group_id.desc())
+        else:
+            ordering.append(DomainModel.group_id.asc())
+
+    # order by port
+    elif order_prop == 'port':
+        if order_type == 'descending':
+            ordering.append(DomainModel.port.desc())
+        else:
+            ordering.append(DomainModel.port.asc())
+
+    # order by update_time
+    elif order_prop == 'update_time':
+        if order_type == 'descending':
+            ordering.append(DomainModel.update_time.desc())
+        else:
+            ordering.append(DomainModel.update_time.asc())
+
+    # order by domain_expire_monitor
+    elif order_prop == 'domain_expire_monitor':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain_expire_monitor.desc())
+        else:
+            ordering.append(DomainModel.domain_expire_monitor.asc())
+
+    ordering.append(DomainModel.id.desc())
+
+    lst = query.order_by(*ordering).paginate(page, size)
+
+    total = query.count()
+
+    lst = list(map(lambda m: model_to_dict(
+        model=m,
+        exclude=[DomainModel.detail_raw],
+        extra_attrs=[
+            'total_days',
+            'expire_days',
+            'create_time_label',
+            'check_time_label',
+            'real_time_expire_days',
+            'real_time_ssl_total_days',
+            'real_time_ssl_expire_days',
+            'real_time_domain_expire_days',
+            'domain_url',
+            'update_time_label',
+        ]
+    ), lst))
+
+    row_ids = [row['id'] for row in lst]
+
+    # 主机数量
+    address_groups = AddressModel.select(
+        AddressModel.domain_id,
+        fn.COUNT(AddressModel.id).alias('count')
+    ).where(
+        AddressModel.domain_id.in_(row_ids)
+    ).group_by(AddressModel.domain_id)
+
+    address_group_map = {
+        str(row.domain_id): row.count
+        for row in address_groups
+    }
+
+    for row in lst:
+        row['address_count'] = address_group_map.get(str(row['id']), 0)
+
+    # lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
+
+    return {
+        'list': lst,
+        'total': total
+    }

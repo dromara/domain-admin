@@ -2,7 +2,7 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api
+from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -18,7 +18,7 @@ routes = {
     "/api/login": auth_api.login,
     "/api/register": auth_api.register,
 
-    # 域名
+    # 域名（SSL证书）
     "/api/addDomain": domain_api.add_domain,
     "/api/updateDomainById": domain_api.update_domain_by_id,
     "/api/updateDomainExpireMonitorById": domain_api.update_domain_expire_monitor_by_id,
@@ -91,4 +91,12 @@ routes = {
     '/api/updateAddressListInfoByDomainId': address_api.update_address_list_info_by_domain_id,
     '/api/updateAddressRowInfoById': address_api.update_address_row_info_by_id,
 
+    # 域名列表
+    '/api/getDomainInfoList': domain_info_api.get_domain_info_list,
+    '/api/addDomainInfo': domain_info_api.add_domain_info,
+    '/api/updateDomainInfoRowById': domain_info_api.update_domain_info_row_by_id,
+    '/api/updateDomainInfoFieldById': domain_info_api.update_domain_info_field_by_id,
+    '/api/deleteDomainInfoById': domain_info_api.delete_domain_info_by_id,
+    '/api/getDomainInfoById': domain_info_api.get_domain_info_by_id,
+    '/api/updateDomainInfoById': domain_info_api.update_domain_info_by_id,
 }

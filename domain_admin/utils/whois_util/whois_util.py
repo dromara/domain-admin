@@ -18,6 +18,11 @@ from domain_admin.utils.whois_util.util import parse_whois_raw, get_whois_raw, l
 WHOIS_CONFIGS = None
 
 
+class DomainInfo(object):
+    start_time = None
+    expire_time = None
+
+
 def resolve_domain(domain: str) -> str:
     """
     域名转换
@@ -131,7 +136,7 @@ def get_domain_raw_whois(domain):
 
 
 def get_domain_whois(domain):
-    logger.debug('get_domain_whois %s', domain)
+    # logger.debug('get_domain_whois %s', domain)
 
     raw_data = get_domain_raw_whois(domain)
 

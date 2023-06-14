@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import time
 
 from flask import request, make_response, send_file
 from flask_cors import CORS

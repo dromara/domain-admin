@@ -125,22 +125,20 @@ make dev
     - 域名添加
     - 域名删除
     - 域名搜索
-    - 域名批量导入
-    - 导出功能
-    - 域名证书信息
+    - 域名导入、导出功能
+    - 域名信息
+
+- 证书监控
+    - 定时监控
+    - 到期邮件提醒
+    - 微信提醒
+    - 手动/自动更新证书信息
 
 - 用户管理
     - 添加用户
     - 删除用户
     - 禁用/启用用户
 
-- 证书监控
-    - 定时监控
-    - 到期邮件提醒
-    - 微信提醒（待开发）
-    - 手动/自动更新证书信息
-    - 域名信息查询
-  
 - 监控日志
 
 - 管理界面
@@ -361,3 +359,8 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 [CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md)
 
 ![](image/domain-admin-process.png)
+
+## 参考文章
+
+- [Python：获取域名ssl证书信息和到期时间](https://pengshiyu.blog.csdn.net/article/details/115861795)
+- [一文搞定：whois数据库查询域名信息（WHOIS）](https://pengshiyu.blog.csdn.net/article/details/129691736)

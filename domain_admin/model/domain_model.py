@@ -19,6 +19,9 @@ class DomainModel(BaseModel):
     # 域名
     domain = CharField()
 
+    # 顶级域名 @since 1.4.0
+    root_domain = CharField(default='', null=False)
+
     # 端口 @since v1.2.24
     port = IntegerField(default=443)
 

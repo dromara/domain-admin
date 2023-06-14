@@ -6,7 +6,7 @@
 """
 from domain_admin.enums.version_enum import VersionEnum
 from domain_admin.log import logger
-from domain_admin.migrate import migrate_102_to_103, migrate_1213_to_131
+from domain_admin.migrate import migrate_102_to_103, migrate_1213_to_131, migrate_136_to_140
 from domain_admin.migrate import migrate_106_to_110
 from domain_admin.migrate import migrate_110_to_1212
 from domain_admin.migrate import migrate_1212_to_1213
@@ -123,6 +123,20 @@ def update_version():
             logger.info('update version: %s => %s', local_version, VersionEnum.Version_131)
             migrate_1213_to_131.execute_migrate()
             local_version = VersionEnum.Version_131
+
+        # 2023-06-14
+        if local_version in [
+            VersionEnum.Version_131,
+            VersionEnum.Version_132,
+            VersionEnum.Version_133,
+            VersionEnum.Version_134,
+            VersionEnum.Version_135,
+            VersionEnum.Version_136,
+        ]:
+            # 1.3.1 => 1.4.0
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_140)
+            migrate_136_to_140.execute_migrate()
+            local_version = VersionEnum.Version_140
 
     # 更新版本号
     VersionModel.create(
