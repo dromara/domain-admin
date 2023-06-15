@@ -13,9 +13,9 @@
         <tr>
             <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">序号</th>
             <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名</th>
-            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名天数</th>
-<!--            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">开始日期</th>-->
-<!--            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">结束日期</th>-->
+<!--            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名天数</th>-->
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">开始日期</th>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">结束日期</th>
             <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">证书天数</th>
         </tr>
         </thead>
@@ -29,20 +29,20 @@
                     <a href="{{ item.domain }}" target="_blank">{{ item.domain }}</a>
                 </td>
 
-                {% if item.real_time_domain_expire_days %}
-                    {% if item.real_time_domain_expire_days <= 7 %}
-                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.real_time_domain_expire_days }}</td>
-                    {% elif item.real_time_domain_expire_days <= 30 %}
-                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.real_time_domain_expire_days }}</td>
-                    {% else %}
-                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.real_time_domain_expire_days }}</td>
-                    {% endif %}
-                {% else %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">未知</td>
-                {% endif %}
+<!--                {% if item.real_time_domain_expire_days %}-->
+<!--                    {% if item.real_time_domain_expire_days <= 7 %}-->
+<!--                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.real_time_domain_expire_days }}</td>-->
+<!--                    {% elif item.real_time_domain_expire_days <= 30 %}-->
+<!--                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.real_time_domain_expire_days }}</td>-->
+<!--                    {% else %}-->
+<!--                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.real_time_domain_expire_days }}</td>-->
+<!--                    {% endif %}-->
+<!--                {% else %}-->
+<!--                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">未知</td>-->
+<!--                {% endif %}-->
 
-<!--              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date | default('-') }}</td>-->
-<!--              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date | default('-')  }}</td>-->
+              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date | default('-') }}</td>
+              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date | default('-')  }}</td>
                 {% if item.real_time_expire_days %}
                     {% if item.real_time_expire_days <= 7 %}
                         <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.real_time_expire_days }}</td>
@@ -52,7 +52,7 @@
                         <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.real_time_expire_days }}</td>
                     {% endif %}
                 {% else %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">未知</td>
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">{{ item.real_time_expire_days }}</td>
                 {% endif %}
             </tr>
         {% endfor %}

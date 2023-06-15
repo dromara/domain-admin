@@ -21,6 +21,7 @@ routes = {
     # 域名（SSL证书）
     "/api/addDomain": domain_api.add_domain,
     "/api/updateDomainById": domain_api.update_domain_by_id,
+    "/api/updateDomainFieldById": domain_api.update_domain_field_by_id,
     "/api/updateDomainExpireMonitorById": domain_api.update_domain_expire_monitor_by_id,
     "/api/deleteDomainById": domain_api.delete_domain_by_id,
     "/api/deleteDomainByIds": domain_api.delete_domain_by_ids,

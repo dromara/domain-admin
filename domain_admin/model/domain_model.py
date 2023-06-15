@@ -44,21 +44,27 @@ class DomainModel(BaseModel):
     group_id = IntegerField(default=0, null=False)
 
     # 域名注册时间 @since 1.1.0
+    # @Deprecated @since 1.4.0
     domain_start_time = DateTimeField(default=None, null=True)
 
     # 域名过期时间 @since 1.1.0
+    # @Deprecated @since 1.4.0
     domain_expire_time = DateTimeField(default=None, null=True)
 
     # 域名过期剩余天数，仅用于排序 @since 1.1.0
+    # @Deprecated @since 1.4.0
     domain_expire_days = IntegerField(default=0, null=False)
 
     # 域名信息检查时间 @since 1.2.12
+    # @Deprecated @since 1.4.0
     domain_check_time = DateTimeField(default=None, null=True)
 
     # 域名信息自动更新 @since v1.2.13
+    # @Deprecated @since 1.4.0
     domain_auto_update = BooleanField(default=True)
 
     # 域名过期监测 @since v1.2.24
+    # @Deprecated @since 1.4.0
     domain_expire_monitor = BooleanField(default=True)
 
     # SSL签发时间
@@ -73,28 +79,26 @@ class DomainModel(BaseModel):
     # @since v1.2.24 变更为：过期时间最短那个证书
     expire_days = IntegerField(default=0, null=False)
 
+    # SSL有效期总天数，仅用于排序
+    total_days = IntegerField(default=0, null=False)
+
     # SSL最后检查时间
     # @Deprecated
     check_time = DateTimeField(default=None, null=True)
 
     # SSL证书信息自动更新 @since v1.2.13
-    # @Deprecated
     auto_update = BooleanField(default=True)
 
-    # SSL有效期总天数，仅用于排序
-    # @Deprecated
-    total_days = IntegerField(default=0, null=False)
+    # 是否监测 @since 1.0.3
+    is_monitor = BooleanField(default=True)
 
     # 连接状态
     # @since v1.2.24 所有ip都连接成功才是成功
     connect_status = BooleanField(default=None, null=True)
 
     # 通知状态
-    notify_status = BooleanField(default=True)
-
-    # 是否监测 @since 1.0.3
     # @Deprecated
-    is_monitor = BooleanField(default=True)
+    notify_status = BooleanField(default=True)
 
     # 详细信息
     # @Deprecated
@@ -159,14 +163,15 @@ class DomainModel(BaseModel):
         return time_util.get_diff_days(self.start_time, self.expire_time)
 
     @property
-    def real_time_expire_days(self):
+    def real_time_expire_days(self) -> int:
         """
         实时ssl过期剩余天数
         expire_days 是更新数据时所计算的时间，有滞后性
         :return:
         """
-        if self.expire_time and isinstance(self.expire_time, datetime):
-            return (self.expire_time - datetime.now()).days
+        return time_util.get_diff_days(datetime.now(), self.expire_time)
+        # if self.expire_time and isinstance(self.expire_time, datetime):
+        #     return (self.expire_time - datetime.now()).days
 
     # @since v1.3.1
     real_time_ssl_expire_days = real_time_expire_days

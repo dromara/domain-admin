@@ -6,6 +6,7 @@ import time
 import traceback
 import warnings
 from datetime import datetime
+from typing import List
 
 from peewee import chunked
 from playhouse.shortcuts import model_to_dict
@@ -158,8 +159,8 @@ def update_address_row_info(address_row, domain_row):
     """
 
     # 如果不自动更新证书则跳过
-    if address_row.ssl_auto_update is False:
-        logger.info("skip ssl_auto_update: %s - %s", domain_row.domain, address_row.host)
+    # if address_row.ssl_auto_update is False:
+    #     logger.info("skip ssl_auto_update: %s - %s", domain_row.domain, address_row.host)
 
     # 获取证书信息
     cert_info = {}
@@ -183,7 +184,7 @@ def update_address_row_info(address_row, domain_row):
         ssl_start_time=address.ssl_start_time,
         ssl_expire_time=address.ssl_expire_time,
         ssl_expire_days=address.real_time_ssl_expire_days,
-        ssl_check_time=datetime_util.get_datetime(),
+        # ssl_check_time=datetime_util.get_datetime(),
         update_time=datetime_util.get_datetime(),
     ).where(
         AddressModel.id == address_row.id
@@ -220,15 +221,15 @@ def sync_address_info_to_domain_info(domain_row: DomainModel):
         AddressModel.ssl_expire_days.asc()
     ).first()
 
-    if first_address_row is not None:
-        pass
+    # if first_address_row is not None:
+    #     pass
 
-        # logger.info("%s", model_to_dict(
-        #     model=first_address_row,
-        #     extra_attrs=[
-        #         'real_time_ssl_expire_days'
-        #     ]
-        # ))
+    # logger.info("%s", model_to_dict(
+    #     model=first_address_row,
+    #     extra_attrs=[
+    #         'real_time_ssl_expire_days'
+    #     ]
+    # ))
 
     connect_status = False
 
@@ -283,16 +284,16 @@ def update_cert_info(row: DomainModel):
 def update_domain_row(domain_row: DomainModel):
     """
     更新域名相关数据
-    :param row:
+    :param domain_row:
     :return:
     """
     # logger.info("%s", model_to_dict(domain_row))
     err1 = ''
 
-    # 如果自动更新禁用，则不更新
-    if domain_row.domain_auto_update is True:
-        # 域名信息 如果还没有过期，可以不更新
-        err1 = update_domain_info(domain_row)
+    # # 如果自动更新禁用，则不更新
+    # if domain_row.domain_auto_update is True:
+    #     # 域名信息 如果还没有过期，可以不更新
+    #     err1 = update_domain_info(domain_row)
 
     # # 如果自动更新禁用，则不更新
     # if row.auto_update is True:
@@ -421,14 +422,15 @@ def update_all_domain_cert_info_of_user(user_id):
     :return:
     """
     rows = DomainModel.select().where(
-        DomainModel.user_id == user_id
+        DomainModel.user_id == user_id,
+        DomainModel.auto_update == True
     )
 
     for row in rows:
         update_domain_row(row)
 
-    key = f'update_domain_status:{user_id}'
-    global_data_service.set_value(key, False)
+    # key = f'update_domain_status:{user_id}'
+    # global_data_service.set_value(key, False)
 
 
 def get_domain_info_list(user_id=None):
@@ -478,26 +480,28 @@ def check_domain_cert(user_id):
     """
     user_row = UserModel.get_by_id(user_id)
 
-    lst = get_domain_info_list(user_id)
+    # lst = get_domain_info_list(user_id)
 
-    has_expired_domain = False
+    rows = DomainModel.select().where(
+        DomainModel.user_id == user_id,
+        DomainModel.is_monitor == True,
+        DomainModel.expire_days <= user_row.before_expire_days
+    ).order_by(
+        DomainModel.expire_days.asc(),
+        DomainModel.id.desc()
+    )
 
-    for item in lst:
-        # 2023-02-06 如果不检测就跳过
-        if not item['domain_expire_monitor']:
-            continue
+    lst = [model_to_dict(
+        model=row,
+        extra_attrs=[
+            'start_date',
+            'expire_date',
+            'real_time_expire_days',
+        ]
+    ) for row in rows]
 
-        if not item['real_time_expire_days'] or item['real_time_expire_days'] <= user_row.before_expire_days:
-            has_expired_domain = True
-            break
-
-        if not item['real_time_domain_expire_days'] or item[
-            'real_time_domain_expire_days'] <= user_row.before_expire_days:
-            has_expired_domain = True
-            break
-
-    if has_expired_domain:
-        notify_user(user_id)
+    if len(lst) > 0:
+        notify_user(user_id, lst)
         # send_domain_list_email(user_id)
 
 
@@ -568,7 +572,7 @@ def update_and_check_all_domain_cert():
     ).execute()
 
 
-def send_domain_list_email(user_id):
+def send_domain_list_email(user_id, rows: List[DomainModel]):
     """
     发送域名信息
     :param user_id:
@@ -585,9 +589,9 @@ def send_domain_list_email(user_id):
     if not email_list:
         raise AppException('收件邮箱未设置')
 
-    lst = get_domain_info_list(user_id)
+    # lst = get_domain_info_list(user_id)
 
-    content = render_service.render_template('domain-cert-email.html', {'list': lst})
+    content = render_service.render_template('domain-cert-email.html', {'list': rows})
 
     email_service.send_email(
         content=content,
@@ -683,14 +687,14 @@ def export_domain_to_file(user_id):
     return filename
 
 
-def notify_user(user_id):
+def notify_user(user_id, rows: List[DomainModel]):
     """
     尝试通知用户
     :param user_id:
     :return:
     """
     try:
-        send_domain_list_email(user_id)
+        send_domain_list_email(user_id, rows)
     except Exception as e:
         logger.error(traceback.format_exc())
 
@@ -706,5 +710,5 @@ def update_and_check_domain_cert(user_id):
 
     check_domain_cert(user_id)
 
-    key = f'check_domain_status:{user_id}'
-    global_data_service.set_value(key, False)
+    # key = f'check_domain_status:{user_id}'
+    # global_data_service.set_value(key, False)

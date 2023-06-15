@@ -4,16 +4,11 @@
 address_api.py
 """
 from flask import request, g
-from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_model import DomainModel
-from domain_admin.model.group_model import GroupModel
-from domain_admin.service import async_task_service
-from domain_admin.service import domain_service, global_data_service
-from domain_admin.service import file_service
-from domain_admin.utils import datetime_util
+from domain_admin.service import domain_service
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -44,6 +39,7 @@ def get_address_list_by_domain_id():
                 'ssl_expire_date',
                 'real_time_ssl_expire_days',
                 'ssl_check_time_label',
+                'update_time_label',
             ]
         ), rows))
     else:
@@ -126,20 +122,26 @@ def update_address_by_id():
     host = request.json['host']
     ssl_start_time = request.json.get('ssl_start_time')
     ssl_expire_time = request.json.get('ssl_expire_time')
-    ssl_auto_update = request.json.get('ssl_auto_update', True)
-    ssl_expire_monitor = request.json.get('ssl_expire_monitor', True)
+    # ssl_auto_update = request.json.get('ssl_auto_update', True)
+    # ssl_expire_monitor = request.json.get('ssl_expire_monitor', True)
 
-    AddressModel.update(
-        host=host,
-        ssl_start_time=ssl_start_time,
-        ssl_expire_time=ssl_expire_time,
-        ssl_auto_update=ssl_auto_update,
-        ssl_expire_monitor=ssl_expire_monitor,
-    ).where(
+    address_row = AddressModel.get_by_id(address_id)
+    domain_row = DomainModel.get_by_id(address_row.domain_id)
+
+    data = {
+        'host': host
+    }
+
+    if not domain_row.auto_update:
+        data['ssl_start_time'] = ssl_start_time
+        data['ssl_expire_time'] = ssl_expire_time
+
+    AddressModel.update(data).where(
         AddressModel.id == address_id
     ).execute()
 
-    domain_service.update_address_row_info_with_sync_domain_row(address_id)
+    if domain_row.auto_update:
+        domain_service.update_address_row_info_with_sync_domain_row(address_id)
 
 
 def update_address_list_info_by_domain_id():
@@ -152,7 +154,9 @@ def update_address_list_info_by_domain_id():
     current_user_id = g.user_id
 
     domain_id = request.json['domain_id']
+
     domain_row = DomainModel.get_by_id(domain_id)
+
     err = domain_service.update_domain_address_info(domain_row)
 
     if err:

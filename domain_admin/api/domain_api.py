@@ -126,6 +126,30 @@ def update_domain_expire_monitor_by_id():
     ).execute()
 
 
+def update_domain_field_by_id():
+    """
+    更新单个数据
+    :return:
+    """
+
+    current_user_id = g.user_id
+
+    domain_id = request.json['domain_id']
+    field = request.json.get('field')
+    value = request.json.get('value')
+
+    if field not in ['auto_update']:
+        raise AppException("not allow field")
+
+    data = {
+        field: value,
+    }
+
+    DomainModel.update(data).where(
+        DomainModel.id == domain_id
+    ).execute()
+
+
 def delete_domain_by_id():
     """
     删除
@@ -173,11 +197,11 @@ def get_domain_by_id():
     """
     current_user_id = g.user_id
 
-    domain_id = request.json['id']
+    domain_id = request.json.get('domain_id') or request.json['id']
 
     row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
-    return model_to_dict(
+    row = model_to_dict(
         model=row,
         exclude=[DomainModel.detail_raw],
         extra_attrs=[
@@ -188,9 +212,19 @@ def get_domain_by_id():
             'detail',
             'group',
             'domain_url',
+            'update_time_label',
             'domain_check_time_label',
         ]
     )
+
+    # 主机数量
+    address_count = AddressModel.select().where(
+        AddressModel.domain_id == domain_id
+    ).count()
+
+    row['address_count'] = address_count
+
+    return row
 
 
 def update_all_domain_cert_info():
@@ -210,8 +244,8 @@ def update_all_domain_cert_info_of_user():
     current_user_id = g.user_id
     # domain_service.update_all_domain_cert_info_of_user(current_user_id)
     # 异步更新
-    key = f'update_domain_status:{current_user_id}'
-    global_data_service.set_value(key, True)
+    # key = f'update_domain_status:{current_user_id}'
+    # global_data_service.set_value(key, True)
     async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
 
 
@@ -255,15 +289,18 @@ def update_domain_cert_info_by_id():
     # @since v1.2.24 支持参数 domain_id
     domain_id = request.json.get('domain_id') or request.json['id']
 
-    row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
+    row = DomainModel.get_by_id(domain_id)
+    # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
+
+    domain_service.update_domain_row(row)
 
     # domain_service.update_domain_row(row)
-    err = domain_service.update_domain_info(row)
+    # err = domain_service.update_domain_info(row)
 
 
 def update_domain_row_info_by_id():
     """
-    更新域名信息及其关联的证书信息
+    更新域名关联的证书信息
     :return:
     @since v1.3.1
     """
@@ -272,9 +309,11 @@ def update_domain_row_info_by_id():
     # @since v1.2.24 支持参数 domain_id
     domain_id = request.json.get('domain_id') or request.json['id']
 
-    row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
+    # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
+    row = DomainModel.get_by_id(domain_id)
 
     err = domain_service.update_domain_row(row)
+
     if err:
         raise AppException(err)
 
@@ -296,8 +335,8 @@ def check_domain_cert():
     """
     current_user_id = g.user_id
 
-    key = f'check_domain_status:{current_user_id}'
-    global_data_service.set_value(key, True)
+    # key = f'check_domain_status:{current_user_id}'
+    # global_data_service.set_value(key, True)
 
     # # 先更新，再检查
     # domain_service.update_all_domain_cert_info_of_user(current_user_id)

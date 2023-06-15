@@ -21,12 +21,15 @@ class AddressModel(BaseModel):
     host = CharField(default="")
 
     # 连接状态
+    # @Deprecated
     host_connect_status = BooleanField(default=None, null=True)
 
     # ip连接状态检查时间
+    # @Deprecated
     host_check_time = DateTimeField(default=None, null=True)
 
     # ip连接状态监测
+    # @Deprecated
     host_status_monitor = BooleanField(default=True)
 
     # SSL签发时间
@@ -39,12 +42,15 @@ class AddressModel(BaseModel):
     ssl_expire_days = IntegerField(default=0, null=False)
 
     # SSL最后检查时间
+    # @Deprecated
     ssl_check_time = DateTimeField(default=None, null=True)
 
     # SSL证书信息自动更新
+    # @Deprecated
     ssl_auto_update = BooleanField(default=True)
 
     # SSL证书过期监测
+    # @Deprecated
     ssl_expire_monitor = BooleanField(default=True)
 
     # 创建时间
