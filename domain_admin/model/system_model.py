@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+system_model.py
+"""
+
 from datetime import datetime
 
 from peewee import CharField, DateTimeField, BooleanField, AutoField
