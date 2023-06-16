@@ -49,3 +49,6 @@ ADMIN_USERNAME = 'admin'
 
 # header请求头中携带 token 参数名称
 TOKEN_KEY = 'X-Token'
+
+# 默认的token有效时长 单位：天
+DEFAULT_TOKEN_EXPIRE_DAYS = 7

@@ -6,10 +6,12 @@ from domain_admin.utils.email_util import EmailServer
 def send_email(
         content: str,
         to_addresses: list,
-        content_type: str = 'plain'
+        content_type: str = 'plain',
+        subject: str = None,
 ):
     """
     发送邮件
+    :param subject:
     :param content:
     :param to_addresses:
     :param content_type:
@@ -30,7 +32,7 @@ def send_email(
     )
 
     email_server.send_email(
-        subject=config.get('mail_subject', '-'),
+        subject=subject or config.get('mail_subject', '-'),
         content=content,
         to_addresses=to_addresses,
         content_type=content_type

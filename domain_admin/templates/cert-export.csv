@@ -1,0 +1,4 @@
+域名,域名天数,证书天数,分组,备注
+{% for row in list -%}
+{{row.domain}},{{row.real_time_domain_expire_days}},{{row.real_time_expire_days}},{{row.group_name}},{{row.alias}}
+{% endfor %}

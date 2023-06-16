@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+system_service.py
+"""
+from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.system_model import SystemModel
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -8,7 +12,10 @@ def get_system_config():
     获取系统配置
     :return:
     """
-    rows = SystemModel.select()
+    rows = SystemModel.select(
+        SystemModel.key,
+        SystemModel.value,
+    )
 
     config = {}
     for row in rows:
@@ -18,7 +25,6 @@ def get_system_config():
 
 
 def check_email_config(config):
-
     if not config['mail_host']:
         raise AppException('未设置发件邮箱服务器地址')
 
@@ -30,3 +36,15 @@ def check_email_config(config):
 
     if not config['mail_password']:
         raise AppException('未设置发件人邮箱密码')
+
+
+def init_system_config(app):
+    """
+    初始化全局常量配置
+    :param app:
+    :return:
+    """
+    config = get_system_config()
+
+    app.config[ConfigKeyEnum.SECRET_KEY] = config[ConfigKeyEnum.SECRET_KEY]
+    app.config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS] = config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS]

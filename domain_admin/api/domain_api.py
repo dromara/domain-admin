@@ -24,10 +24,7 @@ def add_domain():
 
     current_user_id = g.user_id
 
-    domain = request.json.get('domain')
-
-    if not domain:
-        raise AppException('参数缺失：domain')
+    domain = request.json['domain']
 
     alias = request.json.get('alias', '')
     group_id = request.json.get('group_id') or 0

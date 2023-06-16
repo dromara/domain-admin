@@ -100,4 +100,5 @@ routes = {
     '/api/deleteDomainInfoById': domain_info_api.delete_domain_info_by_id,
     '/api/getDomainInfoById': domain_info_api.get_domain_info_by_id,
     '/api/updateDomainInfoById': domain_info_api.update_domain_info_by_id,
+    '/api/checkDomainExpire': domain_info_api.check_domain_expire,
 }

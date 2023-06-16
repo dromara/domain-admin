@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
+from peewee import CharField, DateTimeField, BooleanField, AutoField
 
+from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import secret_util
 
@@ -37,38 +38,42 @@ class SystemModel(BaseModel):
 
 
 def init_table_data():
+    """
+    系统配置初始值
+    :return:
+    """
     data = [
         # 邮箱配置
         {
-            'key': 'mail_host',
+            'key': ConfigKeyEnum.MAIL_HOST,
             'value': 'smtp.163.com',
             'label': '发件邮箱服务器地址',
             'placeholder': '发件邮箱服务器地址',
             'is_show_value': True,
         },
         {
-            'key': 'mail_port',
+            'key': ConfigKeyEnum.MAIL_PORT,
             'value': '465',  # 25 或者 465(ssl)
             'label': '发件邮箱服务器端口',
             'placeholder': '发件邮箱服务器端口：25 或者 465(ssl)',
             'is_show_value': True,
         },
         {
-            'key': 'mail_alias',
+            'key': ConfigKeyEnum.MAIL_ALIAS,
             'value': 'Domain Admin',
             'label': '发件人邮箱名称',
             'placeholder': '发件人邮箱名称',
             'is_show_value': True,
         },
         {
-            'key': 'mail_username',
+            'key': ConfigKeyEnum.MAIL_USERNAME,
             'value': '',
             'label': '发件人邮箱账号',
             'placeholder': '发件人邮箱账号',
             'is_show_value': True,
         },
         {
-            'key': 'mail_password',
+            'key': ConfigKeyEnum.MAIL_PASSWORD,
             'value': '',
             'label': '发件人邮箱密码',
             'placeholder': '发件人邮箱密码',
@@ -76,7 +81,7 @@ def init_table_data():
         },
 
         {
-            'key': 'mail_subject',
+            'key': ConfigKeyEnum.MAIL_SUBJECT,
             'value': '[ssl]证书过期时间汇总',
             'label': '邮件标题',
             'placeholder': '邮件标题',
@@ -85,7 +90,7 @@ def init_table_data():
 
         # 分 时 日 月 周，默认每天上午 10: 30 检测
         {
-            'key': 'scheduler_cron',
+            'key': ConfigKeyEnum.SCHEDULER_CRON,
             'value': '30 10 * * *',
             'label': '定时检测时间（crontab 表达式）',
             'placeholder': '分 时 日 月 周',
@@ -93,14 +98,14 @@ def init_table_data():
         },
 
         {
-            'key': 'secret_key',
+            'key': ConfigKeyEnum.SECRET_KEY,
             'value': secret_util.get_random_secret(),
             'is_show_value': False,
             'label': 'Token秘钥',
             'placeholder': '重新设置后所有用户的登录状态会退出'
         },
         {
-            'key': 'token_expire_days',
+            'key': ConfigKeyEnum.TOKEN_EXPIRE_DAYS,
             'value': 7,
             'is_show_value': True,
             'label': 'Token有效期（天）',

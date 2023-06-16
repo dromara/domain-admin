@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, make_response, send_file
+from flask import request, make_response, send_file, current_app
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import safe_join
@@ -9,7 +9,7 @@ from domain_admin.config import TEMP_DIR
 from domain_admin.model.base_model import db
 from domain_admin.model.database import init_database
 from domain_admin.router import api_map, permission
-from domain_admin.service import scheduler_service
+from domain_admin.service import scheduler_service, system_service
 from domain_admin.service import version_service
 from domain_admin.utils.flask_ext import handler
 from domain_admin.utils.flask_ext import register
@@ -63,7 +63,7 @@ def init_app(flask_app):
     :param flask_app:
     :return:
     """
-    # 路由
+    # 注册路由
     register.register_app_routers(flask_app, api_map.routes)
 
     # 全局异常捕获，也相当于一个视图函数
@@ -87,6 +87,9 @@ def init_app(flask_app):
 
     # 启动定时器
     scheduler_service.init_scheduler()
+
+    # 初始化全局常量配置
+    system_service.init_system_config(flask_app)
 
 
 init_app(app)

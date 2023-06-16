@@ -4,6 +4,8 @@
 @Date    : 2022-10-30
 @Author  : Peng Shiyu
 """
+from typing import List, Optional
+
 import requests
 
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
@@ -34,7 +36,7 @@ def get_notify_row_value(user_id, type_id):
     return notify_row.value
 
 
-def get_notify_email_list_of_user(user_id):
+def get_notify_email_list_of_user(user_id) -> Optional[List[str]]:
     """
     获取通知配置 - 邮箱列表
     :param user_id:

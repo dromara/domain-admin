@@ -418,7 +418,7 @@ def update_all_domain_cert_info():
 
 def update_all_domain_cert_info_of_user(user_id):
     """
-    更新用户的所有域名信息
+    更新用户的所有证书信息
     :return:
     """
     rows = DomainModel.select().where(
@@ -676,7 +676,7 @@ def export_domain_to_file(user_id):
         row.group_name = group_map.get(row.group_id, '')
         lst.append(row)
 
-    content = render_service.render_template('domain-export.csv', {'list': lst})
+    content = render_service.render_template('cert-export.csv', {'list': lst})
 
     filename = file_util.get_random_filename('csv')
     temp_filename = file_service.resolve_temp_file(filename)

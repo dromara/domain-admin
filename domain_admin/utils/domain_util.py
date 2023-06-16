@@ -4,11 +4,24 @@ domain_util.py
 """
 
 import re
+
+from typing import NamedTuple
+
 import tldextract
 from tldextract.tldextract import ExtractResult
 
 from domain_admin.utils import file_util
 from domain_admin.utils.cert_util import cert_consts
+
+
+class ParsedDomain(NamedTuple):
+    """
+    解析后的domain数据
+    """
+    domain: str
+    root_domain: str
+    port: int
+    alias: str
 
 
 def parse_domain(domain):
@@ -27,7 +40,7 @@ def parse_domain(domain):
         return None
 
 
-def parse_domain_from_csv_file(filename):
+def parse_domain_from_csv_file(filename) -> ParsedDomain:
     """
     读取csv文件 适合完整导入
     :param filename:
@@ -62,15 +75,17 @@ def parse_domain_from_csv_file(filename):
                 port = cert_consts.SSL_DEFAULT_PORT
 
             if domain:
-                item = {
-                    'domain': domain,
-                    'port': port,
-                    'alias': alias,
-                }
+                item = ParsedDomain(
+                    domain=domain,
+                    root_domain=get_root_domain(domain),
+                    port=int(port),
+                    alias=alias
+                )
+
                 yield item
 
 
-def parse_domain_from_txt_file(filename):
+def parse_domain_from_txt_file(filename) -> ParsedDomain:
     """
     读取txt文件 适合快速导入
     :param filename:
@@ -88,13 +103,15 @@ def parse_domain_from_txt_file(filename):
                 port = cert_consts.SSL_DEFAULT_PORT
 
             if domain:
-                yield {
-                    'domain': domain,
-                    'port': port,
-                }
+                yield ParsedDomain(
+                    domain=domain,
+                    root_domain=get_root_domain(domain),
+                    port=int(port),
+                    alias=''
+                )
 
 
-def parse_domain_from_file(filename):
+def parse_domain_from_file(filename) -> ParsedDomain:
     # lst = []
     file_type = file_util.get_filename_ext(filename)
     print('file_type', file_type)

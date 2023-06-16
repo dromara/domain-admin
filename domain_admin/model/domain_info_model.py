@@ -60,6 +60,16 @@ class DomainInfoModel(BaseModel):
         )
 
     @property
+    def domain_start_date(self):
+        if self.domain_start_time and isinstance(self.domain_start_time, datetime):
+            return self.domain_start_time.strftime('%Y-%m-%d')
+
+    @property
+    def domain_expire_date(self):
+        if self.domain_expire_time and isinstance(self.domain_expire_time, datetime):
+            return self.domain_expire_time.strftime('%Y-%m-%d')
+
+    @property
     def real_domain_expire_days(self) -> int:
         """
         域名过期天数，用于前端显示

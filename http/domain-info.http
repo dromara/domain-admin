@@ -12,7 +12,7 @@ Content-Type: application/json
 X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODczMzY5ODh9.M0nziBWPS7yfUtEwbUGQHjgpPwc664b542A-3QK5rKY
 
 {
-  "domain":  "www.360.com"
+  "domain": "www.360.com"
 }
 
 ###
@@ -23,6 +23,17 @@ X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODczMz
 {
   "keyword": "baidu"
 }
+
+
+###
+POST {{baseUrl}}/api/checkDomainExpire
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODczMzY5ODh9.M0nziBWPS7yfUtEwbUGQHjgpPwc664b542A-3QK5rKY
+
+{
+
+}
+
 
 ###
 

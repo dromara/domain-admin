@@ -1,0 +1,49 @@
+{# 查询域名到期情况 #}
+<html lang="zh">
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+    <table style="border: 1px solid #eeeeee;border-collapse: collapse;">
+        {# 表头 #}
+        <thead style="background-color: #ddd;">
+        <tr>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">序号</th>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名</th>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名注册日期</th>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">域名到期日期</th>
+            <th style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">剩余天数</th>
+        </tr>
+        </thead>
+
+        {#  数据 #}
+        <tbody>
+        {% for item in list %}
+            <tr>
+                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ loop.index }}</td>
+                <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">
+                    <a href="{{ item.domain }}" target="_blank">{{ item.domain }}</a>
+                </td>
+
+              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.domain_start_date | default('-') }}</td>
+              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.domain_expire_date | default('-')  }}</td>
+                {% if item.real_domain_expire_days %}
+                    {% if item.real_domain_expire_days <= 7 %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.real_domain_expire_days }}</td>
+                    {% elif item.real_domain_expire_days <= 30 %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.real_domain_expire_days }}</td>
+                    {% else %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.real_domain_expire_days }}</td>
+                    {% endif %}
+                {% else %}
+                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">{{ item.real_domain_expire_days }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
