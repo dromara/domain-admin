@@ -28,16 +28,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin/public'
 
-#      - name: Create Release for Tag
-#        id: release_tag
-#        uses: yyx990803/release-tag@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: ${{ github.ref }}
-#          body: |
-#            Please refer to [CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md) for details.
-     - name: Set up Python
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: '3.x'
