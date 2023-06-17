@@ -3,8 +3,6 @@
 user_api.py
 """
 
-import json
-
 from flask import request, g
 from playhouse.shortcuts import model_to_dict
 

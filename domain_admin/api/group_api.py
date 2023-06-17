@@ -3,6 +3,7 @@ from flask import request, g
 from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.service import group_service
@@ -58,6 +59,19 @@ def delete_group_by_id():
     group_service.check_group_permission(group_id, current_user_id)
 
     GroupModel.delete_by_id(group_id)
+
+    # 重置已分类的证书 和 域名
+    DomainModel.update(
+        group_id=0
+    ).where(
+        DomainModel.group_id == group_id
+    ).execute()
+
+    DomainInfoModel.update(
+        group_id=0
+    ).where(
+        DomainInfoModel.group_id == group_id
+    ).execute()
 
 
 def get_group_list():

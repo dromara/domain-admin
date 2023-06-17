@@ -497,7 +497,7 @@ def send_domain_list_email(user_id, rows: List[DomainModel]):
 
     # lst = get_domain_info_list(user_id)
 
-    content = render_service.render_template('domain-cert-email.html', {'list': rows})
+    content = render_service.render_template('cert-email.html', {'list': rows})
 
     email_service.send_email(
         subject='[Domain Admin]证书过期提醒',
@@ -568,7 +568,8 @@ def export_domain_to_file(user_id):
 
     content = render_service.render_template('cert-export.csv', {'list': lst})
 
-    filename = file_util.get_random_filename('csv')
+    filename = datetime.now().strftime("cert_%Y%m%d%H%M%S") + '.csv'
+
     temp_filename = file_service.resolve_temp_file(filename)
     # print(temp_filename)
     with open(temp_filename, 'w') as f:

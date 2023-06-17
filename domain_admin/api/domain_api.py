@@ -8,8 +8,9 @@ from playhouse.shortcuts import model_to_dict, fn
 
 from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
+from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
-from domain_admin.service import async_task_service
+from domain_admin.service import async_task_service, domain_info_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
@@ -48,6 +49,21 @@ def add_domain():
     row = DomainModel.create(**data)
 
     domain_service.update_domain_row(row)
+
+    # 顺带添加到域名监测列表
+    first_domain_info_row = DomainInfoModel.select(
+        DomainInfoModel.id
+    ).where(
+        DomainInfoModel.domain == domain
+    ).first()
+
+    if not first_domain_info_row:
+        domain_info_service.add_domain_info(
+            domain=domain_util.get_root_domain(domain),
+            comment=alias,
+            group_id=group_id,
+            user_id=current_user_id,
+        )
 
     return {'id': row.id}
 
@@ -105,7 +121,8 @@ def update_domain_by_id():
 
     domain_row = DomainModel.get_by_id(domain_id)
 
-    domain_service.update_domain_row(domain_row)
+    if domain_row.auto_update:
+        domain_service.update_domain_row(domain_row)
 
 
 def update_domain_expire_monitor_by_id():

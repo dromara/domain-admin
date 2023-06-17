@@ -49,30 +49,21 @@ def parse_domain_from_csv_file(filename) -> ParsedDomain:
     with open(filename, 'r') as f:
         # 标题
         first_line = f.readline()
-        first_line_fields = [filed.strip() for filed in first_line.split(',')]
-        # 域名
-        if '域名' in first_line_fields:
-            domain_index = first_line_fields.index('域名')
-
-        if '备注' in first_line_fields:
-            alias_index = first_line_fields.index('备注')
+        keys = [filed.strip() for filed in first_line.split(',')]
 
         # 内容字段
         for line in f.readlines():
-            # 域名,备注
-            fields = line.split(',')
+            values = [filed.strip() for filed in line.split(',')]
+            item = dict(zip(keys, values))
 
-            if len(fields) > domain_index:
-                domain = parse_domain(fields[domain_index].strip())
-
-            if len(fields) > alias_index:
-                alias = fields[alias_index].strip()
-
+            domain = parse_domain(item.get('域名', ''))
             if ':' in domain:
                 domain, port = domain.split(":")
-            else:
-                # SSL默认端口
-                port = cert_consts.SSL_DEFAULT_PORT
+
+            alias = item.get('备注', '')
+
+            # SSL端口
+            port = item.get('端口') or port or cert_consts.SSL_DEFAULT_PORT
 
             if domain:
                 item = ParsedDomain(

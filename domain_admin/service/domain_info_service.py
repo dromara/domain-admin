@@ -3,6 +3,7 @@
 domain_info_service.py
 """
 import traceback
+from datetime import datetime
 from typing import List
 
 from peewee import chunked
@@ -15,6 +16,39 @@ from domain_admin.model.user_model import UserModel
 from domain_admin.service import render_service, email_service, notify_service, system_service, file_service
 from domain_admin.utils import whois_util, datetime_util, domain_util, file_util
 from domain_admin.utils.flask_ext.app_exception import AppException
+
+
+def add_domain_info(
+        domain,
+        user_id,
+        comment='',
+        group_id=0,
+        domain_start_time=None,
+        domain_expire_time=None
+) -> DomainInfoModel:
+    """
+    添加域名监测
+    :param domain:
+    :param user_id:
+    :param comment:
+    :param group_id:
+    :param domain_start_time:
+    :param domain_expire_time:
+    :return:
+    """
+    row = DomainInfoModel.create(
+        domain=domain,
+        domain_start_time=domain_start_time,
+        domain_expire_time=domain_expire_time,
+        comment=comment,
+        group_id=group_id,
+        user_id=user_id,
+    )
+
+    # 添加的时候需要自动更新
+    update_domain_info_row(row)
+
+    return row
 
 
 def update_domain_info_row(row: DomainInfoModel) -> [str, None]:
@@ -152,7 +186,8 @@ def export_domain_to_file(user_id):
 
     content = render_service.render_template('domain-export.csv', {'list': lst})
 
-    filename = file_util.get_random_filename('csv')
+    filename = datetime.now().strftime("domain_%Y%m%d%H%M%S") + '.csv'
+
     temp_filename = file_service.resolve_temp_file(filename)
     # print(temp_filename)
     with open(temp_filename, 'w') as f:

@@ -1,4 +1,4 @@
-域名,域名天数,证书天数,分组,备注
+域名,端口,证书颁发时间,证书过期时间,证书天数,分组,备注
 {% for row in list -%}
-{{row.domain}},{{row.real_time_domain_expire_days}},{{row.real_time_expire_days}},{{row.group_name}},{{row.alias}}
+{{row.domain}},{{row.port}},{{row.start_date or '-' }},{{row.expire_date or '-' }},{{row.real_time_expire_days}},{{row.group_name or '-' }},{{row.alias or '-' }}
 {% endfor %}

@@ -30,10 +30,7 @@ def add_domain_info():
     comment = request.json.get('comment', '')
     group_id = request.json.get('group_id') or 0
 
-    # is_auto_update = request.json.get('is_auto_update', True)
-    # is_expire_monitor = request.json.get('is_expire_monitor', True)
-
-    row = DomainInfoModel.create(
+    row = domain_info_service.add_domain_info(
         domain=domain,
         domain_start_time=domain_start_time,
         domain_expire_time=domain_expire_time,
@@ -41,9 +38,6 @@ def add_domain_info():
         group_id=group_id,
         user_id=current_user_id,
     )
-
-    # 添加的时候需要自动更新
-    domain_info_service.update_domain_info_row(row)
 
     return {'domain_info_id': row.id}
 
