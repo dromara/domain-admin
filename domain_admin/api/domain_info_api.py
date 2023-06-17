@@ -2,6 +2,7 @@
 """
 domain_info_api.py
 """
+from datetime import datetime
 
 from flask import request, g
 from peewee import fn
@@ -10,7 +11,7 @@ from playhouse.shortcuts import model_to_dict
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.service import domain_info_service, async_task_service, file_service
-from domain_admin.utils import domain_util
+from domain_admin.utils import domain_util, time_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -77,6 +78,7 @@ def update_domain_info_by_id():
     if domain_info_row.is_auto_update is False:
         data['domain_start_time'] = domain_start_time
         data['domain_expire_time'] = domain_expire_time
+        data['domain_expire_days'] = time_util.get_diff_days(datetime.now(), domain_expire_time)
 
     DomainInfoModel.update(data).where(
         DomainInfoModel.id == domain_info_id
@@ -124,6 +126,20 @@ def delete_domain_info_by_id():
     DomainInfoModel.delete_by_id(domain_info_id)
 
 
+def delete_domain_info_by_ids():
+    """
+    批量删除
+    """
+    current_user_id = g.user_id
+
+    domain_info_ids = request.json['domain_info_ids']
+
+    DomainInfoModel.delete().where(
+        DomainInfoModel.id.in_(domain_info_ids),
+        DomainInfoModel.user_id == current_user_id
+    ).execute()
+
+
 def get_domain_info_by_id():
     """
     获取
@@ -133,7 +149,25 @@ def get_domain_info_by_id():
 
     domain_info_id = request.json['domain_info_id']
 
-    return DomainInfoModel.get_by_id(domain_info_id)
+    domain_row = DomainInfoModel.get_by_id(domain_info_id)
+
+    domain_row = model_to_dict(
+        model=domain_row,
+        extra_attrs=[
+            'real_domain_expire_days',
+            'update_time_label',
+        ]
+    )
+
+    # 主机数量
+    ssl_count = DomainModel.select().where(
+        DomainModel.root_domain == domain_row['domain'],
+        DomainModel.user_id == current_user_id
+    ).count()
+
+    domain_row['ssl_count'] = ssl_count
+
+    return domain_row
 
 
 def update_domain_info_row_by_id():
@@ -169,7 +203,7 @@ def check_domain_expire():
     domain_info_service.check_domain_expire(current_user_id)
 
 
-def import_domain_from_file():
+def import_domain_info_from_file():
     """
     从文件导入域名
     支持 txt 和 csv格式
@@ -188,7 +222,7 @@ def import_domain_from_file():
     async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
 
 
-def export_domain_file():
+def export_domain_info_file():
     """
     导出域名文件
     csv格式
@@ -215,8 +249,8 @@ def get_domain_info_list():
     keyword = request.json.get('keyword')
     group_ids = request.json.get('group_ids')
     domain_expire_days = request.json.get('domain_expire_days')
-    order_prop = request.json.get('order_prop', 'domain_expire_days')
-    order_type = request.json.get('order_type', 'ascending')
+    order_prop = request.json.get('order_prop') or 'domain_expire_days'
+    order_type = request.json.get('order_type') or 'ascending'
 
     # 列表数据
     query = DomainInfoModel.select().where(
@@ -306,7 +340,8 @@ def get_domain_info_list():
             DomainModel.root_domain,
             fn.COUNT(DomainModel.id).alias('count')
         ).where(
-            DomainModel.root_domain.in_(domain_list)
+            DomainModel.root_domain.in_(domain_list),
+            DomainModel.user_id == current_user_id
         ).group_by(DomainModel.root_domain)
 
         root_domain_groups_map = {

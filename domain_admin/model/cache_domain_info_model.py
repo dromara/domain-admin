@@ -11,6 +11,7 @@ class CacheDomainInfoModel(BaseModel):
     """
     域名信息缓存表
     @since 1.2.12
+    @Deprecated @since 1.4.0
     """
     id = AutoField(primary_key=True)
 

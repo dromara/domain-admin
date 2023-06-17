@@ -8,6 +8,7 @@ import json
 from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.config import DEFAULT_BEFORE_EXPIRE_DAYS
 from domain_admin.model.user_model import UserModel
 from domain_admin.utils import datetime_util, bcrypt_util
 from domain_admin.utils.flask_ext.app_exception import AppException
@@ -37,12 +38,12 @@ def update_user_info():
     current_user_id = g.user_id
 
     avatar_url = request.json.get('avatar_url')
-    before_expire_days = request.json.get('before_expire_days')
+    before_expire_days = request.json.get('before_expire_days') or DEFAULT_BEFORE_EXPIRE_DAYS
     # email_list = request.json.get('email_list')
 
     UserModel.update({
         'avatar_url': avatar_url,
-        'before_expire_days': before_expire_days,
+        'before_expire_days': int(before_expire_days),
         # 'email_list_raw': json.dumps(email_list, ensure_ascii=False),
         'update_time': datetime_util.get_datetime()
     }).where(

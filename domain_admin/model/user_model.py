@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 import warnings
-from domain_admin.config import ADMIN_USERNAME
+from domain_admin.config import ADMIN_USERNAME, ADMIN_PASSWORD, DEFAULT_BEFORE_EXPIRE_DAYS
 from domain_admin.model.base_model import BaseModel
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField, AutoField
 
@@ -23,7 +23,7 @@ class UserModel(BaseModel):
     avatar_url = CharField(null=None, default='')
 
     # 过期前多少天提醒
-    before_expire_days = IntegerField(null=None, default=3)
+    before_expire_days = IntegerField(null=None, default=DEFAULT_BEFORE_EXPIRE_DAYS)
 
     # 邮件列表
     # Deprecated 已弃用 v0.0.12
@@ -55,8 +55,8 @@ def init_table_data():
     data = [
         {
             'username': ADMIN_USERNAME,
-            'password': bcrypt_util.encode_password('123456'),
-            'before_expire_days': 3,
+            'password': bcrypt_util.encode_password(ADMIN_PASSWORD),
+            'before_expire_days': DEFAULT_BEFORE_EXPIRE_DAYS,
         }
     ]
 

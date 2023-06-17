@@ -20,13 +20,49 @@ class DomainModel(BaseModel):
     domain = CharField()
 
     # 顶级域名 @since 1.4.0
-    root_domain = CharField(default='', null=False)
+    root_domain = CharField(default='')
 
     # 端口 @since v1.2.24
     port = IntegerField(default=443)
 
     # 别名/备注
     alias = CharField(default="")
+
+    # 分组
+    group_id = IntegerField(default=0, null=False)
+
+    # SSL签发时间
+    # @since v1.2.24 变更为：过期时间最短那个证书
+    start_time = DateTimeField(default=None, null=True)
+
+    # SSL过期时间
+    # @since v1.2.24 变更为：过期时间最短那个证书
+    expire_time = DateTimeField(default=None, null=True)
+
+    # SSL过期剩余天数，仅用于排序
+    # @since v1.2.24 变更为：过期时间最短那个证书
+    expire_days = IntegerField(default=0, null=False)
+
+    # SSL证书信息自动更新 @since v1.2.13
+    auto_update = BooleanField(default=True)
+
+    # 是否监测 @since 1.0.3
+    is_monitor = BooleanField(default=True)
+
+    # 动态主机 @since 1.4.0
+    is_dynamic_host = BooleanField(default=False)
+
+    # 连接状态
+    # @since v1.2.24 所有ip都连接成功才是成功
+    connect_status = BooleanField(default=None, null=True)
+
+    # 通知状态
+    # @Deprecated
+    notify_status = BooleanField(default=True)
+
+    # 详细信息
+    # @Deprecated
+    detail_raw = TextField(default=None, null=True)
 
     # ip
     # @Deprecated
@@ -40,8 +76,13 @@ class DomainModel(BaseModel):
     # @Deprecated
     ip_auto_update = BooleanField(default=True)
 
-    # 分组
-    group_id = IntegerField(default=0, null=False)
+    # SSL有效期总天数，仅用于排序
+    # @Deprecated
+    total_days = IntegerField(default=0, null=False)
+
+    # SSL最后检查时间
+    # @Deprecated
+    check_time = DateTimeField(default=None, null=True)
 
     # 域名注册时间 @since 1.1.0
     # @Deprecated @since 1.4.0
@@ -67,43 +108,6 @@ class DomainModel(BaseModel):
     # @Deprecated @since 1.4.0
     domain_expire_monitor = BooleanField(default=True)
 
-    # SSL签发时间
-    # @since v1.2.24 变更为：过期时间最短那个证书
-    start_time = DateTimeField(default=None, null=True)
-
-    # SSL过期时间
-    # @since v1.2.24 变更为：过期时间最短那个证书
-    expire_time = DateTimeField(default=None, null=True)
-
-    # SSL过期剩余天数，仅用于排序
-    # @since v1.2.24 变更为：过期时间最短那个证书
-    expire_days = IntegerField(default=0, null=False)
-
-    # SSL有效期总天数，仅用于排序
-    total_days = IntegerField(default=0, null=False)
-
-    # SSL最后检查时间
-    # @Deprecated
-    check_time = DateTimeField(default=None, null=True)
-
-    # SSL证书信息自动更新 @since v1.2.13
-    auto_update = BooleanField(default=True)
-
-    # 是否监测 @since 1.0.3
-    is_monitor = BooleanField(default=True)
-
-    # 连接状态
-    # @since v1.2.24 所有ip都连接成功才是成功
-    connect_status = BooleanField(default=None, null=True)
-
-    # 通知状态
-    # @Deprecated
-    notify_status = BooleanField(default=True)
-
-    # 详细信息
-    # @Deprecated
-    detail_raw = TextField(default=None, null=True)
-
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
 
@@ -126,18 +130,6 @@ class DomainModel(BaseModel):
     @property
     def create_time_label(self):
         return datetime_util.format_datetime_label(self.create_time)
-
-    @property
-    def check_time_label(self):
-        return datetime_util.time_for_human(self.check_time)
-
-    @property
-    def domain_check_time_label(self):
-        """
-        @since v1.3.1
-        :return:
-        """
-        return datetime_util.time_for_human(self.domain_check_time)
 
     @property
     def update_time_label(self):
@@ -175,24 +167,3 @@ class DomainModel(BaseModel):
 
     # @since v1.3.1
     real_time_ssl_expire_days = real_time_expire_days
-
-    @property
-    def real_time_domain_expire_days(self):
-        """
-        实时域名过期剩余天数
-        expire_days 是更新数据时所计算的时间，有滞后性
-        @since v1.1.0
-        :return:
-        """
-        if self.domain_expire_time and isinstance(self.domain_expire_time, datetime):
-            return (self.domain_expire_time - datetime.now()).days
-
-    @property
-    def detail(self):
-        if self.detail_raw:
-            return json.loads(self.detail_raw)
-
-    @property
-    def group(self):
-        if self.group_id:
-            return GroupModel.get_or_none(GroupModel.id == self.group_id)

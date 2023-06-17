@@ -46,9 +46,13 @@ for dirname in dir_list:
 
 # 管理员账号，用户名
 ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = '123456'
 
 # header请求头中携带 token 参数名称
 TOKEN_KEY = 'X-Token'
 
 # 默认的token有效时长 单位：天
 DEFAULT_TOKEN_EXPIRE_DAYS = 7
+
+# 默认的过期提醒时间 单位：天
+DEFAULT_BEFORE_EXPIRE_DAYS = 3

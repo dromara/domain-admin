@@ -14,7 +14,7 @@ from domain_admin.utils.flask_ext.app_exception import AppException
 
 def get_address_list_by_domain_id():
     """
-    通过域名id获取关联的主机地址列表
+    通过域名获取关联的主机地址列表
     :return:
     @since v1.3.1
     """
@@ -26,24 +26,27 @@ def get_address_list_by_domain_id():
     size = request.json.get('size', 10)
 
     query = AddressModel.select().where(
-        AddressModel.domain_id == domain_id
+        AddressModel.domain_id == domain_id,
     )
 
     total = query.count()
+    lst = []
+
     if total > 0:
-        rows = query.paginate(page, size)
+        rows = query.order_by(
+            AddressModel.ssl_expire_days,
+            AddressModel.id,
+        ).paginate(page, size)
+
         lst = list(map(lambda m: model_to_dict(
             model=m,
             extra_attrs=[
                 'ssl_start_date',
                 'ssl_expire_date',
                 'real_time_ssl_expire_days',
-                'ssl_check_time_label',
                 'update_time_label',
             ]
         ), rows))
-    else:
-        lst = []
 
     return {
         "list": lst,
@@ -64,19 +67,24 @@ def add_address():
     host = request.json['host']
     ssl_start_time = request.json.get('ssl_start_time')
     ssl_expire_time = request.json.get('ssl_expire_time')
-    ssl_auto_update = request.json.get('ssl_auto_update', True)
-    ssl_expire_monitor = request.json.get('ssl_expire_monitor', True)
+    # ssl_auto_update = request.json.get('ssl_auto_update', True)
+    # ssl_expire_monitor = request.json.get('ssl_expire_monitor', True)
 
-    address_row = AddressModel.create(
-        domain_id=domain_id,
-        host=host,
-        ssl_start_time=ssl_start_time,
-        ssl_expire_time=ssl_expire_time,
-        ssl_auto_update=ssl_auto_update,
-        ssl_expire_monitor=ssl_expire_monitor,
-    )
+    domain_row = DomainModel.get_by_id(domain_id)
 
-    domain_service.update_address_row_info_with_sync_domain_row(address_row.address_id)
+    data = {
+        'domain_id': domain_id,
+        'host': host,
+    }
+
+    if not domain_row.auto_update:
+        data['ssl_start_time'] = ssl_start_time
+        data['ssl_expire_time'] = ssl_expire_time
+
+    address_row = AddressModel.create(**data)
+
+    if domain_row.auto_update:
+        domain_service.update_address_row_info_with_sync_domain_row(address_row.id)
 
 
 def delete_address_by_id():
@@ -157,7 +165,7 @@ def update_address_list_info_by_domain_id():
 
     domain_row = DomainModel.get_by_id(domain_id)
 
-    err = domain_service.update_domain_address_info(domain_row)
+    err = domain_service.update_domain_row(domain_row)
 
     if err:
         raise AppException(err)

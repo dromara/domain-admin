@@ -6,6 +6,7 @@
 from flask import request, g
 from playhouse.shortcuts import model_to_dict, fn
 
+from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.service import async_task_service
@@ -28,6 +29,7 @@ def add_domain():
 
     alias = request.json.get('alias', '')
     group_id = request.json.get('group_id') or 0
+    is_dynamic_host = request.json.get('is_dynamic_host', False)
     port = request.json.get('port') or cert_consts.SSL_DEFAULT_PORT
 
     data = {
@@ -38,7 +40,10 @@ def add_domain():
         'root_domain': domain_util.get_root_domain(domain),
         'alias': alias,
         'group_id': group_id,
+        'is_dynamic_host': is_dynamic_host,
     }
+
+    logger.info(data)
 
     row = DomainModel.create(**data)
 
@@ -200,17 +205,10 @@ def get_domain_by_id():
 
     row = model_to_dict(
         model=row,
-        exclude=[DomainModel.detail_raw],
         extra_attrs=[
-            'total_days',
-            'expire_days',
             'real_time_expire_days',
-            'real_time_domain_expire_days',
-            'detail',
-            'group',
             'domain_url',
             'update_time_label',
-            'domain_check_time_label',
         ]
     )
 
@@ -276,25 +274,6 @@ def get_check_domain_status_of_user():
     }
 
 
-def update_domain_cert_info_by_id():
-    """
-    更新域名证书信息
-    :return:
-    """
-    current_user_id = g.user_id
-
-    # @since v1.2.24 支持参数 domain_id
-    domain_id = request.json.get('domain_id') or request.json['id']
-
-    row = DomainModel.get_by_id(domain_id)
-    # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
-
-    domain_service.update_domain_row(row)
-
-    # domain_service.update_domain_row(row)
-    # err = domain_service.update_domain_info(row)
-
-
 def update_domain_row_info_by_id():
     """
     更新域名关联的证书信息
@@ -309,10 +288,7 @@ def update_domain_row_info_by_id():
     # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
     row = DomainModel.get_by_id(domain_id)
 
-    err = domain_service.update_domain_row(row)
-
-    if err:
-        raise AppException(err)
+    domain_service.update_domain_row(row)
 
 
 def send_domain_info_list_email():
@@ -430,12 +406,10 @@ def get_domain_list():
     keyword = request.json.get('keyword')
     group_id = request.json.get('group_id')
 
-    order_prop = request.json.get('order_prop', 'expire_days')
-    order_type = request.json.get('order_type', 'ascending')
+    order_prop = request.json.get('order_prop') or 'expire_days'
+    order_type = request.json.get('order_type') or 'ascending'
     group_ids = request.json.get('group_ids')
     expire_days = request.json.get('expire_days')
-    domain_expire_days = request.json.get('domain_expire_days')
-    connect_status = request.json.get('connect_status')
 
     query = DomainModel.select().where(
         DomainModel.user_id == current_user_id
@@ -458,27 +432,6 @@ def get_domain_list():
         else:
             query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
 
-    if domain_expire_days is not None:
-        if domain_expire_days[0] is None:
-            query = query.where(DomainModel.domain_expire_days <= domain_expire_days[1])
-        elif domain_expire_days[1] is None:
-            query = query.where(DomainModel.domain_expire_days >= domain_expire_days[0])
-        else:
-            query = query.where(DomainModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
-
-    if connect_status is not None:
-        # 连接正常
-        if connect_status == 'success':
-            connect_status = True
-        # 连接异常
-        elif connect_status == 'error':
-            connect_status = False
-        # 状态未知
-        elif connect_status == 'unknown':
-            connect_status = None
-
-        query = query.where(DomainModel.connect_status == connect_status)
-
     ordering = []
 
     # order by expire_days
@@ -487,13 +440,6 @@ def get_domain_list():
             ordering.append(DomainModel.expire_days.desc())
         else:
             ordering.append(DomainModel.expire_days.asc())
-
-    # order by domain_expire_days
-    elif order_prop == 'domain_expire_days':
-        if order_type == 'descending':
-            ordering.append(DomainModel.domain_expire_days.desc())
-        else:
-            ordering.append(DomainModel.domain_expire_days.asc())
 
     # order by connect_status
     elif order_prop == 'connect_status':
@@ -537,6 +483,13 @@ def get_domain_list():
         else:
             ordering.append(DomainModel.domain_expire_monitor.asc())
 
+    # order by auto_update
+    elif order_prop == 'auto_update':
+        if order_type == 'descending':
+            ordering.append(DomainModel.auto_update.desc())
+        else:
+            ordering.append(DomainModel.auto_update.asc())
+
     ordering.append(DomainModel.id.desc())
 
     lst = query.order_by(*ordering).paginate(page, size)
@@ -545,16 +498,12 @@ def get_domain_list():
 
     lst = list(map(lambda m: model_to_dict(
         model=m,
-        exclude=[DomainModel.detail_raw],
         extra_attrs=[
-            'total_days',
             'expire_days',
             'create_time_label',
-            'check_time_label',
             'real_time_expire_days',
             'real_time_ssl_total_days',
             'real_time_ssl_expire_days',
-            'real_time_domain_expire_days',
             'domain_url',
             'update_time_label',
         ]

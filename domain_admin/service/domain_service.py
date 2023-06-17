@@ -93,45 +93,35 @@ def update_ip_info(row: DomainModel):
     ).execute()
 
 
-def update_ip_info_v2(domain_row: DomainModel):
+def update_domain_host_list(domain_row: DomainModel):
     """
     更新ip信息
     :param row:
     :return:
     @since v1.2.24
     """
-    # logger.info("%s", model_to_dict(domain_row))
-
     domain_host_list = []
 
     try:
-        domain_host_list = cert_socket_v2.get_domain_host_list(domain_row.domain, domain_row.port)
+        domain_host_list = cert_socket_v2.get_domain_host_list(
+            domain=domain_row.domain,
+            port=domain_row.port
+        )
     except Exception as e:
         pass
 
-    for domain_host in domain_host_list:
-        exist = AddressModel.select().where(
-            AddressModel.domain_id == domain_row.id,
-            AddressModel.host == domain_host
-        ).first()
+    lst = [
+        {
+            'domain_id': domain_row.id,
+            'host': domain_host
+        } for domain_host in domain_host_list]
 
-        if not exist:
-            AddressModel.insert({
-                'domain_id': domain_row.id,
-                'host': domain_host
-            }).execute()
+    logger.info(lst)
 
-    #
-    # DomainModel.update(
-    #     ip=domain_ip,
-    #     ip_check_time=datetime_util.get_datetime(),
-    #     update_time=datetime_util.get_datetime(),
-    # ).where(
-    #     DomainModel.id == row.id
-    # ).execute()
+    AddressModel.insert_many(lst).on_conflict_ignore().execute()
 
 
-def update_cert_info_v2(domain_row: DomainModel):
+def update_domain_address_list_cert(domain_row: DomainModel):
     """
     更新证书信息
     :return:
@@ -157,10 +147,6 @@ def update_address_row_info(address_row, domain_row):
     :param address_row:
     :return:
     """
-
-    # 如果不自动更新证书则跳过
-    # if address_row.ssl_auto_update is False:
-    #     logger.info("skip ssl_auto_update: %s - %s", domain_row.domain, address_row.host)
 
     # 获取证书信息
     cert_info = {}
@@ -201,9 +187,7 @@ def update_address_row_info_with_sync_domain_row(address_id: int):
     """
     address_row = AddressModel.get_by_id(address_id)
 
-    domain_row = DomainModel.select().where(
-        DomainModel.id == address_row.domain_id
-    ).first()
+    domain_row = DomainModel.get_by_id(address_row.domain_id)
 
     update_address_row_info(address_row, domain_row)
 
@@ -220,16 +204,6 @@ def sync_address_info_to_domain_info(domain_row: DomainModel):
     ).order_by(
         AddressModel.ssl_expire_days.asc()
     ).first()
-
-    # if first_address_row is not None:
-    #     pass
-
-    # logger.info("%s", model_to_dict(
-    #     model=first_address_row,
-    #     extra_attrs=[
-    #         'real_time_ssl_expire_days'
-    #     ]
-    # ))
 
     connect_status = False
 
@@ -287,42 +261,18 @@ def update_domain_row(domain_row: DomainModel):
     :param domain_row:
     :return:
     """
-    # logger.info("%s", model_to_dict(domain_row))
-    err1 = ''
 
-    # # 如果自动更新禁用，则不更新
-    # if domain_row.domain_auto_update is True:
-    #     # 域名信息 如果还没有过期，可以不更新
-    #     err1 = update_domain_info(domain_row)
+    # 动态主机ip，需要先删除所有主机地址
+    if domain_row.is_dynamic_host:
+        AddressModel.delete().where(
+            AddressModel.domain_id == domain_row.id
+        ).execute()
 
-    # # 如果自动更新禁用，则不更新
-    # if row.auto_update is True:
-    #     # 证书信息
-    #     update_cert_info(row)
-
-    # # ip信息
-    # if row is True:
-    #     update_ip_info(row)
-
-    # total = AddressModel.select().where(
-    #     AddressModel.domain_id == domain_row.id
-    # ).count()
-
-    #  主机列表，不存在则更新
-    # if total == 0:
-    err2 = update_domain_address_info(domain_row)
-    return err1 or err2
-
-
-def update_domain_address_info(domain_row: DomainModel):
-    # logger.info("%s", model_to_dict(domain_row))
-
-    # ip信息
-    update_ip_info_v2(domain_row)
+    # 主机ip信息
+    update_domain_host_list(domain_row)
 
     # 证书信息
-    err = update_cert_info_v2(domain_row)
-    return err
+    update_domain_address_list_cert(domain_row)
 
 
 def get_cert_info(domain: str):
@@ -411,7 +361,10 @@ def update_all_domain_cert_info():
     更新所有域名信息
     :return:
     """
-    rows = DomainModel.select()
+    rows = DomainModel.select().where(
+        DomainModel.auto_update == True
+    ).order_by(DomainModel.expire_days.asc())
+
     for row in rows:
         update_domain_row(row)
 
@@ -436,14 +389,16 @@ def update_all_domain_cert_info_of_user(user_id):
 def get_domain_info_list(user_id=None):
     query = DomainModel.select()
 
-    if user_id:
-        query = query.where(
-            DomainModel.user_id == user_id
-        )
+    user_row = UserModel.get_by_id(user_id)
+
+    query = query.where(
+        DomainModel.user_id == user_id,
+        DomainModel.is_monitor == True,
+        DomainModel.expire_days < user_row.before_expire_days
+    )
 
     query = query.order_by(
         DomainModel.expire_days.asc(),
-        DomainModel.domain_expire_days.asc(),
         DomainModel.id.desc()
     )
 
@@ -453,7 +408,7 @@ def get_domain_info_list(user_id=None):
         extra_attrs=[
             'start_date',
             'expire_date',
-            'real_time_domain_expire_days',
+            # 'real_time_domain_expire_days',
             'real_time_expire_days',
             # 'expire_days',
         ]
@@ -505,71 +460,22 @@ def check_domain_cert(user_id):
         # send_domain_list_email(user_id)
 
 
-def update_and_check_all_domain_cert():
+def update_and_check_all_cert():
     """
     更新并检查所域名信息和证书信息
     :return:
     """
 
-    # 开始执行
-    log_row = LogSchedulerModel.create()
-
-    err1 = ''
-
-    status = True
-
     # 更新全部域名证书信息
-    try:
-        update_all_domain_cert_info()
-    except Exception as e:
-        err1 = str(e)
-        logger.error(traceback.format_exc())
-
-    # 配置检查 跳过邮件检查 可能已经配置了webhook
-    # config = system_service.get_system_config()
-    # try:
-    #     system_service.check_email_config(config)
-    # except Exception as e:
-    #     logger.error(traceback.format_exc())
-    #
-    #     status = False
-    #
-    #     if isinstance(e, AppException):
-    #         error_message = e.message
-    #     else:
-    #         error_message = str(e)
+    update_all_domain_cert_info()
 
     # 全员检查并发送用户通知
     # if status:
-    rows = UserModel.select()
-    err2 = []
-    for row in rows:
+    user_rows = UserModel.select()
 
+    for row in user_rows:
         # 内层捕获单个用户发送错误
-        try:
-            check_domain_cert(row.id)
-        except Exception as e:
-            err2 = str(e)
-            # traceback.print_exc()
-            logger.error(traceback.format_exc())
-
-            # status = False
-            #
-            # if isinstance(e, AppException):
-            #     error_message = e.message
-            # else:
-            #     error_message = str(e)
-
-    error_message = [err1, err2]
-
-    # 执行完毕
-    LogSchedulerModel.update({
-        'status': status,
-        'error_message': "、".join(error_message),
-        'update_time': datetime_util.get_datetime(),
-    }).where(
-        LogSchedulerModel.id == log_row.id
-    ).execute()
+        check_domain_cert(row.id)
 
 
 def send_domain_list_email(user_id, rows: List[DomainModel]):
@@ -594,6 +500,7 @@ def send_domain_list_email(user_id, rows: List[DomainModel]):
     content = render_service.render_template('domain-cert-email.html', {'list': rows})
 
     email_service.send_email(
+        subject='[Domain Admin]证书过期提醒',
         content=content,
         to_addresses=email_list,
         content_type='html'
@@ -621,33 +528,16 @@ def add_domain_from_file(filename, user_id):
 
     lst = [
         {
-            'domain': item['domain'],
-            'port': item['port'],
-            'alias': item.get('alias', ''),
+            'domain': item.domain,
+            'root_domain': item.root_domain,
+            'port': item.port,
+            'alias': item.alias,
             'user_id': user_id,
         } for item in lst
     ]
 
     for batch in chunked(lst, 500):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
-
-    # count = 0
-    # for domain in lst:
-    #     try:
-    #         row = add_domain({
-    #             'domain': domain,
-    #             'user_id': user_id,
-    #         })
-    #
-    #         # 导入后统一查询，避免太过耗时
-    #         # update_domain_cert_info(row)
-    #
-    #         count += 1
-    #     except Exception as e:
-    #         # traceback.print_exc()
-    #         logger.error(traceback.format_exc())
-
-    # return count
 
 
 def export_domain_to_file(user_id):

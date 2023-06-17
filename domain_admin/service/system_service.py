@@ -24,6 +24,10 @@ def get_system_config():
     return config
 
 
+def get_config(key):
+    return get_system_config().get(key)
+
+
 def check_email_config(config):
     if not config['mail_host']:
         raise AppException('未设置发件邮箱服务器地址')

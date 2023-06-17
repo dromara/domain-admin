@@ -61,6 +61,19 @@ def update_all_domain_info_of_user(user_id):
         update_domain_info_row(row)
 
 
+def update_all_domain_info():
+    """
+    更新所有的域名信息
+    :return:
+    """
+    rows = DomainInfoModel.select().where(
+        DomainInfoModel.is_auto_update == True
+    ).order_by(DomainInfoModel.domain_expire_days.asc())
+
+    for row in rows:
+        update_domain_info_row(row)
+
+
 def send_domain_list_email(user_id, rows: List[DomainInfoModel]):
     """
     发送域名信息
@@ -84,7 +97,7 @@ def send_domain_list_email(user_id, rows: List[DomainInfoModel]):
     content = render_service.render_template('domain-email.html', {'list': rows})
 
     email_service.send_email(
-        subject='[domain-admin]域名过期提醒',
+        subject='[Domain Admin]域名过期提醒',
         content=content,
         to_addresses=email_list,
         content_type='html'
@@ -98,8 +111,8 @@ def add_domain_from_file(filename, user_id):
 
     lst = [
         {
-            'domain': item['root_domain'],
-            'comment': item.get('alias', ''),
+            'domain': item.root_domain,
+            'comment': item.alias,
             'user_id': user_id,
         } for item in lst
     ]
@@ -122,8 +135,11 @@ def export_domain_to_file(user_id):
         DomainInfoModel.id.desc(),
     )
 
-    #  分组数据
-    group_rows = GroupModel.select().where(
+    # 分组数据
+    group_rows = GroupModel.select(
+        GroupModel.id,
+        GroupModel.name,
+    ).where(
         GroupModel.user_id == user_id
     )
 
@@ -193,3 +209,21 @@ def notify_user(user_id, rows: List[DomainInfoModel]):
         notify_service.notify_webhook_of_user(user_id)
     except Exception as e:
         logger.error(traceback.format_exc())
+
+
+def update_and_check_all_domain():
+    """
+    更新并检查所域名信息和证书信息
+    :return:
+    """
+
+    # 更新全部域名证书信息
+    update_all_domain_info()
+
+    # 全员检查并发送用户通知
+    # if status:
+    user_rows = UserModel.select()
+
+    for row in user_rows:
+        # 内层捕获单个用户发送错误
+        check_domain_expire(row.id)

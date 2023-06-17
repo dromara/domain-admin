@@ -27,7 +27,7 @@ routes = {
     "/api/deleteDomainByIds": domain_api.delete_domain_by_ids,
     "/api/getDomainList": domain_api.get_domain_list,
     "/api/getDomainById": domain_api.get_domain_by_id,
-    "/api/updateDomainCertInfoById": domain_api.update_domain_cert_info_by_id,
+    "/api/updateDomainCertInfoById": domain_api.update_domain_row_info_by_id,
     "/api/updateDomainRowInfoById": domain_api.update_domain_row_info_by_id,
     "/api/updateAllDomainCertInfo": domain_api.update_all_domain_cert_info,
 
@@ -96,9 +96,14 @@ routes = {
     '/api/getDomainInfoList': domain_info_api.get_domain_info_list,
     '/api/addDomainInfo': domain_info_api.add_domain_info,
     '/api/updateDomainInfoRowById': domain_info_api.update_domain_info_row_by_id,
+    '/api/updateDomainInfoOfUser': domain_info_api.update_all_domain_info_of_user,
     '/api/updateDomainInfoFieldById': domain_info_api.update_domain_info_field_by_id,
     '/api/deleteDomainInfoById': domain_info_api.delete_domain_info_by_id,
     '/api/getDomainInfoById': domain_info_api.get_domain_info_by_id,
     '/api/updateDomainInfoById': domain_info_api.update_domain_info_by_id,
     '/api/checkDomainExpire': domain_info_api.check_domain_expire,
+    '/api/deleteDomainInfoByIds': domain_info_api.delete_domain_info_by_ids,
+    '/api/importDomainInFromFile': domain_info_api.import_domain_info_from_file,
+    '/api/exportDomainInfoFile': domain_info_api.export_domain_info_file,
+
 }

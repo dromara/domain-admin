@@ -112,9 +112,13 @@ def parse_domain_from_txt_file(filename) -> ParsedDomain:
 
 
 def parse_domain_from_file(filename) -> ParsedDomain:
-    # lst = []
+    """
+    解析域名文件的工厂方法
+    :param filename:
+    :return:
+    """
     file_type = file_util.get_filename_ext(filename)
-    print('file_type', file_type)
+
     if file_type == 'csv':
         return parse_domain_from_csv_file(filename)
     else:

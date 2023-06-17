@@ -1,6 +1,8 @@
 ## 更新日志
-- v1.4.0(2023-06-14)
-    - 新增 域名监控和SSL证书分离
+- v1.4.0-alpha(2023-06-14)
+    - 新增 域名监控和SSL证书监控分离
+    - 新增 证书监控支持动态IP
+    - 修复 Bug: 'AddressModel' object has no attribute 'address_id'
 
 - v1.3.6(2023-06-13)
     - 修复 ipv6查询失败问题，暂时隐藏ipv6
