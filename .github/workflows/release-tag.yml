@@ -37,6 +37,19 @@ jobs:
 #          tag_name: ${{ github.ref }}
 #          body: |
 #            Please refer to [CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md) for details.
+     - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+
+      - name: Build
+        run: |
+            python setup.py sdist bdist_wheel
 
       - name: Release
         uses: softprops/action-gh-release@v1

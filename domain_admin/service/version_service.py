@@ -134,9 +134,9 @@ def update_version():
             VersionEnum.Version_136,
         ]:
             # 1.3.1 => 1.4.0-alpha
-            logger.info('update version: %s => %s', local_version, VersionEnum.Version_140)
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_140_alpha)
             migrate_136_to_140_alpha.execute_migrate()
-            local_version = VersionEnum.Version_140
+            local_version = VersionEnum.Version_140_alpha
 
     # 更新版本号
     VersionModel.create(
