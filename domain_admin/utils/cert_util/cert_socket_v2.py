@@ -86,3 +86,7 @@ def resolve_cert(cert: typing.Dict):
     }
 
     return data
+
+
+if __name__ == '__main__':
+    print(get_ssl_cert_info('dev.csdn.net', '120.46.209.149'))

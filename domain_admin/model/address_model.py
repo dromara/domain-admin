@@ -22,15 +22,15 @@ class AddressModel(BaseModel):
 
     # 连接状态
     # @Deprecated
-    host_connect_status = BooleanField(default=None, null=True)
+    # host_connect_status = BooleanField(default=None, null=True)
 
     # ip连接状态检查时间
     # @Deprecated
-    host_check_time = DateTimeField(default=None, null=True)
+    # host_check_time = DateTimeField(default=None, null=True)
 
     # ip连接状态监测
     # @Deprecated
-    host_status_monitor = BooleanField(default=True)
+    # host_status_monitor = BooleanField(default=True)
 
     # SSL签发时间
     ssl_start_time = DateTimeField(default=None, null=True)
@@ -43,15 +43,15 @@ class AddressModel(BaseModel):
 
     # SSL最后检查时间
     # @Deprecated
-    ssl_check_time = DateTimeField(default=None, null=True)
+    # ssl_check_time = DateTimeField(default=None, null=True)
 
     # SSL证书信息自动更新
     # @Deprecated
-    ssl_auto_update = BooleanField(default=True)
+    # ssl_auto_update = BooleanField(default=True)
 
     # SSL证书过期监测
     # @Deprecated
-    ssl_expire_monitor = BooleanField(default=True)
+    # ssl_expire_monitor = BooleanField(default=True)
 
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
@@ -68,13 +68,13 @@ class AddressModel(BaseModel):
             (('domain_id', 'host'), True),  # Note the trailing comma!
         )
 
-    @property
-    def ip_check_time_label(self):
-        return datetime_util.time_for_human(self.ip_check_time)
+    # @property
+    # def ip_check_time_label(self):
+    #     return datetime_util.time_for_human(self.ip_check_time)
 
-    @property
-    def ssl_check_time_label(self):
-        return datetime_util.time_for_human(self.ssl_check_time)
+    # @property
+    # def ssl_check_time_label(self):
+    #     return datetime_util.time_for_human(self.ssl_check_time)
 
     @property
     def create_time_label(self):

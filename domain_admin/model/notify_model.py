@@ -14,6 +14,9 @@ class NotifyModel(BaseModel):
     # 用户id
     user_id = IntegerField(null=False)
 
+    # 事件分类
+    event_id = IntegerField(null=False, default=0)
+
     # 分类
     type_id = IntegerField(null=False, default=0)
 

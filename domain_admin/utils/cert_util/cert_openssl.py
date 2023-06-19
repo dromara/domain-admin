@@ -7,13 +7,10 @@
 
 import socket
 import ssl
-import warnings
 
 import OpenSSL
 
 from domain_admin.utils.cert_util import cert_common, cert_consts
-
-# warnings.warn("cert_openssl.py is Deprecated, please use cert_socket_v2.py")
 
 
 def get_cert_info(domain_with_port):
@@ -64,6 +61,7 @@ def get_cert_info(domain_with_port):
 
 
 if __name__ == '__main__':
-    print(get_cert_info('www.baidu.com'))
+    # print(get_cert_info('www.baidu.com'))
     # support
-    print(get_cert_info('www.mysite.com'))
+    # print(get_cert_info('www.mysite.com'))
+    print(get_cert_info('cdn-image-01.kaishuleyuan.com'))

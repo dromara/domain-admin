@@ -20,6 +20,15 @@ def parse_time(time_str):
     return parser.parse(time_str).astimezone().strftime(cert_consts.DATETIME_FORMAT)
 
 
+def parse_datetime(time_str):
+    """
+    解析时间
+    :param time_str: str
+    :return: datetime
+    """
+    return parser.parse(time_str).astimezone().replace(tzinfo=None)
+
+
 def parse_domain_with_port(domain_with_port):
     """
     解析域名，允许携带端口号

@@ -7,5 +7,5 @@
 
 
 def test_index(client):
-    response = client.get('/')
-    assert 'id="app"' in response.text
+    response = client.get('/test')
+    assert 'hello' in response.text

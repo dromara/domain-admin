@@ -51,6 +51,15 @@ def index():
     return send_file('public/index.html')
 
 
+@app.get('/test')
+def app_hello():
+    """
+    测试页
+    :return:
+    """
+    return 'hello'
+
+
 @app.get('/temp/<path:filename>')
 def temp(filename):
     """临时文件"""

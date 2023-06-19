@@ -247,7 +247,7 @@ def update_cert_info(row: DomainModel):
         total_days=cert_info.get('total_days', 0),
         # ip=cert_info.get('ip', ''),
         connect_status=cert_info.get('connect_status'),
-        detail_raw="",
+        # detail_raw="",
         check_time=datetime_util.get_datetime(),
         update_time=datetime_util.get_datetime(),
     ).where(
@@ -261,6 +261,13 @@ def update_domain_row(domain_row: DomainModel):
     :param domain_row:
     :return:
     """
+    # fix old data update root domain
+    if not domain_row.root_domain:
+        DomainModel.update(
+            root_domain=domain_util.get_root_domain(domain_row.domain)
+        ).where(
+            DomainModel.id == domain_row.id
+        ).execute()
 
     # 动态主机ip，需要先删除所有主机地址
     if domain_row.is_dynamic_host:
@@ -404,7 +411,7 @@ def get_domain_info_list(user_id=None):
 
     lst = list(map(lambda m: model_to_dict(
         model=m,
-        exclude=[DomainModel.detail_raw],
+        # exclude=[DomainModel.detail_raw],
         extra_attrs=[
             'start_date',
             'expire_date',

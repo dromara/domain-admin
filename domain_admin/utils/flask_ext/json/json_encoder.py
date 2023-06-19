@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from flask.json import JSONEncoder as _JSONEncoder
 
 from domain_admin.utils.flask_ext.json.default import default_json_encoder
+
+try:
+    from flask.json import JSONEncoder as _JSONEncoder
+except ImportError:
+    class _JSONEncoder(object):
+        def _default(self, o):
+            pass
 
 
 class JSONEncoder(_JSONEncoder):

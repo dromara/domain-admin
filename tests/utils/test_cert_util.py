@@ -17,8 +17,10 @@ def test_get_cert_info():
 
 def test_cert_socket_v2():
     ret = cert_socket_v2.get_ssl_cert_info(
-        'www.csdn.net',
-        '123.129.227.79'
+        # 'www.csdn.net',
+        # '123.129.227.79',
+        'cdn-image-01.kaishuleyuan.com',
+        '101.96.145.100'
     )
     print(ret)
 

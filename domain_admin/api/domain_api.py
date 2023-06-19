@@ -28,7 +28,7 @@ def add_domain():
 
     domain = request.json['domain']
 
-    alias = request.json.get('alias', '')
+    alias = request.json.get('alias') or ''
     group_id = request.json.get('group_id') or 0
     is_dynamic_host = request.json.get('is_dynamic_host', False)
     port = request.json.get('port') or cert_consts.SSL_DEFAULT_PORT
@@ -36,15 +36,13 @@ def add_domain():
     data = {
         # 基本信息
         'user_id': current_user_id,
-        'domain': domain,
+        'domain': domain.strip(),
         'port': int(port),  # fix: TypeError: an integer is required (got type str)
         'root_domain': domain_util.get_root_domain(domain),
         'alias': alias,
         'group_id': group_id,
         'is_dynamic_host': is_dynamic_host,
     }
-
-    logger.info(data)
 
     row = DomainModel.create(**data)
 
@@ -54,7 +52,8 @@ def add_domain():
     first_domain_info_row = DomainInfoModel.select(
         DomainInfoModel.id
     ).where(
-        DomainInfoModel.domain == domain
+        DomainInfoModel.domain == data['root_domain'],
+        DomainInfoModel.user_id == current_user_id
     ).first()
 
     if not first_domain_info_row:
@@ -178,9 +177,12 @@ def delete_domain_by_id():
 
     domain_id = request.json['id']
 
-    domain_service.check_permission_and_get_row(domain_id, current_user_id)
+    # domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
-    DomainModel.delete_by_id(domain_id)
+    DomainModel.delete().where(
+        DomainModel.domain_id == domain_id,
+        DomainModel.user_id == current_user_id,
+    ).execute()
 
     # 同时移除主机信息
     AddressModel.delete().where(
