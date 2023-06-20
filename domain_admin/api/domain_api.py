@@ -180,7 +180,7 @@ def delete_domain_by_id():
     # domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
     DomainModel.delete().where(
-        DomainModel.domain_id == domain_id,
+        DomainModel.id == domain_id,
         DomainModel.user_id == current_user_id,
     ).execute()
 

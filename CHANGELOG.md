@@ -1,4 +1,7 @@
 ## 更新日志
+- v1.4.2(2023-06-20)
+    - 修复 删除证书报错 type object 'DomainModel' has no attribute 'domain_id'
+
 - v1.4.1(2023-06-20)
     - 修复 前端部分显示问题
     - 修复 字段domain_expire_monitor缺失问题
