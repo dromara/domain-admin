@@ -14,6 +14,43 @@ from domain_admin.service import notify_service
 from domain_admin.service import work_weixin_service
 
 
+def get_notify_list_of_user():
+    """
+    获取用户通知配置
+    :return:
+    """
+    current_user_id = g.user_id
+    page = request.json.get('page', 1)
+    size = request.json.get('size', 10)
+
+    query = NotifyModel.select().where(
+        NotifyModel.user_id == current_user_id
+    )
+
+    total = query.count()
+
+    lst = []
+
+    if total > 0:
+        rows = query.order_by(
+            NotifyModel.id.desc(),
+        ).paginate(page, size)
+        print(rows)
+
+        lst = list(map(lambda m: model_to_dict(
+            model=m,
+            exclude=[NotifyModel.value_raw],
+            extra_attrs=[
+                'value',
+            ]
+        ), rows))
+
+    return {
+        'list': lst,
+        'total': total
+    }
+
+
 def get_notify_of_user():
     """
     获取用户通知配置

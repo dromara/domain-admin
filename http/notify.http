@@ -7,11 +7,22 @@
 
 POST {{baseUrl}}/api/getNotifyOfUser
 Content-Type: application/json
-X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Njc4MTU2ODN9.sMRpUyejWi2_-NU3664rO0PbtKat_uNjlVrRfb5RirQ
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODc3OTA3Njh9.KFGNKMXXcepHdHr88rivBWbXywX_PF0p5SqLnbcosKA
 
 {
   "type_id": 2
 }
+
+###
+POST {{baseUrl}}/api/getNotifyListOfUser
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODc3OTA3Njh9.KFGNKMXXcepHdHr88rivBWbXywX_PF0p5SqLnbcosKA
+
+{
+  "page": 1,
+  "size": 10
+}
+
 
 ###
 POST {{baseUrl}}/api/updateNotifyOfUser
@@ -32,4 +43,6 @@ Content-Type: application/json
 X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Njc4MTU2ODN9.sMRpUyejWi2_-NU3664rO0PbtKat_uNjlVrRfb5RirQ
 
 {}
+
+###
 

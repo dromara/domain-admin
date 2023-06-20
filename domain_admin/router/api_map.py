@@ -79,6 +79,7 @@ routes = {
     '/api/testWebhookNotifyOfUser': notify_api.test_webhook_notify_of_user,
     '/api/testWorkWeixinNotifyOfUser': notify_api.test_work_weixin_notify_of_user,
     '/api/getTemplateData': notify_api.get_template_data,
+    '/api/getNotifyListOfUser': notify_api.get_notify_list_of_user,
 
     # 实验室
     '/api/getWhoisRaw': whois_api.get_whois_raw,

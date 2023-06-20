@@ -26,6 +26,7 @@ def execute_migrate():
 
     migrate(
         # add NotifyModel field
+        migrator.add_column(NotifyModel._meta.table_name, NotifyModel.status.name, NotifyModel.status),
         migrator.add_column(NotifyModel._meta.table_name, NotifyModel.event_id.name, NotifyModel.event_id),
 
         # remove AddressModel field
