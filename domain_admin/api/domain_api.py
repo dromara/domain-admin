@@ -134,7 +134,7 @@ def update_domain_expire_monitor_by_id():
     domain_id = request.json.get('domain_id')
 
     data = {
-        "domain_expire_monitor": request.json.get('domain_expire_monitor', True)
+        "is_monitor": request.json.get('is_monitor', True)
     }
 
     DomainModel.update(
