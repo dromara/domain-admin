@@ -317,7 +317,23 @@ def send_domain_info_list_email():
     """
     current_user_id = g.user_id
 
-    domain_service.send_domain_list_email(current_user_id)
+    rows = DomainModel.select().where(
+        DomainModel.user_id == current_user_id,
+    ).order_by(
+        DomainModel.expire_days.asc(),
+        DomainModel.id.desc()
+    )
+
+    lst = [model_to_dict(
+        model=row,
+        extra_attrs=[
+            'start_date',
+            'expire_date',
+            'real_time_expire_days',
+        ]
+    ) for row in rows]
+
+    domain_service.send_domain_list_email(current_user_id, lst)
 
 
 def check_domain_cert():

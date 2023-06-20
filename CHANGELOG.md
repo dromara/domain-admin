@@ -1,4 +1,7 @@
 ## 更新日志
+- v1.4.3(2023-06-20)
+    - 修复 邮件通知测试报错 send_domain_list_email() missing 1 required positional argument: 'rows'
+
 - v1.4.2(2023-06-20)
     - 修复 删除证书报错 type object 'DomainModel' has no attribute 'domain_id'
 
