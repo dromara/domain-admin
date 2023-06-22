@@ -290,6 +290,8 @@ def notify_user_by_webhook(
     template = Template(notify_row.webhook_body)
     body_render = template.render(data)
 
+    logger.info(body_render)
+
     res = requests.request(
         method=notify_row.webhook_method,
         url=notify_row.webhook_url,

@@ -10,11 +10,11 @@
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg)
 
-基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台
-
-核心功能：到期自动邮件提醒
+基于Python3 + Vue3.js 技术栈实现的域名和SSL证书监测平台
 
 用于解决，不同业务域名SSL证书，申请自不同的平台，到期后不能及时收到通知，导致线上访问异常，被老板责骂的问题
+
+核心功能：`域名` 和`SSL证书` 的过期监控，到期提醒，支持邮件、webhook、企业微信、钉钉、飞书等通知方式
 
 支持平台：macOS、Linux、Windows
 
@@ -310,6 +310,51 @@ sqlite> .quit
 可尝试更换端口25或465
 
 ### 6、webhook模板
+
+采用`jinja2` 模板引擎
+
+传入模板的参数示例：
+
+```json
+{
+    "list":[
+        {
+            "domain": "www.demo.com",
+            "start_date": "2023-06-01",
+            "expire_date": "2023-06-21",
+            "expire_days": 20
+        }
+    ]
+}
+```
+
+参数说明
+
+| 参数  | 类型  | 说明 |
+| -| - | - |
+| domain | string | 域名/证书域名
+| start_date | string | 生效时间
+| expire_date | string | 过期时间
+| expire_days | int | 剩余天数
+
+
+示例
+
+```json
+{
+  "title": "域名到期提醒",
+  "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+}
+```
+
+渲染结果
+
+```json
+{
+  "title": "域名到期提醒",
+  "content": "www.demo.com 2023-06-01 - 2023-06-21 (20)"
+}
+```
 
 可以参考接口文档：[更新用户通知配置](docs/notify/updateNotifyOfUser.md)
 
