@@ -27,8 +27,7 @@ def get_user_info():
 
     return model_to_dict(
         model=row,
-        exclude=[UserModel.password, UserModel.email_list_raw],
-        extra_attrs=['email_list']
+        exclude=[UserModel.password],
     )
 
 

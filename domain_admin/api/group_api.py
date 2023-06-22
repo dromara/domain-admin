@@ -101,20 +101,33 @@ def get_group_list():
         GroupModel.id.asc()
     )
 
-    # 域名分组统计
-    domain_groups = DomainModel.select(
+    # 证书分组统计
+    cert_groups = DomainModel.select(
         DomainModel.group_id,
         fn.COUNT(DomainModel.id).alias('count')
     ).group_by(DomainModel.group_id)
+
+    cert_groups_map = {
+        row.group_id: row.count
+        for row in cert_groups
+    }
+
+    # 域名分组统计
+    domain_groups = DomainInfoModel.select(
+        DomainInfoModel.group_id,
+        fn.COUNT(DomainInfoModel.id).alias('count')
+    ).group_by(DomainInfoModel.group_id)
 
     domain_groups_map = {
         row.group_id: row.count
         for row in domain_groups
     }
 
+
     lst = []
     for row in rows:
         row_dict = model_to_dict(row)
+        row_dict['cert_count'] = cert_groups_map.get(row.id, 0)
         row_dict['domain_count'] = domain_groups_map.get(row.id, 0)
         lst.append(row_dict)
 

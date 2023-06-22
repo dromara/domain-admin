@@ -1,6 +1,7 @@
 ## 更新日志
 - v1.4.4(2023-06-22)
     - 新增 批量删除主机地址
+    - 优化 支持多个通知渠道
 
 - v1.4.3(2023-06-20)
     - 修复 邮件通知测试报错 send_domain_list_email() missing 1 required positional argument: 'rows'

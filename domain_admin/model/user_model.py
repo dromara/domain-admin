@@ -42,14 +42,14 @@ class UserModel(BaseModel):
     class Meta:
         table_name = 'tb_user'
 
-    @property
-    def email_list(self):
-        warnings.warn("UserModel field email_list is Deprecated, please use NotifyModel", DeprecationWarning)
-
-        if self.email_list_raw:
-            return json.loads(self.email_list_raw)
-        else:
-            return []
+    # @property
+    # def email_list(self):
+    #     warnings.warn("UserModel field email_list is Deprecated, please use NotifyModel", DeprecationWarning)
+    #
+    #     if self.email_list_raw:
+    #         return json.loads(self.email_list_raw)
+    #     else:
+    #         return []
 
 
 def init_table_data():
