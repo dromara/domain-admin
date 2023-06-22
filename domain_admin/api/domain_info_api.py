@@ -227,6 +227,7 @@ def export_domain_info_file():
     filename = domain_info_service.export_domain_to_file(current_user_id)
 
     return {
+        'name': filename,
         'url': file_service.resolve_temp_url(filename)
     }
 
