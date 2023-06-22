@@ -29,6 +29,8 @@ def get_notify_list_of_user():
     current_user_id = g.user_id
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
+    order_prop = request.json.get('order_prop') or 'create_time'
+    order_type = request.json.get('order_type') or 'descending'
 
     query = NotifyModel.select().where(
         NotifyModel.user_id == current_user_id
@@ -39,10 +41,40 @@ def get_notify_list_of_user():
     lst = []
 
     if total > 0:
-        rows = query.order_by(
-            NotifyModel.id.desc(),
-        ).paginate(page, size)
-        print(rows)
+
+        ordering = []
+
+        # order by event_id
+        if order_prop == 'event_id':
+            if order_type == 'descending':
+                ordering.append(NotifyModel.event_id.desc())
+            else:
+                ordering.append(NotifyModel.event_id.asc())
+
+        # order by type_id
+        if order_prop == 'type_id':
+            if order_type == 'descending':
+                ordering.append(NotifyModel.type_id.desc())
+            else:
+                ordering.append(NotifyModel.type_id.asc())
+
+        # order by expire_days
+        if order_prop == 'expire_days':
+            if order_type == 'descending':
+                ordering.append(NotifyModel.expire_days.desc())
+            else:
+                ordering.append(NotifyModel.expire_days.asc())
+
+        # order by status
+        if order_prop == 'status':
+            if order_type == 'descending':
+                ordering.append(NotifyModel.status.desc())
+            else:
+                ordering.append(NotifyModel.status.asc())
+
+        ordering.append(NotifyModel.id.desc())
+
+        rows = query.order_by(*ordering).paginate(page, size)
 
         lst = list(map(lambda m: model_to_dict(
             model=m,

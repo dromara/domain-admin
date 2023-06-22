@@ -525,6 +525,12 @@ def get_domain_list():
             ordering.append(DomainModel.auto_update.desc())
         else:
             ordering.append(DomainModel.auto_update.asc())
+    # order by  is_monitor
+    elif order_prop == 'is_monitor':
+        if order_type == 'descending':
+            ordering.append(DomainModel.is_monitor.desc())
+        else:
+            ordering.append(DomainModel.is_monitor.asc())
 
     ordering.append(DomainModel.id.desc())
 
