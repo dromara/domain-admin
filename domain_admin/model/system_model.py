@@ -80,17 +80,18 @@ def init_table_data():
             'key': ConfigKeyEnum.MAIL_PASSWORD,
             'value': '',
             'label': '发件人邮箱密码',
-            'placeholder': '发件人邮箱密码',
+            'placeholder': '发件人邮箱密码或客户端授权码',
             'is_show_value': True,
         },
 
-        {
-            'key': ConfigKeyEnum.MAIL_SUBJECT,
-            'value': '[ssl]证书过期时间汇总',
-            'label': '邮件标题',
-            'placeholder': '邮件标题',
-            'is_show_value': True,
-        },
+        #
+        # {
+        #     'key': ConfigKeyEnum.MAIL_SUBJECT,
+        #     'value': '[ssl]证书过期时间汇总',
+        #     'label': '邮件标题',
+        #     'placeholder': '邮件标题',
+        #     'is_show_value': True,
+        # },
 
         # 分 时 日 月 周，默认每天上午 10: 30 检测
         {
@@ -108,6 +109,7 @@ def init_table_data():
             'label': 'Token秘钥',
             'placeholder': '重新设置后所有用户的登录状态会退出'
         },
+
         {
             'key': ConfigKeyEnum.TOKEN_EXPIRE_DAYS,
             'value': 7,

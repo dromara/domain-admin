@@ -103,6 +103,22 @@ def delete_address_by_id():
     ).execute()
 
 
+def delete_address_by_ids():
+    """
+    批量删除主机地址
+    :return:
+    @since v1.4.4
+    """
+
+    current_user_id = g.user_id
+
+    address_ids = request.json['address_ids']
+
+    AddressModel.delete().where(
+        AddressModel.id.in_(address_ids)
+    ).execute()
+
+
 def get_address_by_id():
     """
     获取主机地址
@@ -150,6 +166,8 @@ def update_address_by_id():
 
     if domain_row.auto_update:
         domain_service.update_address_row_info_with_sync_domain_row(address_id)
+    else:
+        domain_service.sync_address_info_to_domain_info(domain_row)
 
 
 def update_address_list_info_by_domain_id():

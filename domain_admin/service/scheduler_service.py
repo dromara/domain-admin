@@ -8,7 +8,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # pytz==2022.2.1
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
-from domain_admin.service import system_service, domain_service, domain_info_service
+from domain_admin.service import system_service, domain_service, domain_info_service, notify_service
 from domain_admin.service.file_service import resolve_log_file
 
 # warnings.filterwarnings(action="ignore", category=PytzUsageWarning)
@@ -35,7 +35,6 @@ scheduler = BackgroundScheduler(job_defaults=JOB_DEFAULTS)
 
 
 def init_scheduler():
-
     scheduler_cron = system_service.get_config(ConfigKeyEnum.SCHEDULER_CRON)
 
     if not scheduler_cron:
@@ -72,15 +71,18 @@ def task():
     log_row = LogSchedulerModel.create()
 
     # 检查证书
-    domain_service.update_and_check_all_cert()
+    domain_service.update_all_domain_cert_info()
 
     # 检查域名
-    domain_info_service.update_and_check_all_domain()
+    domain_info_service.update_all_domain_info()
+
+    # 触发通知
+    success = notify_service.notify_all_event()
 
     # 执行完毕
     LogSchedulerModel.update({
         'status': True,
-        'error_message': '',
+        'error_message': f'成功发送: {success}',
         'update_time': datetime_util.get_datetime(),
     }).where(
         LogSchedulerModel.id == log_row.id

@@ -45,4 +45,9 @@ X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Njc4MT
 {}
 
 ###
+POST {{baseUrl}}/api/handleTestNotifyById
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Njc4MTU2ODN9.sMRpUyejWi2_-NU3664rO0PbtKat_uNjlVrRfb5RirQ
+
+{}
 

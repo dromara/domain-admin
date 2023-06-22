@@ -74,3 +74,7 @@ class VersionEnum(object):
 
     Version_140_alpha = '1.4.0-alpha'
     Version_140 = '1.4.0'
+    Version_141 = '1.4.1'
+    Version_142 = '1.4.2'
+    Version_143 = '1.4.3'
+    Version_144 = '1.4.4'

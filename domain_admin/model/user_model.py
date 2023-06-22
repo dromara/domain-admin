@@ -23,11 +23,12 @@ class UserModel(BaseModel):
     avatar_url = CharField(null=None, default='')
 
     # 过期前多少天提醒
-    before_expire_days = IntegerField(null=None, default=DEFAULT_BEFORE_EXPIRE_DAYS)
+    # Deprecated 已弃用 v1.4.4
+    # before_expire_days = IntegerField(null=None, default=DEFAULT_BEFORE_EXPIRE_DAYS)
 
     # 邮件列表
     # Deprecated 已弃用 v0.0.12
-    email_list_raw = TextField(default=None, null=True)
+    # email_list_raw = TextField(default=None, null=True)
 
     # 账号状态
     status = BooleanField(default=True)
@@ -56,7 +57,7 @@ def init_table_data():
         {
             'username': ADMIN_USERNAME,
             'password': bcrypt_util.encode_password(ADMIN_PASSWORD),
-            'before_expire_days': DEFAULT_BEFORE_EXPIRE_DAYS,
+            # 'before_expire_days': DEFAULT_BEFORE_EXPIRE_DAYS,
         }
     ]
 

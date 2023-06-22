@@ -80,6 +80,13 @@ routes = {
     '/api/testWorkWeixinNotifyOfUser': notify_api.test_work_weixin_notify_of_user,
     '/api/getTemplateData': notify_api.get_template_data,
     '/api/getNotifyListOfUser': notify_api.get_notify_list_of_user,
+    '/api/addNotify': notify_api.add_notify,
+    '/api/deleteNotifyById': notify_api.delete_notify_by_id,
+    '/api/updateNotifyStatusById': notify_api.update_notify_status_by_id,
+    '/api/updateNotifyById': notify_api.update_notify_by_id,
+    '/api/getNotifyById': notify_api.get_notify_by_id,
+    '/api/handleTestNotifyById': notify_api.handle_test_notify_by_id,
+    '/api/handleNotifyByEventId': notify_api.handle_notify_by_event_id,
 
     # 实验室
     '/api/getWhoisRaw': whois_api.get_whois_raw,
@@ -92,6 +99,7 @@ routes = {
     '/api/updateAddressById': address_api.update_address_by_id,
     '/api/updateAddressListInfoByDomainId': address_api.update_address_list_info_by_domain_id,
     '/api/updateAddressRowInfoById': address_api.update_address_row_info_by_id,
+    '/api/deleteAddressByIds': address_api.delete_address_by_ids,
 
     # 域名列表
     '/api/getDomainInfoList': domain_info_api.get_domain_info_list,

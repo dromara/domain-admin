@@ -42,6 +42,14 @@ def check_email_config(config):
         raise AppException('未设置发件人邮箱密码')
 
 
+def get_email_config():
+    config = get_system_config()
+
+    check_email_config(config)
+
+    return config
+
+
 def init_system_config(app):
     """
     初始化全局常量配置

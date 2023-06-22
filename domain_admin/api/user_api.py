@@ -4,9 +4,13 @@ user_api.py
 """
 
 from flask import request, g
-from playhouse.shortcuts import model_to_dict
+from playhouse.shortcuts import model_to_dict, fn
 
 from domain_admin.config import DEFAULT_BEFORE_EXPIRE_DAYS
+from domain_admin.model.address_model import AddressModel
+from domain_admin.model.domain_info_model import DomainInfoModel
+from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.notify_model import NotifyModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.utils import datetime_util, bcrypt_util
 from domain_admin.utils.flask_ext.app_exception import AppException
@@ -35,12 +39,12 @@ def update_user_info():
     """
     current_user_id = g.user_id
 
-    avatar_url = request.json.get('avatar_url')
+    # avatar_url = request.json.get('avatar_url')
     before_expire_days = request.json.get('before_expire_days') or DEFAULT_BEFORE_EXPIRE_DAYS
     # email_list = request.json.get('email_list')
 
     UserModel.update({
-        'avatar_url': avatar_url,
+        # 'avatar_url': avatar_url,
         'before_expire_days': int(before_expire_days),
         # 'email_list_raw': json.dumps(email_list, ensure_ascii=False),
         'update_time': datetime_util.get_datetime()
@@ -88,6 +92,7 @@ def get_user_list():
         query = query.where(UserModel.username.contains(keyword))
 
     total = query.count()
+
     lst = query.order_by(
         UserModel.create_time.desc(),
         UserModel.id.desc(),
@@ -97,12 +102,58 @@ def get_user_list():
         model=m,
         exclude=[
             UserModel.password,
-            UserModel.email_list_raw,
-        ],
-        extra_attrs=[
-            'email_list',
         ]
     ), lst))
+
+    row_ids = [row['id'] for row in lst]
+
+    # 证书数量
+    domain_groups = DomainModel.select(
+        DomainModel.user_id,
+        fn.COUNT(DomainModel.id).alias('count')
+    ).where(
+        DomainModel.user_id.in_(row_ids)
+    ).group_by(DomainModel.user_id)
+
+    domain_groups_map = {
+        str(row.user_id): row.count
+        for row in domain_groups
+    }
+
+    for row in lst:
+        row['cert_count'] = domain_groups_map.get(str(row['id']), 0)
+
+    # 域名数量
+    domain_info_groups = DomainInfoModel.select(
+        DomainInfoModel.user_id,
+        fn.COUNT(DomainInfoModel.id).alias('count')
+    ).where(
+        DomainInfoModel.user_id.in_(row_ids)
+    ).group_by(DomainInfoModel.user_id)
+
+    domain_info_groups_map = {
+        str(row.user_id): row.count
+        for row in domain_info_groups
+    }
+
+    for row in lst:
+        row['domain_count'] = domain_info_groups_map.get(str(row['id']), 0)
+
+    # 通知渠道
+    notify_groups = NotifyModel.select(
+        NotifyModel.user_id,
+        fn.COUNT(NotifyModel.id).alias('count')
+    ).where(
+        NotifyModel.user_id.in_(row_ids)
+    ).group_by(NotifyModel.user_id)
+
+    notify_groups_map = {
+        str(row.user_id): row.count
+        for row in notify_groups
+    }
+
+    for row in lst:
+        row['notify_count'] = notify_groups_map.get(str(row['id']), 0)
 
     return {
         'list': lst,

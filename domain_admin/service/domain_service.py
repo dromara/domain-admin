@@ -488,6 +488,7 @@ def update_and_check_all_cert():
 def send_domain_list_email(user_id, rows: List[DomainModel]):
     """
     发送域名信息
+    :param rows:
     :param user_id:
     :return:
     """
@@ -514,6 +515,34 @@ def send_domain_list_email(user_id, rows: List[DomainModel]):
     )
 
 
+def send_domain_list_email(user_id, rows: List[DomainModel]):
+    """
+    发送域名信息
+    :param rows:
+    :param user_id:
+    :return:
+    """
+
+    # 配置检查
+    config = system_service.get_system_config()
+
+    system_service.check_email_config(config)
+
+    email_list = notify_service.get_notify_email_list_of_user(user_id)
+
+    if not email_list:
+        raise AppException('收件邮箱未设置')
+
+    # lst = get_domain_info_list(user_id)
+
+    content = render_service.render_template('cert-email.html', {'list': rows})
+
+    email_service.send_email(
+        subject='[Domain Admin]证书过期提醒',
+        content=content,
+        to_addresses=email_list,
+        content_type='html'
+    )
 def check_permission_and_get_row(domain_id, user_id):
     """
     权限检查

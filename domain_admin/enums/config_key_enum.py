@@ -25,6 +25,7 @@ class ConfigKeyEnum(object):
     MAIL_PASSWORD = 'mail_password'
 
     # 邮件标题
+    # @Deprecated @since 1.4.4
     MAIL_SUBJECT = 'mail_subject'
 
     # 定时检测时间（crontab 表达式）

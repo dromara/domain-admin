@@ -19,9 +19,11 @@ def send_email(
     """
     # print('to_addresses:', to_addresses)
 
-    config = system_service.get_system_config()
+    # config = system_service.get_system_config()
+    #
+    # system_service.check_email_config(config)
 
-    system_service.check_email_config(config)
+    config = system_service.get_email_config()
 
     email_server = EmailServer(
         mail_host=config['mail_host'],

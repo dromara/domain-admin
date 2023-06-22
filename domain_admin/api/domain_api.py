@@ -10,7 +10,8 @@ from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
-from domain_admin.service import async_task_service, domain_info_service
+from domain_admin.model.notify_model import NotifyModel
+from domain_admin.service import async_task_service, domain_info_service, notify_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
@@ -352,7 +353,6 @@ def check_domain_cert():
     # domain_service.check_domain_cert(current_user_id)
     # 异步检查更新
     async_task_service.submit_task(fn=domain_service.update_and_check_domain_cert, user_id=current_user_id)
-
 
 def get_all_domain_list_of_user():
     """

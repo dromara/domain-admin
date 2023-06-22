@@ -7,7 +7,7 @@
 from domain_admin.enums.version_enum import VersionEnum
 from domain_admin.log import logger
 from domain_admin.migrate import migrate_102_to_103, migrate_1213_to_131, migrate_136_to_140_alpha, \
-    migrate_140_alpha_to_140
+    migrate_140_alpha_to_140, migrate_143_to_144
 from domain_admin.migrate import migrate_106_to_110
 from domain_admin.migrate import migrate_110_to_1212
 from domain_admin.migrate import migrate_1212_to_1213
@@ -146,12 +146,27 @@ def update_version():
             # 1.4.0-alpha => 1.4.0
             logger.info('update version: %s => %s', local_version, VersionEnum.Version_140)
 
+            migrate_140_alpha_to_140.execute_migrate()
+
+            local_version = VersionEnum.Version_140
+
+        # 2023-06-20
+        if local_version in [
+            VersionEnum.Version_140,
+            VersionEnum.Version_141,
+            VersionEnum.Version_142,
+            VersionEnum.Version_143,
+            VersionEnum.Version_144,
+        ]:
+            # 1.4.0 => 1.4.4
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_144)
+
             try:
-                migrate_140_alpha_to_140.execute_migrate()
+                migrate_143_to_144.execute_migrate()
             except:
                 pass
 
-            local_version = VersionEnum.Version_140
+            local_version = VersionEnum.Version_144
 
     # 更新版本号
     VersionModel.create(

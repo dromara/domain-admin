@@ -28,19 +28,19 @@
                     <a href="{{ item.domain }}" target="_blank">{{ item.domain }}</a>
                 </td>
 
-              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.domain_start_date | default('-') }}</td>
-              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.domain_expire_date | default('-')  }}</td>
-                {% if item.real_domain_expire_days %}
-                    {% if item.real_domain_expire_days <= 7 %}
-                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.real_domain_expire_days }}</td>
-                    {% elif item.real_domain_expire_days <= 30 %}
-                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.real_domain_expire_days }}</td>
+              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.start_date or '-' }}</td>
+              <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;">{{ item.expire_date or '-' }}</td>
+
+                    {% if item.expire_days <= 7 %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #F56C6C;">{{ item.expire_days }}</td>
+                    {% elif item.expire_days <= 30 %}
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #E6A23C;">{{ item.expire_days }}</td>
                     {% else %}
-                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.real_domain_expire_days }}</td>
+                        <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;">{{ item.expire_days }}</td>
                     {% endif %}
-                {% else %}
-                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">{{ item.real_domain_expire_days }}</td>
-                {% endif %}
+
+<!--                    <td style="border: 1px solid #eeeeee;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">{{ item.real_domain_expire_days }}</td>-->
+
             </tr>
         {% endfor %}
         </tbody>

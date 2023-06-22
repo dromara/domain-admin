@@ -4,15 +4,48 @@
 @Date    : 2022-10-30
 @Author  : Peng Shiyu
 """
-from typing import List, Optional
+import json
+import traceback
+from typing import List, Optional, Dict
 
 import requests
+from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.event_enum import EventEnum
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
+from domain_admin.log import logger
+from domain_admin.model.domain_info_model import DomainInfoModel
+from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import domain_service
+from domain_admin.service import domain_service, render_service, system_service, email_service
+from domain_admin.utils import work_weixin_api
 from domain_admin.utils.flask_ext.app_exception import AppException
 from jinja2 import Template
+
+# 通知参数配置
+NOTIFY_CONFIGS = [
+    {
+        'event_id': EventEnum.SSL_CERT_EXPIRE,
+        'email_template': 'cert-email.html',
+        'email_subject': '[Domain Admin]证书过期提醒',
+    },
+    {
+        'event_id': EventEnum.DOMAIN_EXPIRE,
+        'email_template': 'domain-email.html',
+        'email_subject': '[Domain Admin]域名过期提醒',
+    }
+]
+
+
+def get_notify_config(event_id: int):
+    """
+    获取通知配置
+    :param event_id:
+    :return:
+    """
+    for config in NOTIFY_CONFIGS:
+        if config['event_id'] == event_id:
+            return config
 
 
 def get_notify_row_value(user_id, type_id):
@@ -99,3 +132,206 @@ def get_template_data(user_id):
     return {
         'domain_list': domain_list
     }
+
+
+def notify_all_event() -> int:
+    """
+    触发所有通知事件
+    :return: 成功数量
+    """
+    rows = NotifyModel.select().where(
+        NotifyModel.status == True
+    )
+
+    success = 0
+    for row in rows:
+        try:
+            notify_user_about_some_event(row)
+        except:
+            logger.error(traceback.format_exc())
+
+        success = success + 1
+
+    return success
+
+
+def notify_user_about_some_event(notify_row: NotifyModel):
+    """
+    由于某个事件触发，通知用户
+    :param notify_row:
+    :return:
+    """
+    if notify_row.event_id == EventEnum.SSL_CERT_EXPIRE:
+        # ssl证书
+        notify_user_about_cert_expired(notify_row)
+    elif notify_row.event_id == EventEnum.DOMAIN_EXPIRE:
+        # 域名过期
+        notify_user_about_domain_expired(notify_row)
+    else:
+        logger.warn("notify_row event_id not support: %s", notify_row.event_id)
+
+
+def notify_user_about_cert_expired(notify_row: NotifyModel):
+    """
+    证书过期事件触发
+    :param notify_row:
+    :return:
+    """
+    rows = DomainModel.select().where(
+        DomainModel.user_id == notify_row.user_id,
+        DomainModel.is_monitor == True,
+        DomainModel.expire_days <= notify_row.expire_days
+    ).order_by(
+        DomainModel.expire_days.asc(),
+        DomainModel.id.desc()
+    )
+
+    lst = [model_to_dict(
+        model=row,
+        extra_attrs=[
+            'start_date',
+            'expire_date',
+            'real_time_expire_days',
+        ]
+    ) for row in rows]
+
+    for row in lst:
+        row['expire_days'] = row['real_time_expire_days']
+
+    if len(lst) > 0:
+        notify_user(notify_row, lst)
+
+
+def notify_user_about_domain_expired(notify_row: NotifyModel):
+    """
+    域名过期事件触发
+    :param notify_row:
+    :return:
+    """
+    rows = DomainInfoModel.select().where(
+        DomainInfoModel.user_id == notify_row.user_id,
+        DomainInfoModel.is_expire_monitor == True,
+        DomainInfoModel.domain_expire_days <= notify_row.expire_days
+    ).order_by(
+        DomainInfoModel.domain_expire_days.asc(),
+        DomainInfoModel.id.desc()
+    )
+
+    lst = [model_to_dict(
+        model=row,
+        extra_attrs=[
+            'domain_start_date',
+            'domain_expire_date',
+            'real_domain_expire_days',
+        ]
+    ) for row in rows]
+
+    for row in lst:
+        row['start_date'] = row['domain_start_date']
+        row['expire_date'] = row['domain_expire_date']
+        row['expire_days'] = row['real_domain_expire_days']
+
+    if len(lst) > 0:
+        notify_user(notify_row, lst)
+
+
+def notify_user(notify_row: NotifyModel, rows: List):
+    """
+    通知用户
+    :param notify_row:
+    :param rows:
+    :return:
+    """
+    # 通知用户
+    if notify_row.type_id == NotifyTypeEnum.Email:
+        notify_config = get_notify_config(notify_row.event_id)
+
+        return notify_user_by_email(
+            template=notify_config['email_template'],
+            subject=notify_config['email_subject'],
+            data={'list': rows},
+            email_list=notify_row.email_list
+        )
+    elif notify_row.type_id == NotifyTypeEnum.WebHook:
+        return notify_user_by_webhook(
+            notify_row=notify_row,
+            data={
+                'list': rows,
+                'domain_list': rows
+            })
+    elif notify_row.type_id == NotifyTypeEnum.WORK_WEIXIN:
+        return notify_user_by_work_weixin(notify_row=notify_row)
+    else:
+        logger.warn("type not support")
+
+
+def notify_user_by_webhook(
+        notify_row: NotifyModel,
+        data: Dict):
+    """
+    通过 webhook 方式通知用户
+    :param notify_row:
+    :param data:
+    :return:
+    """
+
+    if not notify_row.webhook_url:
+        logger.warn("webhook url未设置")
+        return
+
+    # 支持模板变量
+    template = Template(notify_row.webhook_body)
+    body_render = template.render(data)
+
+    res = requests.request(
+        method=notify_row.webhook_method,
+        url=notify_row.webhook_url,
+        headers=notify_row.webhook_headers,
+        data=body_render.encode('utf-8'))
+
+    res.encoding = res.apparent_encoding
+    logger.info(res.text)
+    return res.text
+
+
+def notify_user_by_email(
+        template: str,
+        subject: str,
+        data: Dict,
+        email_list: List[str],
+):
+    """
+    通过邮件通知用户证书到期
+    :param template:
+    :param subject:
+    :param data:
+    :param email_list:
+    :return:
+    """
+    if not email_list or len(email_list) == 0:
+        logger.warn("email_list is empty")
+        return
+
+    content = render_service.render_template(
+        template=template,
+        data=data
+    )
+
+    email_service.send_email(
+        subject=subject,
+        content=content,
+        to_addresses=email_list,
+        content_type='html'
+    )
+
+
+def notify_user_by_work_weixin(notify_row: NotifyModel):
+    """
+    发送企业微信消息
+    :param notify_row:
+    :return:
+    """
+    token = work_weixin_api.get_access_token(notify_row.work_weixin_corpid, notify_row.work_weixin_corpsecret)
+    logger.info('work weixin token %s', token)
+    res = work_weixin_api.send_message(token['access_token'], json.loads(notify_row.work_weixin_body))
+    return res

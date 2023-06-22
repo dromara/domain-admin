@@ -38,7 +38,7 @@ def send_message(access_token, body):
     https://developer.work.weixin.qq.com/document/path/90236
 
     :param access_token:
-    :param data: 消息体
+    :param body: 消息体
     :return:
 
     {
