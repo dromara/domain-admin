@@ -125,6 +125,7 @@ def add_notify():
     event_id = request.json['event_id']
     value = request.json['value']
     expire_days = request.json['expire_days']
+    comment = request.json.get('comment') or ''
 
     value_raw = json.dumps(value, ensure_ascii=False)
 
@@ -134,6 +135,7 @@ def add_notify():
         type_id=type_id,
         value_raw=value_raw,
         expire_days=expire_days,
+        comment=comment,
         status=StatusEnum.Enabled
     )
 
@@ -181,6 +183,7 @@ def update_notify_by_id():
     event_id = request.json['event_id']
     value = request.json['value']
     expire_days = request.json['expire_days']
+    comment = request.json.get('comment') or ''
 
     value_raw = json.dumps(value, ensure_ascii=False)
 
@@ -188,6 +191,7 @@ def update_notify_by_id():
         event_id=event_id,
         value_raw=value_raw,
         expire_days=expire_days,
+        comment=comment,
     ).where(
         NotifyModel.id == notify_id
     ).execute()

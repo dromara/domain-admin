@@ -2,6 +2,8 @@
 """
 @File    : api.py
 @Date    : 2023-03-08
+
+企业微信开放API接口
 """
 
 import requests

@@ -17,8 +17,8 @@ from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import domain_service, render_service, system_service, email_service
-from domain_admin.utils import work_weixin_api
+from domain_admin.service import domain_service, render_service, email_service
+from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
 from domain_admin.utils.flask_ext.app_exception import AppException
 from jinja2 import Template
 
@@ -261,6 +261,13 @@ def notify_user(notify_row: NotifyModel, rows: List):
             })
     elif notify_row.type_id == NotifyTypeEnum.WORK_WEIXIN:
         return notify_user_by_work_weixin(notify_row=notify_row)
+
+    elif notify_row.type_id == NotifyTypeEnum.DING_TALK:
+        return notify_user_by_ding_talk(notify_row=notify_row)
+
+    elif notify_row.type_id == NotifyTypeEnum.FEISHU:
+        return notify_user_by_feishu(notify_row=notify_row)
+
     else:
         logger.warn("type not support")
 
@@ -334,4 +341,33 @@ def notify_user_by_work_weixin(notify_row: NotifyModel):
     token = work_weixin_api.get_access_token(notify_row.work_weixin_corpid, notify_row.work_weixin_corpsecret)
     logger.info('work weixin token %s', token)
     res = work_weixin_api.send_message(token['access_token'], json.loads(notify_row.work_weixin_body))
+    return res
+
+
+def notify_user_by_ding_talk(notify_row: NotifyModel):
+    """
+    发送钉钉消息
+    :param notify_row:
+    :return:
+    """
+    token = ding_talk_api.get_access_token(notify_row.ding_talk_appkey, notify_row.ding_talk_appsecret)
+    logger.info('ding talk token %s', token)
+    res = ding_talk_api.send_message(token['access_token'], json.loads(notify_row.ding_talk_body))
+    return res
+
+
+def notify_user_by_feishu(notify_row: NotifyModel):
+    """
+    发送飞书消息
+    :param notify_row:
+    :return:
+    """
+    token = feishu_api.get_access_token(notify_row.feishu_app_id, notify_row.feishu_app_secret)
+    logger.info('feishu token %s', token)
+
+    res = feishu_api.send_message(
+        access_token=token['tenant_access_token'],
+        body=json.loads(notify_row.feishu_body),
+        params=notify_row.feishu_params
+    )
     return res

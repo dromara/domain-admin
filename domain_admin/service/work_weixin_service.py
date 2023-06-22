@@ -8,7 +8,7 @@ import json
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
 from domain_admin.log import logger
 from domain_admin.service import notify_service
-from domain_admin.utils import work_weixin_api
+from domain_admin.utils.open_api import work_weixin_api
 
 
 def send_work_weixin_message(user_id):

@@ -21,3 +21,9 @@ class NotifyTypeEnum(object):
 
     # 企业微信
     WORK_WEIXIN = 3
+
+    # 钉钉
+    DING_TALK = 4
+
+    # 飞书
+    FEISHU = 5

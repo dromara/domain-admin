@@ -33,6 +33,9 @@ class NotifyModel(BaseModel):
     # 启用状态
     status = BooleanField(null=False, default=True)
 
+    # 备注说明
+    comment = TextField(default='', null=False)
+
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
 
@@ -96,3 +99,40 @@ class NotifyModel(BaseModel):
     def work_weixin_body(self):
         if self.value:
             return self.value.get('body')
+
+    # dingtalk
+    @property
+    def ding_talk_appkey(self):
+        if self.value:
+            return self.value.get('appkey')
+
+    @property
+    def ding_talk_appsecret(self):
+        if self.value:
+            return self.value.get('appsecret')
+
+    @property
+    def ding_talk_body(self):
+        if self.value:
+            return self.value.get('body')
+
+    # 飞书
+    @property
+    def feishu_body(self):
+        if self.value:
+            return self.value.get('body')
+
+    @property
+    def feishu_params(self):
+        if self.value:
+            return self.value.get('params')
+
+    @property
+    def feishu_app_id(self):
+        if self.value:
+            return self.value.get('app_id')
+
+    @property
+    def feishu_app_secret(self):
+        if self.value:
+            return self.value.get('app_secret')
