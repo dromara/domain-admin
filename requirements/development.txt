@@ -1,5 +1,8 @@
 -r production.txt
 
+setuptools>=67.7.2
+wheel>=0.40.0
+twine>=4.0.2
 pytest>=7.2.0
 packaging>=23.1
 gunicorn>=20.1.0
