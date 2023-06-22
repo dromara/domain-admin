@@ -41,7 +41,7 @@
 
 - Python 3.7.0
 
-可以使用`pyenv` 管理多个Python版本
+可以使用 `pyenv` + venv 管理多个Python版本和隔离虚拟环境
 
 ```bash
 $ python3 --version
@@ -52,15 +52,26 @@ $ python3 -m venv venv
 
 # 激活虚拟环境
 $ source venv/bin/activate
+```
 
+linux / macos 安装
+
+```bash
 # 安装 domain-admin
-$ pip install domain-admin
-
-# 升级到最新版本，可选
-$ pip3 install -U domain-admin -i https://pypi.org/simple
+$ pip install gunicorn domain-admin
 
 # 启动运行
-$ gunicorn 'domain_admin.main:app'
+$ gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
+```
+
+windows 安装
+
+```bash
+# 安装 domain-admin
+$ pip install waitress domain-admin
+
+# 启动运行
+$ waitress-serve --listen=127.0.0.1:8000 'domain_admin.main:app'
 ```
 
 访问地址：http://127.0.0.1:8000
@@ -68,6 +79,12 @@ $ gunicorn 'domain_admin.main:app'
 默认的管理员账号：admin 密码：123456
 
 > `强烈建议`：登录系统后修改默认密码
+
+升级到最新版本
+
+```bash
+$ pip3 install -U domain-admin -i https://pypi.org/simple
+```
 
 ### 方式二：docker启动
 
@@ -317,6 +334,8 @@ www.baidu.com:8080
 DB_CONNECT_URL=sqlite:///database/database.db
 
 # mysql
+# 需要安装模块 pymysql
+# pip install pymysql
 DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
 ```
 

@@ -1,4 +1,6 @@
 -r production.txt
 
 pytest>=7.2.0
-packaging
+packaging>=23.1
+gunicorn>=20.1.0
+pymysql>=1.0.3

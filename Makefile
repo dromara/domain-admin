@@ -54,4 +54,4 @@ publish:
 # 运行所有测试
 .PHONY: test
 test:
-	pytest
+	pytest -c pytest.ini tests/api/test_index.py

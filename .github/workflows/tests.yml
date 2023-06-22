@@ -1,5 +1,7 @@
 # 测试
 # doc: https://docs.github.com/zh/actions/automating-builds-and-tests/building-and-testing-python
+# https://github.com/actions/python-versions
+# https://github.com/actions/python-versions/blob/main/versions-manifest.json
 
 name: Run tests
 
