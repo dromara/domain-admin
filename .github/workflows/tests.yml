@@ -42,7 +42,7 @@ jobs:
           pip install -r requirements/development.txt
       # Install the package using the setup.py
       - name: Install package
-          run: python setup.py install
+        run: python setup.py install
         # Run the tests. I'm using pytest and the file is in the tests directory.
       - name: Run tests
         run:  pytest -c pytest.ini tests/api/test_index.py
