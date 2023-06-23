@@ -15,7 +15,6 @@ from domain_admin.model import user_model
 from domain_admin.model import log_scheduler_model
 from domain_admin.model import notify_model
 from domain_admin.model import version_model
-from domain_admin.model import cache_domain_info_model
 
 # 需要查询初始数据操作的表放前面
 tables = [
@@ -26,7 +25,6 @@ tables = [
     (group_model.GroupModel, None),
     (domain_model.DomainModel, None),
     (notify_model.NotifyModel, None),
-    # (cache_domain_info_model.CacheDomainInfoModel, None),
     (address_model.AddressModel, None),
     (domain_info_model.DomainInfoModel, None),
 ]
@@ -37,7 +35,7 @@ def init_database():
 
     for model, init_func in tables:
         if not model.table_exists():
-            logger.debug('create table: %s', model._meta.table_name)
+            logger.info('create table: %s', model._meta.table_name)
             model.create_table()
 
             if init_func:
