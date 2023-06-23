@@ -7,11 +7,12 @@ import warnings
 from datetime import datetime
 from typing import List
 
-from peewee import chunked
+from peewee import chunked, fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
+from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.user_model import UserModel
@@ -573,3 +574,54 @@ def update_and_check_domain_cert(user_id):
 
     # key = f'check_domain_status:{user_id}'
     # global_data_service.set_value(key, False)
+
+
+def load_domain_expire_days(lst: List):
+    """
+    加载域名过期时间 Number or None
+    :param lst: List[DomainModel dict]
+    :return:
+    """
+
+    root_domains = [row['root_domain'] for row in lst]
+
+    domain_info_rows = DomainInfoModel.select().where(
+        DomainInfoModel.domain.in_(root_domains)
+    )
+
+    domain_info_map = {
+        row.domain: row.real_domain_expire_days
+        for row in domain_info_rows
+    }
+
+    for row in lst:
+        row['domain_expire_days'] = domain_info_map.get(row['root_domain'])
+
+    return lst
+
+
+def load_address_count(lst: List):
+    """
+    加载主机数量
+    :param lst:
+    :return:
+    """
+    row_ids = [row['id'] for row in lst]
+
+    # 主机数量
+    address_groups = AddressModel.select(
+        AddressModel.domain_id,
+        fn.COUNT(AddressModel.id).alias('count')
+    ).where(
+        AddressModel.domain_id.in_(row_ids)
+    ).group_by(AddressModel.domain_id)
+
+    address_group_map = {
+        str(row.domain_id): row.count
+        for row in address_groups
+    }
+
+    for row in lst:
+        row['address_count'] = address_group_map.get(str(row['id']), 0)
+
+    return lst

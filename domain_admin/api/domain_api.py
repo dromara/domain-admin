@@ -6,12 +6,10 @@
 from flask import request, g
 from playhouse.shortcuts import model_to_dict, fn
 
-from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
-from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import async_task_service, domain_info_service, notify_service
+from domain_admin.service import async_task_service, domain_info_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
@@ -356,6 +354,7 @@ def check_domain_cert():
     # 异步检查更新
     async_task_service.submit_task(fn=domain_service.update_and_check_domain_cert, user_id=current_user_id)
 
+
 def get_all_domain_list_of_user():
     """
     获取用户的所有域名数据
@@ -536,40 +535,30 @@ def get_domain_list():
 
     ordering.append(DomainModel.id.desc())
 
-    lst = query.order_by(*ordering).paginate(page, size)
-
     total = query.count()
+    lst = []
 
-    lst = list(map(lambda m: model_to_dict(
-        model=m,
-        extra_attrs=[
-            'expire_days',
-            'create_time_label',
-            'real_time_expire_days',
-            'real_time_ssl_total_days',
-            'real_time_ssl_expire_days',
-            'domain_url',
-            'update_time_label',
-        ]
-    ), lst))
+    if total > 0:
+        lst = query.order_by(*ordering).paginate(page, size)
 
-    row_ids = [row['id'] for row in lst]
+        lst = list(map(lambda m: model_to_dict(
+            model=m,
+            extra_attrs=[
+                'expire_days',
+                'create_time_label',
+                'real_time_expire_days',
+                'real_time_ssl_total_days',
+                'real_time_ssl_expire_days',
+                'domain_url',
+                'update_time_label',
+            ]
+        ), lst))
 
-    # 主机数量
-    address_groups = AddressModel.select(
-        AddressModel.domain_id,
-        fn.COUNT(AddressModel.id).alias('count')
-    ).where(
-        AddressModel.domain_id.in_(row_ids)
-    ).group_by(AddressModel.domain_id)
+        # 加载主机数量
+        domain_service.load_address_count(lst)
 
-    address_group_map = {
-        str(row.domain_id): row.count
-        for row in address_groups
-    }
-
-    for row in lst:
-        row['address_count'] = address_group_map.get(str(row['id']), 0)
+        # 加载域名过期时间
+        domain_service.load_domain_expire_days(lst)
 
     # lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
 
