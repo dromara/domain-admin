@@ -85,6 +85,8 @@ def add_address():
 
     if domain_row.auto_update:
         domain_service.update_address_row_info_with_sync_domain_row(address_row.id)
+    else:
+        domain_service.sync_address_info_to_domain_info(domain_row)
 
 
 def delete_address_by_id():
@@ -98,9 +100,15 @@ def delete_address_by_id():
 
     address_id = request.json['address_id']
 
+    # update to cert
+    address_row = AddressModel.get_by_id(address_id)
+
     AddressModel.delete().where(
         AddressModel.id == address_id
     ).execute()
+
+    domain_row = DomainModel.get_by_id(address_row.domain_id)
+    domain_service.sync_address_info_to_domain_info(domain_row)
 
 
 def delete_address_by_ids():
@@ -114,9 +122,23 @@ def delete_address_by_ids():
 
     address_ids = request.json['address_ids']
 
+    # update to cert
+    address_rows = AddressModel.select(AddressModel.domain_id).where(
+        AddressModel.id.in_(address_ids)
+    )
+
     AddressModel.delete().where(
         AddressModel.id.in_(address_ids)
     ).execute()
+
+    domain_ids = [row.domain_id for row in address_rows]
+
+    domain_rows = DomainModel.select().where(
+        DomainModel.id.in_(domain_ids)
+    )
+
+    for domain_row in domain_rows:
+        domain_service.sync_address_info_to_domain_info(domain_row)
 
 
 def get_address_by_id():
