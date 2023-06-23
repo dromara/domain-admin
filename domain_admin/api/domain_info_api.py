@@ -3,6 +3,7 @@
 domain_info_api.py
 """
 from datetime import datetime
+from operator import itemgetter
 
 from flask import request, g
 from peewee import fn
@@ -10,6 +11,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.service import domain_info_service, async_task_service, file_service
 from domain_admin.utils import domain_util, time_util
 from domain_admin.utils.flask_ext.app_exception import AppException
@@ -350,4 +352,49 @@ def get_domain_info_list():
     return {
         'list': lst,
         'total': total,
+    }
+
+
+def get_domain_info_group_filter():
+    """
+    获取域名分组筛选器
+    :return:
+    """
+
+    current_user_id = g.user_id
+
+    # 分组列表数据
+    rows = GroupModel.select().where(
+        GroupModel.user_id == current_user_id
+    )
+
+    # 证书分组统计
+    cert_groups = DomainInfoModel.select(
+        DomainInfoModel.group_id,
+        fn.COUNT(DomainInfoModel.id).alias('count')
+    ).group_by(DomainInfoModel.group_id)
+
+    groups_map = {
+        str(row.group_id): row.count
+        for row in cert_groups
+    }
+
+    lst = []
+    for row in rows:
+        row_dict = model_to_dict(row)
+        row_dict['domain_count'] = groups_map.get(str(row.id), 0)
+        lst.append(row_dict)
+
+    if groups_map.get('0'):
+        lst.append({
+            'domain_count': groups_map.get('0'),
+            'id': 0,
+            'name': '未分组',
+        })
+
+    lst.sort(key=itemgetter('domain_count'), reverse=True)
+
+    return {
+        'list': lst,
+        'total': len(lst),
     }

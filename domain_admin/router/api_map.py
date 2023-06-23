@@ -30,6 +30,7 @@ routes = {
     "/api/updateDomainCertInfoById": domain_api.update_domain_row_info_by_id,
     "/api/updateDomainRowInfoById": domain_api.update_domain_row_info_by_id,
     "/api/updateAllDomainCertInfo": domain_api.update_all_domain_cert_info,
+    "/api/getDomainGroupFilter": domain_api.get_domain_group_filter,
 
     "/api/updateDomainSetting": domain_api.update_domain_setting,
 
@@ -114,5 +115,6 @@ routes = {
     '/api/deleteDomainInfoByIds': domain_info_api.delete_domain_info_by_ids,
     '/api/importDomainInFromFile': domain_info_api.import_domain_info_from_file,
     '/api/exportDomainInfoFile': domain_info_api.export_domain_info_file,
+    '/api/getDomainInfoGroupFilter': domain_info_api.get_domain_info_group_filter,
 
 }

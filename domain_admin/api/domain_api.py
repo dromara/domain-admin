@@ -2,6 +2,7 @@
 """
 由于历史原因，domain指代 SSL证书的域名
 """
+from operator import itemgetter
 
 from flask import request, g
 from playhouse.shortcuts import model_to_dict, fn
@@ -9,6 +10,7 @@ from playhouse.shortcuts import model_to_dict, fn
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.service import async_task_service, domain_info_service
 from domain_admin.service import domain_service, global_data_service
 from domain_admin.service import file_service
@@ -565,4 +567,49 @@ def get_domain_list():
     return {
         'list': lst,
         'total': total
+    }
+
+
+def get_domain_group_filter():
+    """
+    获取证书分组筛选器
+    :return:
+    """
+
+    current_user_id = g.user_id
+
+    # 分组列表数据
+    rows = GroupModel.select().where(
+        GroupModel.user_id == current_user_id
+    )
+
+    # 证书分组统计
+    cert_groups = DomainModel.select(
+        DomainModel.group_id,
+        fn.COUNT(DomainModel.id).alias('count')
+    ).group_by(DomainModel.group_id)
+
+    cert_groups_map = {
+        str(row.group_id): row.count
+        for row in cert_groups
+    }
+
+    lst = []
+    for row in rows:
+        row_dict = model_to_dict(row)
+        row_dict['cert_count'] = cert_groups_map.get(str(row.id), 0)
+        lst.append(row_dict)
+
+    if cert_groups_map.get('0'):
+        lst.append({
+            'cert_count': cert_groups_map.get('0'),
+            'id': 0,
+            'name': '未分组',
+        })
+
+    lst.sort(key=itemgetter('cert_count'), reverse=True)
+
+    return {
+        'list': lst,
+        'total': len(lst),
     }

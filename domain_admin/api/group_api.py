@@ -123,7 +123,6 @@ def get_group_list():
         for row in domain_groups
     }
 
-
     lst = []
     for row in rows:
         row_dict = model_to_dict(row)
