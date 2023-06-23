@@ -16,6 +16,10 @@
 
 核心功能：`域名` 和`SSL证书` 的过期监控，到期提醒，支持邮件、webhook、企业微信、钉钉、飞书等通知方式
 
+支持证书：单域名证书、多域名证书、通配符证书、IP证书
+
+证书部署： 单一主机部署、多主机部署、动态主机部署
+
 支持平台：macOS、Linux、Windows
 
 - 项目地址：https://github.com/mouday/domain-admin
