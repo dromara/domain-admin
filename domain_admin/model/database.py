@@ -26,7 +26,7 @@ tables = [
     (group_model.GroupModel, None),
     (domain_model.DomainModel, None),
     (notify_model.NotifyModel, None),
-    (cache_domain_info_model.CacheDomainInfoModel, None),
+    # (cache_domain_info_model.CacheDomainInfoModel, None),
     (address_model.AddressModel, None),
     (domain_info_model.DomainInfoModel, None),
 ]

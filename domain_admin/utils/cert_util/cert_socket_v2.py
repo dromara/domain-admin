@@ -13,7 +13,6 @@ import typing
 
 from domain_admin.log import logger
 from domain_admin.utils import time_util
-from domain_admin.utils.cert_util import cert_common
 
 
 def get_domain_host_list(domain: str, port: int = 80) -> typing.List[str]:
@@ -71,7 +70,10 @@ def get_ssl_cert_info(domain: str, host: str = None, port: int = 443, timeout: i
     :param timeout:
     :return:
     """
-    return resolve_cert(get_ssl_cert(domain, host, port, timeout))
+    cert = get_ssl_cert(domain, host, port, timeout)
+    print(cert)
+
+    return resolve_cert(cert)
 
 
 def resolve_cert(cert: typing.Dict):
@@ -89,4 +91,7 @@ def resolve_cert(cert: typing.Dict):
 
 
 if __name__ == '__main__':
-    print(get_ssl_cert_info('dev.csdn.net', '120.46.209.149'))
+    # print(get_ssl_cert_info('www.taobao.com', '111.62.93.139'))
+    print(get_ssl_cert_info('38.60.47.102', '38.60.47.102'))
+    # print('www.baidu.com'.encode('idna')) # b'www.baidu.com'
+    # print('www.baidu.com'.encode('punycode')) # b'www.baidu.com-'

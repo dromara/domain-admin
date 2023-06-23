@@ -8,8 +8,10 @@ import re
 from typing import NamedTuple
 
 import tldextract
+from tldextract.remote import looks_like_ip
 from tldextract.tldextract import ExtractResult
 
+from domain_admin.log import logger
 from domain_admin.utils import file_util
 from domain_admin.utils.cert_util import cert_consts
 
@@ -132,4 +134,51 @@ def get_root_domain(domain: str) -> str:
     :return:
     """
     extract_result = extract_domain(domain)
-    return '.'.join([extract_result.domain, extract_result.suffix])
+    return extract_result.registered_domain
+    # return '.'.join([extract_result.domain, extract_result.suffix])
+
+
+def is_ipv4(ip) -> bool:
+    """
+    检测一个字符串是否是ipv4地址
+    :param ip:
+    :return:
+    """
+    return looks_like_ip(ip)
+
+    # if re.match("(\d+\.){3}\d+", ip):
+    #     return True
+    # else:
+    #     return False
+
+
+def encode_hostname(hostname: str) -> str:
+    """
+    编码中文域名，英文域名原样返回
+    :param hostname: 中文域名
+    :return:
+    """
+    return hostname.encode('idna').decode('ascii')
+
+
+def verify_cert_common_name(common_name, domain):
+    """
+    验证证书
+    :param common_name:
+    :param domain:
+    :return:
+    """
+    logger.info("%s <=> %s", common_name, domain)
+
+    if '*' in common_name:
+        # 通配符 SSL 证书
+        common_name_root_domain = get_root_domain(common_name)
+        root_domain = get_root_domain(domain)
+        return common_name_root_domain == root_domain
+    else:
+        # 普通证书
+        return common_name == domain
+
+
+if __name__ == '__main__':
+    print(get_root_domain("*.juejin.cn"))

@@ -30,23 +30,29 @@ def resolve_domain(domain: str) -> str:
     :return:
     """
     # 解析出域名和顶级后缀
-    extract_result = domain_util.extract_domain(domain)
+    if domain_util.is_ipv4(domain):
+        return domain
+    else:
+        root_domain = domain_util.get_root_domain(domain)
+        return domain_util.encode_hostname(root_domain)
 
-    root_domain = extract_result.domain
-    suffix = extract_result.suffix
-
-    # 处理包含中文的域名
-    if text_util.has_chinese(suffix):
-        pass
-
-    elif text_util.has_chinese(root_domain):
-        chinese = text_util.extract_chinese(root_domain)
-        punycode = chinese.encode('punycode').decode()
-        root_domain = f"xn--{punycode}"
-
-    domain_and_suffix = '.'.join([root_domain, suffix])
-
-    return domain_and_suffix
+    # extract_result = domain_util.extract_domain(domain)
+    #
+    # root_domain = extract_result.domain
+    # suffix = extract_result.suffix
+    #
+    # # 处理包含中文的域名
+    # if text_util.has_chinese(suffix):
+    #     pass
+    #
+    # elif text_util.has_chinese(root_domain):
+    #     chinese = text_util.extract_chinese(root_domain)
+    #     punycode = chinese.encode('punycode').decode()
+    #     root_domain = f"xn--{punycode}"
+    #
+    # domain_and_suffix = '.'.join([root_domain, suffix])
+    #
+    # return domain_and_suffix
 
 
 def parse_time(time_str, time_format=None):
@@ -73,14 +79,18 @@ def load_whois_servers_config():
 
     config = {}
 
+    # 通用配置
     for root, server in whois_servers.items():
-        # 通用配置
         server_config = deepcopy(DEFAULT_WHOIS_CONFIG)
         server_config['whois_server'] = server
-        config[root] = server_config
+        config[domain_util.encode_hostname(root)] = server_config
 
-    # 合并配置自定义配置优先
-    return {**config, **CUSTOM_WHOIS_CONFIGS}
+    # 自定义配置优先
+    for key, value in CUSTOM_WHOIS_CONFIGS.items():
+        config[domain_util.encode_hostname(key)] = value
+
+    # 合并配置
+    return config
 
 
 def get_whois_config(domain: str) -> [str, None]:

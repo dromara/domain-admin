@@ -2,6 +2,8 @@
 """
 domain_info_service.py
 """
+import random
+import time
 import traceback
 from datetime import datetime
 from typing import List
@@ -62,7 +64,12 @@ def update_domain_info_row(row: DomainInfoModel) -> [str, None]:
     try:
         domain_whois = whois_util.get_domain_info(row.domain)
     except Exception as e:
-        pass
+        # 增加容错
+        try:
+            time.sleep(3)
+            domain_whois = whois_util.get_domain_info(row.domain)
+        except Exception as e:
+            pass
 
     update_row = DomainInfoModel()
 

@@ -43,3 +43,9 @@ def test_get_domain_info():
     for domain in domain_list:
         # print(parse_whois_raw(get_whois_raw(domain, ROOT_SERVER)))
         print(whois_util.get_domain_info(domain))
+
+
+def test_resolve_domain():
+    assert whois_util.resolve_domain('www.baidu.com') == 'baidu.com'
+    assert whois_util.resolve_domain('www.baidu.中国') == 'baidu.xn--fiqs8s'
+    assert whois_util.resolve_domain('192.168.0.1') == '192.168.0.1'

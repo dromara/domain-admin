@@ -50,20 +50,22 @@ def add_domain():
     domain_service.update_domain_row(row)
 
     # 顺带添加到域名监测列表
-    first_domain_info_row = DomainInfoModel.select(
-        DomainInfoModel.id
-    ).where(
-        DomainInfoModel.domain == data['root_domain'],
-        DomainInfoModel.user_id == current_user_id
-    ).first()
+    if not domain_util.is_ipv4(domain):
 
-    if not first_domain_info_row:
-        domain_info_service.add_domain_info(
-            domain=domain_util.get_root_domain(domain),
-            comment=alias,
-            group_id=group_id,
-            user_id=current_user_id,
-        )
+        first_domain_info_row = DomainInfoModel.select(
+            DomainInfoModel.id
+        ).where(
+            DomainInfoModel.domain == data['root_domain'],
+            DomainInfoModel.user_id == current_user_id
+        ).first()
+
+        if not first_domain_info_row:
+            domain_info_service.add_domain_info(
+                domain=domain_util.get_root_domain(domain),
+                comment=alias,
+                group_id=group_id,
+                user_id=current_user_id,
+            )
 
     return {'id': row.id}
 

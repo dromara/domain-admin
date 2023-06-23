@@ -2,7 +2,6 @@
 """
 domain_service.py
 """
-import time
 import traceback
 import warnings
 from datetime import datetime
@@ -15,82 +14,15 @@ from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import email_service, render_service, global_data_service, cache_domain_info_service
+from domain_admin.service import email_service, render_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
-from domain_admin.utils import datetime_util, cert_util, whois_util, file_util, time_util
+from domain_admin.utils import datetime_util, cert_util, whois_util
 from domain_admin.utils import domain_util
-from domain_admin.utils.cert_util import cert_common, cert_socket_v2
+from domain_admin.utils.cert_util import cert_common, cert_socket_v2, cert_openssl_v2
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
-
-
-def update_domain_info(domain_row: DomainModel):
-    """
-    更新域名信息
-    :param row:
-    :return:
-    """
-    # logger.info("%s", model_to_dict(domain_row))
-
-    # 获取域名信息
-    domain_info = None
-
-    err = ''
-
-    try:
-        domain_info = cache_domain_info_service.get_domain_info(domain_row.domain)
-    except Exception as e:
-        err = e.__str__()
-        pass
-
-    update_data = {
-        'domain_start_time': None,
-        "domain_expire_time": None,
-        'domain_expire_days': 0,
-    }
-
-    if domain_info:
-        update_data = {
-            'domain_start_time': domain_info.domain_start_time,
-            "domain_expire_time": domain_info.domain_expire_time,
-            'domain_expire_days': domain_info.domain_expire_days,
-        }
-
-    DomainModel.update(
-        **update_data,
-        domain_check_time=datetime_util.get_datetime(),
-        update_time=datetime_util.get_datetime(),
-    ).where(
-        DomainModel.id == domain_row.id
-    ).execute()
-
-    return err
-
-
-def update_ip_info(row: DomainModel):
-    """
-    更新ip信息
-    :param row:
-    :return:
-    """
-    # 获取ip地址
-    domain_ip = ''
-
-    try:
-        domain_ip = cert_common.get_domain_ip(row.domain)
-    except Exception as e:
-        pass
-
-    DomainModel.update(
-        ip=domain_ip,
-        ip_check_time=datetime_util.get_datetime(),
-        update_time=datetime_util.get_datetime(),
-    ).where(
-        DomainModel.id == row.id
-    ).execute()
 
 
 def update_domain_host_list(domain_row: DomainModel):
@@ -153,7 +85,7 @@ def update_address_row_info(address_row, domain_row):
 
     err = ''
     try:
-        cert_info = cert_socket_v2.get_ssl_cert_info(
+        cert_info = cert_openssl_v2.get_ssl_cert_by_openssl(
             domain=domain_row.domain,
             host=address_row.host,
             port=domain_row.port
@@ -543,6 +475,8 @@ def send_domain_list_email(user_id, rows: List[DomainModel]):
         to_addresses=email_list,
         content_type='html'
     )
+
+
 def check_permission_and_get_row(domain_id, user_id):
     """
     权限检查
