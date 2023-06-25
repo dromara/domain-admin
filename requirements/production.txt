@@ -12,3 +12,4 @@ pyOpenSSL==22.1.0
 tldextract==3.4.0
 python-dotenv==0.21.0
 environs==9.5.0
+pymysql==1.0.3

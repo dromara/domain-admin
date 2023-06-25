@@ -257,7 +257,7 @@ def notify_user(notify_row: NotifyModel, rows: List):
             notify_row=notify_row,
             data={
                 'list': rows,
-                'domain_list': rows
+                'domain_list': rows  # 兼容旧版本
             })
     elif notify_row.type_id == NotifyTypeEnum.WORK_WEIXIN:
         return notify_user_by_work_weixin(notify_row=notify_row)

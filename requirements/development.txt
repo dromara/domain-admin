@@ -6,4 +6,3 @@ twine>=4.0.2
 pytest>=7.2.0
 packaging>=23.1
 gunicorn>=20.1.0
-pymysql>=1.0.3
