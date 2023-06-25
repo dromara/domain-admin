@@ -49,9 +49,6 @@ def verify_cert(cert, domain):
     if common_name not in dns_names:
         dns_names.insert(0, common_name)
 
-    print(domain)
-    print(dns_names)
-
     for dns_name in dns_names:
         domain_checked = domain_util.verify_cert_common_name(dns_name, domain)
         if domain_checked:

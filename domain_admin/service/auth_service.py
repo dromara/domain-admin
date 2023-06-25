@@ -12,9 +12,9 @@ from domain_admin.utils.flask_ext.app_exception import AppException
 def login(username, password):
     """
     用户登录
-    :param username:
-    :param password:
-    :return:
+    :param username: 用户名
+    :param password: 明文密码
+    :return: string token
     """
     user_row = UserModel.select().where(
         UserModel.username == username
@@ -37,9 +37,9 @@ def login(username, password):
 def register(username, password, password_repeat):
     """
     用户注册
-    :param username:
-    :param password:
-    :param password_repeat:
+    :param username: 用户名
+    :param password: 明文密码
+    :param password_repeat: 重复密码
     :return:
     """
     user_row = UserModel.select().where(

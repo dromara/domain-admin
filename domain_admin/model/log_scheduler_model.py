@@ -2,7 +2,7 @@
 import math
 from datetime import datetime
 
-from peewee import IntegerField, DateTimeField, BooleanField, TextField, AutoField
+from peewee import DateTimeField, BooleanField, TextField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util

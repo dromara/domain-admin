@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, BooleanField, TextField, AutoField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
 
 from domain_admin.model.base_model import BaseModel
-from domain_admin.model.group_model import GroupModel
 from domain_admin.utils import datetime_util, time_util
 
 
@@ -56,57 +54,8 @@ class DomainModel(BaseModel):
     # @since v1.2.24 所有ip都连接成功才是成功
     connect_status = BooleanField(default=None, null=True)
 
-    # 通知状态
-    # @Deprecated
-    # notify_status = BooleanField(default=True)
-
-    # 详细信息
-    # @Deprecated
-    # detail_raw = TextField(default=None, null=True)
-
-    # ip
-    # @Deprecated
-    # ip = CharField(default="")
-
-    # ip信息检查时间 @since 1.2.12
-    # @Deprecated
-    # ip_check_time = DateTimeField(default=None, null=True)
-
-    # 域名信息自动更新 @since v1.2.13
-    # @Deprecated
-    # ip_auto_update = BooleanField(default=True)
-
     # SSL有效期总天数，仅用于排序
-    # @Deprecated
     total_days = IntegerField(default=0, null=False)
-
-    # SSL最后检查时间
-    # @Deprecated
-    # check_time = DateTimeField(default=None, null=True)
-
-    # 域名注册时间 @since 1.1.0
-    # @Deprecated @since 1.4.0
-    # domain_start_time = DateTimeField(default=None, null=True)
-
-    # 域名过期时间 @since 1.1.0
-    # @Deprecated @since 1.4.0
-    # domain_expire_time = DateTimeField(default=None, null=True)
-
-    # 域名过期剩余天数，仅用于排序 @since 1.1.0
-    # @Deprecated @since 1.4.0
-    # domain_expire_days = IntegerField(default=0, null=False)
-
-    # 域名信息检查时间 @since 1.2.12
-    # @Deprecated @since 1.4.0
-    # domain_check_time = DateTimeField(default=None, null=True)
-
-    # 域名信息自动更新 @since v1.2.13
-    # @Deprecated @since 1.4.0
-    # domain_auto_update = BooleanField(default=True)
-
-    # 域名过期监测 @since v1.2.24
-    # @Deprecated @since 1.4.0
-    # domain_expire_monitor = BooleanField(default=True)
 
     # 创建时间
     create_time = DateTimeField(default=datetime.now)

@@ -6,13 +6,21 @@
 """
 from domain_admin.enums.version_enum import VersionEnum
 from domain_admin.log import logger
-from domain_admin.migrate import migrate_102_to_103, migrate_1213_to_131, migrate_136_to_140_alpha, \
-    migrate_140_alpha_to_140, migrate_143_to_144, migrate_145_to_146
-from domain_admin.migrate import migrate_106_to_110
-from domain_admin.migrate import migrate_110_to_1212
-from domain_admin.migrate import migrate_1212_to_1213
+
 from domain_admin.model.version_model import VersionModel
 from domain_admin.version import VERSION
+
+from domain_admin.migrate import (
+    migrate_102_to_103,
+    migrate_106_to_110,
+    migrate_110_to_1212,
+    migrate_1212_to_1213,
+    migrate_1213_to_131,
+    migrate_136_to_140_alpha,
+    migrate_140_alpha_to_140,
+    migrate_143_to_144,
+    migrate_145_to_146
+)
 
 
 def get_local_version():

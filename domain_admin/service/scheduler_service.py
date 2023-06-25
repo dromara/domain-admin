@@ -4,21 +4,16 @@ import warnings
 from logging.handlers import RotatingFileHandler
 
 from apscheduler.schedulers.background import BackgroundScheduler
-# from pytz_deprecation_shim import PytzUsageWarning
-# pytz==2022.2.1
+
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.service import system_service, domain_service, domain_info_service, notify_service
 from domain_admin.service.file_service import resolve_log_file
-
-# warnings.filterwarnings(action="ignore", category=PytzUsageWarning)
 from domain_admin.utils import datetime_util
 
 warnings.filterwarnings(action="ignore")
 
 apscheduler_logger = logging.getLogger('apscheduler')
-
-# apscheduler_logger.addHandler(logging.FileHandler(resolve_log_file("apscheduler.log")))
 
 # 单个日志文件最大为1M
 handler = RotatingFileHandler(resolve_log_file("apscheduler.log"), maxBytes=1024 * 1024 * 1, encoding='utf-8')
@@ -70,10 +65,10 @@ def task():
     # 开始执行
     log_row = LogSchedulerModel.create()
 
-    # 检查证书
+    # 更新证书信息
     domain_service.update_all_domain_cert_info()
 
-    # 检查域名
+    # 更新域名信息
     domain_info_service.update_all_domain_info()
 
     # 触发通知

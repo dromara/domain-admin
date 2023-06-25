@@ -188,17 +188,6 @@ def update_all_domain_info_of_user():
     async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
 
 
-def check_domain_expire():
-    """
-    检查域名证书信息
-    :return:
-    """
-    current_user_id = g.user_id
-
-    # 异步检查更新
-    domain_info_service.check_domain_expire(current_user_id)
-
-
 def import_domain_info_from_file():
     """
     从文件导入域名

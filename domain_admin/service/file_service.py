@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-from urllib.parse import urljoin
 
 from domain_admin.config import TEMP_DIR, TEMP_DIR_BASE_URL, LOG_DIR
 from domain_admin.utils import file_util

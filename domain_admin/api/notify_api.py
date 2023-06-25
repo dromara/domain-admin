@@ -12,13 +12,11 @@ from datetime import datetime, timedelta
 from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
-from domain_admin.enums.event_enum import EventEnum
 from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.log import logger
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.service import notify_service
-from domain_admin.service import work_weixin_service
-from domain_admin.utils import datetime_util, time_util
+from domain_admin.utils import datetime_util
 
 
 def get_notify_list_of_user():
@@ -88,30 +86,6 @@ def get_notify_list_of_user():
         'list': lst,
         'total': total
     }
-
-
-def get_notify_of_user():
-    """
-    获取用户通知配置
-    :return:
-    """
-    current_user_id = g.user_id
-
-    type_id = request.json['type_id']
-
-    row = NotifyModel.get_or_none(
-        NotifyModel.user_id == current_user_id,
-        NotifyModel.type_id == type_id
-    )
-
-    if row:
-        return model_to_dict(
-            model=row,
-            exclude=[NotifyModel.value_raw],
-            extra_attrs=[
-                'value',
-            ]
-        )
 
 
 def add_notify():
@@ -215,47 +189,6 @@ def update_notify_status_by_id():
     ).execute()
 
 
-def update_notify_of_user():
-    """
-    更新用户通知配置
-    :return:
-    """
-    current_user_id = g.user_id
-
-    type_id = request.json['type_id']
-    value = request.json['value']
-
-    row = NotifyModel.get_or_none(
-        NotifyModel.user_id == current_user_id,
-        NotifyModel.type_id == type_id
-    )
-
-    value_raw = json.dumps(value, ensure_ascii=False)
-
-    if row:
-        NotifyModel.update(
-            value_raw=value_raw
-        ).where(
-            NotifyModel.id == row.id
-        ).execute()
-    else:
-        NotifyModel.create(
-            user_id=current_user_id,
-            type_id=type_id,
-            value_raw=value_raw
-        )
-
-
-def get_template_data():
-    """
-    获取模板参数
-    :return:
-    """
-    current_user_id = g.user_id
-
-    return notify_service.get_template_data(current_user_id)
-
-
 def handle_test_notify_by_id():
     """
     测试通知配置
@@ -265,7 +198,7 @@ def handle_test_notify_by_id():
     notify_id = request.json['notify_id']
     notify_row = NotifyModel.get_by_id(notify_id)
 
-    days = random.randint(0, 365)
+    days = random.randint(1, 365)
     start_date = datetime.now()
     expire_date = start_date + timedelta(days=days)
 
@@ -294,35 +227,19 @@ def handle_notify_by_event_id():
         NotifyModel.user_id == current_user_id
     )
 
+    total = 0
     success = 0
 
     for row in rows:
         try:
             notify_service.notify_user_about_some_event(row)
+            success = success + 1
         except:
             logger.error(traceback.format_exc())
 
-        success = success + 1
+        total = total + 1
 
     return {
+        'total': total,
         'success': success
     }
-
-
-def test_webhook_notify_of_user():
-    """
-    测试webhook调用
-    :return:
-    """
-    current_user_id = g.user_id
-
-    return notify_service.notify_webhook_of_user(current_user_id)
-
-
-def test_work_weixin_notify_of_user():
-    """
-    测试webhook调用
-    :return:
-    """
-    current_user_id = g.user_id
-    return work_weixin_service.send_work_weixin_message(current_user_id)

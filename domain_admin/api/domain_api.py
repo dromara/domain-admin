@@ -12,7 +12,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.service import async_task_service, domain_info_service
-from domain_admin.service import domain_service, global_data_service
+from domain_admin.service import domain_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
 from domain_admin.utils.cert_util import cert_consts
@@ -68,37 +68,6 @@ def add_domain():
             )
 
     return {'id': row.id}
-
-
-def update_domain_setting():
-    """
-    更新域名配置信息
-    @since v1.2.13
-    :return:
-    """
-    current_user_id = g.user_id
-
-    domain_id = request.json['domain_id']
-
-    data = {
-        # 域名信息
-        'domain_start_time': request.json.get('domain_start_time'),
-        'domain_expire_time': request.json.get('domain_expire_time'),
-        'domain_auto_update': request.json.get('domain_auto_update'),
-        'domain_expire_monitor': request.json.get('domain_expire_monitor'),
-
-        # 证书信息
-        # 'start_time': request.json.get('start_time'),
-        # 'expire_time': request.json.get('expire_time'),
-        # 'auto_update': request.json.get('auto_update'),
-
-        'domain_check_time': datetime_util.get_datetime(),
-        'update_time': datetime_util.get_datetime()
-    }
-
-    DomainModel.update(data).where(
-        DomainModel.id == domain_id
-    ).execute()
 
 
 def update_domain_by_id():
@@ -259,41 +228,8 @@ def update_all_domain_cert_info_of_user():
     :return:
     """
     current_user_id = g.user_id
-    # domain_service.update_all_domain_cert_info_of_user(current_user_id)
-    # 异步更新
-    # key = f'update_domain_status:{current_user_id}'
-    # global_data_service.set_value(key, True)
+
     async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
-
-
-def get_update_domain_status_of_user():
-    """
-    获取域名信息更新状态
-    true：正在更新
-    false：更新完毕
-    :return:
-    """
-    current_user_id = g.user_id
-    key = f'update_domain_status:{current_user_id}'
-
-    return {
-        'status': global_data_service.get_value(key)
-    }
-
-
-def get_check_domain_status_of_user():
-    """
-    获取证书检查状态
-    true：正在更新
-    false：更新完毕
-    :return:
-    """
-    current_user_id = g.user_id
-    key = f'check_domain_status:{current_user_id}'
-
-    return {
-        'status': global_data_service.get_value(key)
-    }
 
 
 def update_domain_row_info_by_id():
@@ -311,50 +247,6 @@ def update_domain_row_info_by_id():
     row = DomainModel.get_by_id(domain_id)
 
     domain_service.update_domain_row(row)
-
-
-def send_domain_info_list_email():
-    """
-    发送域名证书信息到邮箱
-    :return:
-    """
-    current_user_id = g.user_id
-
-    rows = DomainModel.select().where(
-        DomainModel.user_id == current_user_id,
-    ).order_by(
-        DomainModel.expire_days.asc(),
-        DomainModel.id.desc()
-    )
-
-    lst = [model_to_dict(
-        model=row,
-        extra_attrs=[
-            'start_date',
-            'expire_date',
-            'real_time_expire_days',
-        ]
-    ) for row in rows]
-
-    domain_service.send_domain_list_email(current_user_id, lst)
-
-
-def check_domain_cert():
-    """
-    检查域名证书信息
-    :return:
-    """
-    current_user_id = g.user_id
-
-    # key = f'check_domain_status:{current_user_id}'
-    # global_data_service.set_value(key, True)
-
-    # # 先更新，再检查
-    # domain_service.update_all_domain_cert_info_of_user(current_user_id)
-    #
-    # domain_service.check_domain_cert(current_user_id)
-    # 异步检查更新
-    async_task_service.submit_task(fn=domain_service.update_and_check_domain_cert, user_id=current_user_id)
 
 
 def get_all_domain_list_of_user():
@@ -476,9 +368,9 @@ def get_domain_list():
     # order by expire_days
     if order_prop == 'expire_days':
         if order_type == 'descending':
-            ordering.append(DomainModel.expire_days.desc())
+            ordering.append(DomainModel.expire_time.desc())
         else:
-            ordering.append(DomainModel.expire_days.asc())
+            ordering.append(DomainModel.expire_time.asc())
 
     # order by connect_status
     elif order_prop == 'connect_status':

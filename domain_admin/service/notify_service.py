@@ -6,9 +6,11 @@
 """
 import json
 import traceback
+from datetime import datetime, timedelta
 from typing import List, Optional, Dict
 
 import requests
+
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.event_enum import EventEnum
@@ -163,10 +165,10 @@ def notify_user_about_some_event(notify_row: NotifyModel):
     """
     if notify_row.event_id == EventEnum.SSL_CERT_EXPIRE:
         # ssl证书
-        notify_user_about_cert_expired(notify_row)
+        return notify_user_about_cert_expired(notify_row)
     elif notify_row.event_id == EventEnum.DOMAIN_EXPIRE:
         # 域名过期
-        notify_user_about_domain_expired(notify_row)
+        return notify_user_about_domain_expired(notify_row)
     else:
         logger.warn("notify_row event_id not support: %s", notify_row.event_id)
 
@@ -177,12 +179,16 @@ def notify_user_about_cert_expired(notify_row: NotifyModel):
     :param notify_row:
     :return:
     """
+    now = datetime.now()
+
+    notify_expire_time = now + timedelta(days=notify_row.expire_days)
+
     rows = DomainModel.select().where(
         DomainModel.user_id == notify_row.user_id,
         DomainModel.is_monitor == True,
-        DomainModel.expire_days <= notify_row.expire_days
+        DomainModel.expire_time <= notify_expire_time
     ).order_by(
-        DomainModel.expire_days.asc(),
+        DomainModel.expire_time.asc(),
         DomainModel.id.desc()
     )
 
@@ -199,7 +205,7 @@ def notify_user_about_cert_expired(notify_row: NotifyModel):
         row['expire_days'] = row['real_time_expire_days']
 
     if len(lst) > 0:
-        notify_user(notify_row, lst)
+        return notify_user(notify_row, lst)
 
 
 def notify_user_about_domain_expired(notify_row: NotifyModel):
@@ -208,12 +214,16 @@ def notify_user_about_domain_expired(notify_row: NotifyModel):
     :param notify_row:
     :return:
     """
+    now = datetime.now()
+
+    notify_expire_time = now + timedelta(days=notify_row.expire_days)
+
     rows = DomainInfoModel.select().where(
         DomainInfoModel.user_id == notify_row.user_id,
         DomainInfoModel.is_expire_monitor == True,
-        DomainInfoModel.domain_expire_days <= notify_row.expire_days
+        DomainInfoModel.domain_expire_time <= notify_expire_time
     ).order_by(
-        DomainInfoModel.domain_expire_days.asc(),
+        DomainInfoModel.domain_expire_time.asc(),
         DomainInfoModel.id.desc()
     )
 
@@ -232,7 +242,7 @@ def notify_user_about_domain_expired(notify_row: NotifyModel):
         row['expire_days'] = row['real_domain_expire_days']
 
     if len(lst) > 0:
-        notify_user(notify_row, lst)
+        return notify_user(notify_row, lst)
 
 
 def notify_user(notify_row: NotifyModel, rows: List):

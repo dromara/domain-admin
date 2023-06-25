@@ -368,114 +368,7 @@ def get_domain_info_list(user_id=None):
     return lst
 
 
-def check_domain_cert(user_id):
-    """
-    查询域名证书到期情况
-    :return:
-    """
-    user_row = UserModel.get_by_id(user_id)
 
-    # lst = get_domain_info_list(user_id)
-
-    rows = DomainModel.select().where(
-        DomainModel.user_id == user_id,
-        DomainModel.is_monitor == True,
-        DomainModel.expire_days <= user_row.before_expire_days
-    ).order_by(
-        DomainModel.expire_days.asc(),
-        DomainModel.id.desc()
-    )
-
-    lst = [model_to_dict(
-        model=row,
-        extra_attrs=[
-            'start_date',
-            'expire_date',
-            'real_time_expire_days',
-        ]
-    ) for row in rows]
-
-    if len(lst) > 0:
-        notify_user(user_id, lst)
-        # send_domain_list_email(user_id)
-
-
-def update_and_check_all_cert():
-    """
-    更新并检查所域名信息和证书信息
-    :return:
-    """
-
-    # 更新全部域名证书信息
-    update_all_domain_cert_info()
-
-    # 全员检查并发送用户通知
-    # if status:
-    user_rows = UserModel.select()
-
-    for row in user_rows:
-        # 内层捕获单个用户发送错误
-        check_domain_cert(row.id)
-
-
-def send_domain_list_email(user_id, rows: List[DomainModel]):
-    """
-    发送域名信息
-    :param rows:
-    :param user_id:
-    :return:
-    """
-
-    # 配置检查
-    config = system_service.get_system_config()
-
-    system_service.check_email_config(config)
-
-    email_list = notify_service.get_notify_email_list_of_user(user_id)
-
-    if not email_list:
-        raise AppException('收件邮箱未设置')
-
-    # lst = get_domain_info_list(user_id)
-
-    content = render_service.render_template('cert-email.html', {'list': rows})
-
-    email_service.send_email(
-        subject='[Domain Admin]证书过期提醒',
-        content=content,
-        to_addresses=email_list,
-        content_type='html'
-    )
-
-
-def send_domain_list_email(user_id, rows: List[DomainModel]):
-    """
-    发送域名信息
-    :param rows:
-    :param user_id:
-    :return:
-    """
-
-    # 配置检查
-    config = system_service.get_system_config()
-
-    system_service.check_email_config(config)
-
-    email_list = notify_service.get_notify_email_list_of_user(user_id)
-
-    if not email_list:
-        raise AppException('收件邮箱未设置')
-
-    # lst = get_domain_info_list(user_id)
-
-    content = render_service.render_template('cert-email.html', {'list': rows})
-
-    email_service.send_email(
-        subject='[Domain Admin]证书过期提醒',
-        content=content,
-        to_addresses=email_list,
-        content_type='html'
-    )
 
 
 def check_permission_and_get_row(domain_id, user_id):
@@ -549,36 +442,9 @@ def export_domain_to_file(user_id):
     return filename
 
 
-def notify_user(user_id, rows: List[DomainModel]):
-    """
-    尝试通知用户
-    :param user_id:
-    :return:
-    """
-    try:
-        send_domain_list_email(user_id, rows)
-    except Exception as e:
-        logger.error(traceback.format_exc())
-
-    try:
-        notify_service.notify_webhook_of_user(user_id)
-    except Exception as e:
-        logger.error(traceback.format_exc())
-
-
-def update_and_check_domain_cert(user_id):
-    # 先更新，再检查
-    # update_all_domain_cert_info_of_user(user_id)
-
-    check_domain_cert(user_id)
-
-    # key = f'check_domain_status:{user_id}'
-    # global_data_service.set_value(key, False)
-
-
 def load_domain_expire_days(lst: List):
     """
-    加载域名过期时间 Number or None
+    加载域名过期时间字段 Number or None
     :param lst: List[DomainModel dict]
     :return:
     """
@@ -602,7 +468,7 @@ def load_domain_expire_days(lst: List):
 
 def load_address_count(lst: List):
     """
-    加载主机数量
+    加载主机数量字段
     :param lst:
     :return:
     """

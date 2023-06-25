@@ -3,18 +3,17 @@
 database.py
 """
 
-# 创建表
 from domain_admin.log import logger
-from domain_admin.model.base_model import db
-from domain_admin.model import domain_model
 from domain_admin.model import address_model
 from domain_admin.model import domain_info_model
+from domain_admin.model import domain_model
 from domain_admin.model import group_model
-from domain_admin.model import system_model
-from domain_admin.model import user_model
 from domain_admin.model import log_scheduler_model
 from domain_admin.model import notify_model
+from domain_admin.model import system_model
+from domain_admin.model import user_model
 from domain_admin.model import version_model
+from domain_admin.model.base_model import db
 
 # 需要查询初始数据操作的表放前面
 tables = [
@@ -31,10 +30,17 @@ tables = [
 
 
 def init_database():
+    """
+    初始化数据表
+    :return:
+    """
     db.connect()
 
+    db_tables = db.get_tables()
+
     for model, init_func in tables:
-        if not model.table_exists():
+        # if not model.table_exists():
+        if model._meta.table_name not in db_tables:
             logger.info('create table: %s', model._meta.table_name)
             model.create_table()
 

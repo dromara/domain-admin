@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, AutoField
+from peewee import CharField, DateTimeField, AutoField
 
 from domain_admin.model.base_model import BaseModel
 

@@ -2,22 +2,15 @@
 """
 domain_info_service.py
 """
-import random
 import time
-import traceback
-from datetime import datetime
-from typing import List
+from datetime import datetime, timedelta
 
 from peewee import chunked
-from playhouse.shortcuts import model_to_dict
 
-from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.model.user_model import UserModel
-from domain_admin.service import render_service, email_service, notify_service, system_service, file_service
-from domain_admin.utils import whois_util, datetime_util, domain_util, file_util
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.service import render_service, file_service
+from domain_admin.utils import whois_util, datetime_util, domain_util
 
 
 def add_domain_info(
@@ -107,45 +100,27 @@ def update_all_domain_info():
     更新所有的域名信息
     :return:
     """
+    now = datetime.now()
+
+    notify_expire_time = now + timedelta(days=30)
+
     rows = DomainInfoModel.select().where(
-        DomainInfoModel.is_auto_update == True
+        DomainInfoModel.is_auto_update == True,
+        # 域名注册完后，过期时间比较固定，基本上不会改变，不用每次都全量更新
+        DomainInfoModel.domain_expire_time <= notify_expire_time
     ).order_by(DomainInfoModel.domain_expire_days.asc())
 
     for row in rows:
         update_domain_info_row(row)
 
 
-def send_domain_list_email(user_id, rows: List[DomainInfoModel]):
+def add_domain_from_file(filename, user_id):
     """
-    发送域名信息
-    :param rows:
+    从文件导入域名列表
+    :param filename:
     :param user_id:
     :return:
     """
-
-    # 配置检查
-    config = system_service.get_system_config()
-
-    system_service.check_email_config(config)
-
-    email_list = notify_service.get_notify_email_list_of_user(user_id)
-
-    if not email_list:
-        raise AppException('收件邮箱未设置')
-
-    # lst = get_domain_info_list(user_id)
-
-    content = render_service.render_template('domain-email.html', {'list': rows})
-
-    email_service.send_email(
-        subject='[Domain Admin]域名过期提醒',
-        content=content,
-        to_addresses=email_list,
-        content_type='html'
-    )
-
-
-def add_domain_from_file(filename, user_id):
     # logger.info('user_id: %s, filename: %s', user_id, filename)
 
     lst = domain_util.parse_domain_from_file(filename)
@@ -172,7 +147,7 @@ def export_domain_to_file(user_id):
     rows = DomainInfoModel.select().where(
         DomainInfoModel.user_id == user_id
     ).order_by(
-        DomainInfoModel.domain_expire_days.asc(),
+        DomainInfoModel.domain_expire_time.asc(),
         DomainInfoModel.id.desc(),
     )
 
@@ -201,71 +176,3 @@ def export_domain_to_file(user_id):
         f.write(content)
 
     return filename
-
-
-def check_domain_expire(user_id):
-    """
-    查询域名证书到期情况
-    :return:
-    """
-    user_row = UserModel.get_by_id(user_id)
-
-    # lst = get_domain_info_list(user_id)
-
-    rows = DomainInfoModel.select().where(
-        DomainInfoModel.user_id == user_id,
-        DomainInfoModel.is_expire_monitor == True,
-        DomainInfoModel.domain_expire_days <= user_row.before_expire_days
-    ).order_by(
-        DomainInfoModel.domain_expire_days.asc(),
-        DomainInfoModel.id.desc()
-    )
-
-    lst = [model_to_dict(
-        model=row,
-        extra_attrs=[
-            'domain_start_date',
-            'domain_expire_date',
-            'real_domain_expire_days',
-        ]
-    ) for row in rows]
-
-    if len(lst) > 0:
-        notify_user(user_id, lst)
-        # send_domain_list_email(user_id)
-
-
-def notify_user(user_id, rows: List[DomainInfoModel]):
-    """
-    尝试通知用户
-    :param rows:
-    :param user_id:
-    :return:
-    """
-    try:
-        send_domain_list_email(user_id, rows)
-    except Exception as e:
-        logger.error(traceback.format_exc())
-
-    try:
-        notify_service.notify_webhook_of_user(user_id)
-    except Exception as e:
-        logger.error(traceback.format_exc())
-
-
-def update_and_check_all_domain():
-    """
-    更新并检查所域名信息和证书信息
-    :return:
-    """
-
-    # 更新全部域名证书信息
-    update_all_domain_info()
-
-    # 全员检查并发送用户通知
-    # if status:
-    user_rows = UserModel.select()
-
-    for row in user_rows:
-        # 内层捕获单个用户发送错误
-        check_domain_expire(row.id)

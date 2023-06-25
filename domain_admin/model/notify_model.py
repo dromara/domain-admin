@@ -7,7 +7,6 @@ from peewee import IntegerField, DateTimeField, TextField, AutoField, BooleanFie
 from domain_admin.config import DEFAULT_BEFORE_EXPIRE_DAYS
 from domain_admin.enums.event_enum import EventEnum
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
-from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.model.base_model import BaseModel
 
 
