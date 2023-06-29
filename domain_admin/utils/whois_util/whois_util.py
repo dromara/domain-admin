@@ -129,6 +129,7 @@ def get_domain_whois_server_from_root(domain):
     :return:
     """
     raw_data = get_whois_raw(domain, ROOT_SERVER, timeout=10)
+    logger.info(raw_data)
 
     result = re.findall("refer:(.*)", raw_data)
     if result and len(result) > 0:

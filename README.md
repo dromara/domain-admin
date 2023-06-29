@@ -24,6 +24,8 @@
 
 支持平台：macOS、Linux、Windows
 
+同时，Domain Admin也是一个轻量级监控方案，占用系统资源较少，安装包仅1.5 MB
+
 - 项目地址：https://github.com/mouday/domain-admin
 - 国内镜像：https://gitee.com/mouday/domain-admin
 - pypi：https://pypi.org/project/domain-admin

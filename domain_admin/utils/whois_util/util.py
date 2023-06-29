@@ -20,6 +20,10 @@ def parse_whois_raw(whois_raw: str):
         else:
             row_split = row.split(" ", maxsplit=1)
 
+        # tw
+        if 'Record expires on' in row or 'Record created on' in row:
+            row_split = row.split("on", maxsplit=1)
+
         if len(row_split) == 2:
             key, value = row_split
             data[key.strip()] = value.strip()
