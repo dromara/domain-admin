@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from typing import Optional
 
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
 
@@ -116,3 +117,19 @@ class DomainModel(BaseModel):
 
     # @since v1.3.1
     real_time_ssl_expire_days = real_time_expire_days
+
+    @property
+    def expire_status(self) -> Optional[bool]:
+        """
+        过期状态
+        7 天以上    健康
+        0 天以上    亚健康
+        0 天及其以下 危险
+        :return:
+        """
+        if self.real_time_expire_days > 7:
+            return True
+        elif self.real_time_expire_days > 0:
+            return None
+        else:
+            return False

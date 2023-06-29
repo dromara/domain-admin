@@ -22,6 +22,7 @@ class ParsedDomain(NamedTuple):
     """
     domain: str
     root_domain: str
+    group_name: str
     port: int
     alias: str
 
@@ -62,7 +63,8 @@ def parse_domain_from_csv_file(filename) -> ParsedDomain:
             if ':' in domain:
                 domain, port = domain.split(":")
 
-            alias = item.get('备注', '')
+            alias = item.get('备注', '').strip(' -')
+            group_name = item.get('分组', '').strip(' -')
 
             # SSL端口
             port = item.get('端口') or port or cert_consts.SSL_DEFAULT_PORT
@@ -72,7 +74,8 @@ def parse_domain_from_csv_file(filename) -> ParsedDomain:
                     domain=domain,
                     root_domain=get_root_domain(domain),
                     port=int(port),
-                    alias=alias
+                    alias=alias,
+                    group_name=group_name
                 )
 
                 yield item
@@ -100,7 +103,8 @@ def parse_domain_from_txt_file(filename) -> ParsedDomain:
                     domain=domain,
                     root_domain=get_root_domain(domain),
                     port=int(port),
-                    alias=''
+                    alias='',
+                    group_name=''
                 )
 
 

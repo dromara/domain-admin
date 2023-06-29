@@ -16,7 +16,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import email_service, render_service
+from domain_admin.service import email_service, render_service, group_service
 from domain_admin.service import file_service
 from domain_admin.service import notify_service
 from domain_admin.service import system_service
@@ -368,9 +368,6 @@ def get_domain_info_list(user_id=None):
     return lst
 
 
-
-
-
 def check_permission_and_get_row(domain_id, user_id):
     """
     权限检查
@@ -388,7 +385,11 @@ def check_permission_and_get_row(domain_id, user_id):
 def add_domain_from_file(filename, user_id):
     logger.info('user_id: %s, filename: %s', user_id, filename)
 
-    lst = domain_util.parse_domain_from_file(filename)
+    lst = list(domain_util.parse_domain_from_file(filename))
+
+    # 导入分组
+    group_name_list = [item.group_name for item in lst]
+    group_map = group_service.get_or_create_group_map(group_name_list, user_id)
 
     lst = [
         {
@@ -397,6 +398,7 @@ def add_domain_from_file(filename, user_id):
             'port': item.port,
             'alias': item.alias,
             'user_id': user_id,
+            'group_id': group_map.get(item.group_name, 0),
         } for item in lst
     ]
 

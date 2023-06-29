@@ -48,6 +48,7 @@ routes = {
     "/api/addGroup": group_api.add_group,
     "/api/updateGroupById": group_api.update_group_by_id,
     "/api/deleteGroupById": group_api.delete_group_by_id,
+    "/api/deleteGroupByIds": group_api.delete_group_by_ids,
     "/api/getGroupList": group_api.get_group_list,
     "/api/getGroupById": group_api.get_group_by_id,
 

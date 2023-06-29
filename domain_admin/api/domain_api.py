@@ -11,7 +11,7 @@ from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import async_task_service, domain_info_service
+from domain_admin.service import async_task_service, domain_info_service, group_service
 from domain_admin.service import domain_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
@@ -200,6 +200,7 @@ def get_domain_by_id():
             'real_time_expire_days',
             'domain_url',
             'update_time_label',
+            'expire_status',
         ]
     )
 
@@ -209,6 +210,7 @@ def get_domain_by_id():
     ).count()
 
     row['address_count'] = address_count
+    row['group_name'] = group_service.get_group_name_by_id(row['group_id'])
 
     return row
 
@@ -445,6 +447,7 @@ def get_domain_list():
                 'real_time_ssl_expire_days',
                 'domain_url',
                 'update_time_label',
+                'expire_status',
             ]
         ), lst))
 
@@ -453,6 +456,9 @@ def get_domain_list():
 
         # 加载域名过期时间
         domain_service.load_domain_expire_days(lst)
+
+        # 分组名
+        group_service.load_group_name(lst)
 
     # lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
 
@@ -471,35 +477,39 @@ def get_domain_group_filter():
     current_user_id = g.user_id
 
     # 分组列表数据
-    rows = GroupModel.select().where(
+    query = GroupModel.select().where(
         GroupModel.user_id == current_user_id
     )
 
-    # 证书分组统计
-    cert_groups = DomainModel.select(
-        DomainModel.group_id,
-        fn.COUNT(DomainModel.id).alias('count')
-    ).group_by(DomainModel.group_id)
-
-    cert_groups_map = {
-        str(row.group_id): row.count
-        for row in cert_groups
-    }
-
+    total = query.count()
     lst = []
-    for row in rows:
-        row_dict = model_to_dict(row)
-        row_dict['cert_count'] = cert_groups_map.get(str(row.id), 0)
-        lst.append(row_dict)
+    if total > 0:
 
-    if cert_groups_map.get('0'):
-        lst.append({
-            'cert_count': cert_groups_map.get('0'),
-            'id': 0,
-            'name': '未分组',
-        })
+        # 证书分组统计
+        cert_groups = DomainModel.select(
+            DomainModel.group_id,
+            fn.COUNT(DomainModel.id).alias('count')
+        ).group_by(DomainModel.group_id)
 
-    lst.sort(key=itemgetter('cert_count'), reverse=True)
+        cert_groups_map = {
+            str(row.group_id): row.count
+            for row in cert_groups
+        }
+
+        lst = []
+        for row in query:
+            row_dict = model_to_dict(row)
+            row_dict['cert_count'] = cert_groups_map.get(str(row.id), 0)
+            lst.append(row_dict)
+
+        if cert_groups_map.get('0'):
+            lst.append({
+                'cert_count': cert_groups_map.get('0'),
+                'id': 0,
+                'name': '未分组',
+            })
+
+        lst.sort(key=itemgetter('cert_count'), reverse=True)
 
     return {
         'list': lst,

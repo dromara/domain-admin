@@ -9,7 +9,7 @@ from peewee import chunked
 
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import render_service, file_service
+from domain_admin.service import render_service, file_service, group_service
 from domain_admin.utils import whois_util, datetime_util, domain_util
 
 
@@ -123,14 +123,19 @@ def add_domain_from_file(filename, user_id):
     """
     # logger.info('user_id: %s, filename: %s', user_id, filename)
 
-    lst = domain_util.parse_domain_from_file(filename)
+    lst = list(domain_util.parse_domain_from_file(filename))
+
+    # 导入分组
+    group_name_list = [item.group_name for item in lst]
+    group_map = group_service.get_or_create_group_map(group_name_list, user_id)
 
     lst = [
         {
             'domain': item.root_domain,
             'comment': item.alias,
             'user_id': user_id,
-        } for item in lst
+            'group_id': group_map.get(item.group_name, 0),
+        } for item in lst if item.root_domain
     ]
 
     for batch in chunked(lst, 500):

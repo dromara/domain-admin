@@ -56,9 +56,10 @@ def delete_group_by_id():
 
     group_id = request.json['id']
 
-    group_service.check_group_permission(group_id, current_user_id)
-
-    GroupModel.delete_by_id(group_id)
+    GroupModel.delete().where(
+        GroupModel.id == group_id,
+        GroupModel.user_id == current_user_id
+    ).execute()
 
     # 重置已分类的证书 和 域名
     DomainModel.update(
@@ -71,6 +72,34 @@ def delete_group_by_id():
         group_id=0
     ).where(
         DomainInfoModel.group_id == group_id
+    ).execute()
+
+
+def delete_group_by_ids():
+    """
+    批量删除
+    :return:
+    """
+    current_user_id = g.user_id
+
+    group_ids = request.json['group_ids']
+
+    GroupModel.delete().where(
+        GroupModel.id.in_(group_ids),
+        GroupModel.user_id == current_user_id
+    ).execute()
+
+    # 重置已分类的证书 和 域名
+    DomainModel.update(
+        group_id=0
+    ).where(
+        DomainModel.group_id.in_(group_ids)
+    ).execute()
+
+    DomainInfoModel.update(
+        group_id=0
+    ).where(
+        DomainInfoModel.group_id.in_(group_ids)
     ).execute()
 
 
