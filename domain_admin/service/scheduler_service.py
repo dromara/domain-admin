@@ -77,7 +77,7 @@ def task():
     # 执行完毕
     LogSchedulerModel.update({
         'status': True,
-        'error_message': f'成功发送: {success}',
+        'error_message': '执行成功',
         'update_time': datetime_util.get_datetime(),
     }).where(
         LogSchedulerModel.id == log_row.id
