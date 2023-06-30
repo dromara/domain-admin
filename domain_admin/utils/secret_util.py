@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+secret_util.py
+"""
 import secrets
 
 

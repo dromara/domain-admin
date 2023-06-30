@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from flask import request, Response
 from peewee import DoesNotExist, IntegrityError
 
 from domain_admin.log import logger
@@ -14,25 +15,30 @@ def error_handler(e):
     :param e:
     :return:
     """
-    # traceback.print_exc()
-    logger.error(traceback.format_exc())
 
-    code = -1
+    if request.path.startswith('/api'):
 
-    if isinstance(e, KeyError):
-        msg = '参数缺失' + str(e)
+        # traceback.print_exc()
+        logger.error(traceback.format_exc())
 
-    elif isinstance(e, DoesNotExist):
-        msg = '数据不存在'
+        code = -1
 
-    elif isinstance(e, IntegrityError):
-        msg = '数据已存在'
+        if isinstance(e, KeyError):
+            msg = '参数缺失' + str(e)
 
-    elif isinstance(e, AppException):
-        msg = e.message
-        code = e.code
+        elif isinstance(e, DoesNotExist):
+            msg = '数据不存在'
 
+        elif isinstance(e, IntegrityError):
+            msg = '数据已存在'
+
+        elif isinstance(e, AppException):
+            msg = e.message
+            code = e.code
+
+        else:
+            msg = str(e)
+
+        return ApiResult.error(msg=msg, code=code)
     else:
-        msg = str(e)
-
-    return ApiResult.error(msg=msg, code=code)
+        return Response("Internal Server Error", status=500)

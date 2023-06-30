@@ -6,14 +6,17 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import safe_join
 
 from domain_admin.config import TEMP_DIR
+from domain_admin.log import logger
 from domain_admin.model.base_model import db
 from domain_admin.model.database import init_database
 from domain_admin.router import api_map, permission
 from domain_admin.service import scheduler_service, system_service
 from domain_admin.service import version_service
+from domain_admin.utils import secret_util, md5_util
 from domain_admin.utils.flask_ext import handler
 from domain_admin.utils.flask_ext import register
 from domain_admin.utils.flask_ext.flask_app import FlaskApp
+from domain_admin.config import PROMETHEUS_KEY
 
 app = FlaskApp(
     import_name=__name__,
@@ -72,6 +75,8 @@ def init_app(flask_app):
     :param flask_app:
     :return:
     """
+    global PROMETHEUS_KEY
+
     # 注册路由
     register.register_app_routers(flask_app, api_map.routes)
 
@@ -99,6 +104,10 @@ def init_app(flask_app):
 
     # 初始化全局常量配置
     system_service.init_system_config(flask_app)
+
+    # prometheus key
+    PROMETHEUS_KEY = PROMETHEUS_KEY or md5_util.md5(secret_util.get_random_secret())
+    logger.info("PROMETHEUS_KEY: %s", PROMETHEUS_KEY)
 
 
 init_app(app)

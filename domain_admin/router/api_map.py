@@ -2,7 +2,7 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api
+from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api, prometheus_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -118,4 +118,6 @@ routes = {
     '/api/exportDomainInfoFile': domain_info_api.export_domain_info_file,
     '/api/getDomainInfoGroupFilter': domain_info_api.get_domain_info_group_filter,
 
+    # prometheus
+    '/metrics': prometheus_api.metrics
 }
