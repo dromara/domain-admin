@@ -342,7 +342,7 @@ def notify_user_by_email(
 
     email_util.send_email(
         mail_host=config[ConfigKeyEnum.MAIL_HOST],
-        mail_port=config[ConfigKeyEnum.MAIL_PORT],
+        mail_port=int(config[ConfigKeyEnum.MAIL_PORT]),
         mail_alias=config[ConfigKeyEnum.MAIL_ALIAS],
         subject=subject,
         content=content,

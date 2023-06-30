@@ -115,14 +115,16 @@ def send_email(
     :param content_type:
     :return:
     """
-    print(mail_host,
-          mail_port,
-          mail_alias,
-          subject,
-          to_addresses,
-          mail_username,
-          mail_password,
-          content_type)
+
+    # 构造邮件
+    message = MIMEText(content, content_type, 'utf-8')
+    # 邮箱昵称、发件人邮箱账号
+    if mail_username:
+        message['From'] = formataddr((mail_alias, mail_username))
+    else:
+        message['From'] = Header(mail_alias, 'utf-8')
+
+    message['Subject'] = Header(subject, 'utf-8')
 
     # 获取email服务
     if mail_port == 465:
@@ -140,17 +142,9 @@ def send_email(
     if mail_username:
         server.login(mail_username, mail_password)
 
-    # 构造邮件
-    message = MIMEText(content, content_type, 'utf-8')
-    # 邮箱昵称、发件人邮箱账号
-    message['From'] = formataddr((mail_alias, mail_username))
-    message['Subject'] = Header(subject, 'utf-8')
-
     # 发送
     server.sendmail(
         from_addr=mail_username,
         to_addrs=to_addresses,
         msg=message.as_string()
     )
-
-    # server.quit()
