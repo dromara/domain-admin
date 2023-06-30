@@ -462,11 +462,20 @@ spec:
 
 ### 10、支持`prometheus` 的`/metrics`接口
 
-1、第一步、需要配置`.env` 参数，全局授权key
+1、第一步、需要配置环境变量 `.env` 参数，全局授权key
 
 ```bash
 # prometheus key
 PROMETHEUS_KEY=f60c03bfff8bb42dcf6821542e5fd11e
+```
+
+如果不配置授权key，每次重启将会生成新的key，可以在日志文件中查看
+
+```bash
+$ tail -f logs/domain-admin.log
+
+2023-06-30 13:09:40 [INFO] main.py/init_app:
+PROMETHEUS_KEY: f60c03bfff8bb42dcf6821542e5fd11e
 ```
 
 2、第二步、配置 prometheus.yml
