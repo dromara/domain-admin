@@ -173,6 +173,10 @@ def get_domain_whois(domain):
         if registrar_config:
             registrar_url = registrar_config['registrar_url']
 
+    # 修复 https:// http://
+    if registrar_url and (not registrar_url.startswith('http://') or not registrar_url.startswith('https://')):
+        registrar_url = 'http://' + registrar_url
+
     if start_time and expire_time:
         return {
             'start_time': start_time,
