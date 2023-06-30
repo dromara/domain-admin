@@ -80,3 +80,12 @@ class VersionEnum(object):
     Version_144 = '1.4.4'
     Version_145 = '1.4.5'
     Version_146 = '1.4.6'
+
+    Version_147 = '1.4.7'
+    Version_148 = '1.4.8'
+    Version_149 = '1.4.9'
+    Version_1410 = '1.4.10'
+    Version_1411 = '1.4.11'
+    Version_1412 = '1.4.12'
+    Version_1413 = '1.4.13'
+    Version_1414 = '1.4.14'

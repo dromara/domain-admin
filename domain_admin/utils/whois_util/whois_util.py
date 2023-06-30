@@ -11,8 +11,13 @@ from datetime import datetime
 from dateutil import parser
 
 from domain_admin.log import logger
-from domain_admin.utils import json_util, text_util, domain_util
-from domain_admin.utils.whois_util.config import CUSTOM_WHOIS_CONFIGS, DEFAULT_WHOIS_CONFIG, ROOT_SERVER
+from domain_admin.utils import json_util, domain_util
+from domain_admin.utils.whois_util.config import (
+    CUSTOM_WHOIS_CONFIGS,
+    DEFAULT_WHOIS_CONFIG,
+    ROOT_SERVER,
+    REGISTRAR_CONFIG_MAP
+)
 from domain_admin.utils.whois_util.util import parse_whois_raw, get_whois_raw, load_whois_servers
 
 WHOIS_CONFIGS = None
@@ -35,24 +40,6 @@ def resolve_domain(domain: str) -> str:
     else:
         root_domain = domain_util.get_root_domain(domain)
         return domain_util.encode_hostname(root_domain)
-
-    # extract_result = domain_util.extract_domain(domain)
-    #
-    # root_domain = extract_result.domain
-    # suffix = extract_result.suffix
-    #
-    # # 处理包含中文的域名
-    # if text_util.has_chinese(suffix):
-    #     pass
-    #
-    # elif text_util.has_chinese(root_domain):
-    #     chinese = text_util.extract_chinese(root_domain)
-    #     punycode = chinese.encode('punycode').decode()
-    #     root_domain = f"xn--{punycode}"
-    #
-    # domain_and_suffix = '.'.join([root_domain, suffix])
-    #
-    # return domain_and_suffix
 
 
 def parse_time(time_str, time_format=None):
@@ -87,9 +74,13 @@ def load_whois_servers_config():
 
     # 自定义配置优先
     for key, value in CUSTOM_WHOIS_CONFIGS.items():
-        config[domain_util.encode_hostname(key)] = value
+        encode_key = domain_util.encode_hostname(key)
+        default_config = config.get(encode_key, deepcopy(DEFAULT_WHOIS_CONFIG))
+        default_config.update(value)
+        config[encode_key] = default_config
 
-    # 合并配置
+        # 合并配置
+    logger.debug(config)
     return config
 
 
@@ -106,8 +97,6 @@ def get_whois_config(domain: str) -> [str, None]:
 
     if WHOIS_CONFIGS is None:
         WHOIS_CONFIGS = load_whois_servers_config()
-
-    # print(WHOIS_CONFIGS)
 
     if root in WHOIS_CONFIGS:
         return WHOIS_CONFIGS.get(root)
@@ -147,17 +136,15 @@ def get_domain_raw_whois(domain):
 
 
 def get_domain_whois(domain):
-    # logger.debug('get_domain_whois %s', domain)
+    logger.debug('get_domain_whois %s', domain)
 
     raw_data = get_domain_raw_whois(domain)
-
-    # if error in raw_data:
-    #     return None
 
     data = parse_whois_raw(raw_data)
     logger.debug(json.dumps(data, indent=2, ensure_ascii=False))
 
     whois_config = get_whois_config(domain)
+    logger.debug('whois_config', whois_config)
 
     whois_server = whois_config['whois_server']
     # error = whois_config['error']
@@ -165,9 +152,14 @@ def get_domain_whois(domain):
     expire_time = whois_config['expire_time']
     registry_time_format = whois_config.get('registry_time_format')
     expire_time_format = whois_config.get('expire_time_format')
+    registrar_key = whois_config.get('registrar')
+    registrar_url_key = whois_config.get('registrar_url')
 
     start_time = data.get(registry_time)
     expire_time = data.get(expire_time)
+
+    registrar = data.get(registrar_key, '').strip()
+    registrar_url = data.get(registrar_url_key, '').strip()
 
     if start_time:
         start_time = parse_time(start_time, registry_time_format)
@@ -175,9 +167,17 @@ def get_domain_whois(domain):
     if expire_time:
         expire_time = parse_time(expire_time, expire_time_format)
 
+    # cn域名注册商
+    if registrar and not registrar_url:
+        registrar_config = REGISTRAR_CONFIG_MAP.get(registrar)
+        if registrar_config:
+            registrar_url = registrar_config['registrar_url']
+
     if start_time and expire_time:
         return {
             'start_time': start_time,
+            'registrar': registrar,
+            'registrar_url': registrar_url,
             'expire_time': expire_time,
         }
     else:
@@ -191,17 +191,10 @@ def get_domain_info(domain: str):
     :return:
     """
     # 处理带端口号的域名
-    # if ':' in domain:
-    #     domain = domain.split(":")[0]
     domain = resolve_domain(domain)
     logger.debug("resolve_domain: %s", domain)
 
     res = get_domain_whois(domain)
-
-    # 解决二级域名查询失败的问题
-    # if not res:
-    #     domain = ".".join(domain.split(".")[1:])
-    #     res = get_domain_whois(domain)
 
     logger.debug(json_util.json_encode(res, indent=2, ensure_ascii=False))
 

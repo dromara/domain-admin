@@ -19,8 +19,8 @@ from domain_admin.migrate import (
     migrate_136_to_140_alpha,
     migrate_140_alpha_to_140,
     migrate_143_to_144,
-    migrate_145_to_146
-)
+    migrate_145_to_146,
+    migrate_1413_to_1414)
 
 
 def get_local_version():
@@ -184,6 +184,26 @@ def update_version():
             migrate_145_to_146.execute_migrate()
 
             local_version = VersionEnum.Version_146
+
+        # 2023-06-30
+        if local_version in [
+            VersionEnum.Version_146,
+            VersionEnum.Version_147,
+            VersionEnum.Version_148,
+            VersionEnum.Version_149,
+            VersionEnum.Version_1410,
+            VersionEnum.Version_1411,
+            VersionEnum.Version_1412,
+            VersionEnum.Version_1413,
+            VersionEnum.Version_1414,
+
+        ]:
+            # 1.4.6 => 1.4.14
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_1414)
+
+            migrate_1413_to_1414.execute_migrate()
+
+            local_version = VersionEnum.Version_1414
 
     # 更新版本号
     VersionModel.create(

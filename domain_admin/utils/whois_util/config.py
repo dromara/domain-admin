@@ -14,7 +14,7 @@ DEFAULT_WHOIS_CONFIG = {
     'registry_time': 'Creation Date',  # 注册时间
     'expire_time': 'Registry Expiry Date',  # 过期时间
     'registrar': 'Registrar',  # 注册商
-    'registrar_url': 'Registrar URL',  # 注册商
+    'registrar_url': 'Registrar URL',  # 注册商url
 }
 
 # https://www.nirsoft.net/whois-servers.txt
@@ -26,8 +26,7 @@ CUSTOM_WHOIS_CONFIGS = {
         'whois_server': 'whois.cnnic.cn',
         'registry_time': 'Registration Time',
         'expire_time': 'Expiration Time',
-        'registrar': 'Registrar',
-        'registrar_url': 'Registrar URL',
+        'registrar': 'Sponsoring Registrar',
     },
     'hk': {
         'whois_server': 'whois.hkirc.hk',
@@ -35,8 +34,6 @@ CUSTOM_WHOIS_CONFIGS = {
         "registry_time_format": '%d-%m-%Y',
         'expire_time': 'Expiry Date',
         "expire_time_format": '%d-%m-%Y',
-        'registrar': 'Registrar',
-        'registrar_url': 'Registrar URL',
     },
     'sg': {
         'whois_server': 'whois.sgnic.sg',
@@ -44,8 +41,6 @@ CUSTOM_WHOIS_CONFIGS = {
         "registry_time_format": '%d-%m-%Y',
         'expire_time': 'Expiration Date',
         "expire_time_format": '%d-%m-%Y',
-        'registrar': 'Registrar',
-        'registrar_url': 'Registrar URL',
     },
     'jp': {
         'whois_server': 'whois.jprs.jp',
@@ -53,16 +48,12 @@ CUSTOM_WHOIS_CONFIGS = {
         "registry_time_format": '%Y/%m/%d',
         'expire_time': '[有効期限]',
         "expire_time_format": '%Y/%m/%d',
-        'registrar': 'Registrar',
-        'registrar_url': 'Registrar URL',
     },
 
     '中国': {
         'whois_server': 'cwhois.cnnic.cn',
         'registry_time': 'Registration Time',
         'expire_time': 'Expiration Time',
-        'registrar': 'Registrar',
-        'registrar_url': 'Registrar URL',
     },
     'tw': {
         'whois_server': 'whois.twnic.net',
@@ -70,7 +61,23 @@ CUSTOM_WHOIS_CONFIGS = {
         "registry_time_format": '%Y-%m-%d %H:%M:%S (UTC+8)',
         'expire_time': 'Record expires',
         "expire_time_format": '%Y-%m-%d %H:%M:%S (UTC+8)',
-        'registrar': 'Registrar',
-        'registrar_url': 'Registrar URL',
     }
+}
+
+# 国内cn域名注册商
+REGISTRAR_CONFIG = [
+    {
+        'registrar': '厦门易名科技股份有限公司',
+        'registrar_url': 'https://www.ename.net/'
+    },
+    {
+        'registrar': '北京中科三方网络技术有限公司',
+        'registrar_url': 'https://www.sfn.cn/'
+    }
+]
+
+# 国内cn域名注册商map
+REGISTRAR_CONFIG_MAP = {
+    config['registrar']: config
+    for config in REGISTRAR_CONFIG
 }

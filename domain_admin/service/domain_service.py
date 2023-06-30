@@ -159,35 +159,6 @@ def sync_address_info_to_domain_info(domain_row: DomainModel):
     ).execute()
 
 
-def update_cert_info(row: DomainModel):
-    """
-    更新证书信息
-    :param row:
-    :return:
-    """
-    # 获取证书信息
-    cert_info = {}
-
-    try:
-        cert_info = get_cert_info(row.domain)
-    except Exception as e:
-        pass
-
-    DomainModel.update(
-        start_time=cert_info.get('start_date'),
-        expire_time=cert_info.get('expire_date'),
-        expire_days=cert_info.get('expire_days', 0),
-        total_days=cert_info.get('total_days', 0),
-        # ip=cert_info.get('ip', ''),
-        connect_status=cert_info.get('connect_status'),
-        # detail_raw="",
-        check_time=datetime_util.get_datetime(),
-        update_time=datetime_util.get_datetime(),
-    ).where(
-        DomainModel.id == row.id
-    ).execute()
-
-
 def update_domain_row(domain_row: DomainModel):
     """
     更新域名相关数据
@@ -247,52 +218,6 @@ def get_cert_info(domain: str):
         'connect_status': connect_status,
         # 'ip': info.get('ip', ''),
         'info': info,
-    }
-
-
-def get_domain_info(domain: str):
-    """
-    获取域名注册信息
-    :param domain: 域名
-    :param cache: 查询缓存字典
-    :return:
-    """
-    warnings.warn("use cache_domain_info_service.get_domain_info", DeprecationWarning)
-
-    # cache = global_data_service.get_value('update_domain_list_info_cache')
-
-    now = datetime.now()
-
-    # 获取域名信息
-    domain_info = {}
-    domain_expire_days = 0
-
-    # 解析出域名和顶级后缀
-    extract_result = domain_util.extract_domain(domain)
-    domain_and_suffix = '.'.join([extract_result.domain, extract_result.suffix])
-
-    # if cache:
-    #     domain_info = cache.get(domain_and_suffix)
-
-    if not domain_info:
-        try:
-            domain_info = whois_util.get_domain_info(domain_and_suffix)
-            # if cache:
-            #     cache[domain_and_suffix] = domain_info
-
-        except Exception:
-            logger.error(traceback.format_exc())
-
-    domain_start_time = domain_info.get('start_time')
-    domain_expire_time = domain_info.get('expire_time')
-
-    if domain_expire_time:
-        domain_expire_days = (domain_expire_time - now).days
-
-    return {
-        'start_time': domain_start_time,
-        'expire_time': domain_expire_time,
-        'expire_days': domain_expire_days
     }
 
 
