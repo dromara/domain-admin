@@ -460,6 +460,36 @@ spec:
           timeoutSeconds: 1
 ```
 
+### 10、支持`prometheus` 的`/metrics`接口
+
+1、第一步、需要配置`.env` 参数，全局授权key
+
+``bash
+# prometheus key
+PROMETHEUS_KEY=f60c03bfff8bb42dcf6821542e5fd11e
+``
+
+2、第二步、配置 prometheus.yml
+
+```yaml
+scrape_configs:
+    bearer_token: 'f60c03bfff8bb42dcf6821542e5fd11e'
+```
+
+请求地址：http://127.0.0.1:8000/metrics
+
+返回数据示例：
+
+```text
+# HELP domain_admin this is a domain admin data
+# TYPE domain_admin gauge
+domain_admin{domain="pgmanage.qnvip.com"} 0.0
+domain_admin{domain="fanyi.baidu.com"} 37.0
+domain_admin{domain="www.tmall.com"} 37.0
+domain_admin{domain="www.baidu.com"} 37.0
+domain_admin{domain="www.taobao.com"} 37.0
+```
+ 
 ## 问题反馈交流
 
 QQ群号:731742868
