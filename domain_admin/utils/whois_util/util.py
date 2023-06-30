@@ -27,7 +27,7 @@ def parse_whois_raw(whois_raw: str):
         if len(row_split) == 2:
             key, value = row_split
             data[key.strip()] = value.strip()
-
+    print(data)
     return data
 
 

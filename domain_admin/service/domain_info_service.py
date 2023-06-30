@@ -69,11 +69,15 @@ def update_domain_info_row(row: DomainInfoModel) -> [str, None]:
     if domain_whois:
         update_row.domain_start_time = domain_whois['start_time']
         update_row.domain_expire_time = domain_whois['expire_time']
+        update_row.domain_registrar = domain_whois['registrar']
+        update_row.domain_registrar_url = domain_whois['registrar_url']
 
     DomainInfoModel.update(
         domain_start_time=update_row.domain_start_time,
         domain_expire_time=update_row.domain_expire_time,
         domain_expire_days=update_row.real_domain_expire_days,
+        domain_registrar=domain_whois['registrar'],
+        domain_registrar_url=domain_whois['registrar_url'],
         update_time=datetime_util.get_datetime()
     ).where(
         DomainInfoModel.id == row.id
