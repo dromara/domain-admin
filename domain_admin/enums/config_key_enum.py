@@ -36,3 +36,6 @@ class ConfigKeyEnum(object):
 
     # Token有效期（天）
     TOKEN_EXPIRE_DAYS = 'token_expire_days'
+
+    # prometheus_key
+    PROMETHEUS_KEY = 'prometheus_key'

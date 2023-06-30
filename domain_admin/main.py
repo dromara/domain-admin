@@ -75,7 +75,6 @@ def init_app(flask_app):
     :param flask_app:
     :return:
     """
-    global PROMETHEUS_KEY
 
     # 注册路由
     register.register_app_routers(flask_app, api_map.routes)
@@ -105,9 +104,6 @@ def init_app(flask_app):
     # 初始化全局常量配置
     system_service.init_system_config(flask_app)
 
-    # prometheus key
-    PROMETHEUS_KEY = PROMETHEUS_KEY or md5_util.md5(secret_util.get_random_secret())
-    logger.info("PROMETHEUS_KEY: %s", PROMETHEUS_KEY)
 
 
 init_app(app)

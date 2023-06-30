@@ -2,8 +2,10 @@
 """
 system_service.py
 """
+from domain_admin.config import PROMETHEUS_KEY
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.system_model import SystemModel
+from domain_admin.utils import md5_util, secret_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -45,7 +47,7 @@ def check_email_config(config):
 def get_email_config():
     config = get_system_config()
 
-    check_email_config(config)
+    # check_email_config(config)
 
     return config
 
@@ -56,7 +58,11 @@ def init_system_config(app):
     :param app:
     :return:
     """
+
     config = get_system_config()
 
     app.config[ConfigKeyEnum.SECRET_KEY] = config[ConfigKeyEnum.SECRET_KEY]
     app.config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS] = config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS]
+
+    # prometheus key
+    app.config[ConfigKeyEnum.PROMETHEUS_KEY] = PROMETHEUS_KEY or md5_util.md5(secret_util.get_random_secret())

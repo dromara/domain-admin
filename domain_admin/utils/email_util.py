@@ -3,6 +3,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formataddr
+from email.header import Header
 
 
 class EmailServer(object):
@@ -87,3 +88,69 @@ class EmailServer(object):
             to_addrs=to_addresses,
             msg=email_content.as_string()
         )
+
+
+def send_email(
+        mail_host,
+        mail_port,
+        mail_alias,
+        subject,
+        content,
+        to_addresses,
+        mail_username=None,
+        mail_password=None,
+        content_type='plain'
+):
+    """
+    发送邮件
+    ref: https://www.runoob.com/python/python-email.html
+    :param mail_host:
+    :param mail_port:
+    :param mail_alias:
+    :param subject:
+    :param content:
+    :param to_addresses:
+    :param mail_username:
+    :param mail_password:
+    :param content_type:
+    :return:
+    """
+    print(mail_host,
+          mail_port,
+          mail_alias,
+          subject,
+          to_addresses,
+          mail_username,
+          mail_password,
+          content_type)
+
+    # 获取email服务
+    if mail_port == 465:
+        # ssl 465端口
+        server = smtplib.SMTP_SSL(mail_host)
+    elif mail_port == 587:
+        # starttls 587端口
+        server = smtplib.SMTP(mail_host, mail_port)
+        server.starttls()
+    else:
+        # 25端口
+        server = smtplib.SMTP(mail_host, mail_port)
+
+    # 需要登录，否则匿名
+    if mail_username:
+        server.login(mail_username, mail_password)
+
+    # 构造邮件
+    message = MIMEText(content, content_type, 'utf-8')
+    # 邮箱昵称、发件人邮箱账号
+    message['From'] = formataddr((mail_alias, mail_username))
+    message['Subject'] = Header(subject, 'utf-8')
+
+    # 发送
+    server.sendmail(
+        from_addr=mail_username,
+        to_addrs=to_addresses,
+        msg=message.as_string()
+    )
+
+    # server.quit()

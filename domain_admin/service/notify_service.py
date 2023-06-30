@@ -13,13 +13,15 @@ import requests
 
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.enums.event_enum import EventEnum
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
 from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import domain_service, render_service, email_service
+from domain_admin.service import domain_service, render_service, email_service, system_service
+from domain_admin.utils import email_util
 from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
 from domain_admin.utils.flask_ext.app_exception import AppException
 from jinja2 import Template
@@ -336,10 +338,17 @@ def notify_user_by_email(
         data=data
     )
 
-    email_service.send_email(
+    config = system_service.get_system_config()
+
+    email_util.send_email(
+        mail_host=config[ConfigKeyEnum.MAIL_HOST],
+        mail_port=config[ConfigKeyEnum.MAIL_PORT],
+        mail_alias=config[ConfigKeyEnum.MAIL_ALIAS],
         subject=subject,
         content=content,
         to_addresses=email_list,
+        mail_username=config[ConfigKeyEnum.MAIL_USERNAME],
+        mail_password=config[ConfigKeyEnum.MAIL_PASSWORD],
         content_type='html'
     )
 
