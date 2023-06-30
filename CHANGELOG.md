@@ -2,6 +2,9 @@
 - v1.5.0（开发中）
     - 新增网站监控 [issues17](https://github.com/mouday/domain-admin/issues/17)
 
+- v1.4.13(2023-06-30)
+    - 修复 添加prometheus-client依赖
+
 - v1.4.12(2023-06-30)
     - 新增 支持`prometheus` 的`/metrics`数据获取接口
 
