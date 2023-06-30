@@ -3,6 +3,10 @@
     - 新增网站监控 [issues17](https://github.com/mouday/domain-admin/issues/17)
     - SMTP 匿名认证
     
+v1.4.17(2023-06-30)
+    - 优化 支持发送匿名邮件
+    - 新增 域名详情页添加ICP备案查询
+
 - v1.4.16(2023-06-30)
     - 修复 `.co` 域名服务商`registrar_url` 字段缺少`http://` 的问题
 
