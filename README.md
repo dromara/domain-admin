@@ -430,11 +430,12 @@ spec:
         app.kubernetes.io/name: domain-admin
     spec:
       containers:
-      - envFrom:
-        - secretRef:
-            name: env
+      - name: domain-admin
         image: mouday/domain-admin:latest
         imagePullPolicy: Always
+        env:
+        - name: DB_CONNECT_URL
+          value: "sqlite:///database/database.db"
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -444,7 +445,6 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        name: domain-admin
         ports:
         - containerPort: 8000
           name: http
