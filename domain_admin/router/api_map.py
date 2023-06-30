@@ -119,5 +119,8 @@ routes = {
     '/api/getDomainInfoGroupFilter': domain_info_api.get_domain_info_group_filter,
 
     # prometheus
-    '/metrics': prometheus_api.metrics
+    '/metrics': prometheus_api.metrics,
+
+    # 备案查询
+    '/api/getICP': domain_info_api.get_icp
 }

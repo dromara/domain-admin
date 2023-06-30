@@ -13,7 +13,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service
-from domain_admin.utils import domain_util, time_util
+from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -395,3 +395,12 @@ def get_domain_info_group_filter():
         'list': lst,
         'total': len(lst),
     }
+
+
+def get_icp():
+    """
+    查询icp信息
+    """
+    domain = request.json['domain']
+    res = icp_util.get_icp(domain)
+    return res.get('info')
