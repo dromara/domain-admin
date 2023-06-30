@@ -464,10 +464,10 @@ spec:
 
 1、第一步、需要配置`.env` 参数，全局授权key
 
-``bash
+```bash
 # prometheus key
 PROMETHEUS_KEY=f60c03bfff8bb42dcf6821542e5fd11e
-``
+```
 
 2、第二步、配置 prometheus.yml
 
