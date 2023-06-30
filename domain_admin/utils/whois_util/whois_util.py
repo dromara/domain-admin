@@ -135,6 +135,20 @@ def get_domain_raw_whois(domain):
     return raw_data
 
 
+def handle_url(url):
+    """
+    处理不规范的url
+    :param url:
+    :return:
+    """
+    if url.startswith('http://'):
+        return url
+    elif url.startswith('https://'):
+        return url
+    else:
+        return 'http://' + url
+
+
 def get_domain_whois(domain):
     logger.debug('get_domain_whois %s', domain)
 
@@ -174,8 +188,8 @@ def get_domain_whois(domain):
             registrar_url = registrar_config['registrar_url']
 
     # 修复 https:// http://
-    if registrar_url and (not registrar_url.startswith('http://') or not registrar_url.startswith('https://')):
-        registrar_url = 'http://' + registrar_url
+    if registrar_url:
+        registrar_url = handle_url(registrar_url)
 
     if start_time and expire_time:
         return {

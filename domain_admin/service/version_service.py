@@ -196,7 +196,6 @@ def update_version():
             VersionEnum.Version_1412,
             VersionEnum.Version_1413,
             VersionEnum.Version_1414,
-
         ]:
             # 1.4.6 => 1.4.14
             logger.info('update version: %s => %s', local_version, VersionEnum.Version_1414)
