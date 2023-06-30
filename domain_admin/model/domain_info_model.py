@@ -30,6 +30,12 @@ class DomainInfoModel(BaseModel):
     # 域名
     domain = CharField(null=False)
 
+    # 域名注册商
+    domain_registrar = CharField(default="")
+
+    # 域名注册商地址
+    domain_registrar_url = CharField(default="")
+
     # 域名注册时间
     domain_start_time = DateTimeField(default=None, null=True)
 
