@@ -61,8 +61,18 @@ def init_system_config(app):
 
     config = get_system_config()
 
+    # 旧版本已存在
     app.config[ConfigKeyEnum.SECRET_KEY] = config[ConfigKeyEnum.SECRET_KEY]
     app.config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS] = config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS]
 
-    # prometheus key
-    app.config[ConfigKeyEnum.PROMETHEUS_KEY] = PROMETHEUS_KEY or md5_util.md5(secret_util.get_random_secret())
+    # 兼容老版本 prometheus key
+    if ConfigKeyEnum.PROMETHEUS_KEY in config:
+        app.config[ConfigKeyEnum.PROMETHEUS_KEY] = config[ConfigKeyEnum.PROMETHEUS_KEY]
+    else:
+        SystemModel.create(
+            key=ConfigKeyEnum.PROMETHEUS_KEY,
+            value=PROMETHEUS_KEY,
+            label='prometheus_key',
+            placeholder='prometheus_key'
+        )
+        app.config[ConfigKeyEnum.PROMETHEUS_KEY] = PROMETHEUS_KEY

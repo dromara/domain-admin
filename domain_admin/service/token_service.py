@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import jwt
 from flask import current_app
 
-from domain_admin.config import DEFAULT_TOKEN_EXPIRE_DAYS
+from domain_admin.config import SECRET_KEY, TOKEN_EXPIRE_DAYS
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
 
@@ -23,10 +23,10 @@ def encode_token(payload):
     # secret_key = config['secret_key']
 
     secret_key = current_app.config[ConfigKeyEnum.SECRET_KEY]
-    token_expire_days = current_app.config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS]
+    token_expire_days = int(current_app.config[ConfigKeyEnum.TOKEN_EXPIRE_DAYS])
 
     # bugfix 用户删除token过期天数变量后报错
-    token_expire_days = int(token_expire_days or DEFAULT_TOKEN_EXPIRE_DAYS)
+    # token_expire_days = TOKEN_EXPIRE_DAYS
 
     # 使用utc时间
     payload['exp'] = datetime.utcnow() + timedelta(days=token_expire_days)

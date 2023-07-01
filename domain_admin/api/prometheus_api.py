@@ -11,6 +11,7 @@ from flask import current_app
 from prometheus_client import Gauge
 from prometheus_client.core import CollectorRegistry
 
+from domain_admin.config import PROMETHEUS_KEY
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.log import logger
 from domain_admin.model.domain_model import DomainModel
@@ -27,7 +28,9 @@ def metrics():
     ret = re.match('Bearer (?P<token>.*)', authorization)
     token = ret.groupdict().get('token')
 
-    if token != current_app.config[ConfigKeyEnum.PROMETHEUS_KEY]:
+    prometheus_key = current_app.config[ConfigKeyEnum.PROMETHEUS_KEY]
+
+    if token != prometheus_key:
         return Response("Unauthorized", status=401)
 
     registry = CollectorRegistry(auto_describe=False)

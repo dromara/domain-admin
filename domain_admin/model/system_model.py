@@ -7,6 +7,7 @@ from datetime import datetime
 
 from peewee import CharField, DateTimeField, BooleanField, AutoField
 
+from domain_admin.config import SECRET_KEY, TOKEN_EXPIRE_DAYS, PROMETHEUS_KEY
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import secret_util
@@ -104,7 +105,7 @@ def init_table_data():
 
         {
             'key': ConfigKeyEnum.SECRET_KEY,
-            'value': secret_util.get_random_secret(),
+            'value': SECRET_KEY,
             'is_show_value': False,
             'label': 'Token秘钥',
             'placeholder': '重新设置后所有用户的登录状态会退出'
@@ -112,10 +113,19 @@ def init_table_data():
 
         {
             'key': ConfigKeyEnum.TOKEN_EXPIRE_DAYS,
-            'value': 7,
-            'is_show_value': True,
+            'value': TOKEN_EXPIRE_DAYS,
+            'is_show_value': False,
             'label': 'Token有效期（天）',
             'placeholder': 'Token有效期（天）'
+        },
+
+        # @since 1.4.19
+        {
+            'key': ConfigKeyEnum.PROMETHEUS_KEY,
+            'value': PROMETHEUS_KEY,
+            'is_show_value': False,
+            'label': 'prometheus_key',
+            'placeholder': 'prometheus_key'
         },
     ]
 

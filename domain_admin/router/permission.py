@@ -17,6 +17,9 @@ ADMIN_API_LIST = [
     # 全局配置管理
     '/api/getAllSystemConfig',
     '/api/updateSystemConfig',
+    '/api/getSystemEnvConfig',
+    '/api/getCronConfig',
+    '/api/updateCronConfig',
 
     # 用户管理
     '/api/getUserList',
