@@ -185,10 +185,13 @@ def notify_user_about_cert_expired(notify_row: NotifyModel):
 
     notify_expire_time = now + timedelta(days=notify_row.expire_days)
 
+    # 注意null的情况
     rows = DomainModel.select().where(
         DomainModel.user_id == notify_row.user_id,
         DomainModel.is_monitor == True,
-        DomainModel.expire_time <= notify_expire_time
+    ).where(
+        (DomainModel.expire_time <= notify_expire_time)
+        | (DomainModel.expire_time.is_null(True))
     ).order_by(
         DomainModel.expire_time.asc(),
         DomainModel.id.desc()
@@ -220,10 +223,13 @@ def notify_user_about_domain_expired(notify_row: NotifyModel):
 
     notify_expire_time = now + timedelta(days=notify_row.expire_days)
 
+    # 注意null的情况
     rows = DomainInfoModel.select().where(
         DomainInfoModel.user_id == notify_row.user_id,
         DomainInfoModel.is_expire_monitor == True,
-        DomainInfoModel.domain_expire_time <= notify_expire_time
+    ).where(
+        (DomainInfoModel.domain_expire_time <= notify_expire_time)
+        | (DomainInfoModel.domain_expire_time.is_null(True))
     ).order_by(
         DomainInfoModel.domain_expire_time.asc(),
         DomainInfoModel.id.desc()
