@@ -91,19 +91,14 @@ class EmailServer(object):
 
 
 def send_email(
-        mail_host,
-        mail_port,
-        mail_alias,
-        subject,
-        content,
-        to_addresses,
-        mail_username=None,
-        mail_password=None,
-        content_type='plain'
+        subject, content, to_addresses,
+        mail_host='localhost', mail_port=25, content_type='plain',
+        mail_alias=None, mail_username=None, mail_password=None
 ):
     """
     发送邮件
     ref: https://www.runoob.com/python/python-email.html
+
     :param mail_host:
     :param mail_port:
     :param mail_alias:
@@ -115,15 +110,13 @@ def send_email(
     :param content_type:
     :return:
     """
+    mail_username = mail_username or 'admin@domain-admin.com'
+    mail_alias = mail_alias or mail_username
 
     # 构造邮件
     message = MIMEText(content, content_type, 'utf-8')
     # 邮箱昵称、发件人邮箱账号
-    if mail_username:
-        message['From'] = formataddr((mail_alias, mail_username))
-    else:
-        message['From'] = Header(mail_alias, 'utf-8')
-
+    message['From'] = formataddr((mail_alias, mail_username))
     message['Subject'] = Header(subject, 'utf-8')
 
     # 获取email服务
@@ -139,7 +132,7 @@ def send_email(
         server = smtplib.SMTP(mail_host, mail_port)
 
     # 需要登录，否则匿名
-    if mail_username:
+    if mail_password:
         server.login(mail_username, mail_password)
 
     # 发送
@@ -148,3 +141,6 @@ def send_email(
         to_addrs=to_addresses,
         msg=message.as_string()
     )
+
+    # 退出
+    server.quit()
