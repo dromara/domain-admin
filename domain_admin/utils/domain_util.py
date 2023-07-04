@@ -62,6 +62,9 @@ def parse_domain_from_csv_file(filename) -> ParsedDomain:
             domain = parse_domain(item.get('域名', ''))
             if ':' in domain:
                 domain, port = domain.split(":")
+            else:
+                # SSL默认端口
+                port = cert_consts.SSL_DEFAULT_PORT
 
             alias = item.get('备注', '').strip(' -')
             group_name = item.get('分组', '').strip(' -')

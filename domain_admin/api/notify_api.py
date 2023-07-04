@@ -12,10 +12,11 @@ from datetime import datetime, timedelta
 from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.log import logger
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import notify_service
+from domain_admin.service import notify_service, operation_service
 from domain_admin.utils import datetime_util
 
 
@@ -88,6 +89,11 @@ def get_notify_list_of_user():
     }
 
 
+@operation_service.operation_log_decorator(
+    model=NotifyModel,
+    operation_type_id=OperationEnum.CREATE,
+    primary_key='id'
+)
 def add_notify():
     """
     添加用户通知配置
@@ -103,7 +109,7 @@ def add_notify():
 
     value_raw = json.dumps(value, ensure_ascii=False)
 
-    NotifyModel.create(
+    row = NotifyModel.create(
         user_id=current_user_id,
         event_id=event_id,
         type_id=type_id,
@@ -113,7 +119,15 @@ def add_notify():
         status=StatusEnum.Enabled
     )
 
+    return {'id': row.id}
 
+
+
+@operation_service.operation_log_decorator(
+    model=NotifyModel,
+    operation_type_id=OperationEnum.DELETE,
+    primary_key='notify_id'
+)
 def delete_notify_by_id():
     """
     删除用户通知配置
@@ -145,6 +159,12 @@ def get_notify_by_id():
         ])
 
 
+
+@operation_service.operation_log_decorator(
+    model=NotifyModel,
+    operation_type_id=OperationEnum.UPDATE,
+    primary_key='notify_id'
+)
 def update_notify_by_id():
     """
     更新用户通知配置
@@ -171,6 +191,11 @@ def update_notify_by_id():
     ).execute()
 
 
+@operation_service.operation_log_decorator(
+    model=NotifyModel,
+    operation_type_id=OperationEnum.UPDATE,
+    primary_key='notify_id'
+)
 def update_notify_status_by_id():
     """
     更新用户通知配置状态

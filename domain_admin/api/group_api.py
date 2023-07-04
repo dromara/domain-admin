@@ -3,12 +3,18 @@ from flask import request, g
 from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import group_service
+from domain_admin.service import group_service, operation_service
 
 
+@operation_service.operation_log_decorator(
+    model=GroupModel,
+    operation_type_id=OperationEnum.CREATE,
+    primary_key='id'
+)
 def add_group():
     """
     添加
@@ -27,6 +33,11 @@ def add_group():
     return {'id': row.id}
 
 
+@operation_service.operation_log_decorator(
+    model=GroupModel,
+    operation_type_id=OperationEnum.UPDATE,
+    primary_key='id'
+)
 def update_group_by_id():
     """
     更新数据
@@ -46,7 +57,11 @@ def update_group_by_id():
         GroupModel.id == group_id
     ).execute()
 
-
+@operation_service.operation_log_decorator(
+    model=GroupModel,
+    operation_type_id=OperationEnum.DELETE,
+    primary_key='id'
+)
 def delete_group_by_id():
     """
     删除
@@ -75,6 +90,11 @@ def delete_group_by_id():
     ).execute()
 
 
+@operation_service.operation_log_decorator(
+    model=GroupModel,
+    operation_type_id=OperationEnum.BATCH_DELETE,
+    primary_key='group_ids'
+)
 def delete_group_by_ids():
     """
     批量删除

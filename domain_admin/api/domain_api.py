@@ -7,11 +7,12 @@ from operator import itemgetter
 from flask import request, g
 from playhouse.shortcuts import model_to_dict, fn
 
+from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import async_task_service, domain_info_service, group_service
+from domain_admin.service import async_task_service, domain_info_service, group_service, operation_service
 from domain_admin.service import domain_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
@@ -19,6 +20,10 @@ from domain_admin.utils.cert_util import cert_consts
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
+@operation_service.operation_log_decorator(
+    model=DomainModel,
+    operation_type_id=OperationEnum.CREATE
+)
 def add_domain():
     """
     添加域名
@@ -70,6 +75,10 @@ def add_domain():
     return {'id': row.id}
 
 
+@operation_service.operation_log_decorator(
+    model=DomainModel,
+    operation_type_id=OperationEnum.UPDATE
+)
 def update_domain_by_id():
     """
     更新数据
@@ -116,6 +125,11 @@ def update_domain_expire_monitor_by_id():
     ).execute()
 
 
+@operation_service.operation_log_decorator(
+    model=DomainModel,
+    operation_type_id=OperationEnum.UPDATE,
+    primary_key='domain_id'
+)
 def update_domain_field_by_id():
     """
     更新单个数据
@@ -140,6 +154,11 @@ def update_domain_field_by_id():
     ).execute()
 
 
+@operation_service.operation_log_decorator(
+    model=DomainModel,
+    operation_type_id=OperationEnum.DELETE,
+    primary_key='id'
+)
 def delete_domain_by_id():
     """
     删除
@@ -162,6 +181,11 @@ def delete_domain_by_id():
     ).execute()
 
 
+@operation_service.operation_log_decorator(
+    model=DomainModel,
+    operation_type_id=OperationEnum.BATCH_DELETE,
+    primary_key='ids'
+)
 def delete_domain_by_ids():
     """
     批量删除

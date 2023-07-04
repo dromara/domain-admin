@@ -2,7 +2,8 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api, prometheus_api
+from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api, prometheus_api, \
+    log_operation_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -60,6 +61,9 @@ routes = {
     # 调度日志
     '/api/getLogSchedulerList': log_scheduler_api.get_log_scheduler_list,
     '/api/clearLogSchedulerList': log_scheduler_api.clear_log_scheduler_list,
+
+    # 操作日志
+    '/api/getOperationLogList': log_operation_api.get_operation_log_list,
 
     # 系统管理 (管理员权限)
     '/api/getAllSystemConfig': system_api.get_all_system_config,
