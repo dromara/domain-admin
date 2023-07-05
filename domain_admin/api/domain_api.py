@@ -37,6 +37,9 @@ def add_domain():
     alias = request.json.get('alias') or ''
     group_id = request.json.get('group_id') or 0
     is_dynamic_host = request.json.get('is_dynamic_host', False)
+    start_time = request.json.get('start_time')
+    expire_time = request.json.get('expire_time')
+    auto_update = request.json.get('auto_update', True)
     port = request.json.get('port') or cert_consts.SSL_DEFAULT_PORT
 
     data = {
@@ -48,11 +51,15 @@ def add_domain():
         'alias': alias,
         'group_id': group_id,
         'is_dynamic_host': is_dynamic_host,
+        'start_time': start_time,
+        'expire_time': expire_time,
+        'auto_update': auto_update,
     }
 
     row = DomainModel.create(**data)
 
-    domain_service.update_domain_row(row)
+    if auto_update:
+        domain_service.update_domain_row(row)
 
     # 顺带添加到域名监测列表
     if not domain_util.is_ipv4(domain):
