@@ -44,10 +44,11 @@ class NotifyModel(BaseModel):
     class Meta:
         table_name = 'tb_notify'
 
-        indexes = (
-            # 唯一索引
-            (('user_id', 'type_id'), True),
-        )
+        # 移除唯一索引
+        # indexes = (
+        #     # 唯一索引
+        #     (('user_id', 'type_id'), True),
+        # )
 
     @property
     def value(self):

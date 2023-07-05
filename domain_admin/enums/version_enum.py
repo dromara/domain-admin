@@ -89,3 +89,13 @@ class VersionEnum(object):
     Version_1412 = '1.4.12'
     Version_1413 = '1.4.13'
     Version_1414 = '1.4.14'
+
+    Version_1415 = '1.4.15'
+    Version_1416 = '1.4.16'
+    Version_1417 = '1.4.17'
+    Version_1418 = '1.4.18'
+    Version_1419 = '1.4.19'
+    Version_1420 = '1.4.20'
+    Version_1421 = '1.4.21'
+    Version_1422 = '1.4.22'
+    Version_1423 = '1.4.23'

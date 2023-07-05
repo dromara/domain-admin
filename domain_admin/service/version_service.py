@@ -20,7 +20,7 @@ from domain_admin.migrate import (
     migrate_140_alpha_to_140,
     migrate_143_to_144,
     migrate_145_to_146,
-    migrate_1413_to_1414)
+    migrate_1413_to_1414, migrate_1422_to_1423)
 
 
 def get_local_version():
@@ -203,6 +203,29 @@ def update_version():
             migrate_1413_to_1414.execute_migrate()
 
             local_version = VersionEnum.Version_1414
+
+        # 2023-07-05
+        if local_version in [
+            VersionEnum.Version_1414,
+            VersionEnum.Version_1415,
+            VersionEnum.Version_1416,
+            VersionEnum.Version_1417,
+            VersionEnum.Version_1418,
+            VersionEnum.Version_1419,
+            VersionEnum.Version_1420,
+            VersionEnum.Version_1421,
+            VersionEnum.Version_1422,
+            VersionEnum.Version_1423,
+        ]:
+            # 1.4.22 => 1.4.23
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_1423)
+
+            try:
+                migrate_1422_to_1423.execute_migrate()
+            except Exception as e:
+                pass
+
+            local_version = VersionEnum.Version_1423
 
     # 更新版本号
     VersionModel.create(
