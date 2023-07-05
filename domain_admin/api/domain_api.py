@@ -88,7 +88,7 @@ def update_domain_by_id():
     current_user_id = g.user_id
 
     data = request.json
-    domain_id = data.pop('id')
+    domain_id = request.json['id']
 
     # domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
