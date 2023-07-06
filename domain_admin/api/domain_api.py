@@ -12,6 +12,7 @@ from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
+from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import async_task_service, domain_info_service, group_service, operation_service
 from domain_admin.service import domain_service
 from domain_admin.service import file_service
@@ -223,8 +224,8 @@ def get_domain_by_id():
 
     domain_id = request.json.get('domain_id') or request.json['id']
 
-    row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
-
+    # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
+    row = DomainModel.get_by_id(domain_id)
     row = model_to_dict(
         model=row,
         extra_attrs=[
@@ -242,6 +243,22 @@ def get_domain_by_id():
 
     row['address_count'] = address_count
     row['group_name'] = group_service.get_group_name_by_id(row['group_id'])
+
+    if row['user_id'] == current_user_id:
+        has_edit_permission = True
+    else:
+        first_row = GroupUserModel.select().where(
+            GroupUserModel.group_id == row['group_id'],
+            GroupUserModel.user_id == current_user_id,
+            GroupUserModel.has_edit_permission == True
+        ).first()
+
+        if first_row:
+            has_edit_permission = True
+        else:
+            has_edit_permission = False
+
+    row['has_edit_permission'] = has_edit_permission
 
     return row
 
@@ -375,9 +392,17 @@ def get_domain_list():
     group_ids = request.json.get('group_ids')
     expire_days = request.json.get('expire_days')
 
-    query = DomainModel.select().where(
-        DomainModel.user_id == current_user_id
+    # 所在分组
+    group_user_rows = GroupUserModel.select().where(
+        GroupUserModel.user_id == current_user_id
     )
+
+    group_user_list = list(group_user_rows)
+    user_group_ids = [row.group_id for row in group_user_list]
+    # 组员权限
+    group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
+
+    query = DomainModel.select()
 
     if isinstance(group_id, int):
         query = query.where(DomainModel.group_id == group_id)
@@ -387,6 +412,13 @@ def get_domain_list():
 
     if group_ids:
         query = query.where(DomainModel.group_id.in_(group_ids))
+    else:
+        query = query.where(DomainModel.user_id == current_user_id)
+
+        if user_group_ids:
+            query = query.orwhere(
+                DomainModel.group_id.in_(user_group_ids)
+            )
 
     if expire_days is not None:
         if expire_days[0] is None:
@@ -491,6 +523,14 @@ def get_domain_list():
         # 分组名
         group_service.load_group_name(lst)
 
+        for row in lst:
+            if row['user_id'] == current_user_id:
+                has_edit_permission = True
+            else:
+                has_edit_permission = group_user_permission_map.get(row['group_id'], False)
+
+            row['has_edit_permission'] = has_edit_permission
+
     # lst = model_util.list_with_relation_one(lst, 'group', GroupModel)
 
     return {
@@ -512,14 +552,29 @@ def get_domain_group_filter():
         GroupModel.user_id == current_user_id
     )
 
+    # 所在分组
+    group_user_rows = GroupUserModel.select().where(
+        GroupUserModel.user_id == current_user_id
+    )
+
+    group_user_list = list(group_user_rows)
+    user_group_ids = [row.group_id for row in group_user_list]
+
+    if user_group_ids:
+        query = query.orwhere(GroupModel.id.in_(user_group_ids))
+
     total = query.count()
     lst = []
     if total > 0:
+        lst = [model_to_dict(row) for row in query]
+        group_ids = [row['id'] for row in lst]
 
         # 证书分组统计
         cert_groups = DomainModel.select(
             DomainModel.group_id,
             fn.COUNT(DomainModel.id).alias('count')
+        ).where(
+            DomainModel.group_id.in_(group_ids)
         ).group_by(DomainModel.group_id)
 
         cert_groups_map = {
@@ -527,18 +582,21 @@ def get_domain_group_filter():
             for row in cert_groups
         }
 
-        lst = []
-        for row in query:
-            row_dict = model_to_dict(row)
-            row_dict['cert_count'] = cert_groups_map.get(str(row.id), 0)
-            lst.append(row_dict)
+        for row in lst:
+            row['cert_count'] = cert_groups_map.get(str(row['id']), 0)
 
-        if cert_groups_map.get('0'):
-            lst.append({
-                'cert_count': cert_groups_map.get('0'),
-                'id': 0,
-                'name': '未分组',
-            })
+            # leader
+            if row['user_id'] == current_user_id:
+                row['is_leader'] = True
+            else:
+                row['is_leader'] = False
+
+        # if cert_groups_map.get('0'):
+        #     lst.append({
+        #         'cert_count': cert_groups_map.get('0'),
+        #         'id': 0,
+        #         'name': '未分组',
+        # })
 
         lst.sort(key=itemgetter('cert_count'), reverse=True)
 

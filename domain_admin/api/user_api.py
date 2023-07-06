@@ -10,6 +10,7 @@ from domain_admin.config import DEFAULT_BEFORE_EXPIRE_DAYS
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_model import GroupModel
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.utils import datetime_util, bcrypt_util
@@ -153,6 +154,22 @@ def get_user_list():
 
     for row in lst:
         row['notify_count'] = notify_groups_map.get(str(row['id']), 0)
+
+    # 分组数量
+    group_groups = GroupModel.select(
+        GroupModel.user_id,
+        fn.COUNT(GroupModel.id).alias('count')
+    ).where(
+        GroupModel.user_id.in_(row_ids)
+    ).group_by(GroupModel.user_id)
+
+    group_groups_map = {
+        str(row.user_id): row.count
+        for row in group_groups
+    }
+
+    for row in lst:
+        row['group_count'] = group_groups_map.get(str(row['id']), 0)
 
     return {
         'list': lst,

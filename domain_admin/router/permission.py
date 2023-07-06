@@ -22,7 +22,7 @@ ADMIN_API_LIST = [
     '/api/updateCronConfig',
 
     # 用户管理
-    '/api/getUserList',
+    # '/api/getUserList',
     '/api/addUser',
     '/api/updateUserStatus',
     '/api/deleteUser'

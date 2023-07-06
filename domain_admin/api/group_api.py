@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from operator import itemgetter
+
 from flask import request, g
 from peewee import fn
 from playhouse.shortcuts import model_to_dict
@@ -7,7 +9,8 @@ from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import group_service, operation_service
+from domain_admin.model.group_user_model import GroupUserModel
+from domain_admin.service import group_service, operation_service, group_user_service
 
 
 @operation_service.operation_log_decorator(
@@ -57,6 +60,7 @@ def update_group_by_id():
         GroupModel.id == group_id
     ).execute()
 
+
 @operation_service.operation_log_decorator(
     model=GroupModel,
     operation_type_id=OperationEnum.DELETE,
@@ -87,6 +91,10 @@ def delete_group_by_id():
         group_id=0
     ).where(
         DomainInfoModel.group_id == group_id
+    ).execute()
+
+    GroupUserModel.delete().where(
+        GroupUserModel.group_id == group_id
     ).execute()
 
 
@@ -122,6 +130,10 @@ def delete_group_by_ids():
         DomainInfoModel.group_id.in_(group_ids)
     ).execute()
 
+    GroupUserModel.delete().where(
+        GroupUserModel.group_id.in_(group_ids)
+    ).execute()
+
 
 def get_group_list():
     """
@@ -139,6 +151,19 @@ def get_group_list():
         GroupModel.user_id == current_user_id
     )
 
+    # 所在分组
+    group_user_list = list(GroupUserModel.select().where(
+        GroupUserModel.user_id == current_user_id
+    ))
+
+    user_group_ids = [row.group_id for row in group_user_list]
+    group_user_map = {row.group_id: row.has_edit_permission for row in group_user_list}
+
+    if user_group_ids:
+        query = query.orwhere(
+            GroupModel.id.in_(user_group_ids)
+        )
+
     if keyword:
         query = query.where(GroupModel.name.contains(keyword))
 
@@ -149,6 +174,8 @@ def get_group_list():
         GroupModel.create_time.asc(),
         GroupModel.id.asc()
     )
+
+    rows = list(rows)
 
     # 证书分组统计
     cert_groups = DomainModel.select(
@@ -172,12 +199,40 @@ def get_group_list():
         for row in domain_groups
     }
 
+    # 成员分组统计
+    group_ids = [row.id for row in rows]
+
+    domain_groups = GroupUserModel.select(
+        GroupUserModel.group_id,
+        fn.COUNT(GroupUserModel.id).alias('count')
+    ).where(
+        GroupUserModel.group_id.in_(group_ids)
+    ).group_by(GroupUserModel.group_id)
+
+    group_user_groups_map = {
+        row.group_id: row.count
+        for row in domain_groups
+    }
+
     lst = []
     for row in rows:
         row_dict = model_to_dict(row)
         row_dict['cert_count'] = cert_groups_map.get(row.id, 0)
         row_dict['domain_count'] = domain_groups_map.get(row.id, 0)
+        row_dict['group_user_count'] = group_user_groups_map.get(row.id, 0) + 1
+
+        # 组权限
+        if row.user_id == current_user_id:
+            has_edit_permission = True
+        else:
+            has_edit_permission = group_user_map.get(row.id, False)
+
+        row_dict['has_edit_permission'] = has_edit_permission
+        row_dict['is_leader'] = row.user_id == current_user_id
+
         lst.append(row_dict)
+
+    lst.sort(key=itemgetter('is_leader', 'has_edit_permission'), reverse=True)
 
     return {
         'list': lst,

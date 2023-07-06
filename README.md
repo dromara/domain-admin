@@ -533,7 +533,7 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 批量域名列表 (746314个)
  
 - [alexa-top-1m.csv.zip](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)
-- [docs/top-1m.csv](docs/top-1m.csv)
+- [docs/top-1m.csv](docs/top-1m.txt)
 
 ## 更新日志
 

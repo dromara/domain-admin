@@ -1,0 +1,9 @@
+POST {{baseUrl}}/api/getGroupUserList
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODkyMzc0NjN9.TwU0gC5wQvNBz6N7EKlFdZv9724UletFJldXGO7g7Io
+
+{
+  "group_id": 3
+}
+
+###

@@ -11,7 +11,7 @@ from domain_admin.model.user_model import UserModel
 
 def load_user_name(lst: List[BaseModel]):
     """
-    追加用户名字段
+    追加用户名字段: user_name
     :param lst:
     :return:
     """

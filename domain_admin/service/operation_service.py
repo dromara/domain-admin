@@ -3,18 +3,15 @@
 @File    : operation_service.py
 @Date    : 2023-07-04
 """
-import json
-from typing import Dict
 from functools import wraps
+from typing import Dict
 
 from flask import g, request
-from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.model.log_operation_model import LogOperationModel
 from domain_admin.utils import json_util
-from domain_admin.utils.json_util import default_json_encoder
 
 
 def add_operation_log(user_id: int, table: str, type_id: int, before: Dict, after: Dict):

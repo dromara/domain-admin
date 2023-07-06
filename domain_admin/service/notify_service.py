@@ -19,6 +19,7 @@ from domain_admin.enums.notify_type_enum import NotifyTypeEnum
 from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.service import domain_service, render_service, email_service, system_service
 from domain_admin.utils import email_util
@@ -185,11 +186,31 @@ def notify_user_about_cert_expired(notify_row: NotifyModel):
 
     notify_expire_time = now + timedelta(days=notify_row.expire_days)
 
+    # 所在分组
+    group_user_rows = GroupUserModel.select().where(
+        GroupUserModel.user_id == notify_row.user_id
+    )
+
+    group_user_list = list(group_user_rows)
+    user_group_ids = [row.group_id for row in group_user_list]
+
     # 注意null的情况
-    rows = DomainModel.select().where(
-        DomainModel.user_id == notify_row.user_id,
-        DomainModel.is_monitor == True,
-    ).where(
+    query = DomainModel.select().where(
+        DomainModel.is_monitor == True
+    )
+
+    # 分组
+    if user_group_ids:
+        query = query.where(
+            (DomainModel.user_id == notify_row.user_id)
+            | (DomainModel.group_id.in_(user_group_ids))
+        )
+    else:
+        query = query.where(
+            DomainModel.user_id == notify_row.user_id,
+        )
+
+    rows = query.where(
         (DomainModel.expire_time <= notify_expire_time)
         | (DomainModel.expire_time.is_null(True))
     ).order_by(
@@ -223,11 +244,30 @@ def notify_user_about_domain_expired(notify_row: NotifyModel):
 
     notify_expire_time = now + timedelta(days=notify_row.expire_days)
 
+    # 所在分组
+    group_user_rows = GroupUserModel.select().where(
+        GroupUserModel.user_id == notify_row.user_id
+    )
+
+    group_user_list = list(group_user_rows)
+    user_group_ids = [row.group_id for row in group_user_list]
+
     # 注意null的情况
-    rows = DomainInfoModel.select().where(
-        DomainInfoModel.user_id == notify_row.user_id,
-        DomainInfoModel.is_expire_monitor == True,
-    ).where(
+    query = DomainInfoModel.select().where(
+        DomainInfoModel.is_expire_monitor == True
+    )
+
+    if user_group_ids:
+        query = query.where(
+            (DomainInfoModel.user_id == notify_row.user_id)
+            | (DomainInfoModel.group_id.in_(user_group_ids))
+        )
+    else:
+        query = query.where(
+            DomainInfoModel.user_id == notify_row.user_id,
+        )
+
+    rows = query.where(
         (DomainInfoModel.domain_expire_time <= notify_expire_time)
         | (DomainInfoModel.domain_expire_time.is_null(True))
     ).order_by(

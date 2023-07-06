@@ -4,7 +4,7 @@ database.py
 """
 
 from domain_admin.log import logger
-from domain_admin.model import address_model, log_operation_model
+from domain_admin.model import address_model, log_operation_model, group_user_model
 from domain_admin.model import domain_info_model
 from domain_admin.model import domain_model
 from domain_admin.model import group_model
@@ -27,6 +27,7 @@ tables = [
     (address_model.AddressModel, None),
     (domain_info_model.DomainInfoModel, None),
     (log_operation_model.LogOperationModel, None),
+    (group_user_model.GroupUserModel, None),
 ]
 
 

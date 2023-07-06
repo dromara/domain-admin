@@ -3,7 +3,7 @@
 路由配置
 """
 from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api, prometheus_api, \
-    log_operation_api
+    log_operation_api, group_user_api
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -131,4 +131,11 @@ routes = {
     # 备案查询
     '/api/getICP': domain_info_api.get_icp,
 
+    # 分组权限
+    '/api/addGroupUser': group_user_api.add_group_user,
+    '/api/updateGroupUserById': group_user_api.update_group_user_by_id,
+    '/api/deleteGroupUserById': group_user_api.delete_group_user_by_id,
+    '/api/deleteGroupUserByIds': group_user_api.delete_group_user_by_ids,
+    '/api/getGroupUserById': group_user_api.get_group_user_by_id,
+    '/api/getGroupUserList': group_user_api.get_group_user_list,
 }

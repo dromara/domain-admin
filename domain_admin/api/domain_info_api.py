@@ -13,6 +13,7 @@ from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
+from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, operation_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
@@ -265,16 +266,31 @@ def get_domain_info_list():
     order_prop = request.json.get('order_prop') or 'domain_expire_days'
     order_type = request.json.get('order_type') or 'ascending'
 
-    # 列表数据
-    query = DomainInfoModel.select().where(
-        DomainInfoModel.user_id == current_user_id
+    # 所在分组
+    group_user_rows = GroupUserModel.select().where(
+        GroupUserModel.user_id == current_user_id
     )
+
+    group_user_list = list(group_user_rows)
+    user_group_ids = [row.group_id for row in group_user_list]
+    # 组员权限
+    group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
+
+    # 列表数据
+    query = DomainInfoModel.select()
 
     if keyword:
         query = query.where(DomainInfoModel.domain.contains(keyword))
 
     if group_ids:
         query = query.where(DomainInfoModel.group_id.in_(group_ids))
+    else:
+        query = query.where(DomainInfoModel.user_id == current_user_id)
+
+        if user_group_ids:
+            query = query.orwhere(
+                DomainInfoModel.group_id.in_(user_group_ids)
+            )
 
     if domain_expire_days is not None and len(domain_expire_days) == 2:
         if domain_expire_days[0] is None:
@@ -364,6 +380,13 @@ def get_domain_info_list():
 
         for row in lst:
             row['ssl_count'] = root_domain_groups_map.get(row['domain'], 0)
+
+            if row['user_id'] == current_user_id:
+                has_edit_permission = True
+            else:
+                has_edit_permission = group_user_permission_map.get(row['group_id'], False)
+
+            row['has_edit_permission'] = has_edit_permission
 
         # 分组名
         group_service.load_group_name(lst)
