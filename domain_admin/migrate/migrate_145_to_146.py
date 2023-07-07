@@ -26,7 +26,9 @@ def execute_migrate():
 
     migrator = migrate_common.get_migrator(db)
 
-    migrate(
+    migrate_rows = [
         # add field
         migrator.add_column(NotifyModel._meta.table_name, NotifyModel.comment.name, NotifyModel.comment),
-    )
+    ]
+
+    migrate_common.try_execute_migrate(migrate_rows)

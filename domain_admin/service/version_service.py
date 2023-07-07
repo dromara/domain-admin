@@ -220,10 +220,7 @@ def update_version():
             # 1.4.22 => 1.4.23
             logger.info('update version: %s => %s', local_version, VersionEnum.Version_1423)
 
-            try:
-                migrate_1422_to_1423.execute_migrate()
-            except Exception as e:
-                pass
+            migrate_1422_to_1423.execute_migrate()
 
             local_version = VersionEnum.Version_1423
 

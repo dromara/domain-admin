@@ -31,7 +31,7 @@ def execute_migrate():
         SystemModel.key == 'mail_subject'
     ).execute()
 
-    migrate(
+    migrate_rows = [
         #  remove column
         migrator.drop_column(UserModel._meta.table_name, 'before_expire_days'),
         migrator.drop_column(UserModel._meta.table_name, 'email_list_raw'),
@@ -41,4 +41,6 @@ def execute_migrate():
 
         # remove index NotifyModel
         migrator.drop_index(NotifyModel._meta.table_name, 'notifymodel_user_id_type_id'),
-    )
+    ]
+
+    migrate_common.try_execute_migrate(migrate_rows)

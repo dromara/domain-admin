@@ -22,7 +22,16 @@ def execute_migrate():
 
     migrator = migrate_common.get_migrator(db)
 
-    migrate(
-        migrator.add_column(DomainModel._meta.table_name, DomainModel.root_domain.name, DomainModel.root_domain),
-        migrator.add_column(DomainModel._meta.table_name, DomainModel.is_dynamic_host.name, DomainModel.is_dynamic_host),
-    )
+    migrate_rows = [
+        migrator.add_column(
+            DomainModel._meta.table_name,
+            DomainModel.root_domain.name,
+            DomainModel.root_domain),
+
+        migrator.add_column(
+            DomainModel._meta.table_name,
+            DomainModel.is_dynamic_host.name,
+            DomainModel.is_dynamic_host),
+    ]
+
+    migrate_common.try_execute_migrate(migrate_rows)
