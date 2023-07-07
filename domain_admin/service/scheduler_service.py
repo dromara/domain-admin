@@ -17,13 +17,28 @@ apscheduler_logger = logging.getLogger('apscheduler')
 
 # 单个日志文件最大为1M
 handler = RotatingFileHandler(resolve_log_file("apscheduler.log"), maxBytes=1024 * 1024 * 1, encoding='utf-8')
+
+# 设置日志格式
+formatter = logging.Formatter(
+    fmt='%(asctime)s [%(levelname)s]: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S')
+handler.setFormatter(formatter)
+
 apscheduler_logger.addHandler(handler)
 
 apscheduler_logger.setLevel(logging.DEBUG)
 
 JOB_DEFAULTS = {
-    'coalesce': True,
-    'max_instances': 1
+    # seconds after the designated runtime that the job is still allowed to be run
+    # (or ``None`` to allow the job to run no matter how late it is)
+    'misfire_grace_time': None,  # 默认值 1
+
+    # run once instead of many times if the scheduler determines that the
+    # job should be run more than once in succession
+    'coalesce': True,  # 默认值 True
+
+    # maximum number of concurrently running instances allowed for this job
+    'max_instances': 1  # 默认值 1
 }
 
 scheduler = BackgroundScheduler(job_defaults=JOB_DEFAULTS)
