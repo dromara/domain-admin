@@ -80,7 +80,7 @@ def load_whois_servers_config():
         config[encode_key] = default_config
 
         # 合并配置
-    logger.debug(config)
+    # logger.debug(config)
     return config
 
 
@@ -92,7 +92,7 @@ def get_whois_config(domain: str) -> [str, None]:
     """
     global WHOIS_CONFIGS
 
-    logger.debug('get_whois_config %s', domain)
+    # logger.debug('get_whois_config %s', domain)
     root = domain.split('.')[-1]
 
     if WHOIS_CONFIGS is None:

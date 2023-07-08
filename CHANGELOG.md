@@ -6,6 +6,9 @@
     - ssl证书申请
     - admin拥有所有权限
 
+- v1.4.28(2023-07-08)
+    - 新增域名后缀的信息查询: ws, cm, by [issues#39](https://github.com/mouday/domain-admin/issues/39)
+
 - v1.4.27(2023-07-08)
     - 新增 移动端H5页面
 

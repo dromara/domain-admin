@@ -61,6 +61,20 @@ CUSTOM_WHOIS_CONFIGS = {
         "registry_time_format": '%Y-%m-%d %H:%M:%S (UTC+8)',
         'expire_time': 'Record expires',
         "expire_time_format": '%Y-%m-%d %H:%M:%S (UTC+8)',
+    },
+    'ws': {
+        'registry_time': 'Creation Date',
+        'expire_time': 'Registrar Registration Expiration Date',
+    },
+    'cm': {
+        'whois_server': 'whois.registrar.cm',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Registry Expiry Date'
+    },
+    'by': {
+        'whois_server': 'whois.cctld.by',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Expiration Date',
     }
 }
 
