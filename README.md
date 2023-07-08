@@ -33,11 +33,17 @@
 
 ## 项目截图
 
-网页版：
+1、网页版：
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png)
 
-预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
+- 预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
+
+2、移动端版：
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png)
+
+- 移动端预览地址：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
 账号密码随意，预览模式仅提供模拟数据，无法操作修改
 
@@ -174,29 +180,25 @@ make dev
     - 桌面 
     - ~~移动端（app+小程序）~~
 
-## 系统设置
+## 使用说明
 
 如果需要对域名进行到期监控和邮件提醒，必须设置
 
-1、设置系统发送邮件的账号密码
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
-
-2、批量导入域名
+1、批量导入域名
 
 导入文本示例: [/docs/domain.txt](/docs/domain.txt)
+
+2、设置系统发送邮件的账号密码
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
 
 3、设置邮件通知
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png)
 
-4、设置webhook通知
+4、其他通知方式
 
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-webhook.png)
-
-推送到微信的webhook第三方工具
-
-- [微信推送消息通知接口汇总](https://blog.csdn.net/mouday/article/details/124135877)
+- webhook通知：[推送到微信的webhook第三方工具](https://blog.csdn.net/mouday/article/details/124135877)
 
 ## 二次开发
 
