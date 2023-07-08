@@ -45,6 +45,14 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin/public'
 
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'mouday/domain-admin-mini'
+          ref: 'dist'
+          token: ${{ secrets.GH_PAT }}
+          path: 'domain_admin/public/m'
+
       - name: Build and publish
         if: startsWith(github.ref, 'refs/tags/')
         env:

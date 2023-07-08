@@ -54,6 +54,15 @@ def index():
     return send_file('public/index.html')
 
 
+@app.get('/m/')
+def mobile():
+    """
+    移动端首页
+    :return:
+    """
+    return send_file('public/m/index.html')
+
+
 @app.get('/test')
 def app_hello():
     """
@@ -103,7 +112,6 @@ def init_app(flask_app):
 
     # 初始化全局常量配置
     system_service.init_system_config(flask_app)
-
 
 
 init_app(app)
