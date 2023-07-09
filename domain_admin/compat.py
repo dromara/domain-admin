@@ -21,7 +21,7 @@ except ImportError:
     from werkzeug.security import safe_join
 
 try:
-    from collections import Iterator
-except ImportError:
     # @since Python 3.10
     from collections.abc import Iterator
+except ImportError:
+    from collections import Iterator

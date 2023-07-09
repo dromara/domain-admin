@@ -15,12 +15,16 @@ import base64
 
 
 def get_random_secret():
+    """
+    获取随机 secret key
+    :return: str
+    """
     if secrets:
         return secrets.token_hex()
     else:
         # 生成32位随机字符 编码为base64
-        return base64.b64encode(os.urandom(32))
+        return base64.b64encode(os.urandom(32)).decode()
 
 
 if __name__ == '__main__':
-    print(get_random_secret())
+    print(type(get_random_secret()))
