@@ -12,7 +12,6 @@ from packaging import version
 
 # 项目根路径
 ROOT_DIRNAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print("{}/*/version.py".format(ROOT_DIRNAME))
 
 # 版本文件路径
 VERSION_FILE = glob.glob("{}/*/version.py".format(ROOT_DIRNAME))[0]
@@ -37,7 +36,7 @@ def parse_version(source_text):
 
 
 def replace_version(source_text, new_version):
-    return re.sub(VERSION_REGEX, "VERSION = '%s'".format(new_version), source_text)
+    return re.sub(VERSION_REGEX, "VERSION = '{}'".format(new_version), source_text)
 
 
 def update_version(current_version):
@@ -62,7 +61,7 @@ def main():
     print(new_version)
 
     # 提交代码
-    os.system("git add . && git commit -m 'auto release' && git tag v%s && git push --tag".format(new_version))
+    os.system("git add . && git commit -m 'auto release' && git tag v{} && git push --tag".format(new_version))
 
 
 if __name__ == '__main__':

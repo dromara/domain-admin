@@ -109,7 +109,7 @@ def get_whois_config(domain):
             server_config['whois_server'] = domain_whois_server
             return server_config
         else:
-            raise Exception('not support %s'.format(root))
+            raise Exception('not support {}'.format(root))
 
 
 def get_domain_whois_server_from_root(domain):
