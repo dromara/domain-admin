@@ -10,4 +10,4 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 def test_index(client):
     response = client.get('/test')
     print(dir(response))
-    assert 'hello' in response.data
+    assert 'hello' in response.data.decode()
