@@ -4,7 +4,6 @@ group_service.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 from __future__ import print_function, unicode_literals, absolute_import, division
-from typing import List
 
 from peewee import chunked
 

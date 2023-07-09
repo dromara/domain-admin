@@ -5,9 +5,7 @@ domain_service.py
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 import traceback
-import warnings
 from datetime import datetime
-from typing import List
 
 from peewee import chunked, fn
 from playhouse.shortcuts import model_to_dict
@@ -18,12 +16,12 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import render_service, group_service
 from domain_admin.service import file_service
-from domain_admin.utils import datetime_util, cert_util, whois_util
+from domain_admin.service import render_service, group_service
+from domain_admin.utils import datetime_util, cert_util
 from domain_admin.utils import domain_util
-from domain_admin.utils.cert_util import cert_common, cert_socket_v2, cert_openssl_v2
-from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
+from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2
+from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
 
 
 def update_domain_host_list(domain_row):

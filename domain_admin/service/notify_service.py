@@ -5,13 +5,13 @@
 @Author  : Peng Shiyu
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
 import json
 import traceback
 from datetime import datetime, timedelta
-from typing import List, Optional, Dict
 
 import requests
-
+from jinja2 import Template
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
@@ -24,9 +24,8 @@ from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.service import domain_service, render_service, system_service
 from domain_admin.utils import email_util
-from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
 from domain_admin.utils.flask_ext.app_exception import AppException
-from jinja2 import Template
+from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
 
 # 通知参数配置
 NOTIFY_CONFIGS = [

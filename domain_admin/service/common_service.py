@@ -4,9 +4,7 @@
 @Date    : 2023-07-04
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
-from typing import List
 
-from domain_admin.model.base_model import BaseModel
 from domain_admin.model.user_model import UserModel
 
 

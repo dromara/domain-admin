@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+from collections import Iterator
+
 import six
-from typing import Iterator
 
 from flask import Flask, Response
 from peewee import ModelSelect, Model

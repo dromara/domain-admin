@@ -61,3 +61,9 @@ test:
 .PHONY: install-require
 install-require:
 	pip install -r requirements/development.txt
+
+# 快速提交
+# make fix
+.PHONY: fix
+fix:
+	git add . && git commit -m 'fix' && git push
