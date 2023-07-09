@@ -25,7 +25,7 @@ jobs:
         # 排除版本
         exclude:
           - os: macos-latest
-              python-version: "3.4"
+            python-version: "3.4"
 
     steps:
         # Checkout the latest code from the repo
