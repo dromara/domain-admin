@@ -19,3 +19,9 @@ except ImportError:
     # werkzeug Version 0.7
     # Added werkzeug.security.safe_join().
     from werkzeug.security import safe_join
+
+try:
+    from collections import Iterator
+except ImportError:
+    # @since Python 3.10
+    from collections.abc import Iterator
