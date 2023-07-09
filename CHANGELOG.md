@@ -6,6 +6,9 @@
     - ssl证书申请
     - admin拥有所有权限
 
+- v1.4.29(2023-07-08)
+    - 支持Python版本：Python >= 2.7 或者 Python >= 3.4
+
 - v1.4.28(2023-07-08)
     - 新增域名后缀的信息查询: ws, cm, by [issues#39](https://github.com/mouday/domain-admin/issues/39)
 

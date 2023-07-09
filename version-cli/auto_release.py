@@ -11,10 +11,11 @@ import re
 from packaging import version
 
 # 项目根路径
-ROOT_DIRNAME = os.path.dirname(os.path.dirname(__file__))
+ROOT_DIRNAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("{}/*/version.py".format(ROOT_DIRNAME))
 
 # 版本文件路径
-VERSION_FILE = glob.glob("%s/*/version.py".format(ROOT_DIRNAME))[0]
+VERSION_FILE = glob.glob("{}/*/version.py".format(ROOT_DIRNAME))[0]
 
 # 版本的匹配正则
 VERSION_REGEX = "VERSION = '(?P<version>\d+\.\d+\.\d+)'"
