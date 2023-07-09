@@ -9,4 +9,5 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 def test_index(client):
     response = client.get('/test')
-    assert 'hello' in response.text
+    print(dir(response))
+    assert 'hello' in response.data
