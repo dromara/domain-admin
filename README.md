@@ -41,7 +41,7 @@
 
 2、移动端版：
 
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png)
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png" style="width: 220px;">
 
 - 移动端预览地址：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
