@@ -487,6 +487,10 @@ domain_admin{domain="www.baidu.com"} 37.0
 domain_admin{domain="www.taobao.com"} 37.0
 ```
  
+ ### 11、部分域名无法查询到信息
+ 
+ 不支持的域名后缀：`.lc`、`.ml` 
+ 
 ## 问题反馈交流
 
 QQ群号:731742868

@@ -601,6 +601,7 @@ link whois.uniregistry.net
 lipsy whois.nic.lipsy
 live whois.nic.live
 llc whois.nic.llc
+lc whois.nic.lc
 llp whois.nic.llp
 loan whois.nic.loan
 loans whois.nic.loans
