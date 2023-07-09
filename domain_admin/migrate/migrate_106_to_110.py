@@ -6,7 +6,7 @@
 cmd:
 $ python domain_admin/migrate/migrate_102_to_103.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from domain_admin.migrate import migrate_common
 from domain_admin.model.base_model import db
 from domain_admin.model.domain_model import DomainModel

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from datetime import datetime
 from typing import Optional
 
@@ -105,11 +106,11 @@ class DomainModel(BaseModel):
         return time_util.get_diff_days(self.start_time, self.expire_time)
 
     @property
-    def real_time_expire_days(self) -> int:
+    def real_time_expire_days(self):
         """
         实时ssl过期剩余天数
         expire_days 是更新数据时所计算的时间，有滞后性
-        :return:
+        :return: int
         """
         return time_util.get_diff_days(datetime.now(), self.expire_time)
         # if self.expire_time and isinstance(self.expire_time, datetime):
@@ -119,13 +120,13 @@ class DomainModel(BaseModel):
     real_time_ssl_expire_days = real_time_expire_days
 
     @property
-    def expire_status(self) -> Optional[bool]:
+    def expire_status(self):
         """
         过期状态
         7 天以上    健康
         0 天以上    亚健康
         0 天及其以下 危险
-        :return:
+        :return: Optional[bool]
         """
         if self.real_time_expire_days > 7:
             return True

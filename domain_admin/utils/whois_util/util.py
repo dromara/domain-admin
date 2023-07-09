@@ -3,14 +3,16 @@
 @File    : util.py
 @Date    : 2023-03-25
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
+
 import socket
 from os import path
 
 
-def parse_whois_raw(whois_raw: str):
+def parse_whois_raw(whois_raw):
     """
     解析键值对
-    :param whois_raw:
+    :param whois_raw: str
     :return:
     """
     data = {}
@@ -30,13 +32,14 @@ def parse_whois_raw(whois_raw: str):
     return data
 
 
-def get_whois_raw(domain: str, server: str, port=43, timeout=5) -> str:
+def get_whois_raw(domain, server, port=43, timeout=5):
     """
     发送http请求，获取信息
-    :param domain:
-    :param server:
-    :param port:
-    :return:
+    :param domain: str
+    :param server: str
+    :param port: int
+    :param timeout: int
+    :return: str
     """
     # 创建连接
     sock = socket.create_connection((server, port))

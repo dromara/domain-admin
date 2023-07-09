@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals, absolute_import, division
 
+import six
 from typing import Iterator
 
-from flask import Flask
+from flask import Flask, Response
 from peewee import ModelSelect, Model
 from playhouse.shortcuts import model_to_dict
 
@@ -35,10 +37,18 @@ class FlaskApp(Flask):
         if isinstance(rv, Iterator):
             rv = list(rv)
 
-        if isinstance(rv, (list, dict, int, str)) or rv is None:
+        if isinstance(rv, (list, dict, six.integer_types, six.text_type)) or rv is None:
             rv = ApiResult.success(rv)
 
         if isinstance(rv, ApiResult):
-            rv = rv.to_dict()
+            return Response(rv.to_json(), content_type='application/json;charset=utf-8')
 
-        return super().make_response(rv)
+        return super(FlaskApp, self).make_response(rv)
+
+    def get(self, rule, **options):
+        options.setdefault('methods', ['GET'])
+        return super(FlaskApp, self).route(rule, **options)
+
+    def post(self, rule, **options):
+        options.setdefault('methods', ['POST'])
+        return super(FlaskApp, self).route(rule, **options)

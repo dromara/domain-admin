@@ -3,6 +3,7 @@
 @File    : whois_util.py
 @Date    : 2023-03-24
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import json
 import re
 from copy import deepcopy
@@ -28,11 +29,11 @@ class DomainInfo(object):
     expire_time = None
 
 
-def resolve_domain(domain: str) -> str:
+def resolve_domain(domain):
     """
     域名转换
-    :param domain:
-    :return:
+    :param domain: str
+    :return: str
     """
     # 解析出域名和顶级后缀
     if domain_util.is_ipv4(domain):
@@ -84,11 +85,11 @@ def load_whois_servers_config():
     return config
 
 
-def get_whois_config(domain: str) -> [str, None]:
+def get_whois_config(domain):
     """
     获取域名信息所在服务器
-    :param domain:
-    :return:
+    :param domain: str
+    :return: [str, None]
     """
     global WHOIS_CONFIGS
 
@@ -108,7 +109,7 @@ def get_whois_config(domain: str) -> [str, None]:
             server_config['whois_server'] = domain_whois_server
             return server_config
         else:
-            raise Exception(f'not support {root}')
+            raise Exception('not support %s'.format(root))
 
 
 def get_domain_whois_server_from_root(domain):
@@ -202,10 +203,10 @@ def get_domain_whois(domain):
         return None
 
 
-def get_domain_info(domain: str):
+def get_domain_info(domain):
     """
     获取域名信息
-    :param domain:
+    :param domain: str
     :return:
     """
     # 处理带端口号的域名
@@ -217,3 +218,8 @@ def get_domain_info(domain: str):
     logger.debug(json_util.json_encode(res, indent=2, ensure_ascii=False))
 
     return res
+
+
+if __name__ == '__main__':
+    ret = get_domain_info('dot.ml')
+    print(ret)

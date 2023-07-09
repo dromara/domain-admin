@@ -16,7 +16,7 @@ release:
 
 # 打包
 build:
-	python setup.py sdist bdist_wheel
+	python setup.py sdist bdist_wheel --python-tag py2.py3
 
 # 制作 docker 镜像
 .PHONY: docker-build
@@ -36,7 +36,7 @@ docker-build-run:
 
 # 清空打包产物
 clean:
-	rm -rf temp logs database
+	rm -rf temp logs .pytest_cache
 	rm -rf dist build *.egg-info
 
 # 上传打包产物到 pypi
@@ -55,3 +55,9 @@ publish:
 .PHONY: test
 test:
 	pytest -c pytest.ini tests/api/test_index.py
+
+# 安装开发环境依赖
+# make install-require
+.PHONY: install-require
+install-require:
+	pip install -r requirements/development.txt

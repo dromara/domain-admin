@@ -3,6 +3,7 @@
 @File    : migrate_common.py
 @Date    : 2023-06-16
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import traceback
 
 from peewee import MySQLDatabase, SqliteDatabase, PostgresqlDatabase
@@ -40,10 +41,10 @@ def get_migrator(db):
         return SchemaMigrator(db)
 
 
-def try_execute_migrate(migrate_rows: list):
+def try_execute_migrate(migrate_rows):
     """
     执行迁移命令，旧版本可能因为字段缺失而报错
-    :param migrate_rows:
+    :param migrate_rows: list
     :return:
     """
     for migrate_row in migrate_rows:

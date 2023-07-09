@@ -6,7 +6,7 @@
 cmd:
 $ python domain_admin/migrate/migrate_136_to_140.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from playhouse.migrate import migrate
 
 from domain_admin.migrate import migrate_common

@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals, absolute_import, division
 
-from flask import request, make_response, send_file, current_app
+
+from flask import request, make_response, send_file
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.utils import safe_join
 
+from domain_admin import compat
 from domain_admin.config import TEMP_DIR
-from domain_admin.log import logger
 from domain_admin.model.base_model import db
 from domain_admin.model.database import init_database
 from domain_admin.router import api_map, permission
 from domain_admin.service import scheduler_service, system_service
 from domain_admin.service import version_service
-from domain_admin.utils import secret_util, md5_util
 from domain_admin.utils.flask_ext import handler
 from domain_admin.utils.flask_ext import register
 from domain_admin.utils.flask_ext.flask_app import FlaskApp
-from domain_admin.config import PROMETHEUS_KEY
 
 app = FlaskApp(
     import_name=__name__,
@@ -75,7 +74,7 @@ def app_hello():
 @app.get('/temp/<path:filename>')
 def temp(filename):
     """临时文件"""
-    return send_file(safe_join(TEMP_DIR, filename))
+    return send_file(compat.safe_join(TEMP_DIR, filename))
 
 
 def init_app(flask_app):

@@ -3,6 +3,7 @@
 @File    : test_email_util.py
 @Date    : 2023-07-01
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 from domain_admin.utils import email_util
 
 

@@ -3,6 +3,7 @@
 @File    : cert_openssl_v2.py
 @Date    : 2023-06-19
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import socket
 import ssl
 
@@ -58,17 +59,17 @@ def verify_cert(cert, domain):
 
 
 def get_ssl_cert_by_openssl(
-        domain: str,
-        host: str = None,
-        port: int = 443,
-        timeout: int = 3):
+        domain,
+        host=None,
+        port=443,
+        timeout=3):
     """
     不验证证书，仅验证域名
     支持通配符
-    :param domain:
-    :param host:
-    :param port:
-    :param timeout:
+    :param domain: str
+    :param host: str
+    :param port: int
+    :param timeout: int
     :return:
     """
     # socket

@@ -2,6 +2,7 @@
 
 # @Date    : 2019-06-26
 # @Author  : Peng Shiyu
+from __future__ import print_function, unicode_literals, absolute_import, division
 
 import glob
 import io
@@ -51,7 +52,7 @@ https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 """
 
 # 版本号
-version_file = glob.glob("*/version.py", recursive=True)[0]
+version_file = glob.glob("*/version.py")[0]
 
 with io.open(version_file, 'rb') as f:
     version_var = {}
@@ -69,7 +70,7 @@ setup(
     version=VERSION,
     description="a domain ssl cert admin",
 
-    keywords='domain ssl cert',
+    keywords='domain,ssl,cert,web,monitor',
     author='Peng Shiyu',
     author_email='pengshiyuyx@gmail.com',
     license='MIT',
@@ -77,12 +78,34 @@ setup(
 
     long_description=long_description,
     long_description_content_type='text/markdown',
-
+    platforms=['any'],
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        # "Programming Language :: Python :: 3",
-        # "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7"
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        # 'Programming Language :: Python :: 3.13',
+        # 'Programming Language :: Python :: 3.14',
+        # 'Programming Language :: Python :: 3.15',
+        # 'Programming Language :: Python :: 999.99',
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 
     packages=find_packages(),

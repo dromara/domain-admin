@@ -3,7 +3,7 @@
 @File    : config.py
 @Date    : 2023-03-25
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 # 根服务器地址
 ROOT_SERVER = 'whois.iana.org'
 
@@ -66,6 +66,8 @@ CUSTOM_WHOIS_CONFIGS = {
         'registry_time': 'Creation Date',
         'expire_time': 'Registrar Registration Expiration Date',
     },
+
+    # 网页查询：https://www.whois.cm/
     'cm': {
         'whois_server': 'whois.registrar.cm',
         'registry_time': 'Creation Date',

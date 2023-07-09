@@ -2,6 +2,8 @@
 """
 group_service.py
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, unicode_literals, absolute_import, division
 from typing import List
 
 from peewee import chunked
@@ -23,11 +25,11 @@ def check_group_permission(group_id, user_id):
         raise ForbiddenAppException()
 
 
-def get_or_create_group_map(lst: List[str], user_id: int):
+def get_or_create_group_map(lst, user_id):
     """
     获取分组名和分组id映射关系，如果不存在则导入
-    :param lst: 分组列表
-    :param user_id: 用户id
+    :param lst: List[str] 分组列表
+    :param user_id: int 用户id
     :return:
     """
     # 导入分组
@@ -55,8 +57,13 @@ def get_or_create_group_map(lst: List[str], user_id: int):
     return group_map
 
 
-def get_group_map(lst: List[str], user_id: int):
-    """获取分组映射"""
+def get_group_map(lst, user_id):
+    """
+    获取分组映射
+    :param lst:  List[str]
+    :param user_id: int
+    :return:
+    """
     group_rows = GroupModel.select().where(
         GroupModel.name.in_(lst),
         GroupModel.user_id == user_id

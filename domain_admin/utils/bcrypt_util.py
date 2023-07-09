@@ -2,11 +2,11 @@
 """
 bcrypt_util.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 import bcrypt
 
 
-def encode_password(password: str) -> str:
+def encode_password(password):
     """
     加密过程
     :param password: str
@@ -17,7 +17,7 @@ def encode_password(password: str) -> str:
     return hashed.decode()
 
 
-def check_password(password: str, hashed_password: str) -> bool:
+def check_password(password, hashed_password):
     """
     校验过程
     :param password: str

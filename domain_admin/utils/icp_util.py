@@ -3,11 +3,11 @@
 @File    : icp_util.py
 @Date    : 2023-06-30
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 import requests
 
 
-def get_icp(domain: str):
+def get_icp(domain):
     """
     查询域名备案信息
     doc: https://api.vvhan.com/beian.html
@@ -16,7 +16,7 @@ def get_icp(domain: str):
         - https://github.com/1in9e/icp-domains
         - https://github.com/wongzeon/ICP-Checker
 
-    :param domain:
+    :param domain: str
     :return:
     """
     url = 'https://api.vvhan.com/api/icp'

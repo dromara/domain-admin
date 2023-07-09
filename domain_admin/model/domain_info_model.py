@@ -2,7 +2,7 @@
 """
 domain_info_model.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from datetime import datetime
 
 from peewee import CharField, IntegerField, DateTimeField, AutoField, BooleanField
@@ -76,9 +76,10 @@ class DomainInfoModel(BaseModel):
             return self.domain_expire_time.strftime('%Y-%m-%d')
 
     @property
-    def real_domain_expire_days(self) -> int:
+    def real_domain_expire_days(self):
         """
         域名过期天数，用于前端显示
+        :return: int
         """
         return time_util.get_diff_days(datetime.now(), self.domain_expire_time)
 

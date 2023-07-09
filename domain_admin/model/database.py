@@ -2,7 +2,7 @@
 """
 database.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from domain_admin.log import logger
 from domain_admin.model import address_model, log_operation_model, group_user_model
 from domain_admin.model import domain_info_model

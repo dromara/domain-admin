@@ -3,6 +3,7 @@
 @File    : time_util.py
 @Date    : 2023-06-03
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 from dateutil import parser
 from datetime import datetime
 
@@ -12,11 +13,11 @@ from peewee import DateTimeField
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
-def parse_time(time_str) -> datetime:
+def parse_time(time_str):
     """
     解析字符串为时间
     :param time_str: str
-    :return: str
+    :return: datetime
     """
 
     return datetime.strptime(
@@ -25,11 +26,11 @@ def parse_time(time_str) -> datetime:
     )
 
 
-def get_diff_days(start_date: [datetime, DateTimeField], end_date: [datetime, DateTimeField]):
+def get_diff_days(start_date, end_date):
     """
     获取两个时间对象的时间差天数
-    :param start_date:
-    :param end_date:
+    :param start_date: [datetime, DateTimeField]
+    :param end_date: [datetime, DateTimeField]
     :return:
     """
     if start_date and end_date \

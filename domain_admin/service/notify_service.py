@@ -4,6 +4,7 @@
 @Date    : 2022-10-30
 @Author  : Peng Shiyu
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import json
 import traceback
 from datetime import datetime, timedelta
@@ -21,7 +22,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import domain_service, render_service, email_service, system_service
+from domain_admin.service import domain_service, render_service, system_service
 from domain_admin.utils import email_util
 from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
 from domain_admin.utils.flask_ext.app_exception import AppException
@@ -42,10 +43,10 @@ NOTIFY_CONFIGS = [
 ]
 
 
-def get_notify_config(event_id: int):
+def get_notify_config(event_id):
     """
     获取通知配置
-    :param event_id:
+    :param event_id: int
     :return:
     """
     for config in NOTIFY_CONFIGS:
@@ -74,11 +75,11 @@ def get_notify_row_value(user_id, type_id):
     return notify_row.value
 
 
-def get_notify_email_list_of_user(user_id) -> Optional[List[str]]:
+def get_notify_email_list_of_user(user_id):
     """
     获取通知配置 - 邮箱列表
     :param user_id:
-    :return:
+    :return: Optional[List[str]]
     """
     notify_row_value = get_notify_row_value(user_id, NotifyTypeEnum.Email)
 
@@ -139,10 +140,10 @@ def get_template_data(user_id):
     }
 
 
-def notify_all_event() -> int:
+def notify_all_event():
     """
     触发所有通知事件
-    :return: 成功数量
+    :return: int 成功数量
     """
     rows = NotifyModel.select().where(
         NotifyModel.status == True
@@ -160,10 +161,10 @@ def notify_all_event() -> int:
     return success
 
 
-def notify_user_about_some_event(notify_row: NotifyModel):
+def notify_user_about_some_event(notify_row):
     """
     由于某个事件触发，通知用户
-    :param notify_row:
+    :param notify_row: NotifyModel
     :return:
     """
     if notify_row.event_id == EventEnum.SSL_CERT_EXPIRE:
@@ -176,10 +177,10 @@ def notify_user_about_some_event(notify_row: NotifyModel):
         logger.warn("notify_row event_id not support: %s", notify_row.event_id)
 
 
-def notify_user_about_cert_expired(notify_row: NotifyModel):
+def notify_user_about_cert_expired(notify_row):
     """
     证书过期事件触发
-    :param notify_row:
+    :param notify_row: NotifyModel
     :return:
     """
     now = datetime.now()
@@ -234,10 +235,10 @@ def notify_user_about_cert_expired(notify_row: NotifyModel):
         return notify_user(notify_row, lst)
 
 
-def notify_user_about_domain_expired(notify_row: NotifyModel):
+def notify_user_about_domain_expired(notify_row):
     """
     域名过期事件触发
-    :param notify_row:
+    :param notify_row: NotifyModel
     :return:
     """
     now = datetime.now()
@@ -293,11 +294,11 @@ def notify_user_about_domain_expired(notify_row: NotifyModel):
         return notify_user(notify_row, lst)
 
 
-def notify_user(notify_row: NotifyModel, rows: List):
+def notify_user(notify_row, rows):
     """
     通知用户
-    :param notify_row:
-    :param rows:
+    :param notify_row: NotifyModel
+    :param rows: List
     :return:
     """
     # 通知用户
@@ -331,12 +332,12 @@ def notify_user(notify_row: NotifyModel, rows: List):
 
 
 def notify_user_by_webhook(
-        notify_row: NotifyModel,
-        data: Dict):
+        notify_row,
+        data):
     """
     通过 webhook 方式通知用户
-    :param notify_row:
-    :param data:
+    :param notify_row: NotifyModel
+    :param data: Dict
     :return:
     """
 
@@ -362,17 +363,17 @@ def notify_user_by_webhook(
 
 
 def notify_user_by_email(
-        template: str,
-        subject: str,
-        data: Dict,
-        email_list: List[str],
+        template,
+        subject,
+        data,
+        email_list,
 ):
     """
     通过邮件通知用户证书到期
-    :param template:
-    :param subject:
-    :param data:
-    :param email_list:
+    :param template: str
+    :param subject: str
+    :param data: Dict
+    :param email_list: List[str]
     :return:
     """
     if not email_list or len(email_list) == 0:
@@ -399,10 +400,10 @@ def notify_user_by_email(
     )
 
 
-def notify_user_by_work_weixin(notify_row: NotifyModel):
+def notify_user_by_work_weixin(notify_row):
     """
     发送企业微信消息
-    :param notify_row:
+    :param notify_row: NotifyModel
     :return:
     """
     token = work_weixin_api.get_access_token(notify_row.work_weixin_corpid, notify_row.work_weixin_corpsecret)
@@ -411,10 +412,10 @@ def notify_user_by_work_weixin(notify_row: NotifyModel):
     return res
 
 
-def notify_user_by_ding_talk(notify_row: NotifyModel):
+def notify_user_by_ding_talk(notify_row):
     """
     发送钉钉消息
-    :param notify_row:
+    :param notify_row: NotifyModel
     :return:
     """
     token = ding_talk_api.get_access_token(notify_row.ding_talk_appkey, notify_row.ding_talk_appsecret)
@@ -423,10 +424,10 @@ def notify_user_by_ding_talk(notify_row: NotifyModel):
     return res
 
 
-def notify_user_by_feishu(notify_row: NotifyModel):
+def notify_user_by_feishu(notify_row):
     """
     发送飞书消息
-    :param notify_row:
+    :param notify_row: NotifyModel
     :return:
     """
     token = feishu_api.get_access_token(notify_row.feishu_app_id, notify_row.feishu_app_secret)

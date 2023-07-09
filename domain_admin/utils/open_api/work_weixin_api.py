@@ -5,7 +5,7 @@
 
 企业微信开放API接口
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 import requests
 
 

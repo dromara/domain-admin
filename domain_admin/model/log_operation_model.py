@@ -2,6 +2,7 @@
 """
 log_operation_model.py
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 from datetime import datetime
 
 from peewee import DateTimeField, TextField, AutoField, IntegerField, CharField

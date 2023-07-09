@@ -3,7 +3,7 @@
 @File    : env_config.py
 @Date    : 2023-06-13
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from environs import Env
 from .default_config import *
 

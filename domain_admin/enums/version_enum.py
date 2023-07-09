@@ -3,7 +3,7 @@
 @File    : version_enum.py
 @Date    : 2023-02-06
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 
 class VersionEnum(object):
     """

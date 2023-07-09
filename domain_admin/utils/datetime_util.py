@@ -2,9 +2,11 @@
 """
 datetime_util.py
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import time
 from datetime import datetime
 import math
+import six
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -13,6 +15,17 @@ DATETIME_SHORT_FORMAT = "%Y-%m-%d %H:%M"
 DATE_FORMAT = "%Y-%m-%d"
 
 TIME_FORMAT = "%H:%M:%S"
+
+
+def get_timestamp(datetime_obj):
+    """
+    fix: Python 2.7 AttributeError: 'datetime.datetime' object has no attribute 'timestamp'
+    ref: https://stackoverflow.com/questions/50650704/attributeerror-datetime-datetime-object-has-no-attribute-timestamp
+
+    :param datetime_obj:
+    :return: int
+    """
+    return int(time.mktime(datetime_obj.timetuple()))
 
 
 def get_datetime():
@@ -105,9 +118,9 @@ def time_for_human(time_value):
     day_8 = day * 8
 
     if isinstance(time_value, datetime):
-        time_value = time_value.timestamp()
+        time_value = get_timestamp(time_value)
 
-    if isinstance(time_value, str):
+    if isinstance(time_value, six.text_type):
         time_value = time.mktime(time.strptime(time_value, DATETIME_FORMAT))
 
     now_time = time.time()
@@ -117,11 +130,11 @@ def time_for_human(time_value):
     if duration < minute:
         return '刚刚'
     elif duration < hour:
-        return str(math.floor(duration / minute)) + '分钟前'
+        return six.text_type(int(duration / minute)) + '分钟前'
     elif duration < day:
-        return str(math.floor(duration / hour)) + '小时前'
+        return six.text_type(int(duration / hour)) + '小时前'
     elif duration < day_8:
-        return str(math.floor(duration / day)) + '天前'
+        return six.text_type(int(duration / day)) + '天前'
     else:
         return time.strftime(DATE_FORMAT, time.localtime(time_value))
 
@@ -138,3 +151,5 @@ if __name__ == '__main__':
 
     print(time_for_human('2022-10-10 13:33:11'))
     # 2天前
+
+    print(get_timestamp(datetime.now()))

@@ -4,12 +4,9 @@
 @Date    : 2022-10-22
 @Author  : Peng Shiyu
 """
-import re
+from __future__ import print_function, unicode_literals, absolute_import, division
 
 from domain_admin.utils import whois_util
-from domain_admin.utils import text_util
-from domain_admin.utils.whois_util.config import ROOT_SERVER
-from domain_admin.utils.whois_util.util import get_whois_raw, parse_whois_raw
 
 
 def test_get_domain_info():

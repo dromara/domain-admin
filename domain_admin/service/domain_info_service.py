@@ -2,6 +2,7 @@
 """
 domain_info_service.py
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import time
 from datetime import datetime, timedelta
 
@@ -20,7 +21,7 @@ def add_domain_info(
         group_id=0,
         domain_start_time=None,
         domain_expire_time=None
-) -> DomainInfoModel:
+):
     """
     添加域名监测
     :param domain:
@@ -29,7 +30,7 @@ def add_domain_info(
     :param group_id:
     :param domain_start_time:
     :param domain_expire_time:
-    :return:
+    :return: DomainInfoModel
     """
     row = DomainInfoModel.create(
         domain=domain,
@@ -46,11 +47,11 @@ def add_domain_info(
     return row
 
 
-def update_domain_info_row(row: DomainInfoModel) -> [str, None]:
+def update_domain_info_row(row):
     """
     更新一行数据
-    :param row:
-    :return:
+    :param row: DomainInfoModel
+    :return: [str, None]
     """
     domain_whois = None
 

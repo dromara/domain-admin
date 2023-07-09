@@ -3,26 +3,26 @@
 @File    : operation_service.py
 @Date    : 2023-07-04
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
+
 from functools import wraps
-from typing import Dict
 
 from flask import g, request
 
 from domain_admin.enums.operation_enum import OperationEnum
-from domain_admin.model.base_model import BaseModel
 from domain_admin.model.log_operation_model import LogOperationModel
 from domain_admin.utils import json_util
 
 
-def add_operation_log(user_id: int, table: str, type_id: int, before: Dict, after: Dict):
+def add_operation_log(user_id, table, type_id, before, after):
     """
     添加操作日志
     table = model._meta.table_name
-    :param type_id:
-    :param after:
-    :param user_id:
-    :param table:
-    :param before:
+    :param type_id: int
+    :param after: str
+    :param user_id: int
+    :param table: Dict
+    :param before: Dict
     :return:
     """
 
@@ -36,15 +36,15 @@ def add_operation_log(user_id: int, table: str, type_id: int, before: Dict, afte
 
 
 def operation_log_decorator(
-        model: BaseModel,
-        operation_type_id: int,
-        primary_key: str = 'id'
+        model,
+        operation_type_id,
+        primary_key = 'id'
 ):
     """
     用于添加操作日志装饰器
-    :param primary_key: 主键id key
-    :param model: Model
-    :param operation_type_id: 操作类型id
+    :param primary_key: str 主键id key
+    :param model: BaseModel
+    :param operation_type_id: int 操作类型id
     :return:
     """
 

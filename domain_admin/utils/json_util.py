@@ -3,12 +3,12 @@
 @File    : json_util.py
 @Date    : 2023-04-16
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 import json
 from datetime import datetime
 
 from peewee import ModelSelect, Model
 from playhouse.shortcuts import model_to_dict
-
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 

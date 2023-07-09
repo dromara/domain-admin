@@ -3,10 +3,11 @@
 @File    : default_config.py
 @Date    : 2023-06-13
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 
-# 管理员默认的 账号，用户名
 from domain_admin.utils import secret_util, md5_util
 
+# 管理员默认的 账号，用户名
 DEFAULT_ADMIN_USERNAME = 'admin'
 DEFAULT_ADMIN_PASSWORD = '123456'
 

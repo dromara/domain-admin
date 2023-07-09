@@ -2,6 +2,8 @@
 """
 domain_service.py
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
+
 import traceback
 import warnings
 from datetime import datetime
@@ -16,20 +18,18 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import email_service, render_service, group_service
+from domain_admin.service import render_service, group_service
 from domain_admin.service import file_service
-from domain_admin.service import notify_service
-from domain_admin.service import system_service
 from domain_admin.utils import datetime_util, cert_util, whois_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.cert_util import cert_common, cert_socket_v2, cert_openssl_v2
 from domain_admin.utils.flask_ext.app_exception import AppException, ForbiddenAppException
 
 
-def update_domain_host_list(domain_row: DomainModel):
+def update_domain_host_list(domain_row):
     """
     更新ip信息
-    :param row:
+    :param domain_row: DomainModel
     :return:
     @since v1.2.24
     """
@@ -54,9 +54,10 @@ def update_domain_host_list(domain_row: DomainModel):
     AddressModel.insert_many(lst).on_conflict_ignore().execute()
 
 
-def update_domain_address_list_cert(domain_row: DomainModel):
+def update_domain_address_list_cert(domain_row):
     """
     更新证书信息
+    :param domain_row: DomainModel
     :return:
     """
     # logger.info("%s", model_to_dict(domain_row))
@@ -112,10 +113,10 @@ def update_address_row_info(address_row, domain_row):
     return err
 
 
-def update_address_row_info_with_sync_domain_row(address_id: int):
+def update_address_row_info_with_sync_domain_row(address_id):
     """
     更新主机信息并同步到与名表
-    :param address_id:
+    :param address_id: int
     :return:
     """
     address_row = AddressModel.get_by_id(address_id)
@@ -127,9 +128,10 @@ def update_address_row_info_with_sync_domain_row(address_id: int):
     sync_address_info_to_domain_info(domain_row)
 
 
-def sync_address_info_to_domain_info(domain_row: DomainModel):
+def sync_address_info_to_domain_info(domain_row):
     """
     同步主机信息到域名信息表
+    :param domain_row: DomainModel
     :return:
     """
     first_address_row = AddressModel.select().where(
@@ -159,10 +161,10 @@ def sync_address_info_to_domain_info(domain_row: DomainModel):
     ).execute()
 
 
-def update_domain_row(domain_row: DomainModel):
+def update_domain_row(domain_row):
     """
     更新域名相关数据
-    :param domain_row:
+    :param domain_row: DomainModel
     :return:
     """
     # fix old data update root domain
@@ -186,7 +188,11 @@ def update_domain_row(domain_row: DomainModel):
     update_domain_address_list_cert(domain_row)
 
 
-def get_cert_info(domain: str):
+def get_cert_info(domain):
+    """
+    :param domain: str
+    :return:
+    """
     now = datetime.now()
     info = {}
     expire_days = 0
@@ -369,7 +375,7 @@ def export_domain_to_file(user_id):
     return filename
 
 
-def load_domain_expire_days(lst: List):
+def load_domain_expire_days(lst):
     """
     加载域名过期时间字段 Number or None
     :param lst: List[DomainModel dict]
@@ -393,10 +399,10 @@ def load_domain_expire_days(lst: List):
     return lst
 
 
-def load_address_count(lst: List):
+def load_address_count(lst):
     """
     加载主机数量字段
-    :param lst:
+    :param lst: List
     :return:
     """
     row_ids = [row['id'] for row in lst]

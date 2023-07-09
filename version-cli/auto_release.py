@@ -3,6 +3,7 @@
 @File    : auto_release.py
 @Date    : 2023-06-09
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 
 import glob
 import os
@@ -13,7 +14,7 @@ from packaging import version
 ROOT_DIRNAME = os.path.dirname(os.path.dirname(__file__))
 
 # 版本文件路径
-VERSION_FILE = glob.glob(f"{ROOT_DIRNAME}/*/version.py", recursive=True)[0]
+VERSION_FILE = glob.glob("%s/*/version.py".format(ROOT_DIRNAME))[0]
 
 # 版本的匹配正则
 VERSION_REGEX = "VERSION = '(?P<version>\d+\.\d+\.\d+)'"
@@ -35,7 +36,7 @@ def parse_version(source_text):
 
 
 def replace_version(source_text, new_version):
-    return re.sub(VERSION_REGEX, f"VERSION = '{new_version}'", source_text)
+    return re.sub(VERSION_REGEX, "VERSION = '%s'".format(new_version), source_text)
 
 
 def update_version(current_version):
@@ -60,7 +61,7 @@ def main():
     print(new_version)
 
     # 提交代码
-    os.system(f"git add . && git commit -m 'auto release' && git tag v{new_version} && git push --tag")
+    os.system("git add . && git commit -m 'auto release' && git tag v%s && git push --tag".format(new_version))
 
 
 if __name__ == '__main__':

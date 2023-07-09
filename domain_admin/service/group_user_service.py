@@ -3,6 +3,7 @@
 @File    : group_user_service.py
 @Date    : 2023-07-06
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 
@@ -22,4 +23,7 @@ def get_user_group_ids(user_id):
 
     user_group_ids = [row.group_id for row in group_user_rows]
 
-    return list(set(*group_ids, *user_group_ids))
+    st = set()
+    st.update(group_ids)
+    st.update(user_group_ids)
+    return list(st)

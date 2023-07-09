@@ -6,7 +6,7 @@
 cmd:
 $ python domain_admin/migrate/migrate_1213_to_131.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from playhouse.migrate import SqliteMigrator, migrate
 
 from domain_admin.migrate import migrate_common

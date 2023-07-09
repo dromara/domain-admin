@@ -10,11 +10,12 @@
 Python脚本批量检查SSL证书过期时间
 https://linuxeye.com/479.html
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 import socket
 import ssl
 import warnings
 from domain_admin.utils.cert_util import cert_consts, cert_common
+
 
 # warnings.warn("cert_socket.py is Deprecated, please use cert_socket_v2.py")
 
@@ -28,11 +29,7 @@ def create_ssl_context():
     return ssl.create_default_context()
 
 
-def get_domain_cert(
-        host,
-        port=cert_consts.SSL_DEFAULT_PORT,
-        timeout=cert_consts.DEFAULT_SOCKET_TIMEOUT
-):
+def get_domain_cert(host, port=443, timeout=3):
     """
     获取证书信息
     存在问题：没有指定主机ip，不一定能获取到正确的证书信息
@@ -41,7 +38,7 @@ def get_domain_cert(
     :param timeout: int
     :return: dict
     """
-    context = create_ssl_context()
+    context = ssl.create_default_context()
 
     with socket.create_connection(address=(host, port), timeout=timeout) as sock:
         with context.wrap_socket(sock, server_hostname=host) as wrap_socket:

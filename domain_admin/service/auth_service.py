@@ -2,7 +2,7 @@
 """
 auth_service.py
 """
-
+from __future__ import print_function, unicode_literals, absolute_import, division
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import token_service
 from domain_admin.utils import bcrypt_util

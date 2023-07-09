@@ -2,10 +2,9 @@
 """
 domain_util.py
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 
 import re
-
-from typing import NamedTuple
 
 import tldextract
 from tldextract.remote import looks_like_ip
@@ -16,15 +15,20 @@ from domain_admin.utils import file_util
 from domain_admin.utils.cert_util import cert_consts
 
 
-class ParsedDomain(NamedTuple):
+class ParsedDomain(object):
     """
     解析后的domain数据
     """
-    domain: str
-    root_domain: str
-    group_name: str
-    port: int
-    alias: str
+    # str
+    domain = ''
+    # str
+    root_domain = ''
+    # str
+    group_name = ''
+    # int
+    port = 0
+    # str
+    alias = ''
 
 
 def parse_domain(domain):
@@ -43,11 +47,11 @@ def parse_domain(domain):
         return None
 
 
-def parse_domain_from_csv_file(filename) -> ParsedDomain:
+def parse_domain_from_csv_file(filename):
     """
     读取csv文件 适合完整导入
     :param filename:
-    :return:
+    :return: ParsedDomain
     """
     with open(filename, 'r') as f:
         # 标题
@@ -73,22 +77,22 @@ def parse_domain_from_csv_file(filename) -> ParsedDomain:
             port = item.get('端口') or port or cert_consts.SSL_DEFAULT_PORT
 
             if domain:
-                item = ParsedDomain(
-                    domain=domain,
-                    root_domain=get_root_domain(domain),
-                    port=int(port),
-                    alias=alias,
-                    group_name=group_name
-                )
+                item = ParsedDomain()
+
+                item.domain=domain
+                item.root_domain=get_root_domain(domain)
+                item.port=int(port)
+                item.alias=alias
+                item.group_name=group_name
 
                 yield item
 
 
-def parse_domain_from_txt_file(filename) -> ParsedDomain:
+def parse_domain_from_txt_file(filename):
     """
     读取txt文件 适合快速导入
     :param filename:
-    :return:
+    :return: ParsedDomain
     """
     with open(filename, 'r') as f:
         for line in f.readlines():
@@ -102,20 +106,22 @@ def parse_domain_from_txt_file(filename) -> ParsedDomain:
                 port = cert_consts.SSL_DEFAULT_PORT
 
             if domain:
-                yield ParsedDomain(
-                    domain=domain,
-                    root_domain=get_root_domain(domain),
-                    port=int(port),
-                    alias='',
-                    group_name=''
-                )
+                item = ParsedDomain()
+
+                item.domain = domain
+                item.root_domain = get_root_domain(domain)
+                item.port = int(port)
+                item.alias = ''
+                item.group_name = ''
+
+                yield item
 
 
-def parse_domain_from_file(filename) -> ParsedDomain:
+def parse_domain_from_file(filename):
     """
     解析域名文件的工厂方法
     :param filename:
-    :return:
+    :return: ParsedDomain
     """
     file_type = file_util.get_filename_ext(filename)
 
@@ -125,31 +131,31 @@ def parse_domain_from_file(filename) -> ParsedDomain:
         return parse_domain_from_txt_file(filename)
 
 
-def extract_domain(domain: str) -> ExtractResult:
+def extract_domain(domain):
     """
     解析域名
-    :param domain:
-    :return:
+    :param domain: str
+    :return: ExtractResult
     """
     return tldextract.extract(domain)
 
 
-def get_root_domain(domain: str) -> str:
+def get_root_domain(domain):
     """
     解析出域名和顶级后缀
-    :param domain:
-    :return:
+    :param domain: str
+    :return: str
     """
     extract_result = extract_domain(domain)
     return extract_result.registered_domain
     # return '.'.join([extract_result.domain, extract_result.suffix])
 
 
-def is_ipv4(ip) -> bool:
+def is_ipv4(ip):
     """
     检测一个字符串是否是ipv4地址
     :param ip:
-    :return:
+    :return: bool
     """
     return looks_like_ip(ip)
 
@@ -159,11 +165,11 @@ def is_ipv4(ip) -> bool:
     #     return False
 
 
-def encode_hostname(hostname: str) -> str:
+def encode_hostname(hostname):
     """
     编码中文域名，英文域名原样返回
-    :param hostname: 中文域名
-    :return:
+    :param hostname: str 中文域名
+    :return: str
     """
     return hostname.encode('idna').decode('ascii')
 

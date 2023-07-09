@@ -53,7 +53,7 @@
 
 运行环境：
 
-- Python 3.7.0
+- Python 2.7+ and 3.4+
 
 可以使用 `pyenv` + venv 管理多个Python版本和隔离虚拟环境
 

@@ -3,16 +3,17 @@
 @File    : common_service.py
 @Date    : 2023-07-04
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
 from typing import List
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.model.user_model import UserModel
 
 
-def load_user_name(lst: List[BaseModel]):
+def load_user_name(lst):
     """
     追加用户名字段: user_name
-    :param lst:
+    :param lst: List[BaseModel]
     :return:
     """
     user_ids = [row['user_id'] for row in lst]

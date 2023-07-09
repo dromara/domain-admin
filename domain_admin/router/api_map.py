@@ -2,8 +2,13 @@
 """
 路由配置
 """
-from domain_admin.api import cert_api, ip_api, notify_api, whois_api, address_api, domain_info_api, prometheus_api, \
+from __future__ import print_function, unicode_literals, absolute_import, division
+from domain_admin.api import (
+    cert_api, ip_api, notify_api,
+    whois_api, address_api,
+    domain_info_api, prometheus_api,
     log_operation_api, group_user_api
+)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api

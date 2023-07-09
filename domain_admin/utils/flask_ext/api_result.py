@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals, absolute_import, division
+
+from domain_admin.utils import json_util
 
 
 class ApiResult(object):
@@ -23,3 +26,6 @@ class ApiResult(object):
             'code': self.code,
             'msg': self.msg
         }
+
+    def to_json(self):
+        return json_util.json_encode(self.to_dict())
