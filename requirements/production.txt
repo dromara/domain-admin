@@ -1,10 +1,11 @@
 six
 Flask
+peewee
+werkzeug
+Jinja2
 requests
 pymysql
-prometheus-client
 Flask-Cors
-peewee
 python-dateutil
 apscheduler
 PyJWT
@@ -13,3 +14,4 @@ tldextract
 python-dotenv
 environs
 pyOpenSSL
+prometheus-client

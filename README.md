@@ -10,7 +10,7 @@
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg)
 
-基于Python3 + Vue3.js 技术栈实现的域名和SSL证书监测平台
+基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台
 
 用于解决，不同业务域名SSL证书，申请自不同的平台，到期后不能及时收到通知，导致线上访问异常，被老板责骂的问题
 
@@ -53,7 +53,7 @@
 
 运行环境：
 
-- Python 2.7+ and 3.4+
+- Python >= 2.7 或者 Python >= 3.4
 
 可以使用 `pyenv` + venv 管理多个Python版本和隔离虚拟环境
 
