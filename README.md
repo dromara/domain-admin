@@ -43,11 +43,14 @@
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png" style="width: 220px;">
 
-- 移动端预览地址：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
+- 移动端预览地址(请使用移动端窗口体验)：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
 账号密码随意，预览模式仅提供模拟数据，无法操作修改
 
-使用文档：[https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
+使用文档：
+
+- github: [https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
+- gitee: [https://mouday.gitee.io/domain-admin/](https://mouday.gitee.io/domain-admin/)
 
 ## 安装
 
