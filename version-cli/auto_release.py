@@ -4,6 +4,13 @@
 @Date    : 2023-06-09
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+import six
+
+if six.PY2:
+    import sys
+
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 
 import glob
 import os
