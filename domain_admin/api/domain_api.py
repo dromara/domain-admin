@@ -104,14 +104,20 @@ def update_domain_by_id():
     data['update_time'] = datetime_util.get_datetime()
     data['group_id'] = data.get('group_id') or 0
 
+    before_domain_row = DomainModel.get_by_id(domain_id)
+
     DomainModel.update(data).where(
         DomainModel.id == domain_id
     ).execute()
 
-    domain_row = DomainModel.get_by_id(domain_id)
+    after_domain_row = DomainModel.get_by_id(domain_id)
 
-    if domain_row.auto_update:
-        domain_service.update_domain_row(domain_row)
+    # 域名和端口没改变，就不更新
+    if before_domain_row.domain == after_domain_row.domain and before_domain_row.port == after_domain_row.port:
+        pass
+    else:
+        if after_domain_row.auto_update:
+            domain_service.update_domain_row(after_domain_row)
 
 
 def update_domain_expire_monitor_by_id():
@@ -414,12 +420,13 @@ def get_domain_list():
     if group_ids:
         query = query.where(DomainModel.group_id.in_(group_ids))
     else:
-        query = query.where(DomainModel.user_id == current_user_id)
-
         if user_group_ids:
-            query = query.orwhere(
-                DomainModel.group_id.in_(user_group_ids)
+            query = query.where(
+                (DomainModel.user_id == current_user_id)
+                | (DomainModel.group_id.in_(user_group_ids))
             )
+        else:
+            query = query.where(DomainModel.user_id == current_user_id)
 
     if expire_days is not None:
         if expire_days[0] is None:

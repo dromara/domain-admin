@@ -37,7 +37,7 @@ def add_domain_info():
     domain = domain_util.get_root_domain(request.json['domain'])
     domain_start_time = request.json.get('domain_start_time')
     domain_expire_time = request.json.get('domain_expire_time')
-
+    is_auto_update = request.json.get('is_auto_update', True)
     comment = request.json.get('comment', '')
     group_id = request.json.get('group_id') or 0
 
@@ -48,6 +48,7 @@ def add_domain_info():
         comment=comment,
         group_id=group_id,
         user_id=current_user_id,
+        is_auto_update=is_auto_update
     )
 
     return {'domain_info_id': row.id}
@@ -71,6 +72,7 @@ def update_domain_info_by_id():
     domain = domain_util.get_root_domain(request.json['domain'])
     domain_start_time = request.json.get('domain_start_time')
     domain_expire_time = request.json.get('domain_expire_time')
+    is_auto_update = request.json.get('is_auto_update', True)
     comment = request.json.get('comment', '')
     group_id = request.json.get('group_id') or 0
 
@@ -81,11 +83,12 @@ def update_domain_info_by_id():
     data = {
         'domain': domain,
         'comment': comment,
-        'group_id': group_id
+        'group_id': group_id,
+        'is_auto_update': is_auto_update
     }
 
     # 不自动更新，才可以提交开始时间和结束时间
-    if domain_info_row.is_auto_update is False:
+    if is_auto_update is False:
         data['domain_start_time'] = domain_start_time
         data['domain_expire_time'] = domain_expire_time
         data['domain_expire_days'] = time_util.get_diff_days(datetime.now(), domain_expire_time)
@@ -94,8 +97,7 @@ def update_domain_info_by_id():
         DomainInfoModel.id == domain_info_id
     ).execute()
 
-    if domain_info_row.domain != domain \
-            and domain_info_row.is_auto_update:
+    if domain_info_row.domain != domain and is_auto_update:
         # 需要自动更新
         domain_info_service.update_domain_info_row(domain_info_row)
 
@@ -297,12 +299,14 @@ def get_domain_info_list():
     if group_ids:
         query = query.where(DomainInfoModel.group_id.in_(group_ids))
     else:
-        query = query.where(DomainInfoModel.user_id == current_user_id)
 
         if user_group_ids:
-            query = query.orwhere(
-                DomainInfoModel.group_id.in_(user_group_ids)
+            query = query.where(
+                (DomainInfoModel.user_id == current_user_id)
+                | (DomainInfoModel.group_id.in_(user_group_ids))
             )
+        else:
+            query = query.where(DomainInfoModel.user_id == current_user_id)
 
     if domain_expire_days is not None and len(domain_expire_days) == 2:
         if domain_expire_days[0] is None:

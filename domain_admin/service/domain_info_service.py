@@ -20,10 +20,12 @@ def add_domain_info(
         comment='',
         group_id=0,
         domain_start_time=None,
-        domain_expire_time=None
+        domain_expire_time=None,
+        is_auto_update=True
 ):
     """
     添加域名监测
+    :param is_auto_update:
     :param domain:
     :param user_id:
     :param comment:
@@ -39,10 +41,12 @@ def add_domain_info(
         comment=comment,
         group_id=group_id,
         user_id=user_id,
+        is_auto_update=is_auto_update
     )
 
     # 添加的时候需要自动更新
-    update_domain_info_row(row)
+    if is_auto_update is True:
+        update_domain_info_row(row)
 
     return row
 
