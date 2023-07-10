@@ -27,3 +27,18 @@ def get_user_group_ids(user_id):
     st.update(group_ids)
     st.update(user_group_ids)
     return list(st)
+
+
+def get_group_user_permission_map(user_id):
+    """
+    获取用户所在分组的权限关系
+    :param user_id: int
+    :return: dict
+    """
+    # 所在分组
+    group_user_rows = GroupUserModel.select().where(
+        GroupUserModel.user_id == user_id
+    )
+
+    # 组员权限
+    return {row.group_id: row.has_edit_permission for row in group_user_rows}

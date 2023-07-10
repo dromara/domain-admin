@@ -1,16 +1,19 @@
 ## 更新日志
 - v1.5.0（开发中）
-    - 新增网站监控 [issues17](https://github.com/mouday/domain-admin/issues/17)
+    - 新增网站监控 [issues#17](https://github.com/mouday/domain-admin/issues/17)
 
 - v1.4.x(开发中)
     - ssl证书申请
     - admin拥有所有权限
 
-- v1.4.29(2023-07-08)
-    - 支持Python版本：Python >= 2.7 或者 Python >= 3.4
+- v1.4.30(2023-07-09)
+    - 修复 域名列表查看详情后列表显示无权限编辑的bug
+
+- v1.4.29(2023-07-09)
+    - 新增 支持Python版本：Python >= 2.7 或者 Python >= 3.4
 
 - v1.4.28(2023-07-08)
-    - 新增域名后缀的信息查询: ws, cm, by [issues#39](https://github.com/mouday/domain-admin/issues/39)
+    - 新增 域名后缀的信息查询: ws, cm, by [issues#39](https://github.com/mouday/domain-admin/issues/39)
 
 - v1.4.27(2023-07-08)
     - 新增 移动端H5页面

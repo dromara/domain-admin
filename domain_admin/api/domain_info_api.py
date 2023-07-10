@@ -15,7 +15,8 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
-from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, operation_service
+from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
+    operation_service, group_user_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -191,6 +192,16 @@ def get_domain_info_by_id():
 
     domain_row['ssl_count'] = ssl_count
     domain_row['group_name'] = group_service.get_group_name_by_id(domain_row['group_id'])
+
+    # 编辑权限
+    group_user_permission_map = group_user_service.get_group_user_permission_map(current_user_id)
+
+    if domain_row['user_id'] == current_user_id:
+        has_edit_permission = True
+    else:
+        has_edit_permission = group_user_permission_map.get(domain_row['group_id'], False)
+
+    domain_row['has_edit_permission'] = has_edit_permission
 
     return domain_row
 
