@@ -4,6 +4,7 @@
 @Date    : 2023-06-09
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
 import six
 
 if six.PY2:
@@ -12,6 +13,7 @@ if six.PY2:
     reload(sys)
     sys.setdefaultencoding('utf8')
 
+import io
 import glob
 import os
 import re
@@ -28,7 +30,8 @@ VERSION_REGEX = "VERSION = '(?P<version>\d+\.\d+\.\d+)'"
 
 
 def read_file(filename):
-    with open(filename, 'r') as f:
+    with io.open(filename, 'r', encoding='utf-8') as f:
+        # with open(filename, 'r') as f:
         return f.read()
 
 
