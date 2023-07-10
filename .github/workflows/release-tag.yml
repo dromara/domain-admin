@@ -40,7 +40,7 @@ jobs:
 
       - name: Build
         run: |
-            python setup.py sdist bdist_wheel
+            python setup.py sdist bdist_wheel --python-tag py2.py3
 
       - name: Release
         uses: softprops/action-gh-release@v1
