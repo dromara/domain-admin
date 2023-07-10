@@ -57,8 +57,12 @@ def get_ssl_cert(domain, host=None, port=443, timeout=3):
 
     ssl_context = ssl.create_default_context()
 
-    with ssl_context.wrap_socket(sock, server_hostname=domain) as wrap_socket:
-        return wrap_socket.getpeercert()
+    # fix: Python2 AttributeError: __exit__
+    wrap_socket = ssl_context.wrap_socket(sock, server_hostname=domain)
+    cert = wrap_socket.getpeercert()
+    wrap_socket.close()
+
+    return cert
 
 
 def get_ssl_cert_info(domain, host=None, port=443, timeout=3):
@@ -91,7 +95,7 @@ def resolve_cert(cert):
 
 
 if __name__ == '__main__':
-    # print(get_ssl_cert_info('www.taobao.com', '111.62.93.139'))
-    print(get_ssl_cert_info('38.60.47.102', '38.60.47.102'))
+    print(get_ssl_cert_info('www.taobao.com', '111.62.93.139'))
+    # print(get_ssl_cert_info('38.60.47.102', '38.60.47.102'))
     # print('www.baidu.com'.encode('idna')) # b'www.baidu.com'
     # print('www.baidu.com'.encode('punycode')) # b'www.baidu.com-'

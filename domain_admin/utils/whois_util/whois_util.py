@@ -221,5 +221,5 @@ def get_domain_info(domain):
 
 
 if __name__ == '__main__':
-    ret = get_domain_info('dot.ml')
+    ret = get_domain_info('baidu.com')
     print(ret)

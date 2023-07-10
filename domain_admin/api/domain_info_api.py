@@ -16,9 +16,10 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
-    operation_service, group_user_service
+    operation_service, group_user_service, domain_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.open_api import crtsh_api
 
 
 @operation_service.operation_log_decorator(
@@ -38,6 +39,7 @@ def add_domain_info():
     domain_start_time = request.json.get('domain_start_time')
     domain_expire_time = request.json.get('domain_expire_time')
     is_auto_update = request.json.get('is_auto_update', True)
+    is_auto_subdomain = request.json.get('is_auto_subdomain', False)
     comment = request.json.get('comment', '')
     group_id = request.json.get('group_id') or 0
 
@@ -50,6 +52,15 @@ def add_domain_info():
         user_id=current_user_id,
         is_auto_update=is_auto_update
     )
+
+    # 异步提交
+    if is_auto_subdomain:
+        async_task_service.submit_task(
+            fn=domain_service.auto_import_from_domain,
+            root_domain=domain,
+            group_id=group_id,
+            user_id=current_user_id
+        )
 
     return {'domain_info_id': row.id}
 
@@ -73,6 +84,7 @@ def update_domain_info_by_id():
     domain_start_time = request.json.get('domain_start_time')
     domain_expire_time = request.json.get('domain_expire_time')
     is_auto_update = request.json.get('is_auto_update', True)
+    is_auto_subdomain = request.json.get('is_auto_subdomain', False)
     comment = request.json.get('comment', '')
     group_id = request.json.get('group_id') or 0
 
@@ -101,6 +113,13 @@ def update_domain_info_by_id():
         # 需要自动更新
         domain_info_service.update_domain_info_row(domain_info_row)
 
+    if is_auto_subdomain:
+        async_task_service.submit_task(
+            fn=domain_service.auto_import_from_domain,
+            root_domain=domain,
+            group_id=group_id,
+            user_id=current_user_id
+        )
 
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
@@ -469,3 +488,18 @@ def get_icp():
     domain = request.json['domain']
     res = icp_util.get_icp(domain)
     return res.get('info')
+
+
+def get_sub_domain_cert():
+    """
+    获取子域证书列表
+    :return:
+    """
+    keyword = request.json.get('keyword', 1)
+
+    lst = crtsh_api.search(keyword)
+
+    return {
+        'list': lst,
+        'total': len(lst)
+    }

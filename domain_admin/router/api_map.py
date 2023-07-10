@@ -129,6 +129,7 @@ routes = {
     '/api/importDomainInFromFile': domain_info_api.import_domain_info_from_file,
     '/api/exportDomainInfoFile': domain_info_api.export_domain_info_file,
     '/api/getDomainInfoGroupFilter': domain_info_api.get_domain_info_group_filter,
+    '/api/getSubDomainCert': domain_info_api.get_sub_domain_cert,
 
     # prometheus
     '/metrics': prometheus_api.metrics,

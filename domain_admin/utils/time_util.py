@@ -4,12 +4,13 @@
 @Date    : 2023-06-03
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
-from dateutil import parser
+
 from datetime import datetime
 
-# 时间格式化
-from peewee import DateTimeField
+from dateutil import parser
+from dateutil.tz import tzlocal
 
+# 时间格式化
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
@@ -20,8 +21,9 @@ def parse_time(time_str):
     :return: datetime
     """
 
+    # fix: Python2 TypeError: Required argument 'tz' (pos 1) not found
     return datetime.strptime(
-        parser.parse(time_str).astimezone().strftime(DATETIME_FORMAT),
+        parser.parse(time_str).astimezone(tzlocal()).strftime(DATETIME_FORMAT),
         DATETIME_FORMAT
     )
 

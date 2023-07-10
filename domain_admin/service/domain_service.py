@@ -22,6 +22,7 @@ from domain_admin.utils import datetime_util, cert_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
+from domain_admin.utils.open_api import crtsh_api
 
 
 def update_domain_host_list(domain_row):
@@ -309,6 +310,41 @@ def check_permission_and_get_row(domain_id, user_id):
         raise ForbiddenAppException()
 
     return row
+
+
+def auto_import_from_domain(root_domain, group_id=0, user_id=0):
+    """
+    自动导入顶级域名下包含的子域名到证书列表
+    :param root_domain: str
+    :param group_id: int
+    :param user_id: int
+    :return:
+    """
+    lst = crtsh_api.search(root_domain)
+
+    domain_set = list(set([domain['common_name'] for domain in lst]))
+
+    data = [
+        {
+            'domain': domain,
+            'root_domain': root_domain,
+            'port': 443,
+            'alias': '',
+            'user_id': user_id,
+            'group_id': group_id,
+        } for domain in domain_set
+    ]
+
+    for batch in chunked(data, 500):
+        DomainModel.insert_many(batch).on_conflict_ignore().execute()
+
+    # 更新插入的证书
+    rows = DomainModel.select().where(
+        DomainModel.domain.in_(domain_set)
+    )
+
+    for row in rows:
+        update_domain_row(row)
 
 
 def add_domain_from_file(filename, user_id):

@@ -82,8 +82,10 @@ def get_ssl_cert_by_openssl(
     ssl_context.verify_mode = ssl.CERT_NONE
     ssl_context.check_hostname = False
 
-    with ssl_context.wrap_socket(sock, server_hostname=domain) as wrap_socket:
-        dercert = wrap_socket.getpeercert(True)
+    # fix: Python2 AttributeError: __exit__
+    wrap_socket = ssl_context.wrap_socket(sock, server_hostname=domain)
+    dercert = wrap_socket.getpeercert(True)
+    wrap_socket.close()
 
     server_cert = ssl.DER_cert_to_PEM_cert(dercert)
     cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, server_cert.encode())

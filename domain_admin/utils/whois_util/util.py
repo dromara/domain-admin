@@ -7,6 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 import socket
 from os import path
+import io
 
 
 def parse_whois_raw(whois_raw):
@@ -21,9 +22,10 @@ def parse_whois_raw(whois_raw):
         if 'Record expires on' in row or 'Record created on' in row:
             row_split = row.split("on", maxsplit=1)
         elif ":" in row:
-            row_split = row.split(":", maxsplit=1)
+            # fix: Python2 split() takes no keyword arguments
+            row_split = row.split(":", 1)
         else:
-            row_split = row.split(" ", maxsplit=1)
+            row_split = row.split(" ", 1)
 
         if len(row_split) == 2:
             key, value = row_split
@@ -71,8 +73,8 @@ def load_whois_servers():
     }
     """
     dct = {}
-
-    with open(path.join(path.dirname(__file__), 'whois-servers.txt'), 'r') as f:
+    # fix：Python2 encoding error
+    with io.open(path.join(path.dirname(__file__), 'whois-servers.txt'), 'r', encoding='utf-8') as f:
         for line in f:
             if line.startswith(";"):
                 pass
