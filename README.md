@@ -26,10 +26,10 @@
 
 同时，Domain Admin也是一个轻量级监控方案，占用系统资源较少，安装包仅1.5 MB
 
-- 项目地址：https://github.com/mouday/domain-admin
-- 国内镜像：https://gitee.com/mouday/domain-admin
-- pypi：https://pypi.org/project/domain-admin
-- docker：https://hub.docker.com/r/mouday/domain-admin
+- 项目地址：[https://github.com/mouday/domain-admin](https://github.com/mouday/domain-admin)
+- 国内镜像：[https://gitee.com/mouday/domain-admin](https://gitee.com/mouday/domain-admin)
+- pypi：[https://pypi.org/project/domain-admin](https://pypi.org/project/domain-admin)
+- docker：[https://hub.docker.com/r/mouday/domain-admin](https://hub.docker.com/r/mouday/domain-admin)
 
 ## 项目截图
 
@@ -46,6 +46,8 @@
 - 移动端预览地址：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
 账号密码随意，预览模式仅提供模拟数据，无法操作修改
+
+使用文档：[https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
 
 ## 安装
 
@@ -186,7 +188,7 @@ make dev
 
 1、批量导入域名
 
-导入文本示例: [/docs/domain.txt](/docs/domain.txt)
+导入文本示例: [/docs/domain.txt](/tests/domain.txt)
 
 2、设置系统发送邮件的账号密码
 
@@ -531,7 +533,7 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 批量域名列表 (746314个)
  
 - [alexa-top-1m.csv.zip](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)
-- [docs/top-1m.csv](docs/top-1m.txt)
+- [docs/top-1m.csv](tests/top-1m.txt)
 
 ## 更新日志
 

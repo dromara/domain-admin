@@ -11,7 +11,7 @@ from domain_admin.utils import domain_util
 
 
 def test_parse_domain():
-    filename = '../../docs/domain.txt'
+    filename = '../domain.txt'
 
     if os.path.exists(filename):
         lst = domain_util.parse_domain_from_file(filename)
@@ -20,7 +20,7 @@ def test_parse_domain():
 
 
 def test_extract_domain():
-    filename = '../../docs/domain.txt'
+    filename = '../domain.txt'
 
     if os.path.exists(filename):
         lst = domain_util.parse_domain_from_file(filename)
@@ -33,8 +33,8 @@ def test_parse_domain_from_txt_file():
     测试域名解析函数
     :return:
     """
-    domain_filename = '../../docs/domain.txt'
-    domain_expect_filename = '../../docs/domain-expect.txt'
+    domain_filename = '../domain.txt'
+    domain_expect_filename = '../domain-expect.txt'
 
     expect_domains = None
     with open(domain_expect_filename, 'r') as f:
