@@ -392,7 +392,13 @@ DB_CONNECT_URL=sqlite:///database/database.db
 # 需要安装模块 pymysql
 # pip install pymysql
 DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
+
+# 来自群友 @〖斗魂〗繁←星 的分享
+# 如果 mysql 开启了 ssl，mysql 连接字符串应该写成
+DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain?ssl_verify_cert=true
 ```
+
+更多mysql的设置可参考：[https://pymysql.readthedocs.io/en/latest/modules/connections.html](https://pymysql.readthedocs.io/en/latest/modules/connections.html)
 
 ### 9、k8s部署
 
@@ -487,9 +493,9 @@ domain_admin{domain="www.baidu.com"} 37.0
 domain_admin{domain="www.taobao.com"} 37.0
 ```
  
- ### 11、部分域名无法查询到信息
+### 11、部分域名无法查询到信息
  
- 不支持的域名后缀：`.lc`、`.ml` 
+不支持的域名后缀：`.lc`、`.ml` 
  
 ## 问题反馈交流
 
