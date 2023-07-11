@@ -6,6 +6,10 @@
     - ssl证书申请
     - admin拥有所有权限
 
+- v1.4.34(2023-07-11)
+    - 修复 前端页面`极客` 模式下左侧导航栏样式异常的bug [issues#42](https://github.com/mouday/domain-admin/issues/42)
+    - 优化 prometheus 接口 `/metrics` 新增返回参数：root_domain、group_name
+
 - v1.4.33(2023-07-11)
     - 修复 多实例同时启动版本号写入失败bug
     - 优化 移除部分无用代码

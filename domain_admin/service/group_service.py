@@ -78,7 +78,7 @@ def load_group_name(lst):
     """
     加载分类名
     :param lst:
-    :return:
+    :return: list with group_name
     """
     group_ids = [row['group_id'] for row in lst]
 

@@ -16,11 +16,10 @@ def error_handler(e):
     :param e:
     :return:
     """
+    # traceback.print_exc()
+    logger.error(traceback.format_exc())
 
     if request.path.startswith('/api'):
-
-        # traceback.print_exc()
-        logger.error(traceback.format_exc())
 
         code = -1
 
@@ -42,4 +41,4 @@ def error_handler(e):
 
         return ApiResult.error(msg=msg, code=code)
     else:
-        return Response("Internal Server Error", status=500)
+        return Response("Internal Server Error: {}".format(e.message), status=500)
