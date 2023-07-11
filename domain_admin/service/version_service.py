@@ -5,6 +5,9 @@
 @Author  : Peng Shiyu
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
+from peewee import IntegrityError
+
 from domain_admin.enums.version_enum import VersionEnum
 from domain_admin.log import logger
 
@@ -226,6 +229,10 @@ def update_version():
             local_version = VersionEnum.Version_1423
 
     # 更新版本号
-    VersionModel.create(
-        version=current_version
-    )
+    # fix: 多实例同时启动版本号写入失败问题
+    try:
+        VersionModel.create(
+            version=current_version
+        )
+    except IntegrityError:
+        pass
