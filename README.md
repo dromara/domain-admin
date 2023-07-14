@@ -502,6 +502,96 @@ domain_admin{domain="www.taobao.com"} 37.0
  
 不支持的域名后缀：`.lc`、`.ml`、`.ai` 
  
+## 12、从k8s里面自动获取到ingress的域名，然后添加到domain-admin里面
+
+安装依赖
+
+```bash
+pip install tldextract requests kubernetes
+```
+
+参考代码 由群友 `@旺仔牛奶` 贡献 
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import os
+import json
+import requests
+import re
+from kubernetes import config, client
+import tldextract
+import logging
+logging.basicConfig(level=logging.INFO)
+
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+
+def get_token(host, username, password):
+    url = '{}/api/login'.format(host)
+    data = {
+        'username': username,
+        'password': password
+    }
+    try:
+        response = requests.post(url=url, headers=headers, data=json.dumps(data))
+        result = json.loads(response.text)
+        if result['code'] == 0:
+            token = result['data']['token']
+            return token
+        else:
+            logging.error(response.text)
+            return False
+    except Exception as e:
+        logging.error(e)
+
+
+def add_domain(host, token, domain):
+    url = '{}/api/addDomainInfo'.format(host)
+    data = {
+        'domain': domain
+    }
+    headers['X-Token'] = token
+    try:
+        response = requests.post(url=url, headers=headers, data=json.dumps(data))
+        result = json.loads(response.text)
+        if result['code'] == 0:
+            return True
+        else:
+            logging.error(response.text)
+            return False
+    except Exception as e:
+        logging.error(e)
+
+
+def main():
+    config.load_incluster_config()
+    kube_api = client.ExtensionsV1beta1Api()
+    ingresses = kube_api.list_ingress_for_all_namespaces()
+    _set = set()
+    for item in ingresses.items:
+        if not re.search(os.getenv('NAMESPACE_MATCH'), item.metadata.namespace):
+            continue
+        if re.search(os.getenv('NAMESPACE_NOT_MATCH'), item.metadata.namespace):
+            continue
+        for rule in item.spec.rules:
+            domain = tldextract.extract(rule.host).registered_domain
+            _set.add(domain)
+    token = get_token(host=os.getenv('DOMAIN_ADMIN_HOST'),
+                      username=os.getenv('DOMAIN_ADMIN_USERNAME'),
+                      password=os.getenv('DOMAIN_ADMIN_PASSWORD'))
+    for item in _set:
+        add_domain(host=os.getenv('DOMAIN_ADMIN_HOST'), token=token, domain=item)
+
+
+if __name__ == '__main__':
+    main()
+``` 
+
 ## 问题反馈交流
 
 QQ群号:731742868
