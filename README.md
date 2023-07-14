@@ -525,6 +525,14 @@ QQ群号:731742868
 - `已完成` 增加筛选功能: 筛选域名状态、证书状态、网站状态
 - `已完成` 增加批量删除域名的功能
 
+- v1.5.0（开发中）
+    - 新增网站监控 [issues#17](https://github.com/mouday/domain-admin/issues/17)
+
+- v1.4.x(开发中)
+    - SSL证书申请
+    - SSL证书部署
+    - admin拥有所有权限
+
 证书测试：[https://badssl.com/](https://badssl.com/)
 
 获取证书列表
