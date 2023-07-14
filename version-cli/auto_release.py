@@ -5,6 +5,14 @@
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+import six
+
+if six.PY2:
+    import sys
+
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
 import glob
 import io
 import os
@@ -91,7 +99,7 @@ def update_changelog_file(current_version, next_version):
 
 def get_changelog(version, next_version):
     commit_log = git_commit_log(version)
-
+    print(commit_log)
     update_info = '\n'.join(['    - {}'.format(line) for line in commit_log.split('\n')])
     changelog = """
 - v{version}({date})
