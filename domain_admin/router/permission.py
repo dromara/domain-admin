@@ -10,7 +10,8 @@ from domain_admin.utils.flask_ext.app_exception import UnauthorizedAppException,
 # 白名单
 WHITE_LIST = [
     '/api/login',
-    '/api/register'
+    '/api/register',
+    '/api/getSystemVersion',
 ]
 
 # 仅管理账号可访问的接口

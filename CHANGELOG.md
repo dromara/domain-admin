@@ -3,8 +3,14 @@
     - 新增网站监控 [issues#17](https://github.com/mouday/domain-admin/issues/17)
 
 - v1.4.x(开发中)
-    - ssl证书申请
+    - SSL证书申请
+    - SSL证书部署
     - admin拥有所有权限
+
+- v1.4.35(2023-07-13)
+    - 修复 子账号无法使用子域名查询和whois的的查询功能bug
+    - 优化 smtp的配置密码加密处理
+    - 新增 工具箱 `证书信息查询`
 
 - v1.4.34(2023-07-11)
     - 修复 前端页面`极客` 模式下左侧导航栏样式异常的bug [issues#42](https://github.com/mouday/domain-admin/issues/42)

@@ -7,8 +7,10 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 import socket
 
+import OpenSSL
 from dateutil import parser
 
+from domain_admin.utils import time_util
 from domain_admin.utils.cert_util import cert_consts
 
 
@@ -83,3 +85,107 @@ def get_domain_ip(domain):
     :return: str
     """
     return socket.gethostbyname(domain)
+
+
+class X509Item(object):
+    version = ''
+    subject = dict()
+    issuer = dict()
+    notAfter = ''
+    notBefore = ''
+    serialNumber = ''
+    signatureAlgorithm = ''
+    hasExpired = None
+    subjectAltName = []
+
+    def to_dict(self):
+        return {
+            'subject': self.subject,
+            'version': self.version,
+            'issuer': self.issuer,
+            'notAfter': self.notAfter,
+            'notBefore': self.notBefore,
+            'serialNumber': self.serialNumber,
+            'signatureAlgorithm': self.signatureAlgorithm,
+            'subjectAltName': self.subjectAltName,
+            'hasExpired': self.hasExpired,
+            'expireDays': self.expireDays,
+        }
+
+    @property
+    def expireDays(self):
+        return time_util.get_diff_days(self.notBefore, self.notAfter)
+
+
+def dump_certificate_to_text(ssl_cert):
+    """
+    将证书对象转为字符串text形式
+    :param ssl_cert:
+    :return: str
+    """
+    return OpenSSL.crypto.dump_certificate(OpenSSL.crypto.FILETYPE_TEXT, ssl_cert).decode('utf-8')
+
+
+def dump_certificate_to_pem(ssl_cert):
+    """
+    将证书对象转为字符串pem形式
+    :param ssl_cert:
+    :return: str
+    """
+    return OpenSSL.crypto.dump_certificate(OpenSSL.crypto.FILETYPE_PEM, ssl_cert).decode('utf-8')
+
+
+def parse_cert(ssl_cert):
+    """
+    解析证书
+    :param ssl_cert:
+    :return:
+    """
+    item = X509Item()
+
+    issuer = {}
+    for [name, value] in ssl_cert.get_issuer().get_components():
+        issuer[name.decode()] = value.decode()
+
+    item.issuer = issuer
+
+    subject = {}
+    for [name, value] in ssl_cert.get_subject().get_components():
+        subject[name.decode()] = value.decode()
+
+    item.subject = subject
+
+    item.version = ssl_cert.get_version()
+    item.hasExpired = ssl_cert.has_expired()
+    item.notAfter = time_util.parse_time(ssl_cert.get_notAfter().decode())
+    item.notBefore = time_util.parse_time(ssl_cert.get_notBefore().decode())
+    # ref: https://stackoverflow.com/questions/39286805/x-509-certificate-serial-number-to-hex-conversion
+    item.serialNumber = '{0:x}'.format(ssl_cert.get_serial_number()).upper()
+    item.signatureAlgorithm = ssl_cert.get_signature_algorithm().decode()
+
+    item.subjectAltName = get_certificate_san(ssl_cert)
+
+    return item
+
+
+def get_certificate_san(x509cert):
+    """
+    获取SAN域名列表
+    ref: https://cloud.tencent.com/developer/ask/sof/141600
+    :param x509cert:
+    :return:
+    """
+    dns_names = []
+
+    ext_count = x509cert.get_extension_count()
+
+    for i in range(0, ext_count):
+        ext = x509cert.get_extension(i)
+        if 'subjectAltName' in str(ext.get_short_name()):
+            for item in str(ext).split(', '):
+
+                if item.startswith('DNS:'):
+                    key, value = item.split(':')
+                    dns_names.append(value.strip())
+
+    return dns_names

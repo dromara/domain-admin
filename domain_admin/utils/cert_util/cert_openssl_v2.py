@@ -8,31 +8,10 @@ import socket
 import ssl
 
 import OpenSSL
+from OpenSSL.crypto import X509
 
-from domain_admin.utils import domain_util, time_util
-
-
-def get_certificate_san(x509cert):
-    """
-    获取SAN域名列表
-    ref: https://cloud.tencent.com/developer/ask/sof/141600
-    :param x509cert:
-    :return:
-    """
-    dns_names = []
-
-    ext_count = x509cert.get_extension_count()
-
-    for i in range(0, ext_count):
-        ext = x509cert.get_extension(i)
-        if 'subjectAltName' in str(ext.get_short_name()):
-            for item in str(ext).split(', '):
-
-                if item.startswith('DNS:'):
-                    key, value = item.split(':')
-                    dns_names.append(value.strip())
-
-    return dns_names
+from domain_admin.utils import domain_util, time_util, json_util
+from domain_admin.utils.cert_util import cert_common
 
 
 def verify_cert(cert, domain):
@@ -45,7 +24,7 @@ def verify_cert(cert, domain):
     # 检查 颁发对象 域名（CN） 备用域名（SAN）
     common_name = cert.get_subject().commonName
 
-    dns_names = get_certificate_san(cert)
+    dns_names = cert_common.get_certificate_san(cert)
 
     if common_name not in dns_names:
         dns_names.insert(0, common_name)
@@ -58,7 +37,7 @@ def verify_cert(cert, domain):
     return False
 
 
-def get_ssl_cert_by_openssl(
+def get_ssl_cert(
         domain,
         host=None,
         port=443,
@@ -72,6 +51,9 @@ def get_ssl_cert_by_openssl(
     :param timeout: int
     :return:
     """
+    # 默认参数
+    host = host or domain
+
     # socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
@@ -89,6 +71,25 @@ def get_ssl_cert_by_openssl(
 
     server_cert = ssl.DER_cert_to_PEM_cert(dercert)
     cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, server_cert.encode())
+    return cert
+
+
+def get_ssl_cert_by_openssl(
+        domain,
+        host=None,
+        port=443,
+        timeout=3):
+    """
+    不验证证书，仅验证域名
+    支持通配符
+    :param domain: str
+    :param host: str
+    :param port: int
+    :param timeout: int
+    :return:
+    """
+
+    cert = get_ssl_cert(domain, host, port, timeout)
 
     # verify
     domain_checked = verify_cert(cert, domain)

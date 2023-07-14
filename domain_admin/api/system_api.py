@@ -50,7 +50,16 @@ def get_all_system_config():
         ])
     )
 
-    return {item.key: item.value for item in lst}
+    data = {}
+    for item in lst:
+
+        if item.key == ConfigKeyEnum.MAIL_PASSWORD:
+            # 密码加密处理
+            data[item.key] = '*' * len(item.value)
+        else:
+            data[item.key] = item.value
+
+    return data
 
 
 def get_system_env_config():

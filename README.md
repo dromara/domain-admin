@@ -41,7 +41,7 @@
 
 2、移动端版：
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png" style="width: 220px;">
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png" width="220">
 
 - 移动端预览地址(请使用移动端窗口体验)：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
@@ -500,7 +500,7 @@ domain_admin{domain="www.taobao.com"} 37.0
  
 ### 11、部分域名无法查询到信息
  
-不支持的域名后缀：`.lc`、`.ml` 
+不支持的域名后缀：`.lc`、`.ml`、`.ai` 
  
 ## 问题反馈交流
 

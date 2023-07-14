@@ -4,6 +4,9 @@ from domain_admin.utils.flask_ext.http_code_enum import HttpCodeEnum
 
 
 class AppException(Exception):
+    code = 0
+    message = ''
+    
     def __init__(self, message, code=-1):
         super(Exception, self).__init__()
 
