@@ -7,6 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 import six
 
+# fix: UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
 if six.PY2:
     import sys
 
@@ -99,10 +100,8 @@ def update_changelog_file(current_version, next_version):
 
 def get_changelog(version, next_version):
     commit_log = git_commit_log(version)
-    print(commit_log)
     update_info = '\n'.join(['    - {}'.format(line) for line in commit_log.split('\n')])
-    changelog = """
-- v{version}({date})
+    changelog = """- v{version}({date})
 {update_info}
 
 """.format(version=next_version, date=datetime.now().strftime('%Y-%m-%d'), update_info=update_info)
