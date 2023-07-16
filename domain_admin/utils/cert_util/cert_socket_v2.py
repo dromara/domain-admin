@@ -10,7 +10,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 import socket
 import ssl
-
+import six
 from domain_admin.log import logger
 from domain_admin.utils import time_util
 
@@ -22,11 +22,14 @@ def get_domain_host_list(domain, port=80):
     :param port: int 端口
     :return: List[str] 主机地址列表
     """
+    # fix Python2 TypeError: getaddrinfo() takes no keyword arguments
+    # host, port, family=None, socktype=None, proto=None, flags=None
     ret = socket.getaddrinfo(
-        host=domain,
-        port=port,
-        family=socket.AF_INET,  # 限制仅返回IPv4
-        proto=socket.IPPROTO_TCP)
+        domain,
+        port,
+        socket.AF_INET,  # 限制仅返回IPv4
+        0,
+        socket.IPPROTO_TCP)
 
     lst = []
     for item in ret:
@@ -95,7 +98,8 @@ def resolve_cert(cert):
 
 
 if __name__ == '__main__':
-    print(get_ssl_cert_info('www.taobao.com', '111.62.93.139'))
+    print(get_domain_host_list('www.taobao.com'))
+    # print(get_ssl_cert_info('www.taobao.com', '111.62.93.139'))
     # print(get_ssl_cert_info('38.60.47.102', '38.60.47.102'))
     # print('www.baidu.com'.encode('idna')) # b'www.baidu.com'
     # print('www.baidu.com'.encode('punycode')) # b'www.baidu.com-'
