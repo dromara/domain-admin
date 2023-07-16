@@ -69,6 +69,7 @@ routes = {
 
     # 操作日志
     '/api/getOperationLogList': log_operation_api.get_operation_log_list,
+    '/api/clearLogOperationList': log_operation_api.clear_log_operation_list,
 
     # 系统管理 (管理员权限)
     '/api/getAllSystemConfig': system_api.get_all_system_config,

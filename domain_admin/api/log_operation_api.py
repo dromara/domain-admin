@@ -42,3 +42,11 @@ def get_operation_log_list():
         'list': lst,
         'total': total
     }
+
+
+def clear_log_operation_list():
+    """
+    清空日志
+    :return:
+    """
+    LogOperationModel.truncate_table()
