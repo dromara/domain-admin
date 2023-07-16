@@ -108,6 +108,14 @@ def get_changelog(version, next_version):
     return changelog
 
 
+def release(next_version):
+    # 提交代码
+    os.system(
+        "git add . && git commit -m 'release v{}' && git tag v{} && git push --tag".format(
+            next_version, next_version)
+    )
+
+
 def main():
     source_text = read_file(VERSION_FILE)
 
@@ -122,11 +130,7 @@ def main():
     write_file(VERSION_FILE, target_text)
     print(current_version, '=>', next_version)
 
-    # 提交代码
-    os.system(
-        "git add . && git commit -m 'release v{}' && git tag v{} && git push --tag".format(
-            next_version, next_version)
-    )
+    release(next_version)
 
 
 if __name__ == '__main__':
