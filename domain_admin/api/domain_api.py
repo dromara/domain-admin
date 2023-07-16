@@ -10,6 +10,7 @@ from flask import request, g
 from playhouse.shortcuts import model_to_dict, fn
 
 from domain_admin.enums.operation_enum import OperationEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
@@ -399,16 +400,24 @@ def get_domain_list():
     order_type = request.json.get('order_type') or 'ascending'
     group_ids = request.json.get('group_ids')
     expire_days = request.json.get('expire_days')
+    role = request.json.get('role')
 
-    # 所在分组
-    group_user_rows = GroupUserModel.select().where(
-        GroupUserModel.user_id == current_user_id
-    )
+    user_group_ids = None
+    group_user_permission_map = {}
 
-    group_user_list = list(group_user_rows)
-    user_group_ids = [row.group_id for row in group_user_list]
-    # 组员权限
-    group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
+    if role == RoleEnum.ADMIN:
+        pass
+
+    else:
+        # 所在分组
+        group_user_rows = GroupUserModel.select().where(
+            GroupUserModel.user_id == current_user_id
+        )
+
+        group_user_list = list(group_user_rows)
+        user_group_ids = [row.group_id for row in group_user_list]
+        # 组员权限
+        group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
 
     query = DomainModel.select()
 
@@ -421,7 +430,10 @@ def get_domain_list():
     if group_ids:
         query = query.where(DomainModel.group_id.in_(group_ids))
     else:
-        if user_group_ids:
+        if role == RoleEnum.ADMIN:
+            pass
+
+        elif user_group_ids:
             query = query.where(
                 (DomainModel.user_id == current_user_id)
                 | (DomainModel.group_id.in_(user_group_ids))
@@ -533,7 +545,10 @@ def get_domain_list():
         group_service.load_group_name(lst)
 
         for row in lst:
-            if row['user_id'] == current_user_id:
+            if role == RoleEnum.ADMIN:
+                has_edit_permission = True
+
+            elif row['user_id'] == current_user_id:
                 has_edit_permission = True
             else:
                 has_edit_permission = group_user_permission_map.get(row['group_id'], False)

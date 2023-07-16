@@ -7,6 +7,7 @@ from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.operation_enum import OperationEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
@@ -144,13 +145,12 @@ def get_group_list():
     # page = request.json.get('page', 1)
     # size = request.json.get('size', 10)
     keyword = request.json.get('keyword')
+    role = request.json.get('role')
 
     current_user_id = g.user_id
 
     # 分组列表数据
-    query = GroupModel.select().where(
-        GroupModel.user_id == current_user_id
-    )
+    query = GroupModel.select()
 
     # 所在分组
     group_user_list = list(GroupUserModel.select().where(
@@ -160,9 +160,17 @@ def get_group_list():
     user_group_ids = [row.group_id for row in group_user_list]
     group_user_map = {row.group_id: row.has_edit_permission for row in group_user_list}
 
-    if user_group_ids:
-        query = query.orwhere(
-            GroupModel.id.in_(user_group_ids)
+    if role == RoleEnum.ADMIN:
+        pass
+
+    elif user_group_ids:
+        query = query.where(
+            (GroupModel.user_id == current_user_id)
+            | (GroupModel.id.in_(user_group_ids))
+        )
+    else:
+        query = query.where(
+            GroupModel.user_id == current_user_id
         )
 
     if keyword:
@@ -223,7 +231,10 @@ def get_group_list():
         row_dict['group_user_count'] = group_user_groups_map.get(row.id, 0) + 1
 
         # 组权限
-        if row.user_id == current_user_id:
+        if role == RoleEnum.ADMIN:
+            has_edit_permission = True
+
+        elif row.user_id == current_user_id:
             has_edit_permission = True
         else:
             has_edit_permission = group_user_map.get(row.id, False)

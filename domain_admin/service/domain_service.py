@@ -40,7 +40,7 @@ def update_domain_host_list(domain_row):
             port=domain_row.port
         )
     except Exception as e:
-        pass
+        logger.error(traceback.format_exc())
 
     lst = [
         {
@@ -94,6 +94,8 @@ def update_address_row_info(address_row, domain_row):
     except Exception as e:
         err = e.__str__()
         logger.error(traceback.format_exc())
+
+    logger.info(cert_info)
 
     address = AddressModel()
     address.ssl_start_time = cert_info.get('start_date')

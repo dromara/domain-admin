@@ -11,6 +11,7 @@ from peewee import fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.operation_enum import OperationEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
@@ -298,16 +299,24 @@ def get_domain_info_list():
     domain_expire_days = request.json.get('domain_expire_days')
     order_prop = request.json.get('order_prop') or 'domain_expire_days'
     order_type = request.json.get('order_type') or 'ascending'
+    role = request.json.get('role')
 
-    # 所在分组
-    group_user_rows = GroupUserModel.select().where(
-        GroupUserModel.user_id == current_user_id
-    )
+    user_group_ids = None
+    group_user_permission_map = {}
 
-    group_user_list = list(group_user_rows)
-    user_group_ids = [row.group_id for row in group_user_list]
-    # 组员权限
-    group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
+    if role == RoleEnum.ADMIN:
+        pass
+
+    else:
+        # 所在分组
+        group_user_rows = GroupUserModel.select().where(
+            GroupUserModel.user_id == current_user_id
+        )
+
+        group_user_list = list(group_user_rows)
+        user_group_ids = [row.group_id for row in group_user_list]
+        # 组员权限
+        group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
 
     # 列表数据
     query = DomainInfoModel.select()
@@ -319,7 +328,10 @@ def get_domain_info_list():
         query = query.where(DomainInfoModel.group_id.in_(group_ids))
     else:
 
-        if user_group_ids:
+        if role == RoleEnum.ADMIN:
+            pass
+
+        elif user_group_ids:
             query = query.where(
                 (DomainInfoModel.user_id == current_user_id)
                 | (DomainInfoModel.group_id.in_(user_group_ids))
@@ -416,7 +428,10 @@ def get_domain_info_list():
         for row in lst:
             row['ssl_count'] = root_domain_groups_map.get(row['domain'], 0)
 
-            if row['user_id'] == current_user_id:
+            if role == RoleEnum.ADMIN:
+                has_edit_permission = True
+
+            elif row['user_id'] == current_user_id:
                 has_edit_permission = True
             else:
                 has_edit_permission = group_user_permission_map.get(row['group_id'], False)
