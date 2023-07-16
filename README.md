@@ -617,12 +617,11 @@ QQ群号:731742868
 
 - v1.5.0（开发中）
     - 新增网站监控 [issues#17](https://github.com/mouday/domain-admin/issues/17)
-
-- v1.4.x(开发中)
     - SSL证书申请
     - SSL证书部署
     - admin拥有所有权限
-
+    - 用户密码重置 
+    
 证书测试：[https://badssl.com/](https://badssl.com/)
 
 获取证书列表
