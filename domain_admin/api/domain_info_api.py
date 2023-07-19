@@ -42,6 +42,9 @@ def add_domain_info():
     is_auto_update = request.json.get('is_auto_update', True)
     is_auto_subdomain = request.json.get('is_auto_subdomain', False)
     comment = request.json.get('comment', '')
+    tags = request.json.get('tags')
+    icp_company = request.json.get('icp_company', '')
+    icp_licence = request.json.get('icp_licence', '')
     group_id = request.json.get('group_id') or 0
 
     row = domain_info_service.add_domain_info(
@@ -49,8 +52,11 @@ def add_domain_info():
         domain_start_time=domain_start_time,
         domain_expire_time=domain_expire_time,
         comment=comment,
+        tags=tags,
         group_id=group_id,
         user_id=current_user_id,
+        icp_company=icp_company,
+        icp_licence=icp_licence,
         is_auto_update=is_auto_update
     )
 
@@ -88,6 +94,9 @@ def update_domain_info_by_id():
     is_auto_subdomain = request.json.get('is_auto_subdomain', False)
     comment = request.json.get('comment', '')
     group_id = request.json.get('group_id') or 0
+    tags = request.json.get('tags')
+    icp_company = request.json.get('icp_company', '')
+    icp_licence = request.json.get('icp_licence', '')
 
     domain_info_row = DomainInfoModel.get_by_id(domain_info_id)
     # is_auto_update = request.json.get('is_auto_update', True)
@@ -97,6 +106,9 @@ def update_domain_info_by_id():
         'domain': domain,
         'comment': comment,
         'group_id': group_id,
+        'tags': tags,
+        'icp_company': icp_company,
+        'icp_licence': icp_licence,
         'is_auto_update': is_auto_update
     }
 
@@ -121,6 +133,7 @@ def update_domain_info_by_id():
             group_id=group_id,
             user_id=current_user_id
         )
+
 
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
@@ -406,6 +419,7 @@ def get_domain_info_list():
             extra_attrs=[
                 'real_domain_expire_days',
                 'update_time_label',
+                'tags',
             ]
         ) for row in rows]
 

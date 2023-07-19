@@ -9,10 +9,11 @@
 ###
 POST {{baseUrl}}/api/addDomainInfo
 Content-Type: application/json
-X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODczMzY5ODh9.M0nziBWPS7yfUtEwbUGQHjgpPwc664b542A-3QK5rKY
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2OTAzMzcyMDZ9.7vgfj-tT3cHHVkSIZBpLKZHxU1H0jEbT7NoMV_Iyf3w
 
 {
-  "domain": "www.360.com"
+  "domain": "www.qq.com",
+  "tags": ["奇虎360", "QQ"]
 }
 
 ###

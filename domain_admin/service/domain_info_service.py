@@ -4,14 +4,16 @@ domain_info_service.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 import time
+import traceback
 from datetime import datetime, timedelta
 
 from peewee import chunked
 
+from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.service import render_service, file_service, group_service
-from domain_admin.utils import whois_util, datetime_util, domain_util
+from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util
 
 
 def add_domain_info(
@@ -21,10 +23,16 @@ def add_domain_info(
         group_id=0,
         domain_start_time=None,
         domain_expire_time=None,
-        is_auto_update=True
+        is_auto_update=True,
+        icp_company='',
+        icp_licence='',
+        tags=None
 ):
     """
     添加域名监测
+
+    :param icp_licence:
+    :param icp_company:
     :param is_auto_update:
     :param domain:
     :param user_id:
@@ -32,6 +40,8 @@ def add_domain_info(
     :param group_id:
     :param domain_start_time:
     :param domain_expire_time:
+    :param tags:
+
     :return: DomainInfoModel
     """
     row = DomainInfoModel.create(
@@ -41,14 +51,44 @@ def add_domain_info(
         comment=comment,
         group_id=group_id,
         user_id=user_id,
-        is_auto_update=is_auto_update
+        is_auto_update=is_auto_update,
+        icp_company=icp_company,
+        icp_licence=icp_licence,
+        tags=tags
     )
 
     # 添加的时候需要自动更新
     if is_auto_update is True:
         update_domain_info_row(row)
 
+    # 添加的时候顺便添加icp备案信息
+    # update_domain_info_icp(row)
+
     return row
+
+
+def update_domain_info_icp(row):
+    """
+    更新域名icp备案信息
+    :param row: DomainInfoModel
+    :return:
+    """
+
+    icp_info = None
+
+    try:
+        ret = icp_util.get_icp(row.domain)
+        icp_info = ret['info']
+    except Exception:
+        logger.error(traceback.format_exc())
+
+    if icp_info:
+        DomainInfoModel.update(
+            icp_company=icp_info['name'],
+            icp_licence=icp_info['icp']
+        ).where(
+            DomainInfoModel.id == row.id
+        ).execute()
 
 
 def update_domain_info_row(row):
