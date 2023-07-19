@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
+
+import six
 from flask import request, Response
 from peewee import DoesNotExist, IntegrityError
 
@@ -13,10 +15,10 @@ from domain_admin.utils.flask_ext.app_exception import AppException
 def error_handler(e):
     """
     全局错误处理
-    :param e:
+    :param e: Exception
     :return:
     """
-    # traceback.print_exc()
+
     logger.error(traceback.format_exc())
 
     if request.path.startswith('/api'):
@@ -33,11 +35,11 @@ def error_handler(e):
             msg = '数据已存在'
 
         elif isinstance(e, AppException):
-            msg = e.message
-            code = e.code
+            msg = e.get_message()
+            code = e.get_code()
 
         else:
-            msg = str(e)
+            msg = six.text_type(e)
 
         return ApiResult.error(msg=msg, code=code)
     else:

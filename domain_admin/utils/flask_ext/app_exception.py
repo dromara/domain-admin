@@ -6,19 +6,25 @@ from domain_admin.utils.flask_ext.http_code_enum import HttpCodeEnum
 class AppException(Exception):
     code = 0
     message = ''
-    
+
     def __init__(self, message, code=-1):
         super(Exception, self).__init__()
 
         self.code = code
         self.message = message
 
+    def get_code(self):
+        return self.code
+
+    def get_message(self):
+        return self.message
+
 
 class ForbiddenAppException(AppException):
     def __init__(self, message='暂无权限', code=HttpCodeEnum.Forbidden):
-        super(AppException, self).__init__(message, code)
+        super(ForbiddenAppException, self).__init__(message, code)
 
 
 class UnauthorizedAppException(AppException):
     def __init__(self, message='用户未登录', code=HttpCodeEnum.Unauthorized):
-        super(AppException, self).__init__(message, code)
+        super(UnauthorizedAppException, self).__init__(message, code)
