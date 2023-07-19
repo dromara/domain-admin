@@ -3,6 +3,8 @@
 domain_info_api.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
+import json
 from datetime import datetime
 from operator import itemgetter
 
@@ -106,7 +108,7 @@ def update_domain_info_by_id():
         'domain': domain,
         'comment': comment,
         'group_id': group_id,
-        'tags': tags,
+        'tags_raw': json.dumps(tags, ensure_ascii=False),
         'icp_company': icp_company,
         'icp_licence': icp_licence,
         'is_auto_update': is_auto_update
@@ -216,7 +218,9 @@ def get_domain_info_by_id():
         extra_attrs=[
             'real_domain_expire_days',
             'update_time_label',
-        ]
+            'tags',
+        ],
+        exclude=['tags_raw'],
     )
 
     # 主机数量
