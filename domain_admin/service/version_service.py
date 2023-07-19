@@ -10,10 +10,6 @@ from peewee import IntegrityError
 
 from domain_admin.enums.version_enum import VersionEnum
 from domain_admin.log import logger
-
-from domain_admin.model.version_model import VersionModel
-from domain_admin.version import VERSION
-
 from domain_admin.migrate import (
     migrate_102_to_103,
     migrate_106_to_110,
@@ -24,7 +20,12 @@ from domain_admin.migrate import (
     migrate_140_alpha_to_140,
     migrate_143_to_144,
     migrate_145_to_146,
-    migrate_1413_to_1414, migrate_1422_to_1423)
+    migrate_1413_to_1414,
+    migrate_1422_to_1423,
+    migrate_151_to_152
+)
+from domain_admin.model.version_model import VersionModel
+from domain_admin.version import VERSION
 
 
 def get_local_version():
@@ -227,6 +228,32 @@ def update_version():
             migrate_1422_to_1423.execute_migrate()
 
             local_version = VersionEnum.Version_1423
+
+        # 2023-07-19
+        if local_version in [
+            VersionEnum.Version_1423,
+            VersionEnum.Version_1424,
+            VersionEnum.Version_1425,
+            VersionEnum.Version_1426,
+            VersionEnum.Version_1427,
+            VersionEnum.Version_1428,
+            VersionEnum.Version_1429,
+            VersionEnum.Version_1430,
+            VersionEnum.Version_1431,
+            VersionEnum.Version_1432,
+            VersionEnum.Version_1433,
+            VersionEnum.Version_1434,
+            VersionEnum.Version_1435,
+            VersionEnum.Version_1436,
+            VersionEnum.Version_150,
+            VersionEnum.Version_151,
+        ]:
+            # 1.5.1 => 1.5.2
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_152)
+
+            migrate_151_to_152.execute_migrate()
+
+            local_version = VersionEnum.Version_152
 
     # 更新版本号
     # fix: 多实例同时启动版本号写入失败问题
