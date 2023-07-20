@@ -7,4 +7,4 @@ https://blog.csdn.net/qq_35952638/article/details/103101820
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
-VERSION = '1.5.1'
+VERSION = '1.5.2'
