@@ -4,6 +4,7 @@ domain_service.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+import io
 import traceback
 from datetime import datetime
 
@@ -405,7 +406,7 @@ def export_domain_to_file(user_id):
 
     temp_filename = file_service.resolve_temp_file(filename)
     # print(temp_filename)
-    with open(temp_filename, 'w') as f:
+    with io.open(temp_filename, 'w', encoding='utf-8') as f:
         f.write(content)
 
     return filename
