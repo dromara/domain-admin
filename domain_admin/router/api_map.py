@@ -7,8 +7,8 @@ from domain_admin.api import (
     cert_api, ip_api, notify_api,
     whois_api, address_api,
     domain_info_api, prometheus_api,
-    log_operation_api, group_user_api
-)
+    log_operation_api, group_user_api,
+    log_async_task_api)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -84,6 +84,7 @@ routes = {
     '/api/addUser': user_api.add_user,
     '/api/updateUserStatus': user_api.update_user_status,
     '/api/deleteUser': user_api.delete_user,
+    '/api/resetUserPasswordUser': user_api.reset_user_password,
 
     # 获取ip信息
     '/api/getIpInfo': ip_api.get_ip_info,
@@ -131,6 +132,7 @@ routes = {
     '/api/exportDomainInfoFile': domain_info_api.export_domain_info_file,
     '/api/getDomainInfoGroupFilter': domain_info_api.get_domain_info_group_filter,
     '/api/getSubDomainCert': domain_info_api.get_sub_domain_cert,
+    '/api/updateDomainICPOfUser': domain_info_api.update_all_domain_icp_of_user,
 
     # prometheus
     '/metrics': prometheus_api.metrics,
@@ -145,4 +147,9 @@ routes = {
     '/api/deleteGroupUserByIds': group_user_api.delete_group_user_by_ids,
     '/api/getGroupUserById': group_user_api.get_group_user_by_id,
     '/api/getGroupUserList': group_user_api.get_group_user_list,
+
+    # 异步任务日志
+    '/api/getAsyncTaskLogList': log_async_task_api.get_async_task_log_list,
+    '/api/clearAsyncTaskLogList': log_async_task_api.clear_async_task_log_list,
+
 }

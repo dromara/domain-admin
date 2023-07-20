@@ -89,7 +89,7 @@ def seconds_for_human(seconds):
         minutes, seconds = divmod(seconds, minute)
         lst.append(str(minutes) + 'm')
 
-    if seconds > 0:
+    if seconds >= 0:
         lst.append(str(seconds) + 's')
 
     return ' '.join(lst)
@@ -137,6 +137,21 @@ def time_for_human(time_value):
         return six.text_type(int(duration / day)) + '天前'
     else:
         return time.strftime(DATE_FORMAT, time.localtime(time_value))
+
+
+def get_diff_time(start_date, end_date):
+    """
+    获取两个时间对象的时间差秒数
+    :param start_date:
+    :param end_date:
+    :return:
+    """
+    if start_date and end_date \
+            and isinstance(start_date, datetime) \
+            and isinstance(end_date, datetime):
+        return get_timestamp(end_date) - get_timestamp(start_date)
+    else:
+        return 0
 
 
 if __name__ == '__main__':

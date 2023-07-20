@@ -13,7 +13,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.utils import datetime_util, bcrypt_util
+from domain_admin.utils import datetime_util, bcrypt_util, secret_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -211,6 +211,26 @@ def update_user_status():
     }).where(
         UserModel.id == user_id
     ).execute()
+
+
+def reset_user_password():
+    """
+    重置用户密码
+    :return:
+    """
+    user_id = request.json.get('user_id')
+
+    password = secret_util.get_random_password()
+
+    UserModel.update({
+        'password': bcrypt_util.encode_password(password)
+    }).where(
+        UserModel.id == user_id
+    ).execute()
+
+    return {
+        'password': password
+    }
 
 
 def delete_user():

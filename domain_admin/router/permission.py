@@ -28,6 +28,7 @@ ADMIN_API_LIST = [
     '/api/addUser',
     '/api/updateUserStatus',
     '/api/deleteUser'
+    '/api/resetUserPasswordUser'
 ]
 
 API_PREFIX = '/api'
