@@ -14,7 +14,7 @@ from peewee import chunked
 from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
-from domain_admin.service import render_service, file_service, group_service
+from domain_admin.service import render_service, file_service, group_service, async_task_service
 from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util
 
 
@@ -131,6 +131,7 @@ def update_domain_info_row(row):
     ).execute()
 
 
+@async_task_service.async_task_decorator("更新域名信息")
 def update_all_domain_info_of_user(user_id):
     """
     更新单个用户的所有域名信息
@@ -144,6 +145,48 @@ def update_all_domain_info_of_user(user_id):
 
     for row in rows:
         update_domain_info_row(row)
+
+
+@async_task_service.async_task_decorator("补全域名ICP信息")
+def update_all_domain_icp_of_user(user_id):
+    """
+    补全域名ICP信息
+    :param user_id:
+    :return:
+    """
+    rows = DomainInfoModel.select().where(
+        (DomainInfoModel.user_id == user_id)
+        & (
+                (DomainInfoModel.icp_company == None)
+                | (DomainInfoModel.icp_company == '')
+                | (DomainInfoModel.icp_licence == '')
+                | (DomainInfoModel.icp_licence == '')
+        )
+    )
+
+    for row in rows:
+
+        res = None
+
+        try:
+            res = icp_util.get_icp(row.domain)
+        except Exception as e:
+            logger.debug(traceback.format_exc())
+
+        if not res:
+            continue
+
+        data = {}
+
+        if not row.icp_company:
+            data['icp_company'] = res.get('name')
+
+        if not row.icp_licence:
+            data['icp_licence'] = res.get('icp')
+
+        DomainInfoModel.update(data).where(
+            DomainInfoModel.id == row.id
+        ).execute()
 
 
 def update_all_domain_info():

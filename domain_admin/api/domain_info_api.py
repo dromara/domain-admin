@@ -264,7 +264,20 @@ def update_all_domain_info_of_user():
     """
     current_user_id = g.user_id
 
-    async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
+    domain_info_service.update_all_domain_info_of_user(user_id=current_user_id)
+    # async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
+
+
+def update_all_domain_icp_of_user():
+    """
+    更新当前用户的域名icp信息
+    :return:
+    """
+    current_user_id = g.user_id
+
+    domain_info_service.update_all_domain_icp_of_user(current_user_id)
+
+    # async_task_service.submit_task(fn=domain_info_service.update_all_domain_icp_of_user, user_id=current_user_id)
 
 
 def import_domain_info_from_file():
@@ -283,7 +296,9 @@ def import_domain_info_from_file():
     domain_info_service.add_domain_from_file(filename, current_user_id)
 
     # 异步查询
-    async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
+    domain_info_service.update_all_domain_info_of_user(current_user_id)
+
+    # async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
 
 
 def export_domain_info_file():
@@ -520,7 +535,7 @@ def get_icp():
     """
     domain = request.json['domain']
     res = icp_util.get_icp(domain)
-    return res.get('info')
+    return res
 
 
 def get_sub_domain_cert():

@@ -37,7 +37,7 @@ def get_icp(domain):
         'url': domain
     }
     res = requests.get(url, params)
-    return res.json()
+    return res.json().get('info')
 
 
 if __name__ == '__main__':

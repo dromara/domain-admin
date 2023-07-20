@@ -41,3 +41,4 @@ def get_diff_days(start_date, end_date):
         return (end_date - start_date).days
     else:
         return 0
+
