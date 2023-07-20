@@ -288,7 +288,8 @@ def update_all_domain_cert_info_of_user():
     """
     current_user_id = g.user_id
 
-    async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
+    domain_service.update_all_domain_cert_info_of_user(user_id=current_user_id)
+    # async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
 
 
 def update_domain_row_info_by_id():
@@ -348,7 +349,8 @@ def import_domain_from_file():
     # async_task_service.submit_task(fn=domain_service.add_domain_from_file, filename=filename, user_id=current_user_id)
 
     # 异步查询
-    async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
+    domain_service.update_all_domain_cert_info_of_user(user_id=current_user_id)
+    # async_task_service.submit_task(fn=domain_service.update_all_domain_cert_info_of_user, user_id=current_user_id)
 
 
 def export_domain_file():

@@ -64,12 +64,17 @@ def add_domain_info():
 
     # 异步提交
     if is_auto_subdomain:
-        async_task_service.submit_task(
-            fn=domain_service.auto_import_from_domain,
+        domain_service.auto_import_from_domain(
             root_domain=domain,
             group_id=group_id,
             user_id=current_user_id
         )
+        # async_task_service.submit_task(
+        #     fn=domain_service.auto_import_from_domain,
+        #     root_domain=domain,
+        #     group_id=group_id,
+        #     user_id=current_user_id
+        # )
 
     return {'domain_info_id': row.id}
 
@@ -129,12 +134,18 @@ def update_domain_info_by_id():
         domain_info_service.update_domain_info_row(domain_info_row)
 
     if is_auto_subdomain:
-        async_task_service.submit_task(
-            fn=domain_service.auto_import_from_domain,
+        domain_service.auto_import_from_domain(
             root_domain=domain,
             group_id=group_id,
             user_id=current_user_id
         )
+        #
+        # async_task_service.submit_task(
+        #     fn=domain_service.auto_import_from_domain,
+        #     root_domain=domain,
+        #     group_id=group_id,
+        #     user_id=current_user_id
+        # )
 
 
 @operation_service.operation_log_decorator(

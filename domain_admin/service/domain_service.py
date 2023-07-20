@@ -17,7 +17,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import file_service
+from domain_admin.service import file_service, async_task_service
 from domain_admin.service import render_service, group_service
 from domain_admin.utils import datetime_util, cert_util
 from domain_admin.utils import domain_util
@@ -242,6 +242,7 @@ def update_all_domain_cert_info():
         update_domain_row(row)
 
 
+@async_task_service.async_task_decorator("更新证书信息")
 def update_all_domain_cert_info_of_user(user_id):
     """
     更新用户的所有证书信息
@@ -315,6 +316,7 @@ def check_permission_and_get_row(domain_id, user_id):
     return row
 
 
+@async_task_service.async_task_decorator("自动导入子域名证书")
 def auto_import_from_domain(root_domain, group_id=0, user_id=0):
     """
     自动导入顶级域名下包含的子域名到证书列表
