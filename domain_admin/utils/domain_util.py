@@ -4,6 +4,7 @@ domain_util.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+import io
 import re
 
 import tldextract
@@ -53,7 +54,7 @@ def parse_domain_from_csv_file(filename):
     :param filename:
     :return: ParsedDomain
     """
-    with open(filename, 'r') as f:
+    with io.open(filename, 'r', encoding='utf-8') as f:
         # 标题
         first_line = f.readline()
         keys = [filed.strip() for filed in first_line.split(',')]
@@ -94,7 +95,7 @@ def parse_domain_from_txt_file(filename):
     :param filename:
     :return: ParsedDomain
     """
-    with open(filename, 'r') as f:
+    with io.open(filename, 'r', encoding='utf-8') as f:
         for line in f.readlines():
 
             domain = parse_domain(line.strip())
