@@ -111,7 +111,7 @@ def get_changelog(version, next_version):
 def release(next_version):
     # 提交代码
     os.system(
-        "git add . && git commit -m 'release v{}' && git tag v{} && git push --tag".format(
+        "git add . && git commit -m 'release v{}' && git tag v{} && git push && git push --tag".format(
             next_version, next_version)
     )
 
