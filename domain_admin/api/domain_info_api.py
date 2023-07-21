@@ -291,6 +291,20 @@ def update_all_domain_icp_of_user():
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_icp_of_user, user_id=current_user_id)
 
 
+def update_domain_row_icp():
+    """
+    更新当前域名icp信息
+    :return:
+    """
+    current_user_id = g.user_id
+
+    domain_info_id = request.json['domain_info_id']
+
+    row = DomainInfoModel.get_by_id(domain_info_id)
+
+    domain_info_service.update_domain_row_icp(row)
+
+
 def import_domain_info_from_file():
     """
     从文件导入域名
@@ -545,7 +559,12 @@ def get_icp():
     查询icp信息
     """
     domain = request.json['domain']
-    res = icp_util.get_icp(domain)
+
+    # 解析域名
+    resolve_domain = domain_util.parse_domain(domain)
+
+    res = icp_util.get_icp(resolve_domain)
+    res['resolve_domain'] = resolve_domain
     return res
 
 
