@@ -24,7 +24,7 @@
 
 支持平台：macOS、Linux、Windows
 
-同时，Domain Admin也是一个轻量级监控方案，占用系统资源较少，安装包仅1.5 MB
+Domain Admin是一个轻量级监控方案，占用系统资源较少。同时，Domain Admin也可以作为一个Flask 和 Vue.js前后端分离的项目模板
 
 - 项目地址：[https://github.com/mouday/domain-admin](https://github.com/mouday/domain-admin)
 - 国内镜像：[https://gitee.com/mouday/domain-admin](https://gitee.com/mouday/domain-admin)
@@ -615,15 +615,16 @@ QQ群号:731742868
 - `已完成` 增加筛选功能: 筛选域名状态、证书状态、网站状态
 - `已完成` 增加批量删除域名的功能
 
-- v1.5.0（开发中）
+- v1.5.x（开发中）
     - 新增网站监控 [issues#17](https://github.com/mouday/domain-admin/issues/17)
     - SSL证书申请
     - SSL证书部署
     - admin拥有所有权限
-    - 用户密码重置
-    - 域名导出功能新增字段：主办单位名称、ICP备案
-    - 域名列表新增字段：标签
+    - `已完成` 用户密码重置
+    - `已完成` 域名导出功能新增字段：主办单位名称、ICP备案
+    - `已完成` 域名列表新增字段：标签
     - 域名列表管理端支持修改：创建人
+    - 域名列表支持：标签搜索
 
 证书测试：[https://badssl.com/](https://badssl.com/)
 
