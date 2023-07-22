@@ -9,7 +9,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 class RoleEnum(object):
     """
-    通知事件枚举值
+    用户角色枚举值
     """
     # user
     USER = 1

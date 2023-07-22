@@ -2,9 +2,10 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 from datetime import datetime
 
-from peewee import CharField, DateTimeField, BooleanField, AutoField
+from peewee import CharField, DateTimeField, BooleanField, AutoField, IntegerField
 
 from domain_admin.config import ADMIN_USERNAME, ADMIN_PASSWORD
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import bcrypt_util
 
@@ -21,6 +22,9 @@ class UserModel(BaseModel):
 
     # 头像
     avatar_url = CharField(null=None, default='')
+
+    # 用户角色
+    role = IntegerField(null=False, default=RoleEnum.USER)
 
     # 账号状态
     status = BooleanField(default=True)
