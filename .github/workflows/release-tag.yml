@@ -2,14 +2,14 @@
 
 name: Create Release
 
-on:
-  push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
 #on:
 #  push:
-#    branch: ['master']
+#    tags:
+#      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+on:
+  push:
+    branch: ['master']
 
 jobs:
   build:
@@ -24,9 +24,27 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: 'mouday/domain-admin-web'
+          ref: 'master'
+          token: ${{ secrets.GH_PAT }}
+          path: 'domain_admin_web'
+
+      # 拉取H5前端最新的代码
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'mouday/domain-admin-mini'
+          ref: 'master'
+          token: ${{ secrets.GH_PAT }}
+          path: 'domain_admin_mini'
+
+      # 拉取web前端最新的代码
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'mouday/domain-admin-web'
           ref: 'dist'
           token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin/public'
+          path: 'domain_admin_web'
 
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -44,7 +62,7 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+#        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: ./dist/*
           body: Please refer to [CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md) for details.
