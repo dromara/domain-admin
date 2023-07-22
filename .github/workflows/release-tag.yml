@@ -2,31 +2,39 @@
 
 name: Create Release
 
-#on:
-#  push:
-#    tags:
-#      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
 on:
   push:
-    branch: ['master']
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+#on:
+#  push:
+#    branch: ['master']
 
 jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Master
         uses: actions/checkout@master
 
       # 拉取web前端dist的代码
-      - name: Checkout
+      - name: Checkout Web Dist
         uses: actions/checkout@v3
         with:
           repository: 'mouday/domain-admin-web'
           ref: 'dist'
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin/public'
+
+      - name: Checkout Mini Dist
+        uses: actions/checkout@v3
+        with:
+          repository: 'mouday/domain-admin-mini'
+          ref: 'dist'
+          token: ${{ secrets.GH_PAT }}
+          path: 'domain_admin/public/m'
 
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -38,12 +46,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
 
-      - name: Build
+      - name: Build Dist
         run: |
             python setup.py sdist bdist_wheel --python-tag py2.py3
 
       # 拉取前端最新的master代码
-      - name: Checkout
+      - name: Checkout Web Master
         uses: actions/checkout@v3
         with:
           repository: 'mouday/domain-admin-web'
@@ -51,7 +59,9 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin_web'
 
-      - name: Compress action step
+      # https://github.com/a7ul/tar-action
+      # https://docs.github.com/zh/actions/learn-github-actions/contexts#github-context
+      - name: Compress action step Web
         uses: a7ul/tar-action@v1.1.0
         id: compress-web
         with:
@@ -62,7 +72,7 @@ jobs:
           outPath: ./dist/domain-admin-web-${{github.ref_name}}.tar.gz
 
       # 拉取H5前端最新的master代码
-      - name: Checkout
+      - name: Checkout Mini Master
         uses: actions/checkout@v3
         with:
           repository: 'mouday/domain-admin-mini'
@@ -70,7 +80,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin_mini'
 
-      - name: Compress action step
+      - name: Compress action step Mini
         uses: a7ul/tar-action@v1.1.0
         id: compress-mini
         with:
