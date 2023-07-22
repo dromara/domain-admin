@@ -19,32 +19,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      # 拉取前端最新的dist代码
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          repository: 'mouday/domain-admin-web'
-          ref: 'master'
-          token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin_web'
-
-      # 拉取H5前端最新的代码
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          repository: 'mouday/domain-admin-mini'
-          ref: 'master'
-          token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin_mini'
-
-      # 拉取web前端最新的代码
+      # 拉取web前端dist的代码
       - name: Checkout
         uses: actions/checkout@v3
         with:
           repository: 'mouday/domain-admin-web'
           ref: 'dist'
           token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin_web'
+          path: 'domain_admin/public'
 
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -59,6 +41,44 @@ jobs:
       - name: Build
         run: |
             python setup.py sdist bdist_wheel --python-tag py2.py3
+
+      # 拉取前端最新的master代码
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'mouday/domain-admin-web'
+          ref: 'master'
+          token: ${{ secrets.GH_PAT }}
+          path: 'domain_admin_web'
+
+      - name: Compress action step
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          cwd: ./
+          files: |
+            ./domain_admin_web
+          outPath: ./dict/domain-admin-web-${{github.ref}}.tar.gz
+
+      # 拉取H5前端最新的master代码
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'mouday/domain-admin-mini'
+          ref: 'master'
+          token: ${{ secrets.GH_PAT }}
+          path: 'domain_admin_mini'
+
+      - name: Compress action step
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          cwd: ./
+          files: |
+            ./domain_admin_mini
+          outPath: ./dict/domain-admin-mini-${{github.ref}}.tar.gz
 
       - name: Release
         uses: softprops/action-gh-release@v1

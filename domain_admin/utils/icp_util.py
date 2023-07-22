@@ -27,7 +27,7 @@ class ICPItem(object):
 
 def get_icp_from_qq(domain):
     """
-    接口由网友提供
+    接口由网友 @因为遇见你 提供
     :param domain:
     :return:
 
