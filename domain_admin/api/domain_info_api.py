@@ -19,7 +19,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
-    operation_service, group_user_service, domain_service
+    operation_service, group_user_service, domain_service, common_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import crtsh_api
@@ -48,6 +48,7 @@ def add_domain_info():
     icp_company = request.json.get('icp_company', '')
     icp_licence = request.json.get('icp_licence', '')
     group_id = request.json.get('group_id') or 0
+    user_id = request.json.get('user_id')
 
     row = domain_info_service.add_domain_info(
         domain=domain,
@@ -56,7 +57,7 @@ def add_domain_info():
         comment=comment,
         tags=tags,
         group_id=group_id,
-        user_id=current_user_id,
+        user_id=user_id or current_user_id,
         icp_company=icp_company,
         icp_licence=icp_licence,
         is_auto_update=is_auto_update
@@ -104,6 +105,7 @@ def update_domain_info_by_id():
     tags = request.json.get('tags')
     icp_company = request.json.get('icp_company', '')
     icp_licence = request.json.get('icp_licence', '')
+    user_id = request.json.get('user_id')
 
     domain_info_row = DomainInfoModel.get_by_id(domain_info_id)
     # is_auto_update = request.json.get('is_auto_update', True)
@@ -124,6 +126,9 @@ def update_domain_info_by_id():
         data['domain_start_time'] = domain_start_time
         data['domain_expire_time'] = domain_expire_time
         data['domain_expire_days'] = time_util.get_diff_days(datetime.now(), domain_expire_time)
+
+    if user_id:
+        data['user_id'] = user_id
 
     DomainInfoModel.update(data).where(
         DomainInfoModel.id == domain_info_id
@@ -253,6 +258,8 @@ def get_domain_info_by_id():
 
     domain_row['has_edit_permission'] = has_edit_permission
 
+    common_service.load_user_name([domain_row])
+
     return domain_row
 
 
@@ -379,7 +386,10 @@ def get_domain_info_list():
     query = DomainInfoModel.select()
 
     if keyword:
-        query = query.where(DomainInfoModel.domain.contains(keyword))
+        query = query.where(
+            (DomainInfoModel.domain.contains(keyword))
+            |(DomainInfoModel.tags_raw.contains(keyword))
+        )
 
     if group_ids:
         query = query.where(DomainInfoModel.group_id.in_(group_ids))
@@ -498,6 +508,8 @@ def get_domain_info_list():
 
         # 分组名
         group_service.load_group_name(lst)
+        # 用户名
+        common_service.load_user_name(lst)
 
     return {
         'list': lst,
