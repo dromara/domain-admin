@@ -59,7 +59,7 @@ jobs:
           cwd: ./
           files: |
             ./domain_admin_web
-          outPath: ./dict/domain-admin-web-${{github.ref_name}}.tar.gz
+          outPath: ./dist/domain-admin-web-${{github.ref_name}}.tar.gz
 
       # 拉取H5前端最新的master代码
       - name: Checkout
@@ -78,7 +78,7 @@ jobs:
           cwd: ./
           files: |
             ./domain_admin_mini
-          outPath: ./dict/domain-admin-mini-${{github.ref_name}}.tar.gz
+          outPath: ./dist/domain-admin-mini-${{github.ref_name}}.tar.gz
 
       - name: Release
         uses: softprops/action-gh-release@v1
