@@ -8,6 +8,7 @@ import io
 import time
 import traceback
 from datetime import datetime, timedelta
+import random
 
 from peewee import chunked
 
@@ -166,6 +167,9 @@ def update_all_domain_icp_of_user(user_id):
 
     for row in rows:
         update_domain_row_icp(row)
+
+        # 防止过于频繁
+        time.sleep(random.randint(3, 10))
 
 
 def update_domain_row_icp(row):
