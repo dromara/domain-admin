@@ -53,7 +53,7 @@ jobs:
 
       - name: Compress action step
         uses: a7ul/tar-action@v1.1.0
-        id: compress
+        id: compress-web
         with:
           command: c
           cwd: ./
@@ -72,7 +72,7 @@ jobs:
 
       - name: Compress action step
         uses: a7ul/tar-action@v1.1.0
-        id: compress
+        id: compress-mini
         with:
           command: c
           cwd: ./
