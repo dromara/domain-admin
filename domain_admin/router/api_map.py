@@ -133,6 +133,7 @@ routes = {
     '/api/getDomainInfoGroupFilter': domain_info_api.get_domain_info_group_filter,
     '/api/getSubDomainCert': domain_info_api.get_sub_domain_cert,
     '/api/updateDomainICPOfUser': domain_info_api.update_all_domain_icp_of_user,
+    '/api/updateDomainRowICP': domain_info_api.update_domain_row_icp,
 
     # prometheus
     '/metrics': prometheus_api.metrics,

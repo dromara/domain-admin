@@ -165,28 +165,39 @@ def update_all_domain_icp_of_user(user_id):
     )
 
     for row in rows:
+        update_domain_row_icp(row)
 
-        res = None
 
-        try:
-            res = icp_util.get_icp(row.domain)
-        except Exception as e:
-            logger.debug(traceback.format_exc())
+def update_domain_row_icp(row):
+    """
+    更新icp信息
+    :param row:
+    :return:
+    """
+    res = None
 
-        if not res:
-            continue
+    try:
+        res = icp_util.get_icp(row.domain)
+    except Exception as e:
+        logger.debug(traceback.format_exc())
 
-        data = {}
+    if not res:
+        return
 
-        if not row.icp_company:
-            data['icp_company'] = res.get('name')
+    data = {}
 
-        if not row.icp_licence:
-            data['icp_licence'] = res.get('icp')
+    if not row.icp_company:
+        data['icp_company'] = res.get('name')
 
-        DomainInfoModel.update(data).where(
-            DomainInfoModel.id == row.id
-        ).execute()
+    if not row.icp_licence:
+        data['icp_licence'] = res.get('icp')
+
+    if len(data) == 0:
+        return
+
+    DomainInfoModel.update(data).where(
+        DomainInfoModel.id == row.id
+    ).execute()
 
 
 def update_all_domain_info():
