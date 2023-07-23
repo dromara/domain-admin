@@ -8,7 +8,7 @@ from domain_admin.api import (
     whois_api, address_api,
     domain_info_api, prometheus_api,
     log_operation_api, group_user_api,
-    log_async_task_api)
+    log_async_task_api, issue_certificate_api)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -153,4 +153,10 @@ routes = {
     '/api/getAsyncTaskLogList': log_async_task_api.get_async_task_log_list,
     '/api/clearAsyncTaskLogList': log_async_task_api.clear_async_task_log_list,
 
+    # SSL证书
+    '/api/getCertificateList': issue_certificate_api.get_certificate_list,
+    '/api/issueCertificate': issue_certificate_api.issue_certificate,
+    '/api/renewCertificate': issue_certificate_api.renew_certificate,
+    '/api/getIssueCertificateById': issue_certificate_api.get_issue_certificate_by_id,
+    '/api/verifyCertificateById': issue_certificate_api.verify_certificate,
 }

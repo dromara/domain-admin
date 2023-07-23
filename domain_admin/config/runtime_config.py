@@ -31,6 +31,9 @@ TEMP_DIR_BASE_URL = '/temp'
 # 数据库文件存放
 DATABASE_DIR = os.path.join(RUNTIME_DIR, 'database')
 
+# acme_dir
+ACME_DIR = os.path.join(DATABASE_DIR, 'acme')
+
 # sqlite 数据库
 SQLITE_DATABASE_PATH = os.path.join(DATABASE_DIR, 'database.db')
 
@@ -41,7 +44,8 @@ LOG_DIR = os.path.join(RUNTIME_DIR, 'logs')
 dir_list = [
     TEMP_DIR,
     DATABASE_DIR,
-    LOG_DIR
+    LOG_DIR,
+    ACME_DIR,
 ]
 
 for dirname in dir_list:

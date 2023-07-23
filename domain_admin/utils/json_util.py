@@ -41,3 +41,7 @@ def json_encode(data, default=default_json_encoder, **kwargs):
     :return:
     """
     return json.dumps(data, default=default, **kwargs)
+
+
+def json_dump(obj):
+    print(json_encode(obj, ensure_ascii=False, indent=2))
