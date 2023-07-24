@@ -17,6 +17,13 @@ DATE_FORMAT = "%Y-%m-%d"
 TIME_FORMAT = "%H:%M:%S"
 
 
+class TimeEnum(object):
+    Second = 1
+    Minute = 60 * Second
+    Hour = 60 * Minute
+    Day = 24 * Hour
+
+
 def get_timestamp(datetime_obj):
     """
     fix: Python 2.7 AttributeError: 'datetime.datetime' object has no attribute 'timestamp'
@@ -72,7 +79,7 @@ def seconds_for_human(seconds):
     """
     second = 1
     minute = second * 60
-    hour = minute * 12
+    hour = minute * 60
     day = hour * 24
 
     lst = []
@@ -152,19 +159,3 @@ def get_diff_time(start_date, end_date):
         return get_timestamp(end_date) - get_timestamp(start_date)
     else:
         return 0
-
-
-if __name__ == '__main__':
-    print(time_for_human(1665381270))
-    # 2天前
-
-    print(time_for_human(datetime.now()))
-    # 刚刚
-
-    print(time_for_human(time.time() - 100))
-    # 1分钟前
-
-    print(time_for_human('2022-10-10 13:33:11'))
-    # 2天前
-
-    print(get_timestamp(datetime.now()))
