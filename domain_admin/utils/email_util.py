@@ -64,8 +64,10 @@ def send_email(
     # 构造邮件
     message = MIMEText(content, content_type, 'utf-8')
     # 邮箱昵称、发件人邮箱账号
-    message['From'] = formataddr((mail_alias, mail_username))
     message['Subject'] = Header(subject, 'utf-8')
+    message['From'] = formataddr((mail_alias, mail_username))
+    # bugfix: 显示收件人
+    message['To'] = ','.join(formataddr((mail, mail)) for mail in to_addresses)
 
     server = get_email_server(mail_host, mail_port)
 
