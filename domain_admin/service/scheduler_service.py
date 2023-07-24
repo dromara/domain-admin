@@ -60,7 +60,8 @@ def update_job(cron_exp):
     scheduler.remove_all_jobs()
 
     # cron 定时任务
-    minute, hour, day, month, day_of_week = cron_exp.split(' ')
+    # Bugfix: 用户输入的cron表达式有多余的空格
+    minute, hour, day, month, day_of_week = cron_exp.split()
 
     scheduler.add_job(
         func=task,
