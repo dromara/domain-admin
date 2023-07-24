@@ -2,6 +2,8 @@
 """
 @File    : icp_util.py
 @Date    : 2023-06-30
+
+备案查询网站：https://www.beianx.cn/
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 

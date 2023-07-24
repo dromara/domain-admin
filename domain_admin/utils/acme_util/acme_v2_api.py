@@ -3,6 +3,8 @@
 @File    : acme_v2_api.py
 @Date    : 2023-07-23
 
+code from https://github.com/certbot/certbot/blob/master/acme/examples/http01_example.py
+
 https://datatracker.ietf.org/doc/html/rfc8555
 https://www.rfc-editor.org/rfc/rfc8555
 
@@ -17,7 +19,6 @@ https://zhuanlan.zhihu.com/p/75032510
 https://letsencrypt.org/zh-cn/docs/challenge-types/
 https://datatracker.ietf.org/doc/html/rfc8555
 
-code from https://github.com/certbot/certbot/blob/master/acme/examples/http01_example.py
 
 Example ACME-V2 API for HTTP-01 challenge.
 
