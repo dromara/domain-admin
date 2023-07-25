@@ -50,7 +50,7 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">用户手册</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">项目简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">技术选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">使用说明</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">安装</a></li>
@@ -88,7 +88,6 @@
              
   <section id="id1">
 <h1>用户手册<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
-<p>完善中，请参考项目 README</p>
 <section id="id2">
 <h2>项目简介<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>功能：</p>
@@ -136,33 +135,19 @@
 </ul>
 </section>
 <section id="id3">
-<h2>技术选型<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<p>前端选型（网页版）</p>
+<h2>使用说明<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>1、批量导入域名</p>
+<p>导入文本示例: <a class="reference external" href="/tests/domain.txt">/docs/domain.txt</a></p>
+<p>2、设置系统发送邮件的账号密码</p>
+<blockquote>
+<div><p>如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件</p>
+</div></blockquote>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png" /></a>
+<p>3、设置邮件通知</p>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png" /></a>
+<p>4、其他通知方式</p>
 <ul class="simple">
-<li><p>Node.js</p></li>
-<li><p>Vite.js</p></li>
-<li><p>Vue3.js</p></li>
-<li><p>Vue Router</p></li>
-<li><p>Pinia</p></li>
-<li><p>Element Plus</p></li>
-<li><p>Tailwind CSS</p></li>
-</ul>
-<p>前端选型（桌面版）</p>
-<ul class="simple">
-<li><p>node.js v16.15.1</p></li>
-<li><p>vue3.js</p></li>
-<li><p>quasar + electron</p></li>
-</ul>
-<p>后端选型</p>
-<ul class="simple">
-<li><p>Python3.7.0</p></li>
-<li><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.2.x/">Flask</a></p></li>
-<li><p><a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/">jinja2</a></p></li>
-<li><p><a class="reference external" href="http://docs.peewee-orm.com/en/latest/index.html#">peewee（sqlite）</a></p></li>
-<li><p><a class="reference external" href="https://apscheduler.readthedocs.io/en/3.x/">apscheduler</a></p></li>
-<li><p><a class="reference external" href="http://supervisord.org/index.html">supervisord</a> 部署推荐</p></li>
-<li><p><a class="reference external" href="https://docs.gunicorn.org/">gunicorn</a> mac/linux 推荐</p></li>
-<li><p><a class="reference external" href="https://github.com/Pylons/waitress">waitress</a> windows 推荐</p></li>
+<li><p>webhook通知：<a class="reference external" href="https://blog.csdn.net/mouday/article/details/124135877">推送到微信的webhook第三方工具</a></p></li>
 </ul>
 </section>
 </section>

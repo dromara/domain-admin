@@ -94,24 +94,29 @@
 <a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg" /></a>
 <p>基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台</p>
 <p>用于解决，不同业务域名SSL证书，申请自不同的平台，到期后不能及时收到通知，导致线上访问异常，被老板责骂的问题</p>
-<p>核心功能：<code class="docutils literal notranslate"><span class="pre">域名</span></code> 和<code class="docutils literal notranslate"><span class="pre">SSL证书</span></code> 的过期监控，到期提醒</p>
-<p>支持证书：单域名证书、多域名证书、通配符证书、IP证书、自签名证书</p>
-<p>证书部署： 单一主机部署、多主机部署、动态主机部署</p>
-<p>通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式</p>
-<p>支持平台：macOS、Linux、Windows</p>
-<p>辅助功能：Let’s Encrypt SSL证书申请</p>
 <p>Domain Admin是一个轻量级监控方案，占用系统资源较少。同时，Domain Admin也可以作为一个Flask 和 Vue.js前后端分离的项目模板</p>
 <ul class="simple">
+<li><p>功能描述</p>
+<ul>
+<li><p>核心功能：<code class="docutils literal notranslate"><span class="pre">域名</span></code> 和<code class="docutils literal notranslate"><span class="pre">SSL证书</span></code> 的过期监控，到期提醒</p></li>
+<li><p>支持证书：单域名证书、多域名证书、通配符证书、IP证书、自签名证书</p></li>
+<li><p>证书部署： 单一主机部署、多主机部署、动态主机部署</p></li>
+<li><p>通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式</p></li>
+<li><p>支持平台：macOS、Linux、Windows</p></li>
+<li><p>辅助功能：Let’s Encrypt SSL证书申请</p></li>
+</ul>
+</li>
 <li><p>项目地址：</p>
 <ul>
 <li><p>github： <a class="reference external" href="https://github.com/mouday/domain-admin">https://github.com/mouday/domain-admin</a></p></li>
 <li><p>国内镜像：<a class="reference external" href="https://gitee.com/mouday/domain-admin">https://gitee.com/mouday/domain-admin</a></p></li>
 </ul>
 </li>
-<li><p>发布地址：</p>
+<li><p>发布渠道：</p>
 <ul>
 <li><p>pypi：<a class="reference external" href="https://pypi.org/project/domain-admin">https://pypi.org/project/domain-admin</a></p></li>
 <li><p>docker：<a class="reference external" href="https://hub.docker.com/r/mouday/domain-admin">https://hub.docker.com/r/mouday/domain-admin</a></p></li>
+<li><p>releases：<a class="reference external" href="https://github.com/mouday/domain-admin/releases">https://github.com/mouday/domain-admin/releases</a></p></li>
 </ul>
 </li>
 <li><p>使用文档：</p>
@@ -144,36 +149,20 @@
 <p>移动端项目地址：<a class="reference external" href="https://github.com/mouday/domain-admin-mini">https://github.com/mouday/domain-admin-mini</a></p>
 </section>
 <section id="id3">
-<h2>使用说明<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<p>1、批量导入域名</p>
-<p>导入文本示例: <a class="reference external" href="/tests/domain.txt">/docs/domain.txt</a></p>
-<p>2、设置系统发送邮件的账号密码</p>
-<blockquote>
-<div><p>如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件</p>
-</div></blockquote>
-<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png" /></a>
-<p>3、设置邮件通知</p>
-<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png" /></a>
-<p>4、其他通知方式</p>
-<ul class="simple">
-<li><p>webhook通知：<a class="reference external" href="https://blog.csdn.net/mouday/article/details/124135877">推送到微信的webhook第三方工具</a></p></li>
-</ul>
-</section>
-<section id="id4">
-<h2>问题反馈交流<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<h2>问题反馈交流<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>QQ群号:731742868</p>
 <p>邀请码：domain-admin</p>
 <p><span class="raw-html-m2r"><img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300"></span></p>
 </section>
-<section id="id5">
-<h2>更新日志<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<section id="id4">
+<h2>更新日志<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
 <p><a class="reference external" href="https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md">CHANGELOG.md</a></p>
 <p>目录</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="manual/index.html">用户手册</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="manual/index.html#id2">项目简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="manual/index.html#id3">技术选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/index.html#id3">使用说明</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="manual/install.html">安装</a><ul>
@@ -211,7 +200,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="manual/plan.html">开发计划</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual/development.html">二次开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/development.html">二次开发</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/development.html#id2">技术选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/development.html#id3">接口文档</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/development.html#id4">测试证书</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="manual/changelog.html">变更记录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manual/article.html">相关文章</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="manual/article.html#id2">媒体报道</a></li>

@@ -53,7 +53,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">接口文档</a></li>
 <li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plan.html">开发计划</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">二次开发</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">二次开发</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">技术选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">接口文档</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">测试证书</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">变更记录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="article.html">相关文章</a></li>
 </ul>
@@ -84,7 +89,39 @@
              
   <section id="id1">
 <h1>二次开发<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
-<p>接口文档：<a class="reference external" href="https://mouday.github.io/domain-admin/">https://mouday.github.io/domain-admin/</a></p>
+<section id="id2">
+<h2>技术选型<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>前端选型（网页版）</p>
+<ul class="simple">
+<li><p>Node.js</p></li>
+<li><p>Vite.js</p></li>
+<li><p>Vue3.js</p></li>
+<li><p>Vue Router</p></li>
+<li><p>Pinia</p></li>
+<li><p>Element Plus</p></li>
+<li><p>Tailwind CSS</p></li>
+</ul>
+<p>前端选型（桌面版）</p>
+<ul class="simple">
+<li><p>node.js v16.15.1</p></li>
+<li><p>vue3.js</p></li>
+<li><p>quasar + electron</p></li>
+</ul>
+<p>后端选型</p>
+<ul class="simple">
+<li><p>Python3.7.0</p></li>
+<li><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.2.x/">Flask</a></p></li>
+<li><p><a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/">jinja2</a></p></li>
+<li><p><a class="reference external" href="http://docs.peewee-orm.com/en/latest/index.html#">peewee（sqlite）</a></p></li>
+<li><p><a class="reference external" href="https://apscheduler.readthedocs.io/en/3.x/">apscheduler</a></p></li>
+<li><p><a class="reference external" href="http://supervisord.org/index.html">supervisord</a> 部署推荐</p></li>
+<li><p><a class="reference external" href="https://docs.gunicorn.org/">gunicorn</a> mac/linux 推荐</p></li>
+<li><p><a class="reference external" href="https://github.com/Pylons/waitress">waitress</a> windows 推荐</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>接口文档<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="https://mouday.github.io/domain-admin/">https://mouday.github.io/domain-admin/</a></p>
 <p>代码推送</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># github</span>
 git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>master
@@ -93,7 +130,10 @@ git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span
 git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>gitee<span class="w"> </span>master
 </pre></div>
 </div>
-<p>证书测试：<a class="reference external" href="https://badssl.com/">https://badssl.com/</a></p>
+</section>
+<section id="id4">
+<h2>测试证书<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>证书测试 <a class="reference external" href="https://badssl.com/">https://badssl.com/</a></p>
 <p>获取证书列表</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">([...</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)].</span><span class="nx">map</span><span class="p">(</span><span class="nx">a</span><span class="p">=&gt;</span><span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="p">))</span>
 </pre></div>
@@ -104,6 +144,7 @@ git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span
 <li><p><a class="reference external" href="tests/top-1m.txt">docs/top-1m.csv</a></p></li>
 </ul>
 <a class="reference external image-reference" href="image/domain-admin-process.png"><img alt="" src="manual/image/domain-admin-process.png" /></a>
+</section>
 </section>
 
 
