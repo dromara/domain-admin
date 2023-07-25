@@ -6,6 +6,7 @@
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 import socket
+from datetime import datetime
 
 import OpenSSL
 from dateutil import parser
@@ -109,12 +110,17 @@ class X509Item(object):
             'signatureAlgorithm': self.signatureAlgorithm,
             'subjectAltName': self.subjectAltName,
             'hasExpired': self.hasExpired,
+            'totalDays': self.totalDays,
             'expireDays': self.expireDays,
         }
 
     @property
-    def expireDays(self):
+    def totalDays(self):
         return time_util.get_diff_days(self.notBefore, self.notAfter)
+
+    @property
+    def expireDays(self):
+        return time_util.get_diff_days(datetime.now(), self.notAfter)
 
 
 def dump_certificate_to_text(ssl_cert):
