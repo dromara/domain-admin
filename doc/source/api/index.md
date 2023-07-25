@@ -1,6 +1,6 @@
 # 接口文档
 
-说明
+## 说明
 
 请求方式统一为`POST json`
 
@@ -12,14 +12,14 @@ X-TOKEN: <token>
 {}
 ```
 
-注册登录
+## 注册登录
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|  
-| /api/register | 用户注册 | [register.md](/auth/register.md) |
+| /api/register | 用户注册 | [register.md](./auth/register.md) |
 | /api/login | 用户登录 | [login.md](/auth/login.md) |
 
-域名管理
+## 域名管理
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|  
@@ -36,7 +36,7 @@ X-TOKEN: <token>
 | /api/importDomainFromFile | 从文件导入域名 | [importDomainFromFile.md](/domain/importDomainFromFile.md) |
 | /api/getAllDomainListOfUser | 获取用户的所有域名数据 | [getAllDomainListOfUser.md](/domain/getAllDomainListOfUser.md) |
 
-分组管理
+## 分组管理
 
 | 接口 | 说明 | 文档 | 
 | - | - | -| 
@@ -47,7 +47,7 @@ X-TOKEN: <token>
 | /api/deleteGroupById | 删除分组 | [deleteGroupById.md](/group/deleteGroupById.md) |
 
 
-用户信息管理
+## 用户信息管理
 
 | 接口 | 说明 | 文档 | 
 | - | - | -| 
@@ -55,13 +55,15 @@ X-TOKEN: <token>
 | /api/updateUserInfo | 更新当前用户信息 | [updateUserInfo.md](/user/updateUserInfo.md) | 
 | /api/updateUserPassword | 更新用户密码 | [updateUserPassword.md](/user/updateUserPassword.md) | 
 
-调度日志
+## 调度日志
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|
 | /api/getLogSchedulerList | 获取调度日志列表 | [getLogSchedulerList.md](/log_scheduler/getLogSchedulerList.md) |
 
-系统管理 (管理员权限)
+## 系统管理
+ 
+需要管理员权限
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|
@@ -69,7 +71,9 @@ X-TOKEN: <token>
 | /api/updateSystemConfig | 更新单个配置 | [updateSystemConfig.md](/system_config/updateSystemConfig.md) |
 | /api/getSystemVersion | 获取当前应用版本号 | [getSystemVersion.md](/system_config/getSystemVersion.md) |
 
-用户管理 (管理员权限)
+## 用户管理
+
+管理员权限
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|
@@ -78,13 +82,15 @@ X-TOKEN: <token>
 | /api/updateUserStatus | 更新账号可用状态 | [updateUserStatus.md](/user/updateUserStatus.md) |
 | /api/deleteUser | 删除用户账号 | [deleteUser.md](/user/deleteUser.md) |
 
-域名信息
+## 域名信息
 
 | 接口 | 说明 | 文档 | 
 | - | - | -| 
 | /api/getCertInformation | 获取域名证书信息 | [getCertInformation.md](/cert/getCertInformation.md) |
 
-通知配置管理 `v0.0.12`
+## 通知配置管理 
+
+`v0.0.12`
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|

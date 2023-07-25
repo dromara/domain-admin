@@ -1,0 +1,8 @@
+sphinx
+sphinx_rtd_theme
+sphinx-autobuild
+recommonmark
+sphinx-markdown-tables
+myst-parser
+linkify-it-py
+m2r2
