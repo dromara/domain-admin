@@ -15,27 +15,24 @@
 
 用于解决，不同业务域名SSL证书，申请自不同的平台，到期后不能及时收到通知，导致线上访问异常，被老板责骂的问题
 
-核心功能：`域名` 和`SSL证书` 的过期监控，到期提醒
-
-支持证书：单域名证书、多域名证书、通配符证书、IP证书、自签名证书
-
-证书部署： 单一主机部署、多主机部署、动态主机部署
-
-通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式
-
-支持平台：macOS、Linux、Windows
-
-辅助功能：Let’s Encrypt SSL证书申请
-
 Domain Admin是一个轻量级监控方案，占用系统资源较少。同时，Domain Admin也可以作为一个Flask 和 Vue.js前后端分离的项目模板
+
+- 功能描述
+    - 核心功能：`域名` 和`SSL证书` 的过期监控，到期提醒
+    - 支持证书：单域名证书、多域名证书、通配符证书、IP证书、自签名证书
+    - 证书部署： 单一主机部署、多主机部署、动态主机部署
+    - 通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式
+    - 支持平台：macOS、Linux、Windows
+    - 辅助功能：Let’s Encrypt SSL证书申请
 
 - 项目地址：
     - github： [https://github.com/mouday/domain-admin](https://github.com/mouday/domain-admin)
     - 国内镜像：[https://gitee.com/mouday/domain-admin](https://gitee.com/mouday/domain-admin)
 
-- 发布地址：
+- 发布渠道：
     - pypi：[https://pypi.org/project/domain-admin](https://pypi.org/project/domain-admin)
     - docker：[https://hub.docker.com/r/mouday/domain-admin](https://hub.docker.com/r/mouday/domain-admin)
+    - releases：[https://github.com/mouday/domain-admin/releases](https://github.com/mouday/domain-admin/releases)
 
 - 使用文档：
     - github: [https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
@@ -67,27 +64,6 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 - 移动端预览地址(请使用移动端窗口体验)：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
 移动端项目地址：[https://github.com/mouday/domain-admin-mini](https://github.com/mouday/domain-admin-mini)
-
-
-## 使用说明
-
-1、批量导入域名
-
-导入文本示例: [/docs/domain.txt](/tests/domain.txt)
-
-2、设置系统发送邮件的账号密码
-
-> 如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
-
-3、设置邮件通知
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png)
-
-4、其他通知方式
-
-- webhook通知：[推送到微信的webhook第三方工具](https://blog.csdn.net/mouday/article/details/124135877)
 
 ## 问题反馈交流
 

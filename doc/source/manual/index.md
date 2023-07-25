@@ -1,7 +1,5 @@
 # 用户手册
 
-完善中，请参考项目 README
-
 ## 项目简介
 
 功能：
@@ -37,31 +35,22 @@
     - 桌面 
     - ~~移动端（app+小程序）~~
 
-## 技术选型
+## 使用说明
 
-前端选型（网页版）
+1、批量导入域名
 
-- Node.js
-- Vite.js
-- Vue3.js
-- Vue Router
-- Pinia
-- Element Plus
-- Tailwind CSS
+导入文本示例: [/docs/domain.txt](/tests/domain.txt)
 
-前端选型（桌面版）
+2、设置系统发送邮件的账号密码
 
-- node.js v16.15.1
-- vue3.js
-- quasar + electron
+> 如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件
 
-后端选型
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
 
-- Python3.7.0
-- [Flask](https://flask.palletsprojects.com/en/2.2.x/) 
-- [jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
-- [peewee（sqlite）](http://docs.peewee-orm.com/en/latest/index.html#)
-- [apscheduler](https://apscheduler.readthedocs.io/en/3.x/)
-- [supervisord](http://supervisord.org/index.html) 部署推荐
-- [gunicorn](https://docs.gunicorn.org/) mac/linux 推荐
-- [waitress](https://github.com/Pylons/waitress) windows 推荐
+3、设置邮件通知
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png)
+
+4、其他通知方式
+
+- webhook通知：[推送到微信的webhook第三方工具](https://blog.csdn.net/mouday/article/details/124135877)
