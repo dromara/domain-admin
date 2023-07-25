@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安装 &mdash; Domain Admin latest 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="接口文档" href="../api/index.html" />
+    <link rel="prev" title="用户手册" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Domain Admin
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">用户手册</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">安装</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pip">方式一：pip安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">方式二：docker启动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">方式三：克隆源码运行</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">接口文档</a></li>
+<li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plan.html">开发计划</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">二次开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">变更记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="article.html">相关文章</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Domain Admin</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">安装</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/manual/install.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>安装<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="pip">
+<h2>方式一：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
+<p>运行环境：</p>
+<ul class="simple">
+<li><p>Python &gt;= 2.7 或者 Python &gt;= 3.4</p></li>
+</ul>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> + venv 管理多个Python版本和隔离虚拟环境</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>--version
+Python<span class="w"> </span><span class="m">3</span>.7.0
+
+<span class="c1"># 创建名为 venv 的虚拟环境</span>
+$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+
+<span class="c1"># 激活虚拟环境</span>
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</pre></div>
+</div>
+<p>linux / macos 安装</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 安装 domain-admin</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gunicorn<span class="w"> </span>domain-admin
+
+<span class="c1"># 启动运行</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+</pre></div>
+</div>
+<p>windows 安装</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 安装 domain-admin</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress<span class="w"> </span>domain-admin
+
+<span class="c1"># 启动运行</span>
+$<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+</pre></div>
+</div>
+<p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
+<p>默认的管理员账号：admin 密码：123456</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">强烈建议</span></code>：登录系统后修改默认密码</p>
+</div></blockquote>
+<p>升级到最新版本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>domain-admin<span class="w"> </span>-i<span class="w"> </span>https://pypi.org/simple
+</pre></div>
+</div>
+</section>
+<section id="docker">
+<h2>方式二：docker启动<a class="headerlink" href="#docker" title="此标题的永久链接"></a></h2>
+<p>感谢<a class="reference external" href="https://github.com/miss85246">&#64;miss85246</a> 提供Docker支持</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
+
+<span class="c1"># 后台运行</span>
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
+
+<span class="c1"># 本地文件夹和容器文件夹映射</span>
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/database:/app/database<span class="w"> </span><span class="se">\</span>
+-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/logs:/app/logs<span class="w"> </span><span class="se">\</span>
+-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+--name<span class="w"> </span>domain-admin<span class="w"> </span><span class="se">\</span>
+mouday/domain-admin:latest
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>方式三：克隆源码运行<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>本方式仅适用于二次开发，推荐采用 pip安装 或者 docker启动 的方式体验</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 后端项目</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mouday/domain-admin.git
+
+<span class="c1"># 安装依赖</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="c1"># 启动开发服务</span>
+make<span class="w"> </span>dev
+
+
+<span class="c1"># 前端项目</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mouday/domain-admin-web.git
+
+<span class="c1"># 启动开发服务</span>
+make<span class="w"> </span>dev
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="用户手册" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="接口文档" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Peng Shiyu.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

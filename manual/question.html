@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>常见问题 &mdash; Domain Admin latest 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="开发计划" href="plan.html" />
+    <link rel="prev" title="接口文档" href="../api/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Domain Admin
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">用户手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">接口文档</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">常见问题</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1、暂不支持多进程方式启动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2、为什么外网访问不到？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#windows-fcntl">3、Windows平台启动报错,找不到模块 <code class="docutils literal notranslate"><span class="pre">fcntl</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">4、添加域名数据后系统异常</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">5、邮件发送失败</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#webhook">6、webhook模板</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">7、监控域名非443的端口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">8、修改数据库链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#k8s">9、k8s部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prometheus-metrics">10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">11、部分域名无法查询到信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingress">12、获取ingress的域名</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plan.html">开发计划</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">二次开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">变更记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="article.html">相关文章</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Domain Admin</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">常见问题</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/manual/question.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>常见问题<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>1、暂不支持多进程方式启动<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>使用 master + 多worker 方式启动应用，会启动多个定时任务Scheduler，导致多次执行任务</p>
+<p>如果小规模使用，启动一个进程即可</p>
+<p>如果是需要支持并发访问，可自行改进应用</p>
+<p>将定时器独立出来，单独一个进程控制，行成 scheduler + Flask（master + 多worker）</p>
+</section>
+<section id="id3">
+<h2>2、为什么外网访问不到？<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span># 启动运行
+$ gunicorn &#39;domain_admin.main:app&#39;
+
+# 支持外网可访问，云服务器（阿里云或腾讯云）需要设置安全组
+# 默认内网访问 --bind 127.0.0.1:8000
+$ gunicorn --bind &#39;0.0.0.0:8000&#39; domain_admin.main:app&#39;
+</pre></div>
+</div>
+<p>更多设置，可参考<a class="reference external" href="https://docs.gunicorn.org/en/stable/index.html">gunicorn</a></p>
+</section>
+<section id="windows-fcntl">
+<h2>3、Windows平台启动报错,找不到模块 <code class="docutils literal notranslate"><span class="pre">fcntl</span></code><a class="headerlink" href="#windows-fcntl" title="此标题的永久链接"></a></h2>
+<p>gunicorn不支持Windows，可以使用<a class="reference external" href="https://github.com/Pylons/waitress">waitress</a> 替换，感谢<a class="reference external" href="https://github.com/cbr252522489">&#64;cbr252522489</a>提供的解决方案</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress
+
+$<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span>domain_admin.main:app
+</pre></div>
+</div>
+<p>参考：<a class="reference external" href="https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl">https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl</a></p>
+</section>
+<section id="id4">
+<h2>4、添加域名数据后系统异常<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>可按如下步骤删除异常数据</p>
+<p>docker 启动方式</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 查看容器的运行信息</span>
+$<span class="w"> </span>docker<span class="w"> </span>ps
+
+<span class="c1"># 进入容器</span>
+$<span class="w"> </span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;容器id&gt;<span class="w"> </span>/bin/sh
+
+<span class="c1"># 安装依赖</span>
+$<span class="w"> </span>apk<span class="w"> </span>add<span class="w"> </span>sqlite
+
+<span class="c1"># 进入sqlite3</span>
+$<span class="w"> </span>sqlite3
+
+sqlite&gt;<span class="w"> </span>.open<span class="w"> </span>/app/database/database.db
+
+sqlite&gt;<span class="w"> </span>.tables
+log_scheduler<span class="w">  </span>tb_group<span class="w">       </span>tb_system<span class="w">      </span>tb_version
+tb_domain<span class="w">      </span>tb_notify<span class="w">      </span>tb_user
+
+<span class="c1"># 查看数据</span>
+sqlite&gt;<span class="w"> </span><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>tb_domain<span class="p">;</span>
+
+<span class="c1"># 删除数据</span>
+sqlite&gt;<span class="w"> </span>DELETE<span class="w"> </span>FROM<span class="w"> </span>tb_domain<span class="w"> </span>WHERE<span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">;</span>
+
+<span class="c1"># 退出</span>
+sqlite&gt;<span class="w"> </span>.quit
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2>5、邮件发送失败<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>可尝试更换端口25或465</p>
+</section>
+<section id="webhook">
+<h2>6、webhook模板<a class="headerlink" href="#webhook" title="此标题的永久链接"></a></h2>
+<p>采用<code class="docutils literal notranslate"><span class="pre">jinja2</span></code> 模板引擎</p>
+<p>传入模板的参数示例：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;list&quot;</span><span class="p">:[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;domain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;www.demo.com&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;start_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-06-01&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;expire_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-06-21&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;expire_days&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>参数说明</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>domain</td>
+<td>string</td>
+<td>域名/证书域名</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>string</td>
+<td>生效时间</td>
+</tr>
+<tr>
+<td>expire_date</td>
+<td>string</td>
+<td>过期时间</td>
+</tr>
+<tr>
+<td>expire_days</td>
+<td>int</td>
+<td>剩余天数</td>
+</tr>
+</tbody>
+</table><p>示例</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;域名到期提醒&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{% for row in list %}{{row.domain}} {{row.start_date or &#39;-&#39; }} - {{row.expire_date or &#39;-&#39; }} ({{row.expire_days}}){% endfor %}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>渲染结果</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;域名到期提醒&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;www.demo.com 2023-06-01 - 2023-06-21 (20)&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>可以参考接口文档：<a class="reference external" href="doc/source/api/notify/updateNotifyOfUser.md">更新用户通知配置</a></p>
+</section>
+<section id="id7">
+<h2>7、监控域名非443的端口<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<p>域名格式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">域名</span><span class="p">:</span><span class="n">端口</span>
+
+<span class="n">eg</span><span class="p">:</span>
+
+<span class="n">www</span><span class="o">.</span><span class="n">baidu</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h2>8、修改数据库链接<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<p>通过配置<code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件或者直接设置系统环境变量</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># sqlite 默认</span>
+<span class="nv">DB_CONNECT_URL</span><span class="o">=</span>sqlite:///database/database.db
+
+<span class="c1"># mysql</span>
+<span class="c1"># 需要安装模块 pymysql</span>
+<span class="c1"># pip install pymysql</span>
+<span class="nv">DB_CONNECT_URL</span><span class="o">=</span>mysql://root:123456@127.0.0.1:3306/data_domain
+
+<span class="c1"># 来自群友 @〖斗魂〗繁←星 的分享</span>
+<span class="c1"># 如果 mysql 开启了 ssl，mysql 连接字符串应该写成</span>
+<span class="nv">DB_CONNECT_URL</span><span class="o">=</span>mysql://root:123456@127.0.0.1:3306/data_domain?ssl_verify_cert<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<p>更多mysql的设置可参考：<a class="reference external" href="https://pymysql.readthedocs.io/en/latest/modules/connections.html">https://pymysql.readthedocs.io/en/latest/modules/connections.html</a></p>
+</section>
+<section id="k8s">
+<h2>9、k8s部署<a class="headerlink" href="#k8s" title="此标题的永久链接"></a></h2>
+<p>配置文件示例</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
+<span class="w">    </span><span class="nt">app.kubernetes.io/managed-by</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Helm</span>
+<span class="w">    </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
+<span class="w">    </span><span class="nt">app.kubernetes.io/version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.16.0</span>
+<span class="w">    </span><span class="nt">argocd.argoproj.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
+<span class="w">    </span><span class="nt">helm.sh/chart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-0.1.0</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-production</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">progressDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">revisionHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
+<span class="w">      </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
+<span class="w">  </span><span class="nt">strategy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">rollingUpdate</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">maxSurge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25%</span>
+<span class="w">      </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25%</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RollingUpdate</span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
+<span class="w">        </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mouday/domain-admin:latest</span>
+<span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_CONNECT_URL</span>
+<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sqlite:///database/database.db&quot;</span>
+<span class="w">        </span><span class="nt">livenessProbe</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">            </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
+<span class="w">          </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">          </span><span class="nt">successThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">          </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8000</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">          </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">        </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">            </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
+<span class="w">          </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">          </span><span class="nt">successThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">          </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</pre></div>
+</div>
+</section>
+<section id="prometheus-metrics">
+<h2>10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口<a class="headerlink" href="#prometheus-metrics" title="此标题的永久链接"></a></h2>
+<p>1、第一步、需要在 <code class="docutils literal notranslate"><span class="pre">系统设置/API</span> <span class="pre">KEY</span></code> 获取授权key</p>
+<p>2、第二步、配置 prometheus.yml</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">scrape_configs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">bearer_token</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;f60c03bfff8bb42dcf6821542e5fd11e&#39;</span>
+</pre></div>
+</div>
+<p>请求地址：<a class="reference external" href="http://127.0.0.1:8000/metrics">http://127.0.0.1:8000/metrics</a></p>
+<p>返回数据示例：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># HELP domain_admin this is a domain admin data
+# TYPE domain_admin gauge
+domain_admin{domain=&quot;pgmanage.qnvip.com&quot;} 0.0
+domain_admin{domain=&quot;fanyi.baidu.com&quot;} 37.0
+domain_admin{domain=&quot;www.tmall.com&quot;} 37.0
+domain_admin{domain=&quot;www.baidu.com&quot;} 37.0
+domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h2>11、部分域名无法查询到信息<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>不支持的域名后缀：<code class="docutils literal notranslate"><span class="pre">.lc</span></code>、<code class="docutils literal notranslate"><span class="pre">.ml</span></code>、<code class="docutils literal notranslate"><span class="pre">.ai</span></code></p>
+</section>
+<section id="ingress">
+<h2>12、获取ingress的域名<a class="headerlink" href="#ingress" title="此标题的永久链接"></a></h2>
+<p>从k8s里面自动获取ingress的域名，然后添加到domain-admin里面</p>
+<p>安装依赖</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>tldextract<span class="w"> </span>requests<span class="w"> </span>kubernetes
+</pre></div>
+</div>
+<p>参考代码 由群友 <code class="docutils literal notranslate"><span class="pre">&#64;旺仔牛奶</span></code> 贡献</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">kubernetes</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">client</span>
+<span class="kn">import</span> <span class="nn">tldextract</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">get_token</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/api/login&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;token&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">add_domain</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/api/addDomainInfo&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="n">domain</span>
+    <span class="p">}</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Token&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">load_incluster_config</span><span class="p">()</span>
+    <span class="n">kube_api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ExtensionsV1beta1Api</span><span class="p">()</span>
+    <span class="n">ingresses</span> <span class="o">=</span> <span class="n">kube_api</span><span class="o">.</span><span class="n">list_ingress_for_all_namespaces</span><span class="p">()</span>
+    <span class="n">_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ingresses</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;NAMESPACE_MATCH&#39;</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;NAMESPACE_NOT_MATCH&#39;</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+            <span class="n">domain</span> <span class="o">=</span> <span class="n">tldextract</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">host</span><span class="p">)</span><span class="o">.</span><span class="n">registered_domain</span>
+            <span class="n">_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_HOST&#39;</span><span class="p">),</span>
+                      <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_USERNAME&#39;</span><span class="p">),</span>
+                      <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_PASSWORD&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">_set</span><span class="p">:</span>
+        <span class="n">add_domain</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_HOST&#39;</span><span class="p">),</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../api/index.html" class="btn btn-neutral float-left" title="接口文档" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="plan.html" class="btn btn-neutral float-right" title="开发计划" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Peng Shiyu.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

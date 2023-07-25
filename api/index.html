@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>接口文档 &mdash; Domain Admin latest 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="常见问题" href="../manual/question.html" />
+    <link rel="prev" title="安装" href="../manual/install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Domain Admin
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">用户手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/install.html">安装</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">接口文档</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">注册登录</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">域名管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">分组管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">用户信息管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">调度日志</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">系统管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">用户管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">域名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">通知配置管理</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/question.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/plan.html">开发计划</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/development.html">二次开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/changelog.html">变更记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/article.html">相关文章</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Domain Admin</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">接口文档</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/index.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>接口文档<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>说明<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>请求方式统一为<code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">json</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="o">/</span><span class="n">api</span><span class="o">/&lt;</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">X</span><span class="o">-</span><span class="n">TOKEN</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">token</span><span class="o">&gt;</span>
+
+<span class="p">{}</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>注册登录<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/register</td>
+<td>用户注册</td>
+<td><a href="./auth/register.md">register.md</a></td>
+</tr>
+<tr>
+<td>/api/login</td>
+<td>用户登录</td>
+<td><a href="/auth/login.md">login.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id4">
+<h2>域名管理<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/addDomain</td>
+<td>添加域名</td>
+<td><a href="/domain/addDomain.md">addDomain.md</a></td>
+</tr>
+<tr>
+<td>/api/getDomainList</td>
+<td>获取域名列表</td>
+<td><a href="/domain/getDomainList.md">getDomainList.md</a></td>
+</tr>
+<tr>
+<td>/api/getDomainById</td>
+<td>获取域名</td>
+<td><a href="/domain/getDomainById.md">getDomainById.md</a></td>
+</tr>
+<tr>
+<td>/api/updateDomainById</td>
+<td>更新数据</td>
+<td><a href="/domain/updateDomainById.md">updateDomainById.md</a></td>
+</tr>
+<tr>
+<td>/api/deleteDomainById</td>
+<td>删除域名</td>
+<td><a href="/domain/deleteDomainById.md">deleteDomainById.md</a></td>
+</tr>
+<tr>
+<td>/api/updateDomainCertInfoById</td>
+<td>更新域名证书信息</td>
+<td><a href="/domain/updateDomainCertInfoById.md">updateDomainCertInfoById.md</a></td>
+</tr>
+<tr>
+<td>/api/updateAllDomainCertInfo</td>
+<td>更新所有域名证书信息</td>
+<td><a href="/domain/updateAllDomainCertInfo.md">updateAllDomainCertInfo.md</a></td>
+</tr>
+<tr>
+<td>/api/updateAllDomainCertInfoOfUser</td>
+<td>更新当前用户的所有域名信息</td>
+<td><a href="/domain/updateAllDomainCertInfoOfUser.md">updateAllDomainCertInfoOfUser.md</a></td>
+</tr>
+<tr>
+<td>/api/sendDomainInfoListEmail</td>
+<td>发送域名证书信息到邮箱</td>
+<td><a href="/domain/sendDomainInfoListEmail.md">sendDomainInfoListEmail.md</a></td>
+</tr>
+<tr>
+<td>/api/checkDomainCert</td>
+<td>检查域名证书到期信息</td>
+<td><a href="/domain/checkDomainCert.md">checkDomainCert.md</a></td>
+</tr>
+<tr>
+<td>/api/importDomainFromFile</td>
+<td>从文件导入域名</td>
+<td><a href="/domain/importDomainFromFile.md">importDomainFromFile.md</a></td>
+</tr>
+<tr>
+<td>/api/getAllDomainListOfUser</td>
+<td>获取用户的所有域名数据</td>
+<td><a href="/domain/getAllDomainListOfUser.md">getAllDomainListOfUser.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id5">
+<h2>分组管理<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/addGroup</td>
+<td>添加分组</td>
+<td><a href="/group/addGroup.md">addGroup.md</a></td>
+</tr>
+<tr>
+<td>/api/getGroupList</td>
+<td>获取分组列表</td>
+<td><a href="/group/getGroupList.md">getGroupList.md</a></td>
+</tr>
+<tr>
+<td>/api/getGroupById</td>
+<td>获取分组数据</td>
+<td><a href="/group/getGroupById.md">getGroupById.md</a></td>
+</tr>
+<tr>
+<td>/api/updateGroupById</td>
+<td>更新数据</td>
+<td><a href="/group/updateGroupById.md">updateGroupById.md</a></td>
+</tr>
+<tr>
+<td>/api/deleteGroupById</td>
+<td>删除分组</td>
+<td><a href="/group/deleteGroupById.md">deleteGroupById.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id6">
+<h2>用户信息管理<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/getUserInfo</td>
+<td>获取当前用户信息</td>
+<td><a href="/user/getUserInfo.md">getUserInfo.md</a></td>
+</tr>
+<tr>
+<td>/api/updateUserInfo</td>
+<td>更新当前用户信息</td>
+<td><a href="/user/updateUserInfo.md">updateUserInfo.md</a></td>
+</tr>
+<tr>
+<td>/api/updateUserPassword</td>
+<td>更新用户密码</td>
+<td><a href="/user/updateUserPassword.md">updateUserPassword.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id7">
+<h2>调度日志<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/getLogSchedulerList</td>
+<td>获取调度日志列表</td>
+<td><a href="/log_scheduler/getLogSchedulerList.md">getLogSchedulerList.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id8">
+<h2>系统管理<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<p>需要管理员权限</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/getAllSystemConfig</td>
+<td>获取所有配置项</td>
+<td><a href="/system_config/getAllSystemConfig.md">getAllSystemConfig.md</a></td>
+</tr>
+<tr>
+<td>/api/updateSystemConfig</td>
+<td>更新单个配置</td>
+<td><a href="/system_config/updateSystemConfig.md">updateSystemConfig.md</a></td>
+</tr>
+<tr>
+<td>/api/getSystemVersion</td>
+<td>获取当前应用版本号</td>
+<td><a href="/system_config/getSystemVersion.md">getSystemVersion.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id9">
+<h2>用户管理<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>管理员权限</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/getUserList</td>
+<td>获取用户列表</td>
+<td><a href="/user/getUserList.md">getUserList.md</a></td>
+</tr>
+<tr>
+<td>/api/addUser</td>
+<td>添加用户</td>
+<td><a href="/user/addUser.md">addUser.md</a></td>
+</tr>
+<tr>
+<td>/api/updateUserStatus</td>
+<td>更新账号可用状态</td>
+<td><a href="/user/updateUserStatus.md">updateUserStatus.md</a></td>
+</tr>
+<tr>
+<td>/api/deleteUser</td>
+<td>删除用户账号</td>
+<td><a href="/user/deleteUser.md">deleteUser.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id10">
+<h2>域名信息<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/getCertInformation</td>
+<td>获取域名证书信息</td>
+<td><a href="/cert/getCertInformation.md">getCertInformation.md</a></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id11">
+<h2>通知配置管理<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">v0.0.12</span></code></p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/getNotifyOfUser</td>
+<td>获取用户通知配置</td>
+<td><a href="/notify/getNotifyOfUser.md">getNotifyOfUser.md</a></td>
+</tr>
+<tr>
+<td>/api/updateNotifyOfUser</td>
+<td>更新用户通知配置</td>
+<td><a href="/notify/updateNotifyOfUser.md">updateNotifyOfUser.md</a></td>
+</tr>
+<tr>
+<td>/api/testWebhookNotifyOfUser</td>
+<td>测试webhook调用</td>
+<td><a href="/notify/testWebhookNotifyOfUser.md">testWebhookNotifyOfUser.md</a></td>
+</tr>
+</tbody>
+</table></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../manual/install.html" class="btn btn-neutral float-left" title="安装" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../manual/question.html" class="btn btn-neutral float-right" title="常见问题" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Peng Shiyu.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

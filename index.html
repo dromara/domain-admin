@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domain Admin &mdash; Domain Admin latest 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="用户手册" href="manual/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Domain Admin
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="manual/index.html">用户手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/install.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">接口文档</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/question.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/plan.html">开发计划</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/development.html">二次开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/changelog.html">变更记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/article.html">相关文章</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Domain Admin</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Domain Admin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="domain-admin">
+<h1>Domain Admin<a class="headerlink" href="#domain-admin" title="此标题的永久链接"></a></h1>
+<a class="reference external image-reference" href="https://pypi.org/project/domain-admin"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/domain-admin" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/domain-admin"><img alt="PyPI" src="https://img.shields.io/pypi/v/domain-admin.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/domain-admin"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/domain-admin?label=pypi%20downloads" /></a>
+<a class="reference external image-reference" href="https://hub.docker.com/r/mouday/domain-admin"><img alt="Docker Image Version (latest semver)" src="https://img.shields.io/docker/v/mouday/domain-admin?label=docker%20version&amp;sort=semver" /></a>
+<a class="reference external image-reference" href="https://hub.docker.com/r/mouday/domain-admin"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/mouday/domain-admin" /></a>
+<a class="reference external image-reference" href="https://app.travis-ci.com/mouday/domain-admin"><img alt="Build Status" src="https://app.travis-ci.com/mouday/domain-admin.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://github.com/mouday/domain-admin/blob/master/LICENSE"><img alt="PyPI - License" src="https://img.shields.io/pypi/l/domain-admin" /></a>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg" /></a>
+<p>基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台</p>
+<p>用于解决，不同业务域名SSL证书，申请自不同的平台，到期后不能及时收到通知，导致线上访问异常，被老板责骂的问题</p>
+<p>核心功能：<code class="docutils literal notranslate"><span class="pre">域名</span></code> 和<code class="docutils literal notranslate"><span class="pre">SSL证书</span></code> 的过期监控，到期提醒</p>
+<p>支持证书：单域名证书、多域名证书、通配符证书、IP证书、自签名证书</p>
+<p>证书部署： 单一主机部署、多主机部署、动态主机部署</p>
+<p>通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式</p>
+<p>支持平台：macOS、Linux、Windows</p>
+<p>辅助功能：Let’s Encrypt SSL证书申请</p>
+<p>Domain Admin是一个轻量级监控方案，占用系统资源较少。同时，Domain Admin也可以作为一个Flask 和 Vue.js前后端分离的项目模板</p>
+<ul class="simple">
+<li><p>项目地址：</p>
+<ul>
+<li><p>github： <a class="reference external" href="https://github.com/mouday/domain-admin">https://github.com/mouday/domain-admin</a></p></li>
+<li><p>国内镜像：<a class="reference external" href="https://gitee.com/mouday/domain-admin">https://gitee.com/mouday/domain-admin</a></p></li>
+</ul>
+</li>
+<li><p>发布地址：</p>
+<ul>
+<li><p>pypi：<a class="reference external" href="https://pypi.org/project/domain-admin">https://pypi.org/project/domain-admin</a></p></li>
+<li><p>docker：<a class="reference external" href="https://hub.docker.com/r/mouday/domain-admin">https://hub.docker.com/r/mouday/domain-admin</a></p></li>
+</ul>
+</li>
+<li><p>使用文档：</p>
+<ul>
+<li><p>github: <a class="reference external" href="https://mouday.github.io/domain-admin/">https://mouday.github.io/domain-admin/</a></p></li>
+<li><p>gitee: <a class="reference external" href="https://mouday.gitee.io/domain-admin/">https://mouday.gitee.io/domain-admin/</a></p></li>
+</ul>
+</li>
+</ul>
+<section id="id1">
+<h2>项目截图<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>账号密码随意，预览模式仅提供模拟数据，无法操作修改</p>
+<p>1、网页版：</p>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png" /></a>
+<ul class="simple">
+<li><p>预览地址：<a class="reference external" href="https://mouday.github.io/domain-admin-web/">https://mouday.github.io/domain-admin-web/</a></p></li>
+</ul>
+<p>为了更多地人参与到项目中来，现已开放前端代码</p>
+<p>前端项目地址：<a class="reference external" href="https://github.com/mouday/domain-admin-web">https://github.com/mouday/domain-admin-web</a></p>
+<p>2、移动端版：</p>
+<p><span class="raw-html-m2r"><img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png" width="220"></span></p>
+<ul class="simple">
+<li><p>移动端预览地址(请使用移动端窗口体验)：<a class="reference external" href="https://mouday.github.io/domain-admin-mini/">https://mouday.github.io/domain-admin-mini/</a></p></li>
+</ul>
+<p>移动端项目地址：<a class="reference external" href="https://github.com/mouday/domain-admin-mini">https://github.com/mouday/domain-admin-mini</a></p>
+</section>
+<section id="id2">
+<h2>使用说明<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>如果需要对域名进行到期监控和邮件提醒，必须设置</p>
+<p>1、批量导入域名</p>
+<p>导入文本示例: <a class="reference external" href="/tests/domain.txt">/docs/domain.txt</a></p>
+<p>2、设置系统发送邮件的账号密码</p>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png" /></a>
+<p>3、设置邮件通知</p>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png" /></a>
+<p>4、其他通知方式</p>
+<ul class="simple">
+<li><p>webhook通知：<a class="reference external" href="https://blog.csdn.net/mouday/article/details/124135877">推送到微信的webhook第三方工具</a></p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>问题反馈交流<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>QQ群号:731742868</p>
+<p>邀请码：domain-admin</p>
+<p><span class="raw-html-m2r"><img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300"></span></p>
+</section>
+<section id="id4">
+<h2>更新日志<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md">CHANGELOG.md</a></p>
+<p>目录</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manual/index.html">用户手册</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/index.html#id2">项目简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/index.html#id3">技术选型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/install.html">安装</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/install.html#pip">方式一：pip安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/install.html#docker">方式二：docker启动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/install.html#id2">方式三：克隆源码运行</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">接口文档</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id2">说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id3">注册登录</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id4">域名管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id5">分组管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id6">用户信息管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id7">调度日志</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id8">系统管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id9">用户管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id10">域名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id11">通知配置管理</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/question.html">常见问题</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id2">1、暂不支持多进程方式启动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id3">2、为什么外网访问不到？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#windows-fcntl">3、Windows平台启动报错,找不到模块 <code class="docutils literal notranslate"><span class="pre">fcntl</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id4">4、添加域名数据后系统异常</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id5">5、邮件发送失败</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#webhook">6、webhook模板</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id7">7、监控域名非443的端口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id8">8、修改数据库链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#k8s">9、k8s部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#prometheus-metrics">10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#id9">11、部分域名无法查询到信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/question.html#ingress">12、获取ingress的域名</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/plan.html">开发计划</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/development.html">二次开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/changelog.html">变更记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/article.html">相关文章</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/article.html#id2">媒体报道</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/article.html#id8">参考文章</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="manual/index.html" class="btn btn-neutral float-right" title="用户手册" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Peng Shiyu.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
