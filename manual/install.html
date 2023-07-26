@@ -52,13 +52,13 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">安装</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pip">方式一：pip安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker">方式二：docker启动</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">方式三：克隆源码运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">方式三：下载源码安装</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plan.html">开发计划</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">二次开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">变更记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">升级日志</a></li>
 <li class="toctree-l1"><a class="reference internal" href="article.html">相关文章</a></li>
 </ul>
 
@@ -88,6 +88,14 @@
              
   <section id="id1">
 <h1>安装<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>管理员默认的账号和密码</p>
+<ul class="simple">
+<li><p>账号：admin</p></li>
+<li><p>密码：123456</p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">强烈建议</span></code>：登录系统后修改默认密码</p>
+</div></blockquote>
 <section id="pip">
 <h2>方式一：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
 <p>运行环境：</p>
@@ -122,10 +130,6 @@ $<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span cla
 </pre></div>
 </div>
 <p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
-<p>默认的管理员账号：admin 密码：123456</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">强烈建议</span></code>：登录系统后修改默认密码</p>
-</div></blockquote>
 <p>升级到最新版本</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>domain-admin<span class="w"> </span>-i<span class="w"> </span>https://pypi.org/simple
 </pre></div>
@@ -150,23 +154,29 @@ mouday/domain-admin:latest
 </div>
 </section>
 <section id="id2">
-<h2>方式三：克隆源码运行<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<h2>方式三：下载源码安装<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>下载地址：<a class="reference external" href="https://github.com/mouday/domain-admin/releases">https://github.com/mouday/domain-admin/releases</a></p>
 <p>本方式仅适用于二次开发，推荐采用 pip安装 或者 docker启动 的方式体验</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 后端项目</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mouday/domain-admin.git
+<p>例如：以<code class="docutils literal notranslate"><span class="pre">v1.5.8</span></code>为例</p>
+<p>每次发布都会包含以下代码包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="mf">1.5.8</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>                <span class="c1"># 完整源码包，包含打包后的H5端、web端代码</span>
+<span class="n">domain_admin</span><span class="o">-</span><span class="mf">1.5.8</span><span class="o">-</span><span class="n">py2</span><span class="o">.</span><span class="n">py3</span><span class="o">-</span><span class="n">none</span><span class="o">-</span><span class="nb">any</span><span class="o">.</span><span class="n">whl</span>  <span class="c1"># pip包，可直接安装</span>
+<span class="n">domain</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">mini</span><span class="o">-</span><span class="n">v1</span><span class="mf">.5.8</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>          <span class="c1"># H5端源码</span>
+<span class="n">domain</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">web</span><span class="o">-</span><span class="n">v1</span><span class="mf">.5.8</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>           <span class="c1"># web端源码</span>
+<span class="n">Source</span> <span class="n">code</span><span class="p">(</span><span class="nb">zip</span><span class="p">)</span>                         <span class="c1"># Python源码 windows适用</span>
+<span class="n">Source</span> <span class="n">code</span><span class="p">(</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="p">)</span>                      <span class="c1"># Python源码 linux/mac适用</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 下载 domain-admin-1.5.8.tar.gz</span>
+wget<span class="w"> </span>https://github.com/mouday/domain-admin/releases/download/v1.5.8/domain-admin-1.5.8.tar.gz
+
+<span class="nb">cd</span><span class="w"> </span>domain-admin
 
 <span class="c1"># 安装依赖</span>
 pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 
-<span class="c1"># 启动开发服务</span>
-make<span class="w"> </span>dev
-
-
-<span class="c1"># 前端项目</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mouday/domain-admin-web.git
-
-<span class="c1"># 启动开发服务</span>
-make<span class="w"> </span>dev
+<span class="c1"># 启动运行</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
 </pre></div>
 </div>
 </section>
