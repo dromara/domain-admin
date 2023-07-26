@@ -7,7 +7,6 @@
 
    manual/index.md
    manual/install.md
-   api/index.md
    manual/question.md
    manual/plan.md
    manual/development.md
