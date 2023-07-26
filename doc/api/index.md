@@ -16,7 +16,7 @@ X-TOKEN: <token>
 
 | 接口 | 说明 | 文档 | 
 | - | - | -|  
-| /api/register | 用户注册 | [register.md](./auth/register.md) |
+| /api/register | 用户注册 | [register.md](auth/register.md) |
 | /api/login | 用户登录 | [login.md](/auth/login.md) |
 
 ## 域名管理
