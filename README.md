@@ -75,4 +75,4 @@ QQ群号:731742868
 
 ## 更新日志
 
-[CHANGELOG.md](https://github.com/mouday/domain-admin/blob/master/CHANGELOG.md)
+[CHANGELOG.md](https://domain-admin.readthedocs.io/zh_CN/latest/manual/changelog.html)
