@@ -9,6 +9,7 @@
 - 2023-07-06 TJ君 [重磅推荐：一款开源的域名 SSL 证书监测平台](https://mp.weixin.qq.com/s/zBQccvuwCAzapcHhVFjZXg)
 - 2023-07-14 良许Linux [又一款好用的开源域名 SSL 证书监测平台](https://mp.weixin.qq.com/s/drFLJCqz3CEF-DPfa5jnSQ)
 - 2023-07-21 IT仔的笔记本 [一套属于自己的域名、证书管理系统，只需要1分钟就能上手，(收藏起来，会用到的)](https://mp.weixin.qq.com/s/rYpWBgZgizqDWOaPq2g1_g)
+- 2023-07-27  DevOps运维民工 [推荐一款开源的域名和SSL证书监测平台](https://mp.weixin.qq.com/s/LlaD7KUogwdfQMs_v7QgPg)
 
 ## 参考文章
 
