@@ -79,15 +79,6 @@ def short_name_convert(data):
     return dct
 
 
-def get_domain_ip(domain):
-    """
-    获取ip地址
-    :param domain: str
-    :return: str
-    """
-    return socket.gethostbyname(domain)
-
-
 class X509Item(object):
     version = ''
     subject = dict()

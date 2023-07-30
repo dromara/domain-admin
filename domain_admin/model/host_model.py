@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+"""
+host_model.py
+"""
+from __future__ import print_function, unicode_literals, absolute_import, division
+
+from datetime import datetime
+
+from peewee import CharField, IntegerField, DateTimeField, AutoField
+
+from domain_admin.model.base_model import BaseModel
+from domain_admin.utils import datetime_util
+
+
+class HostModel(BaseModel):
+    """
+    证书主机
+    @since v1.5.9
+    """
+    id = AutoField(primary_key=True)
+
+    # 用户id
+    user_id = IntegerField(default=0)
+
+    # 远程主机验证信息
+    host = CharField(default=None, null=True)
+
+    port = CharField(default=22, null=True)
+
+    user = CharField(default=None, null=True)
+
+    password = CharField(default=None, null=True)
+
+    # 创建时间
+    create_time = DateTimeField(default=datetime.now)
+
+    # 更新时间
+    update_time = DateTimeField(default=datetime.now)
+
+    class Meta:
+        table_name = 'tb_host'
+
+    @property
+    def create_time_label(self):
+        return datetime_util.time_for_human(self.create_time)
+
+    @property
+    def update_time_label(self):
+        return datetime_util.time_for_human(self.update_time)

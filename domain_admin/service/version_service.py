@@ -23,7 +23,7 @@ from domain_admin.migrate import (
     migrate_1413_to_1414,
     migrate_1422_to_1423,
     migrate_151_to_152,
-    migrate_154_to_155)
+    migrate_154_to_155, migrate_158_to_159)
 from domain_admin.model.version_model import VersionModel
 from domain_admin.version import VERSION
 
@@ -267,6 +267,20 @@ def update_version():
             migrate_154_to_155.execute_migrate()
 
             local_version = VersionEnum.Version_155
+
+        # 2023-07-22
+        if local_version in [
+            VersionEnum.Version_155,
+            VersionEnum.Version_156,
+            VersionEnum.Version_157,
+            VersionEnum.Version_158,
+        ]:
+            # 1.5.8 => 1.5.9
+            logger.info('update version: %s => %s', local_version, VersionEnum.Version_159)
+
+            migrate_158_to_159.execute_migrate()
+
+            local_version = VersionEnum.Version_159
 
     # 更新版本号
     # fix: 多实例同时启动版本号写入失败问题

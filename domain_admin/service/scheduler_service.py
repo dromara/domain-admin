@@ -8,7 +8,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
-from domain_admin.service import system_service, domain_service, domain_info_service, notify_service
+from domain_admin.service import system_service, domain_service, domain_info_service, notify_service, \
+    issue_certificate_service
 from domain_admin.service.file_service import resolve_log_file
 from domain_admin.utils import datetime_util
 
@@ -87,6 +88,9 @@ def task():
 
     # 更新域名信息
     domain_info_service.update_all_domain_info()
+
+    # 更新所有SSL证书
+    issue_certificate_service.renew_all_certificate()
 
     # 触发通知
     success = notify_service.notify_all_event()

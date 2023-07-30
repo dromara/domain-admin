@@ -3,9 +3,10 @@
 database.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
 from domain_admin.log import logger
 from domain_admin.model import address_model, log_operation_model, group_user_model, log_async_task_model, \
-    issue_certificate_model
+    issue_certificate_model, host_model
 from domain_admin.model import domain_info_model
 from domain_admin.model import domain_model
 from domain_admin.model import group_model
@@ -31,6 +32,7 @@ tables = [
     (group_user_model.GroupUserModel, None),
     (log_async_task_model.AsyncTaskModel, None),
     (issue_certificate_model.IssueCertificateModel, None),
+    (host_model.HostModel, None),
 ]
 
 

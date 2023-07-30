@@ -7,6 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 import json
 from datetime import datetime
 
+from acme.messages import ChallengeBody
 from peewee import ModelSelect, Model
 from playhouse.shortcuts import model_to_dict
 
@@ -29,6 +30,9 @@ def default_json_encoder(o):
     if isinstance(o, datetime):
         return o.strftime(DATETIME_FORMAT)
 
+    if isinstance(o, ChallengeBody):
+        return o.to_json()
+
     return o
 
 
@@ -44,4 +48,4 @@ def json_encode(data, default=default_json_encoder, **kwargs):
 
 
 def json_dump(obj):
-    print(json_encode(obj, ensure_ascii=False, indent=2))
+    return json_encode(obj, ensure_ascii=False, indent=2)

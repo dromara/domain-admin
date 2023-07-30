@@ -19,6 +19,7 @@ https://zhuanlan.zhihu.com/p/75032510
 https://letsencrypt.org/zh-cn/docs/challenge-types/
 https://datatracker.ietf.org/doc/html/rfc8555
 
+https://github.com/Trim/acme-dns-tiny
 
 Example ACME-V2 API for HTTP-01 challenge.
 
@@ -48,15 +49,10 @@ Workflow:
     - Deactivate Account
 """
 
+import json
 import os
 import traceback
 from datetime import datetime, timedelta
-
-from cryptography.hazmat.primitives.asymmetric import rsa
-
-from domain_admin.config import ACME_DIR
-
-import json
 
 import OpenSSL
 import josepy as jose
@@ -66,12 +62,15 @@ from acme import crypto_util
 from acme import messages
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+
+from domain_admin.config import ACME_DIR
+from domain_admin.log import logger
+# This is the staging point for ACME-V2 within Let's Encrypt.
+from domain_admin.utils.acme_util.challenge_type import ChallengeType
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 # Constants:
-
-# This is the staging point for ACME-V2 within Let's Encrypt.
-from domain_admin.log import logger
-from domain_admin.utils.flask_ext.app_exception import AppException
 
 DIRECTORY_URL = 'https://acme-staging-v02.api.letsencrypt.org/directory'
 
@@ -122,13 +121,62 @@ def select_http01_chall(orderr):
     raise Exception('HTTP-01 challenge was not offered by the CA server.')
 
 
-def perform_http01(client_acme, challb, orderr):
+def select_challenge(orderr):
+    """Extract authorization resource from within order resource."""
+    # Authorization Resource: authz.
+    # This object holds the offered challenges by the server and their status.
+
+    logger.info("authorizations len: %s", len(orderr.authorizations))
+
+    challenge_map = {}
+
+    for authz in orderr.authorizations:
+        # Choosing challenge.
+        # authz.body.challenges is a set of ChallengeBody objects.
+
+        domain_challenge = []
+        domain = authz.body.identifier.value
+        logger.info('challenges len: %s - %s', domain, len(authz.body.challenges))
+
+        for challenge in authz.body.challenges:
+            # Find the supported challenge.
+
+            if isinstance(challenge.chall, challenges.DNS01):
+                # domain_challenge[ChallengeType.DNS01] = challenge
+                domain_challenge.append(challenge)
+            elif isinstance(challenge.chall, challenges.HTTP01):
+                # domain_challenge[ChallengeType.HTTP01] = challenge
+                domain_challenge.append(challenge)
+            # elif isinstance(challenge.chall, challenges.TLSALPN01):
+            #     domain_challenge[ChallengeType.TLSALPN01] = challenge
+
+        challenge_map[domain] = domain_challenge
+
+    logger.info(challenge_map)
+
+    return challenge_map
+    # raise Exception('{} challenge was not offered by the CA server.'.format(challenge_type))
+
+
+def select_challenge_by(orderr, domain, challenge_type):
+    domain_challenges = select_challenge(orderr)[domain]
+
+    for challenge in domain_challenges:
+        if challenge_type == ChallengeType.HTTP01 and isinstance(challenge.chall, challenges.HTTP01):
+            return challenge
+        elif challenge_type == ChallengeType.DNS01 and isinstance(challenge.chall, challenges.DNS01):
+            return challenge
+        else:
+            raise AppException('not found challenge')
+
+
+def perform_http01(client_acme, orderr):
     """Set up standalone webserver and perform HTTP-01 challenge."""
 
-    response, validation = challb.response_and_validation(client_acme.net.key)
-
-    # Let the CA server know that we are ready for the challenge.
-    client_acme.answer_challenge(challb, response)
+    # response, validation = challb.response_and_validation(client_acme.net.key)
+    #
+    # # Let the CA server know that we are ready for the challenge.
+    # client_acme.answer_challenge(challb, response)
 
     # Wait for challenge status and then issue a certificate.
     # It is possible to set a deadline time.
@@ -196,6 +244,7 @@ def ensure_account_exists(client_acme):
     else:
         # 账户不存在
         register = client_acme.new_account(messages.NewRegistration.from_data(
+            # email=('mouday@qq.com'),
             terms_of_service_agreed=True)
         )
 

@@ -16,3 +16,4 @@ environs
 pyOpenSSL
 prometheus-client
 acme
+fabric

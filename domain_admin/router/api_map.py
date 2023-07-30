@@ -8,7 +8,7 @@ from domain_admin.api import (
     whois_api, address_api,
     domain_info_api, prometheus_api,
     log_operation_api, group_user_api,
-    log_async_task_api, issue_certificate_api)
+    log_async_task_api, issue_certificate_api, host_api)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -159,4 +159,18 @@ routes = {
     '/api/renewCertificate': issue_certificate_api.renew_certificate,
     '/api/getIssueCertificateById': issue_certificate_api.get_issue_certificate_by_id,
     '/api/verifyCertificateById': issue_certificate_api.verify_certificate,
+
+
+    '/api/getDomainHost': issue_certificate_api.get_domain_host,
+    '/api/deployVerifyFile': issue_certificate_api.deploy_verify_file,
+    '/api/deployCertificateFile': issue_certificate_api.deploy_certificate_file,
+    '/api/getCertificateChallenges': issue_certificate_api.get_certificate_challenges,
+    '/api/deleteCertificateById': issue_certificate_api.delete_certificate_by_id,
+    '/api/deleteCertificateByBatch': issue_certificate_api.delete_certificate_by_batch,
+
+    # 主机管理
+    '/api/addHost': host_api.add_host,
+    '/api/getHostById': host_api.get_host_by_id,
+    '/api/updateHostById': host_api.update_host_by_id,
+    '/api/getHostList': host_api.get_host_list,
 }

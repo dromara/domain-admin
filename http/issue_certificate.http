@@ -1,0 +1,124 @@
+
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST {{baseUrl}}/api/issueCertificate
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2OTEwNDQ3ODN9.K4iIEqRKe0FmB8KMUl7P_ueGCHY7khHaxRYI89l_oVs
+
+{
+  "domains": ["zmlm.com.cn", "www.zmlm.com.cn"],
+  "challenge_type": "HTTP01"
+}
+
+###
+
+POST {{baseUrl}}/api/verifyCertificateById
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2OTEwNDQ3ODN9.K4iIEqRKe0FmB8KMUl7P_ueGCHY7khHaxRYI89l_oVs
+
+{
+  "issue_certificate_id": 21
+}
+
+###
+
+POST {{baseUrl}}/api/renewCertificate
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2OTEwNDQ3ODN9.K4iIEqRKe0FmB8KMUl7P_ueGCHY7khHaxRYI89l_oVs
+
+{
+  "issue_certificate_id": 20
+}
+
+###
+
+POST {{baseUrl}}/api/getDomainById
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{
+  "id": 3
+}
+
+###
+POST {{baseUrl}}/api/deleteDomainById
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{
+  "id": 1
+}
+
+###
+POST {{baseUrl}}/api/updateDomainCertInfoById
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{
+  "id": 3
+}
+
+###
+POST {{baseUrl}}/api/updateAllDomainCertInfo
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{}
+
+###
+POST {{baseUrl}}/api/updateAllDomainCertInfoOfUser
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{}
+
+###
+POST {{baseUrl}}/api/sendDomainInfoListEmail
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{
+  "to_addresses": [
+    "1940607002@qq.com"
+  ]
+}
+
+###
+
+POST {{baseUrl}}/api/checkDomainCert
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjQ5NjUwMzB9.myLjQpUraYm69JWrgeEUqPpQ_GroEWPIWYCCJqbg5gg
+
+{}
+
+###
+
+POST {{baseUrl}}/api/exportDomainToFile
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjUzMjA3ODN9.pLfVwuxWvBUr4GtJdmBzXs_X8fieaPesgLwgdsIGnv4
+
+{}
+
+###
+
+POST {{baseUrl}}/api/getAllDomainListOfUser
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwODU0MTh9.k8G3LvPMrKJm5_1Eodzto7X1YAFTz57iKbmolas7oOs
+
+{}
+
+###
+POST {{baseUrl}}/api/getWhoisRaw
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODYyMDkzMzJ9.azNxgF_GDa-4aI_XOUm8sQbNhJfkY3rNvEaIgn8DUiI
+
+{
+  "domain": "www.baidu.com"
+}
+
+###
