@@ -72,7 +72,11 @@ from domain_admin.utils.flask_ext.app_exception import AppException
 
 # Constants:
 
-DIRECTORY_URL = 'https://acme-staging-v02.api.letsencrypt.org/directory'
+# ACME V2 测试环境
+# DIRECTORY_URL = 'https://acme-staging-v02.api.letsencrypt.org/directory'
+
+# ACME V2 生产环境
+DIRECTORY_URL = "https://acme-v02.api.letsencrypt.org/directory"
 
 USER_AGENT = 'domain-admin'
 
@@ -239,17 +243,26 @@ def ensure_account_exists(client_acme):
         with open(ACCOUNT_DATA_FILENAME, 'r') as f:
             account_data = json.loads(f.read())
 
-        account_resource = messages.RegistrationResource.from_json(account_data)
-        account = client_acme.query_registration(account_resource)
+        try:
+            account_resource = messages.RegistrationResource.from_json(account_data)
+            account = client_acme.query_registration(account_resource)
+        except errors.Error as e:
+            logger.debug(traceback.format_exc())
+
+            create_account(client_acme)
     else:
         # 账户不存在
-        register = client_acme.new_account(messages.NewRegistration.from_data(
-            # email=('mouday@qq.com'),
-            terms_of_service_agreed=True)
-        )
+        create_account(client_acme)
 
-        with open(ACCOUNT_DATA_FILENAME, 'w') as f:
-            f.write(json.dumps(register.to_json(), indent=2))
+
+def create_account(client_acme):
+    register = client_acme.new_account(messages.NewRegistration.from_data(
+        # email=('mouday@qq.com'),
+        terms_of_service_agreed=True)
+    )
+
+    with open(ACCOUNT_DATA_FILENAME, 'w') as f:
+        f.write(json.dumps(register.to_json(), indent=2))
 
 
 def get_acme_client():
