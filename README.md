@@ -35,9 +35,11 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
     - releases：[https://github.com/mouday/domain-admin/releases](https://github.com/mouday/domain-admin/releases)
 
 - 使用文档：
+    - readthedocs: [https://domain-admin.readthedocs.io](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
+
+- 接口文档：
     - github: [https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
     - gitee: [https://mouday.gitee.io/domain-admin/](https://mouday.gitee.io/domain-admin/)
-    - readthedocs: [https://domain-admin.readthedocs.io](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
 
 ## 安装
 
