@@ -48,7 +48,6 @@ def verify_certificate():
     issue_certificate_service.renew_certificate(issue_certificate_id)
 
 
-
 def get_certificate_challenges():
     issue_certificate_id = request.json['issue_certificate_id']
 
@@ -193,7 +192,12 @@ def get_certificate_list():
 
     lst = [model_to_dict(
         row,
-        extra_attrs=['domains', 'create_time_label', 'domain_validation_urls'],
+        extra_attrs=[
+            'domains',
+            'create_time_label',
+            'has_ssl_certificate',
+            # 'domain_validation_urls'
+        ],
         exclude=[
             IssueCertificateModel.ssl_certificate,
             IssueCertificateModel.ssl_certificate_key
@@ -220,7 +224,10 @@ def get_issue_certificate_by_id():
     data = model_to_dict(
         issue_certificate_row,
         extra_attrs=[
-            'domains', 'create_time_label', 'domain_validation_urls']
+            'domains',
+            'create_time_label',
+            'domain_validation_urls'
+        ]
     )
 
     if data['deploy_host_id']:

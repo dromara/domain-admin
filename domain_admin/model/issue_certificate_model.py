@@ -110,6 +110,14 @@ class IssueCertificateModel(BaseModel):
         return '/.well-known/acme-challenge/{}'.format(self.token)
 
     @property
+    def has_ssl_certificate(self):
+        """
+        是否有证书文件
+        :return:
+        """
+        return True if self.ssl_certificate else False
+
+    @property
     def domains(self):
         if self.domain_raw:
             return json.loads(self.domain_raw)
