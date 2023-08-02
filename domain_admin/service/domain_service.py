@@ -239,7 +239,10 @@ def update_all_domain_cert_info():
     ).order_by(DomainModel.expire_days.asc())
 
     for row in rows:
-        update_domain_row(row)
+        try:
+            update_domain_row(row)
+        except Exception as e:
+            logger.error(traceback.format_exc())
 
 
 @async_task_service.async_task_decorator("更新证书信息")
