@@ -159,6 +159,7 @@ routes = {
     '/api/renewCertificate': issue_certificate_api.renew_certificate,
     '/api/getIssueCertificateById': issue_certificate_api.get_issue_certificate_by_id,
     '/api/verifyCertificateById': issue_certificate_api.verify_certificate,
+    '/api/renewIssueCertificateById': issue_certificate_api.renew_issue_certificate_by_id,
 
 
     '/api/getDomainHost': issue_certificate_api.get_domain_host,

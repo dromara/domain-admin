@@ -229,9 +229,9 @@ def renew_all_certificate():
             logger.error(traceback.format_exc())
 
 
-def renew_certificate_row(row: IssueCertificateModel):
+def renew_certificate_row(row):
     """
-
+    证书自动续期
     :param row:
     :return:
     """
@@ -253,13 +253,17 @@ def renew_certificate_row(row: IssueCertificateModel):
 
     challenge_rows = []
     for challenge_row in challenge_list:
-        if challenge_row['challenge'].to_json()['type'] == ChallengeType.HTTP01:
-            challenge_rows.append(challenge_row['validation'])
+        challenge_json = challenge_row['challenge'].to_json()
+        if challenge_json['type'] == ChallengeType.HTTP01:
+            challenge_rows.append({
+                'token': challenge_json['token'],
+                'validation': challenge_row['validation']
+            })
 
     # 验证文件部署
     deploy_verify_file(
-        host_id=row.host_id,
-        verify_deploy_path=row.verify_deploy_path,
+        host_id=row.deploy_host_id,
+        verify_deploy_path=row.deploy_verify_path,
         challenges=challenge_rows
     )
 
@@ -271,7 +275,7 @@ def renew_certificate_row(row: IssueCertificateModel):
 
     # 自动部署，重启服务
     deploy_certificate_file(
-        host_id=row.host_id,
+        host_id=row.deploy_host_id,
         issue_certificate_id=row.id,
         key_deploy_path=row.deploy_key_file,
         pem_deploy_path=row.deploy_fullchain_file,
@@ -284,6 +288,7 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
     部署验证文件
     :return:
     """
+    logger.info(challenges)
 
     host_row = HostModel.get_by_id(host_id)
 
@@ -292,9 +297,18 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
     password = host_row.password
 
     for row in challenges:
+        if not row['token']:
+            raise AppException('token is empty')
+
         verify_deploy_filename = verify_deploy_path + row['token']
 
+        if not verify_deploy_filename:
+            raise AppException('verify_deploy_filename is empty')
+
         logger.debug("verify_deploy_filename: %s", verify_deploy_filename)
+
+        if not row['validation']:
+            raise AppException('validation is empty')
 
         fabric_util.deploy_file(
             host=host,
@@ -306,6 +320,15 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
 
 
 def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_deploy_path, reload_cmd):
+    """
+    自动部署SSL证书到服务器
+    :param host_id:
+    :param issue_certificate_id:
+    :param key_deploy_path:
+    :param pem_deploy_path:
+    :param reload_cmd:
+    :return:
+    """
     host_row = HostModel.get_by_id(host_id)
 
     host = host_row.host
@@ -315,27 +338,30 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
     # deploy key
-    fabric_util.deploy_file(
-        host=host,
-        user=user,
-        password=password,
-        content=issue_certificate_row.ssl_certificate_key,
-        remote=key_deploy_path
-    )
+    if key_deploy_path:
+        fabric_util.deploy_file(
+            host=host,
+            user=user,
+            password=password,
+            content=issue_certificate_row.ssl_certificate_key,
+            remote=key_deploy_path
+        )
 
     # deploy ssl_certificate
-    fabric_util.deploy_file(
-        host=host,
-        user=user,
-        password=password,
-        content=issue_certificate_row.ssl_certificate,
-        remote=pem_deploy_path
-    )
+    if pem_deploy_path:
+        fabric_util.deploy_file(
+            host=host,
+            user=user,
+            password=password,
+            content=issue_certificate_row.ssl_certificate,
+            remote=pem_deploy_path
+        )
 
     # reload
-    fabric_util.run_command(
-        host=host,
-        user=user,
-        password=password,
-        command=reload_cmd
-    )
+    if reload_cmd:
+        fabric_util.run_command(
+            host=host,
+            user=user,
+            password=password,
+            command=reload_cmd
+        )

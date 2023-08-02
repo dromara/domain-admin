@@ -186,7 +186,7 @@ def get_certificate_list():
     total = query.count()
 
     rows = query.order_by(
-        IssueCertificateModel.create_time.desc(),
+        IssueCertificateModel.update_time.desc(),
         IssueCertificateModel.id.desc()
     ).paginate(page, size)
 
@@ -195,6 +195,7 @@ def get_certificate_list():
         extra_attrs=[
             'domains',
             'create_time_label',
+            'update_time_label',
             'has_ssl_certificate',
             # 'domain_validation_urls'
         ],
@@ -226,6 +227,7 @@ def get_issue_certificate_by_id():
         extra_attrs=[
             'domains',
             'create_time_label',
+            'update_time_label',
             'domain_validation_urls'
         ]
     )
@@ -264,3 +266,17 @@ def delete_certificate_by_batch():
         IssueCertificateModel.id.in_(ids),
         IssueCertificateModel.user_id == current_user_id
     ).execute()
+
+
+def renew_issue_certificate_by_id():
+    """
+    手动续期SSL证书
+    :return:
+    """
+    current_user_id = g.user_id
+
+    issue_certificate_id = request.json['issue_certificate_id']
+
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
+    issue_certificate_service.renew_certificate_row(issue_certificate_row)
