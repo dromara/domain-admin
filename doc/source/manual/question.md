@@ -250,7 +250,7 @@ domain_admin{domain="www.taobao.com"} 37.0
  
 ## 11、部分域名无法查询到信息
  
-不支持的域名后缀：`.lc`、`.ml`、`.ai` 
+已知不支持的域名后缀：`.lc`、`.ml`、`.ai`
 
 ## 12、获取ingress的域名
 
