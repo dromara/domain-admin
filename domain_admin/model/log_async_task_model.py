@@ -49,7 +49,12 @@ class AsyncTaskModel(BaseModel):
 
     @property
     def total_time(self):
-        return datetime_util.get_diff_time(self.start_time, self.end_time)
+        if self.start_time and self.end_time:
+            return datetime_util.get_diff_time(self.start_time, self.end_time)
+        elif self.start_time:
+            return datetime_util.get_diff_time(self.start_time, datetime.now())
+        else:
+            return 0
 
     @property
     def total_time_label(self):

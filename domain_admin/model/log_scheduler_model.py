@@ -32,6 +32,10 @@ class LogSchedulerModel(BaseModel):
     def total_time(self):
         if isinstance(self.update_time, datetime) and isinstance(self.create_time, datetime):
             return datetime_util.get_timestamp(self.update_time) - datetime_util.get_timestamp(self.create_time)
+        elif isinstance(self.create_time, datetime):
+            return datetime_util.get_timestamp(datetime.now()) - datetime_util.get_timestamp(self.create_time)
+        else:
+            return 0
 
     @property
     def total_time_label(self):
