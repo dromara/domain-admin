@@ -12,3 +12,4 @@
    manual/development.md
    manual/changelog.md
    manual/article.md
+   manual/plugins.md
