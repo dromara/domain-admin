@@ -192,7 +192,7 @@ def get_domain_whois(domain):
     if registrar_url:
         registrar_url = handle_url(registrar_url)
 
-    if start_time and expire_time:
+    if start_time or expire_time:
         return {
             'start_time': start_time,
             'registrar': registrar,

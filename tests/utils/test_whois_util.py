@@ -37,7 +37,8 @@ def test_get_domain_info():
         # '中万.cn',
         # 'mikrotik.tw',
         # 'kingbus.com.tw',
-        'pcits.com.sg'
+        # 'pcits.com.sg',
+        'token.im'
     ]
 
     for domain in domain_list:

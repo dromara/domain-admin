@@ -77,6 +77,10 @@ CUSTOM_WHOIS_CONFIGS = {
         'whois_server': 'whois.cctld.by',
         'registry_time': 'Creation Date',
         'expire_time': 'Expiration Date',
+    },
+    'im': {
+        'expire_time': 'Expiry Date',
+        'expire_time_format': '%d/%m/%Y %H:%M:%S',
     }
 }
 
