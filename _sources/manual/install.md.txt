@@ -185,3 +185,11 @@ Press CTRL+C to quit
 ## 其他部署方式
 
 可以参考[https://flask.palletsprojects.com/en/2.3.x/deploying/](https://flask.palletsprojects.com/en/2.3.x/deploying/)
+
+# 平滑升级
+
+Domain Admin所有版本都支持平滑升级
+
+安装最新版，重启即可
+
+如果是docker安装的，注意`database` 目录是不是手动挂载的，不要删除了
