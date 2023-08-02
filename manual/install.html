@@ -53,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#pip">方式一：pip安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker">方式二：docker启动</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">方式三：下载源码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">其他部署方式</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
@@ -96,6 +97,7 @@
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">强烈建议</span></code>：登录系统后修改默认密码</p>
 </div></blockquote>
+<p>Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的</p>
 <section id="pip">
 <h2>方式一：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
 <p>运行环境：</p>
@@ -103,18 +105,16 @@
 <li><p>Python &gt;= 2.7 或者 Python &gt;= 3.4</p></li>
 </ul>
 <p>可以使用 <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> + venv 管理多个Python版本和隔离虚拟环境</p>
+<p>确保已经安装Python解释器</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>--version
 Python<span class="w"> </span><span class="m">3</span>.7.0
-
-<span class="c1"># 创建名为 venv 的虚拟环境</span>
-$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
-
-<span class="c1"># 激活虚拟环境</span>
-$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
 </pre></div>
 </div>
 <p>linux / macos 安装</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 安装 domain-admin</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境并激活</span>
+$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+
+<span class="c1"># 安装 domain-admin</span>
 $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gunicorn<span class="w"> </span>domain-admin
 
 <span class="c1"># 启动运行</span>
@@ -122,11 +122,17 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 </pre></div>
 </div>
 <p>windows 安装</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 安装 domain-admin</span>
-$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress<span class="w"> </span>domain-admin
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境</span>
+&gt;<span class="w"> </span>py<span class="w"> </span>-3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+
+<span class="c1"># 激活虚拟环境</span>
+&gt;<span class="w"> </span>venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+
+<span class="c1"># 安装 domain-admin</span>
+&gt;<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress<span class="w"> </span>domain-admin
 
 <span class="c1"># 启动运行</span>
-$<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+&gt;<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
 </pre></div>
 </div>
 <p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
@@ -138,12 +144,13 @@ $<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span cla
 <section id="docker">
 <h2>方式二：docker启动<a class="headerlink" href="#docker" title="此标题的永久链接"></a></h2>
 <p>感谢<a class="reference external" href="https://github.com/miss85246">&#64;miss85246</a> 提供Docker支持</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 可选1：前台运行</span>
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
 
-<span class="c1"># 后台运行</span>
+<span class="c1"># 可选2：后台运行</span>
 $<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
 
-<span class="c1"># 本地文件夹和容器文件夹映射</span>
+<span class="c1"># 可选3：本地文件夹和容器文件夹映射</span>
 $<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
 -v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/database:/app/database<span class="w"> </span><span class="se">\</span>
 -v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/logs:/app/logs<span class="w"> </span><span class="se">\</span>
@@ -152,6 +159,10 @@ $<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </spa
 mouday/domain-admin:latest
 </pre></div>
 </div>
+<ul class="simple">
+<li><p>database：sqlite数据库和重要数据的目录</p></li>
+<li><p>logs：日志目录，用于排查问题</p></li>
+</ul>
 </section>
 <section id="id2">
 <h2>方式三：下载源码安装<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
@@ -167,18 +178,75 @@ mouday/domain-admin:latest
 <span class="n">Source</span> <span class="n">code</span><span class="p">(</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="p">)</span>                      <span class="c1"># Python源码 linux/mac适用</span>
 </pre></div>
 </div>
+<p>此处以linux/macos为例，windows用户可直接点击下载，自行使用加压软件解压</p>
+<p>1、下载发布包</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 下载 domain-admin-1.5.8.tar.gz</span>
 wget<span class="w"> </span>https://github.com/mouday/domain-admin/releases/download/v1.5.8/domain-admin-1.5.8.tar.gz
 
-<span class="nb">cd</span><span class="w"> </span>domain-admin
-
-<span class="c1"># 安装依赖</span>
-pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-
-<span class="c1"># 启动运行</span>
-$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+<span class="c1"># 如果下载速度过慢，可以使用加速方案</span>
+wget<span class="w"> </span>https://ghproxy.com/https://github.com/mouday/domain-admin/releases/download/v1.5.8/domain-admin-1.5.8.tar.gz
 </pre></div>
 </div>
+<p>2、解压进入</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar<span class="w"> </span>-zxvf<span class="w"> </span>domain-admin-1.5.8.tar.gz
+
+<span class="nb">cd</span><span class="w"> </span>domain-admin-1.5.8
+</pre></div>
+</div>
+<p>3、创建虚拟环境</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境，windows用户参考方式一</span>
+$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+
+<span class="c1"># 安装依赖</span>
+pip3<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>4、新建启动文件 <code class="docutils literal notranslate"><span class="pre">app.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">domain_admin.main</span> <span class="kn">import</span> <span class="n">app</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>此时的目录结构如下</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>tree<span class="w"> </span>-L<span class="w"> </span><span class="m">1</span>
+.
+├──<span class="w"> </span>LICENSE
+├──<span class="w"> </span>MANIFEST.in
+├──<span class="w"> </span>PKG-INFO
+├──<span class="w"> </span>README.md
+├──<span class="w"> </span>app.py<span class="w">                 </span><span class="c1"># 新建的启动文件</span>
+├──<span class="w"> </span>build
+├──<span class="w"> </span>database
+├──<span class="w"> </span>domain_admin
+├──<span class="w"> </span>domain_admin.egg-info
+├──<span class="w"> </span>logs
+├──<span class="w"> </span>requirements
+├──<span class="w"> </span>setup.cfg
+├──<span class="w"> </span>setup.py
+├──<span class="w"> </span>temp
+└──<span class="w"> </span>venv
+</pre></div>
+</div>
+<p>5、启动运行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 启动运行</span>
+$<span class="w"> </span>python<span class="w"> </span>app.py
+
+*<span class="w"> </span>Serving<span class="w"> </span>Flask<span class="w"> </span>app<span class="w"> </span><span class="s1">&#39;domain_admin.main&#39;</span>
+*<span class="w"> </span>Debug<span class="w"> </span>mode:<span class="w"> </span>off
+WARNING:<span class="w"> </span>This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>development<span class="w"> </span>server.<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>use<span class="w"> </span>it<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>deployment.<span class="w"> </span>Use<span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>WSGI<span class="w"> </span>server<span class="w"> </span>instead.
+*<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:5000
+Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </span>quit
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>warning提示可以忽略，推荐参考方式一，使用<code class="docutils literal notranslate"><span class="pre">gunicorn</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">waitress-serve</span></code> 启动</p></li>
+</ul>
+<p>访问地址：<a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a></p>
+</section>
+<section id="id3">
+<h2>其他部署方式<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>可以参考<a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/deploying/">https://flask.palletsprojects.com/en/2.3.x/deploying/</a></p>
 </section>
 </section>
 

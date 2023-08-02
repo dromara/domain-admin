@@ -7,6 +7,8 @@
 
 > `强烈建议`：登录系统后修改默认密码
 
+Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的
+
 ## 方式一：pip安装
 
 运行环境：
@@ -15,20 +17,19 @@
 
 可以使用 `pyenv` + venv 管理多个Python版本和隔离虚拟环境
 
+确保已经安装Python解释器
+
 ```bash
 $ python3 --version
 Python 3.7.0
-
-# 创建名为 venv 的虚拟环境
-$ python3 -m venv venv
-
-# 激活虚拟环境
-$ source venv/bin/activate
 ```
 
 linux / macos 安装
 
 ```bash
+# 创建名为 venv 的虚拟环境并激活
+$ python3 -m venv venv && source venv/bin/activate
+
 # 安装 domain-admin
 $ pip install gunicorn domain-admin
 
@@ -39,11 +40,17 @@ $ gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
 windows 安装
 
 ```bash
+# 创建名为 venv 的虚拟环境
+> py -3 -m venv venv
+
+# 激活虚拟环境
+> venv\Scripts\activate
+
 # 安装 domain-admin
-$ pip install waitress domain-admin
+> pip install waitress domain-admin
 
 # 启动运行
-$ waitress-serve --listen=127.0.0.1:8000 'domain_admin.main:app'
+> waitress-serve --listen=127.0.0.1:8000 'domain_admin.main:app'
 ```
 
 访问地址：http://127.0.0.1:8000
@@ -59,12 +66,13 @@ $ pip3 install -U domain-admin -i https://pypi.org/simple
 感谢[@miss85246](https://github.com/miss85246) 提供Docker支持
 
 ```bash
+# 可选1：前台运行
 $ docker run -p 8000:8000 mouday/domain-admin
 
-# 后台运行
+# 可选2：后台运行
 $ docker run -d -p 8000:8000 mouday/domain-admin
 
-# 本地文件夹和容器文件夹映射
+# 可选3：本地文件夹和容器文件夹映射
 $ docker run \
 -v $(pwd)/database:/app/database \
 -v $(pwd)/logs:/app/logs \
@@ -72,6 +80,9 @@ $ docker run \
 --name domain-admin \
 mouday/domain-admin:latest
 ```
+
+- database：sqlite数据库和重要数据的目录
+- logs：日志目录，用于排查问题
 
 ## 方式三：下载源码安装
 
@@ -92,16 +103,85 @@ Source code(zip)                         # Python源码 windows适用
 Source code(tar.gz)                      # Python源码 linux/mac适用
 ```
 
+此处以linux/macos为例，windows用户可直接点击下载，自行使用加压软件解压
+
+1、下载发布包
+
 ```bash
 # 下载 domain-admin-1.5.8.tar.gz
 wget https://github.com/mouday/domain-admin/releases/download/v1.5.8/domain-admin-1.5.8.tar.gz
 
-cd domain-admin
-
-# 安装依赖
-pip install -r requirements.txt
-
-# 启动运行
-$ gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
+# 如果下载速度过慢，可以使用加速方案
+wget https://ghproxy.com/https://github.com/mouday/domain-admin/releases/download/v1.5.8/domain-admin-1.5.8.tar.gz
 ```
 
+2、解压进入
+
+```bash
+tar -zxvf domain-admin-1.5.8.tar.gz
+
+cd domain-admin-1.5.8
+```
+
+3、创建虚拟环境
+
+```bash
+# 创建名为 venv 的虚拟环境，windows用户参考方式一
+$ python3 -m venv venv && source venv/bin/activate
+
+# 安装依赖
+pip3 install .
+```
+
+4、新建启动文件 `app.py`
+
+```python
+from domain_admin.main import app
+
+if __name__ == '__main__':
+    app.run()
+```
+
+此时的目录结构如下
+
+```bash
+$ tree -L 1
+.
+├── LICENSE
+├── MANIFEST.in
+├── PKG-INFO
+├── README.md
+├── app.py                 # 新建的启动文件
+├── build
+├── database
+├── domain_admin
+├── domain_admin.egg-info
+├── logs
+├── requirements
+├── setup.cfg
+├── setup.py
+├── temp
+└── venv
+```
+
+5、启动运行
+
+```bash
+# 启动运行
+$ python app.py
+
+* Serving Flask app 'domain_admin.main'
+* Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+* Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+```
+
+- warning提示可以忽略，推荐参考方式一，使用`gunicorn` 或者 `waitress-serve` 启动
+
+访问地址：[http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+
+## 其他部署方式
+
+可以参考[https://flask.palletsprojects.com/en/2.3.x/deploying/](https://flask.palletsprojects.com/en/2.3.x/deploying/)
