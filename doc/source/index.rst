@@ -8,8 +8,8 @@
    manual/index.md
    manual/install.md
    manual/question.md
+   manual/plugins.md
    manual/plan.md
    manual/development.md
    manual/changelog.md
    manual/article.md
-   manual/plugins.md
