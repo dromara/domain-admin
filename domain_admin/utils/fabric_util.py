@@ -13,8 +13,21 @@ https://www.cnblogs.com/superhin/p/13887526.html
 import six
 from fabric import Connection
 
+from domain_admin.log import logger
+
 
 def deploy_file(host, user, password, content, remote):
+    """
+    远程部署文件
+    :param host:
+    :param user:
+    :param password:
+    :param content:
+    :param remote:
+    :return:
+    """
+    logger.info(remote)
+
     with Connection(
             host=host,
             user=user,
@@ -24,6 +37,16 @@ def deploy_file(host, user, password, content, remote):
 
 
 def run_command(host, user, password, command):
+    """
+    远程运行命令
+    :param host:
+    :param user:
+    :param password:
+    :param command:
+    :return:
+    """
+    logger.info(command)
+
     with Connection(
             host=host,
             user=user,
