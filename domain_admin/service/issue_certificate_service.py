@@ -236,18 +236,17 @@ def renew_certificate_row(row: IssueCertificateModel):
     :return:
     """
     # 重新申请
-    if row.expire_time is None:
-        pkey_pem, csr_pem = acme_v2_api.new_csr_comp(row.domains)
+    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(row.domains)
 
-        IssueCertificateModel.update(
-            ssl_certificate_key=pkey_pem,
-            ssl_certificate='',
-            start_time=None,
-            expire_time=None,
-            status='pending',
-        ).where(
-            IssueCertificateModel.id == row.id
-        )
+    IssueCertificateModel.update(
+        ssl_certificate_key=pkey_pem,
+        ssl_certificate='',
+        start_time=None,
+        expire_time=None,
+        status='pending',
+    ).where(
+        IssueCertificateModel.id == row.id
+    )
 
     # 获取验证方式
     challenge_list = get_certificate_challenges(row.id)
