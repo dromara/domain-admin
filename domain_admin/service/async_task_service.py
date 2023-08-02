@@ -106,7 +106,13 @@ def sync_task_decorator(task_name):
     def outer_wrapper(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            current_user_id = g.user_id
+
+            current_user_id = 0
+
+            try:
+                current_user_id = g.user_id
+            except Exception as e:
+                pass
 
             # before
             async_task_row = AsyncTaskModel.create(
