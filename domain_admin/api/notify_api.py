@@ -224,20 +224,21 @@ def handle_test_notify_by_id():
     notify_id = request.json['notify_id']
     notify_row = NotifyModel.get_by_id(notify_id)
 
-    days = random.randint(1, 365)
-    start_date = datetime.now()
-    expire_date = start_date + timedelta(days=days)
+    # days = random.randint(1, 365)
+    # start_date = datetime.now()
+    # expire_date = start_date + timedelta(days=days)
 
-    lst = [
-        {
-            'domain': 'www.demo.com',
-            'start_date': datetime_util.format_date(start_date),
-            'expire_date': datetime_util.format_date(expire_date),
-            'expire_days': days
-        }
-    ]
+    # lst = [
+    #     {
+    #         'domain': 'www.demo.com',
+    #         'start_date': datetime_util.format_date(start_date),
+    #         'expire_date': datetime_util.format_date(expire_date),
+    #         'expire_days': days
+    #     }
+    # ]
 
-    return notify_service.notify_user(notify_row, lst)
+    # return notify_service.notify_user(notify_row, lst)
+    return notify_service.notify_user_about_some_event(notify_row)
 
 
 def handle_notify_by_event_id():
