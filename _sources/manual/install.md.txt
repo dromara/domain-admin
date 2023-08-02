@@ -139,7 +139,7 @@ pip3 install .
 from domain_admin.main import app
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=8000)
 ```
 
 此时的目录结构如下
@@ -173,13 +173,13 @@ $ python app.py
 * Serving Flask app 'domain_admin.main'
 * Debug mode: off
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
-* Running on http://127.0.0.1:5000
+* Running on http://127.0.0.1:8000
 Press CTRL+C to quit
 ```
 
 - warning提示可以忽略，推荐参考方式一，使用`gunicorn` 或者 `waitress-serve` 启动
 
-访问地址：[http://127.0.0.1:5000](http://127.0.0.1:5000)
+访问地址：[http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 
 ## 其他部署方式

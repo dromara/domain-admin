@@ -61,6 +61,7 @@
 <li class="toctree-l1"><a class="reference internal" href="development.html">二次开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">升级日志</a></li>
 <li class="toctree-l1"><a class="reference internal" href="article.html">相关文章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">扩展插件</a></li>
 </ul>
 
         </div>
@@ -205,7 +206,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>.
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">domain_admin.main</span> <span class="kn">import</span> <span class="n">app</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>此时的目录结构如下</p>
@@ -235,14 +236,14 @@ $<span class="w"> </span>python<span class="w"> </span>app.py
 *<span class="w"> </span>Serving<span class="w"> </span>Flask<span class="w"> </span>app<span class="w"> </span><span class="s1">&#39;domain_admin.main&#39;</span>
 *<span class="w"> </span>Debug<span class="w"> </span>mode:<span class="w"> </span>off
 WARNING:<span class="w"> </span>This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>development<span class="w"> </span>server.<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>use<span class="w"> </span>it<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>deployment.<span class="w"> </span>Use<span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>WSGI<span class="w"> </span>server<span class="w"> </span>instead.
-*<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:5000
+*<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:8000
 Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </span>quit
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>warning提示可以忽略，推荐参考方式一，使用<code class="docutils literal notranslate"><span class="pre">gunicorn</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">waitress-serve</span></code> 启动</p></li>
 </ul>
-<p>访问地址：<a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a></p>
+<p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
 </section>
 <section id="id3">
 <h2>其他部署方式<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
