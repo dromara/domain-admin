@@ -7,10 +7,10 @@ async_task_service.py
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 import traceback
+from concurrent.futures.thread import ThreadPoolExecutor
 from functools import wraps
 
 import six
-from concurrent.futures.thread import ThreadPoolExecutor
 from flask import g
 
 from domain_admin.log import logger
@@ -90,6 +90,60 @@ def async_task_decorator(task_name):
             ret.add_done_callback(done_callback)
 
             return ret
+
+        return wrapper
+
+    return outer_wrapper
+
+
+def sync_task_decorator(task_name):
+    """
+    同步任务的日志装饰器
+    :param task_name:
+    :return:
+    """
+
+    def outer_wrapper(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            current_user_id = g.user_id
+
+            # before
+            async_task_row = AsyncTaskModel.create(
+                user_id=current_user_id,
+                task_name=task_name,
+                function_name="{}.{}".format(func.__module__, func.__name__),
+                start_time=datetime_util.get_datetime()
+            )
+
+            result = ''
+            error = None
+
+            # execute
+            try:
+                result = func(*args, **kwargs)
+            except Exception as e:
+                error = e
+
+            if error:
+                result = six.text_type(error)
+
+            data = {
+                'status': False if error else True,
+                'result': result,
+                'end_time': datetime_util.get_datetime(),
+                'update_time': datetime_util.get_datetime(),
+            }
+
+            AsyncTaskModel.update(data).where(
+                AsyncTaskModel.id == async_task_row.id
+            ).execute()
+
+            # 继续抛出异常
+            if error:
+                raise error
+            else:
+                return result
 
         return wrapper
 

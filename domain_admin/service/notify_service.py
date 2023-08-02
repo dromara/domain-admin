@@ -22,7 +22,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import domain_service, render_service, system_service
+from domain_admin.service import domain_service, render_service, system_service, async_task_service
 from domain_admin.utils import email_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
@@ -160,6 +160,7 @@ def notify_all_event():
     return success
 
 
+@async_task_service.sync_task_decorator("触发通知用户")
 def notify_user_about_some_event(notify_row):
     """
     由于某个事件触发，通知用户
@@ -173,7 +174,7 @@ def notify_user_about_some_event(notify_row):
         # 域名过期
         return notify_user_about_domain_expired(notify_row)
     else:
-        logger.warn("notify_row event_id not support: %s", notify_row.event_id)
+        raise AppException("notify_row event_id not support: {}".format(notify_row.event_id))
 
 
 def notify_user_about_cert_expired(notify_row):
@@ -437,4 +438,5 @@ def notify_user_by_feishu(notify_row):
         body=json.loads(notify_row.feishu_body),
         params=notify_row.feishu_params
     )
+
     return res

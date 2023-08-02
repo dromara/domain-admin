@@ -16,7 +16,7 @@ class LogSchedulerModel(BaseModel):
     # 状态
     status = BooleanField(default=False)
 
-    # 错误信息
+    # 执行结果
     error_message = TextField(default='')
 
     # 创建时间
