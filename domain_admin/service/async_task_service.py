@@ -130,7 +130,7 @@ def sync_task_decorator(task_name):
 
             data = {
                 'status': False if error else True,
-                'result': result,
+                'result': result or '',
                 'end_time': datetime_util.get_datetime(),
                 'update_time': datetime_util.get_datetime(),
             }
