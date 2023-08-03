@@ -66,13 +66,7 @@ $ pip3 install -U domain-admin -i https://pypi.org/simple
 感谢[@miss85246](https://github.com/miss85246) 提供Docker支持
 
 ```bash
-# 可选1：前台运行
-$ docker run -p 8000:8000 mouday/domain-admin
-
-# 可选2：后台运行
-$ docker run -d -p 8000:8000 mouday/domain-admin
-
-# 可选3：本地文件夹和容器文件夹映射
+# 本地文件夹和容器文件夹映射
 $ docker run \
 -v $(pwd)/database:/app/database \
 -v $(pwd)/logs:/app/logs \
@@ -192,4 +186,4 @@ Domain Admin所有版本都支持平滑升级
 
 安装最新版，重启即可
 
-如果是docker安装的，注意`database` 目录是不是手动挂载的，不要删除了
+如果是docker安装的，注意`database` 目录是不是手动挂载的，不要删除
