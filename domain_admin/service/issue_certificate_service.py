@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import OpenSSL
 import requests
 
+from domain_admin.enums.host_auth_type_enum import HostAuthTypeEnum
 from domain_admin.log import logger
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
@@ -295,6 +296,8 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
     host = host_row.host
     user = host_row.user
     password = host_row.password
+    private_key = host_row.private_key
+    auth_type = host_row.auth_type
 
     for row in challenges:
         if not row['token']:
@@ -310,13 +313,22 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
         if not row['validation']:
             raise AppException('validation is empty')
 
-        fabric_util.deploy_file(
-            host=host,
-            user=user,
-            password=password,
-            content=row['validation'],
-            remote=verify_deploy_filename
-        )
+        if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
+            fabric_util.deploy_file_by_key(
+                host=host,
+                user=user,
+                private_key=private_key,
+                content=row['validation'],
+                remote=verify_deploy_filename
+            )
+        else:
+            fabric_util.deploy_file(
+                host=host,
+                user=user,
+                password=password,
+                content=row['validation'],
+                remote=verify_deploy_filename
+            )
 
 
 def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_deploy_path, reload_cmd):
@@ -334,34 +346,62 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
     host = host_row.host
     user = host_row.user
     password = host_row.password
+    auth_type = host_row.auth_type
+    private_key = host_row.private_key
 
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
     # deploy key
     if key_deploy_path:
-        fabric_util.deploy_file(
-            host=host,
-            user=user,
-            password=password,
-            content=issue_certificate_row.ssl_certificate_key,
-            remote=key_deploy_path
-        )
+        if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
+            fabric_util.deploy_file_by_key(
+                host=host,
+                user=user,
+                private_key=private_key,
+                content=issue_certificate_row.ssl_certificate_key,
+                remote=key_deploy_path
+            )
+        else:
+            fabric_util.deploy_file(
+                host=host,
+                user=user,
+                password=password,
+                content=issue_certificate_row.ssl_certificate_key,
+                remote=key_deploy_path
+            )
 
     # deploy ssl_certificate
     if pem_deploy_path:
-        fabric_util.deploy_file(
-            host=host,
-            user=user,
-            password=password,
-            content=issue_certificate_row.ssl_certificate,
-            remote=pem_deploy_path
-        )
+        if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
+            fabric_util.deploy_file_by_key(
+                host=host,
+                user=user,
+                private_key=private_key,
+                content=issue_certificate_row.ssl_certificate,
+                remote=pem_deploy_path
+            )
+        else:
+            fabric_util.deploy_file(
+                host=host,
+                user=user,
+                password=password,
+                content=issue_certificate_row.ssl_certificate,
+                remote=pem_deploy_path
+            )
 
     # reload
     if reload_cmd:
-        fabric_util.run_command(
-            host=host,
-            user=user,
-            password=password,
-            command=reload_cmd
-        )
+        if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
+            fabric_util.run_command_by_key(
+                host=host,
+                user=user,
+                private_key=private_key,
+                command=reload_cmd
+            )
+        else:
+            fabric_util.run_command(
+                host=host,
+                user=user,
+                password=password,
+                command=reload_cmd
+            )

@@ -8,6 +8,7 @@ from datetime import datetime
 
 from peewee import CharField, IntegerField, DateTimeField, AutoField
 
+from domain_admin.enums.host_auth_type_enum import HostAuthTypeEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util
 
@@ -28,6 +29,11 @@ class HostModel(BaseModel):
     port = CharField(default=22, null=True)
 
     user = CharField(default=None, null=True)
+
+    # 验证方式，默认密码
+    auth_type = IntegerField(default=HostAuthTypeEnum.PASSWORD)
+
+    private_key = CharField(default=None, null=True)
 
     password = CharField(default=None, null=True)
 

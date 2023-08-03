@@ -12,6 +12,7 @@ https://www.cnblogs.com/superhin/p/13887526.html
 
 import six
 from fabric import Connection
+from paramiko import RSAKey
 
 from domain_admin.log import logger
 
@@ -51,5 +52,45 @@ def run_command(host, user, password, command):
             host=host,
             user=user,
             connect_kwargs={"password": password}
+    ) as conn:
+        conn.run(command, hide=True)
+
+
+def deploy_file_by_key(host, user, private_key, content, remote):
+    """
+    远程部署文件
+    :param host:
+    :param user:
+    :param private_key:
+    :param content:
+    :param remote:
+    :return:
+    """
+    logger.info(remote)
+
+    with Connection(
+            host=host,
+            user=user,
+            connect_kwargs={"pkey": RSAKey.from_private_key(six.StringIO(private_key))}
+    ) as conn:
+        conn.put(six.StringIO(content), remote)
+
+
+def run_command_by_key(host, user, private_key, command):
+    """
+    远程运行命令
+    :param password:
+    :param host:
+    :param user:
+    :param private_key:
+    :param command:
+    :return:
+    """
+    logger.info(command)
+
+    with Connection(
+            host=host,
+            user=user,
+            connect_kwargs={"pkey": RSAKey.from_private_key(six.StringIO(private_key))}
     ) as conn:
         conn.run(command, hide=True)
