@@ -146,13 +146,7 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 <section id="docker">
 <h2>方式二：docker启动<a class="headerlink" href="#docker" title="此标题的永久链接"></a></h2>
 <p>感谢<a class="reference external" href="https://github.com/miss85246">&#64;miss85246</a> 提供Docker支持</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 可选1：前台运行</span>
-$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
-
-<span class="c1"># 可选2：后台运行</span>
-$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>mouday/domain-admin
-
-<span class="c1"># 可选3：本地文件夹和容器文件夹映射</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 本地文件夹和容器文件夹映射</span>
 $<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
 -v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/database:/app/database<span class="w"> </span><span class="se">\</span>
 -v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/logs:/app/logs<span class="w"> </span><span class="se">\</span>
@@ -255,7 +249,7 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 <h1>平滑升级<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h1>
 <p>Domain Admin所有版本都支持平滑升级</p>
 <p>安装最新版，重启即可</p>
-<p>如果是docker安装的，注意<code class="docutils literal notranslate"><span class="pre">database</span></code> 目录是不是手动挂载的，不要删除了</p>
+<p>如果是docker安装的，注意<code class="docutils literal notranslate"><span class="pre">database</span></code> 目录是不是手动挂载的，不要删除</p>
 </section>
 
 
