@@ -24,5 +24,5 @@ translate_config = [
         'zh-CN': '天前',
         'en-US': ' days ago',
     },
-  
+
 ]
