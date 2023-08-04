@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 import math
 import six
+from domain_admin import i18n
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -135,13 +136,13 @@ def time_for_human(time_value):
     duration = now_time - time_value
 
     if duration < minute:
-        return '刚刚'
+        return i18n.translate('刚刚')
     elif duration < hour:
-        return six.text_type(int(duration / minute)) + '分钟前'
+        return six.text_type(int(duration / minute)) + i18n.translate('分钟前')
     elif duration < day:
-        return six.text_type(int(duration / hour)) + '小时前'
+        return six.text_type(int(duration / hour)) + i18n.translate('小时前')
     elif duration < day_8:
-        return six.text_type(int(duration / day)) + '天前'
+        return six.text_type(int(duration / day)) + i18n.translate('天前')
     else:
         return time.strftime(DATE_FORMAT, time.localtime(time_value))
 

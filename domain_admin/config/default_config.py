@@ -14,6 +14,9 @@ DEFAULT_ADMIN_PASSWORD = '123456'
 # header请求头中携带 token 参数名称
 TOKEN_KEY = 'X-Token'
 
+# header请求头中携带 language 参数名称
+LANGUAGE_KEY = 'X-Language'
+
 # 默认的token有效时长 单位：天
 DEFAULT_TOKEN_EXPIRE_DAYS = 7
 
