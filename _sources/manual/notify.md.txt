@@ -2,7 +2,7 @@
 
 ## webhook
 
-### 发送钉钉消息
+### webhook发送钉钉消息
 
 可以参考 [@PanZongQing](https://github.com/PanZongQing) 分享的文章配置
 
