@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>用户手册 &mdash; Domain Admin latest 文档</title>
+  <title>通知配置 &mdash; Domain Admin latest 文档</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -21,8 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="安装" href="install.html" />
-    <link rel="prev" title="Domain Admin" href="../index.html" /> 
+    <link rel="next" title="常见问题" href="question.html" />
+    <link rel="prev" title="安装" href="install.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,14 +48,16 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">用户手册</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">项目简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">使用说明</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">用户手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">安装</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html#id4">平滑升级</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notify.html">通知配置</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">通知配置</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#webhook">webhook</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">发送钉钉消息</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">扩展插件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plan.html">开发计划</a></li>
@@ -78,9 +80,9 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">用户手册</li>
+      <li class="breadcrumb-item active">通知配置</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/manual/index.md.txt" rel="nofollow"> 查看页面源码</a>
+            <a href="../_sources/manual/notify.md.txt" rel="nofollow"> 查看页面源码</a>
       </li>
   </ul>
   <hr/>
@@ -89,68 +91,14 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>用户手册<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>通知配置<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="webhook">
+<h2>webhook<a class="headerlink" href="#webhook" title="此标题的永久链接"></a></h2>
 <section id="id2">
-<h2>项目简介<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
-<p>功能：</p>
-<ul class="simple">
-<li><p>权限</p>
-<ul>
-<li><p>用户登录</p></li>
-<li><p>用户退出</p></li>
-<li><p>修改密码</p></li>
-</ul>
-</li>
-<li><p>域名管理</p>
-<ul>
-<li><p>域名添加</p></li>
-<li><p>域名删除</p></li>
-<li><p>域名搜索</p></li>
-<li><p>域名导入、导出功能</p></li>
-<li><p>域名信息</p></li>
-</ul>
-</li>
-<li><p>证书监控</p>
-<ul>
-<li><p>定时监控</p></li>
-<li><p>到期邮件提醒</p></li>
-<li><p>微信提醒</p></li>
-<li><p>手动/自动更新证书信息</p></li>
-</ul>
-</li>
-<li><p>用户管理</p>
-<ul>
-<li><p>添加用户</p></li>
-<li><p>删除用户</p></li>
-<li><p>禁用/启用用户</p></li>
-</ul>
-</li>
-<li><p>监控日志</p></li>
-<li><p>管理界面</p>
-<ul>
-<li><p>api接口（用于二次开发）</p></li>
-<li><p>web浏览器</p></li>
-<li><p>桌面</p></li>
-<li><p><span class="raw-html-m2r"><del>移动端（app+小程序）</del></span></p></li>
-</ul>
-</li>
-</ul>
+<h3>发送钉钉消息<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>可以参考 <a class="reference external" href="https://github.com/PanZongQing">&#64;PanZongQing</a> 分享的文章配置</p>
+<p><a class="reference external" href="https://github.com/mouday/domain-admin/issues/47">对接钉钉群内自定义webhook机器人发送告警注意事项</a></p>
 </section>
-<section id="id3">
-<h2>使用说明<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<p>1、批量导入域名</p>
-<p>导入文本示例: <a class="reference external" href="/tests/domain.txt">/docs/domain.txt</a></p>
-<p>2、设置系统发送邮件的账号密码</p>
-<blockquote>
-<div><p>如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件</p>
-</div></blockquote>
-<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png" /></a>
-<p>3、设置邮件通知</p>
-<a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png" /></a>
-<p>4、其他通知方式</p>
-<ul class="simple">
-<li><p>webhook通知：<a class="reference external" href="https://blog.csdn.net/mouday/article/details/124135877">推送到微信的webhook第三方工具</a></p></li>
-</ul>
 </section>
 </section>
 
@@ -158,8 +106,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Domain Admin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="install.html" class="btn btn-neutral float-right" title="安装" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="install.html" class="btn btn-neutral float-left" title="安装" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="question.html" class="btn btn-neutral float-right" title="常见问题" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
