@@ -93,4 +93,4 @@ QQ群号:731742868
 
 配置：一个域名 + 一台服务器
 
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/afdian-吃个大西瓜.jpeg)
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/afdian-吃个大西瓜.jpeg" width="300">
