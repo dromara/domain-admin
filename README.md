@@ -82,3 +82,15 @@ QQ群号:731742868
 ## 更新日志
 
 [CHANGELOG.md](https://domain-admin.readthedocs.io/zh_CN/latest/manual/changelog.html)
+
+## Domain Cloud 众筹
+
+由于本项目需要使用者自行安装，对于使用有一定的技术门槛，所以发起一个众筹
+
+资金将用于部署一个线上版本的domain-admin，直接通过网页就可以使用
+
+目标：￥2000
+
+配置：一个域名 + 一台服务器
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/afdian-吃个大西瓜.jpeg)
