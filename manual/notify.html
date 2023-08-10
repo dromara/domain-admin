@@ -51,10 +51,15 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">用户手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">安装</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">通知配置</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#webhook">webhook</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">webhook发送钉钉消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">邮件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#webhook">WebHook</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">webhook发送微信消息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">webhook发送钉钉消息</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">企业微信</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">钉钉</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">飞书</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
@@ -91,13 +96,91 @@
              
   <section id="id1">
 <h1>通知配置<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
-<section id="webhook">
-<h2>webhook<a class="headerlink" href="#webhook" title="此标题的永久链接"></a></h2>
+<blockquote>
+<div><p>备注：如果点击<code class="docutils literal notranslate"><span class="pre">测试</span></code> 无法接收到消息，可尝试给<code class="docutils literal notranslate"><span class="pre">剩余天数</span></code> 设置一个比较大的值大</p>
+</div></blockquote>
 <section id="id2">
-<h3>webhook发送钉钉消息<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
-<p>可以参考 <a class="reference external" href="https://github.com/PanZongQing">&#64;PanZongQing</a> 分享的文章配置</p>
+<h2>邮件<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>第一步：需要在 <code class="docutils literal notranslate"><span class="pre">系统管理/系统设置/邮箱设置</span></code> 中设置好系统发件邮件</p>
+<p>第二步：填写收件人列表</p>
+<p>需要填写json格式的数据，例如：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;tom@qq.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;jack@qq.com&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="webhook">
+<h2>WebHook<a class="headerlink" href="#webhook" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3>webhook发送微信消息<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>可以使用的微信推送平台有很多，可以参考</p>
+<p><a class="reference external" href="https://pengshiyu.blog.csdn.net/article/details/124135877">微信推送消息通知接口汇总</a></p>
+</section>
+<section id="id5">
+<h3>webhook发送钉钉消息<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>获取请求地址</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://oapi.dingtalk.com/robot/send?access_token=&lt;access_token&gt;
+</pre></div>
+</div>
+<p>设置请求头</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>设置请求体</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;监控报警: 我就是我, 是不一样的烟火&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>可以参考 <a class="reference external" href="https://github.com/PanZongQing">&#64;PanZongQing</a> 分享的钉钉webhook配置：</p>
 <p><a class="reference external" href="https://github.com/mouday/domain-admin/issues/47">对接钉钉群内自定义webhook机器人发送告警注意事项</a></p>
 </section>
+</section>
+<section id="id7">
+<h2>企业微信<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;touser&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UserName&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;agentid&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000001</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;你的域名证书即将到期\n点击查看&lt;a href=\&quot;http://www.demo.com/\&quot;&gt;Domain Admin&lt;/a&gt;&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>参考：<a class="reference external" href="https://developer.work.weixin.qq.com/document/path/90236">https://developer.work.weixin.qq.com/document/path/90236</a></p>
+</section>
+<section id="id8">
+<h2>钉钉<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;agent_id&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;userid_list&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;userid_list&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;域名或证书过期提醒&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>参考文档：<a class="reference external" href="https://open.dingtalk.com/document/orgapp/asynchronous-sending-of-enterprise-session-messages">https://open.dingtalk.com/document/orgapp/asynchronous-sending-of-enterprise-session-messages</a></p>
+</section>
+<section id="id9">
+<h2>飞书<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;receive_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;receive_id&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;msg_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;text\&quot;:\&quot;域名或证书过期提醒\&quot;}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>参考文档：<a class="reference external" href="https://open.feishu.cn/document/server-docs/im-v1/message/create">https://open.feishu.cn/document/server-docs/im-v1/message/create</a></p>
 </section>
 </section>
 
