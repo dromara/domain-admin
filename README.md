@@ -37,6 +37,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
     - pypi：[https://pypi.org/project/domain-admin](https://pypi.org/project/domain-admin)
     - docker：[https://hub.docker.com/r/mouday/domain-admin](https://hub.docker.com/r/mouday/domain-admin)
     - releases：[https://github.com/mouday/domain-admin/releases](https://github.com/mouday/domain-admin/releases)
+    - 1Panel：[https://apps.fit2cloud.com/1panel/domain-admin](https://apps.fit2cloud.com/1panel/domain-admin)
 
 - 使用文档：
     - readthedocs: [https://domain-admin.readthedocs.io](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
@@ -94,3 +95,9 @@ QQ群号:731742868
 配置：一个域名 + 一台服务器
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/afdian-吃个大西瓜.jpeg" width="300">
+
+## 联系作者
+
+微信扫码二维码
+
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/coding-big-tree.jpg" width="300">
