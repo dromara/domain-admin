@@ -389,6 +389,8 @@ def export_domain_file():
     lst = list(map(lambda m: model_to_dict(
         model=m,
         extra_attrs=[
+            'start_date',
+            'expire_date',
             'expire_days',
             'create_time_label',
             'real_time_expire_days',
