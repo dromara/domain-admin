@@ -11,11 +11,13 @@ from datetime import datetime
 from peewee import chunked, fn
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.log import logger
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
+from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import file_service, async_task_service
 from domain_admin.service import render_service, group_service
@@ -379,33 +381,33 @@ def add_domain_from_file(filename, user_id):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
 
-def export_domain_to_file(user_id):
+def export_domain_to_file(rows):
     """
     导出域名到文件
-    :param user_id:
+    :param rows:
     :return:
     """
-    # 域名数据
-    rows = DomainModel.select().where(
-        DomainModel.user_id == user_id
-    ).order_by(
-        DomainModel.expire_days.asc(),
-        DomainModel.id.desc(),
-    )
+    # # 域名数据
+    # rows = DomainModel.select().where(
+    #     DomainModel.user_id == user_id
+    # ).order_by(
+    #     DomainModel.expire_days.asc(),
+    #     DomainModel.id.desc(),
+    # )
+    #
+    # #  分组数据
+    # group_rows = GroupModel.select().where(
+    #     GroupModel.user_id == user_id
+    # )
+    #
+    # group_map = {row.id: row.name for row in group_rows}
+    #
+    # lst = []
+    # for row in list(rows):
+    #     row.group_name = group_map.get(row.group_id, '')
+    #     lst.append(row)
 
-    #  分组数据
-    group_rows = GroupModel.select().where(
-        GroupModel.user_id == user_id
-    )
-
-    group_map = {row.id: row.name for row in group_rows}
-
-    lst = []
-    for row in list(rows):
-        row.group_name = group_map.get(row.group_id, '')
-        lst.append(row)
-
-    content = render_service.render_template('cert-export.csv', {'list': lst})
+    content = render_service.render_template('cert-export.csv', {'list': rows})
 
     filename = datetime.now().strftime("cert_%Y%m%d%H%M%S") + '.csv'
 
@@ -466,3 +468,122 @@ def load_address_count(lst):
         row['address_count'] = address_group_map.get(str(row['id']), 0)
 
     return lst
+
+
+def get_domain_list_query(keyword, group_id, group_ids, expire_days, user_id, role):
+
+    user_group_ids = None
+
+    if role == RoleEnum.ADMIN:
+        pass
+
+    else:
+        # 所在分组
+        group_user_rows = GroupUserModel.select().where(
+            GroupUserModel.user_id == user_id
+        )
+
+        group_user_list = list(group_user_rows)
+        user_group_ids = [row.group_id for row in group_user_list]
+
+    query = DomainModel.select()
+
+    if isinstance(group_id, int):
+        query = query.where(DomainModel.group_id == group_id)
+
+    if keyword:
+        query = query.where(DomainModel.domain.contains(keyword))
+
+    if group_ids:
+        query = query.where(DomainModel.group_id.in_(group_ids))
+    else:
+        if role == RoleEnum.ADMIN:
+            pass
+
+        elif user_group_ids:
+            query = query.where(
+                (DomainModel.user_id == user_id)
+                | (DomainModel.group_id.in_(user_group_ids))
+            )
+        else:
+            query = query.where(DomainModel.user_id == user_id)
+
+    if expire_days is not None:
+        if expire_days[0] is None:
+            query = query.where(DomainModel.expire_days <= expire_days[1])
+        elif expire_days[1] is None:
+            query = query.where(DomainModel.expire_days >= expire_days[0])
+        else:
+            query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
+
+    return query
+
+
+def get_domain_ordering(order_prop='expire_days', order_type='ascending'):
+    ordering = []
+
+    # order by expire_days
+    if order_prop == 'expire_days':
+        if order_type == 'descending':
+            ordering.append(DomainModel.expire_time.desc())
+        else:
+            ordering.append(DomainModel.expire_time.asc())
+
+    # order by connect_status
+    elif order_prop == 'connect_status':
+        if order_type == 'descending':
+            ordering.append(DomainModel.connect_status.desc())
+        else:
+            ordering.append(DomainModel.connect_status.asc())
+
+    # order by domain
+    elif order_prop == 'domain':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain.desc())
+        else:
+            ordering.append(DomainModel.domain.asc())
+
+    # order by group_id
+    elif order_prop == 'group_name':
+        if order_type == 'descending':
+            ordering.append(DomainModel.group_id.desc())
+        else:
+            ordering.append(DomainModel.group_id.asc())
+
+    # order by port
+    elif order_prop == 'port':
+        if order_type == 'descending':
+            ordering.append(DomainModel.port.desc())
+        else:
+            ordering.append(DomainModel.port.asc())
+
+    # order by update_time
+    elif order_prop == 'update_time':
+        if order_type == 'descending':
+            ordering.append(DomainModel.update_time.desc())
+        else:
+            ordering.append(DomainModel.update_time.asc())
+
+    # order by domain_expire_monitor
+    elif order_prop == 'domain_expire_monitor':
+        if order_type == 'descending':
+            ordering.append(DomainModel.domain_expire_monitor.desc())
+        else:
+            ordering.append(DomainModel.domain_expire_monitor.asc())
+
+    # order by auto_update
+    elif order_prop == 'auto_update':
+        if order_type == 'descending':
+            ordering.append(DomainModel.auto_update.desc())
+        else:
+            ordering.append(DomainModel.auto_update.asc())
+    # order by  is_monitor
+    elif order_prop == 'is_monitor':
+        if order_type == 'descending':
+            ordering.append(DomainModel.is_monitor.desc())
+        else:
+            ordering.append(DomainModel.is_monitor.asc())
+
+    ordering.append(DomainModel.id.desc())
+
+    return ordering

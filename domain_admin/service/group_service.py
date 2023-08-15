@@ -82,7 +82,7 @@ def load_group_name(lst):
     """
     group_ids = [row['group_id'] for row in lst]
 
-    # 主机数量
+    # 分类
     group_rows = GroupModel.select().where(
         GroupModel.id.in_(group_ids)
     )

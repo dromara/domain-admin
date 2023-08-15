@@ -361,7 +361,48 @@ def export_domain_file():
     """
     current_user_id = g.user_id
 
-    filename = domain_service.export_domain_to_file(current_user_id)
+    keyword = request.json.get('keyword')
+    group_id = request.json.get('group_id')
+    group_ids = request.json.get('group_ids')
+    expire_days = request.json.get('expire_days')
+    role = request.json.get('role')
+
+    order_prop = request.json.get('order_prop') or 'expire_days'
+    order_type = request.json.get('order_type') or 'ascending'
+
+
+    params = {
+        'keyword': keyword,
+        'group_id': group_id,
+        'group_ids': group_ids,
+        'expire_days': expire_days,
+        'role': role,
+        'user_id': current_user_id,
+    }
+
+    query = domain_service.get_domain_list_query(**params)
+    ordering = domain_service.get_domain_ordering(order_prop=order_prop, order_type=order_type)
+
+    rows = query.order_by(*ordering)
+
+    # 分组名
+    lst = list(map(lambda m: model_to_dict(
+        model=m,
+        extra_attrs=[
+            'expire_days',
+            'create_time_label',
+            'real_time_expire_days',
+            'real_time_ssl_total_days',
+            'real_time_ssl_expire_days',
+            'domain_url',
+            'update_time_label',
+            'expire_status',
+        ]
+    ), rows))
+
+    group_service.load_group_name(lst)
+
+    filename = domain_service.export_domain_to_file(lst)
 
     return {
         'name': filename,
@@ -395,16 +436,17 @@ def get_domain_list():
 
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
+
     keyword = request.json.get('keyword')
     group_id = request.json.get('group_id')
-
-    order_prop = request.json.get('order_prop') or 'expire_days'
-    order_type = request.json.get('order_type') or 'ascending'
     group_ids = request.json.get('group_ids')
     expire_days = request.json.get('expire_days')
     role = request.json.get('role')
 
-    user_group_ids = None
+    order_prop = request.json.get('order_prop') or 'expire_days'
+    order_type = request.json.get('order_type') or 'ascending'
+
+    # 组权限
     group_user_permission_map = {}
 
     if role == RoleEnum.ADMIN:
@@ -417,105 +459,21 @@ def get_domain_list():
         )
 
         group_user_list = list(group_user_rows)
-        user_group_ids = [row.group_id for row in group_user_list]
+
         # 组员权限
         group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
 
-    query = DomainModel.select()
+    params = {
+        'keyword': keyword,
+        'group_id': group_id,
+        'group_ids': group_ids,
+        'expire_days': expire_days,
+        'role': role,
+        'user_id': current_user_id,
+    }
 
-    if isinstance(group_id, int):
-        query = query.where(DomainModel.group_id == group_id)
-
-    if keyword:
-        query = query.where(DomainModel.domain.contains(keyword))
-
-    if group_ids:
-        query = query.where(DomainModel.group_id.in_(group_ids))
-    else:
-        if role == RoleEnum.ADMIN:
-            pass
-
-        elif user_group_ids:
-            query = query.where(
-                (DomainModel.user_id == current_user_id)
-                | (DomainModel.group_id.in_(user_group_ids))
-            )
-        else:
-            query = query.where(DomainModel.user_id == current_user_id)
-
-    if expire_days is not None:
-        if expire_days[0] is None:
-            query = query.where(DomainModel.expire_days <= expire_days[1])
-        elif expire_days[1] is None:
-            query = query.where(DomainModel.expire_days >= expire_days[0])
-        else:
-            query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
-
-    ordering = []
-
-    # order by expire_days
-    if order_prop == 'expire_days':
-        if order_type == 'descending':
-            ordering.append(DomainModel.expire_time.desc())
-        else:
-            ordering.append(DomainModel.expire_time.asc())
-
-    # order by connect_status
-    elif order_prop == 'connect_status':
-        if order_type == 'descending':
-            ordering.append(DomainModel.connect_status.desc())
-        else:
-            ordering.append(DomainModel.connect_status.asc())
-
-    # order by domain
-    elif order_prop == 'domain':
-        if order_type == 'descending':
-            ordering.append(DomainModel.domain.desc())
-        else:
-            ordering.append(DomainModel.domain.asc())
-
-    # order by group_id
-    elif order_prop == 'group_name':
-        if order_type == 'descending':
-            ordering.append(DomainModel.group_id.desc())
-        else:
-            ordering.append(DomainModel.group_id.asc())
-
-    # order by port
-    elif order_prop == 'port':
-        if order_type == 'descending':
-            ordering.append(DomainModel.port.desc())
-        else:
-            ordering.append(DomainModel.port.asc())
-
-    # order by update_time
-    elif order_prop == 'update_time':
-        if order_type == 'descending':
-            ordering.append(DomainModel.update_time.desc())
-        else:
-            ordering.append(DomainModel.update_time.asc())
-
-    # order by domain_expire_monitor
-    elif order_prop == 'domain_expire_monitor':
-        if order_type == 'descending':
-            ordering.append(DomainModel.domain_expire_monitor.desc())
-        else:
-            ordering.append(DomainModel.domain_expire_monitor.asc())
-
-    # order by auto_update
-    elif order_prop == 'auto_update':
-        if order_type == 'descending':
-            ordering.append(DomainModel.auto_update.desc())
-        else:
-            ordering.append(DomainModel.auto_update.asc())
-    # order by  is_monitor
-    elif order_prop == 'is_monitor':
-        if order_type == 'descending':
-            ordering.append(DomainModel.is_monitor.desc())
-        else:
-            ordering.append(DomainModel.is_monitor.asc())
-
-    ordering.append(DomainModel.id.desc())
+    query = domain_service.get_domain_list_query(**params)
+    ordering = domain_service.get_domain_ordering(order_prop=order_prop, order_type=order_type)
 
     total = query.count()
     lst = []

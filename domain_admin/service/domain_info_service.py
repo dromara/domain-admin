@@ -12,9 +12,11 @@ import random
 
 from peewee import chunked
 
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
+from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import render_service, file_service, group_service, async_task_service
 from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util
 
@@ -251,36 +253,36 @@ def add_domain_from_file(filename, user_id):
         DomainInfoModel.insert_many(batch).on_conflict_ignore().execute()
 
 
-def export_domain_to_file(user_id):
+def export_domain_to_file(rows):
     """
     导出域名到文件
-    :param user_id:
+    :param rows:
     :return:
     """
     # 域名数据
-    rows = DomainInfoModel.select().where(
-        DomainInfoModel.user_id == user_id
-    ).order_by(
-        DomainInfoModel.domain_expire_time.asc(),
-        DomainInfoModel.id.desc(),
-    )
+    # rows = DomainInfoModel.select().where(
+    #     DomainInfoModel.user_id == user_id
+    # ).order_by(
+    #     DomainInfoModel.domain_expire_time.asc(),
+    #     DomainInfoModel.id.desc(),
+    # )
+    #
+    # # 分组数据
+    # group_rows = GroupModel.select(
+    #     GroupModel.id,
+    #     GroupModel.name,
+    # ).where(
+    #     GroupModel.user_id == user_id
+    # )
+    #
+    # group_map = {row.id: row.name for row in group_rows}
+    #
+    # lst = []
+    # for row in list(rows):
+    #     row.group_name = group_map.get(row.group_id, '')
+    #     lst.append(row)
 
-    # 分组数据
-    group_rows = GroupModel.select(
-        GroupModel.id,
-        GroupModel.name,
-    ).where(
-        GroupModel.user_id == user_id
-    )
-
-    group_map = {row.id: row.name for row in group_rows}
-
-    lst = []
-    for row in list(rows):
-        row.group_name = group_map.get(row.group_id, '')
-        lst.append(row)
-
-    content = render_service.render_template('domain-export.csv', {'list': lst})
+    content = render_service.render_template('domain-export.csv', {'list': rows})
 
     filename = datetime.now().strftime("domain_%Y%m%d%H%M%S") + '.csv'
 
@@ -290,3 +292,104 @@ def export_domain_to_file(user_id):
         f.write(content)
 
     return filename
+
+
+def get_domain_inf_query(keyword, group_ids, domain_expire_days, role, user_id):
+    user_group_ids = None
+
+    if role == RoleEnum.ADMIN:
+        pass
+
+    else:
+        # 所在分组
+        group_user_rows = GroupUserModel.select().where(
+            GroupUserModel.user_id == user_id
+        )
+
+        group_user_list = list(group_user_rows)
+        user_group_ids = [row.group_id for row in group_user_list]
+
+    # 列表数据
+    query = DomainInfoModel.select()
+
+    if keyword:
+        query = query.where(
+            (DomainInfoModel.domain.contains(keyword))
+            |(DomainInfoModel.tags_raw.contains(keyword))
+        )
+
+    if group_ids:
+        query = query.where(DomainInfoModel.group_id.in_(group_ids))
+    else:
+
+        if role == RoleEnum.ADMIN:
+            pass
+
+        elif user_group_ids:
+            query = query.where(
+                (DomainInfoModel.user_id == user_id)
+                | (DomainInfoModel.group_id.in_(user_group_ids))
+            )
+        else:
+            query = query.where(DomainInfoModel.user_id == user_id)
+
+    if domain_expire_days is not None and len(domain_expire_days) == 2:
+        if domain_expire_days[0] is None:
+            query = query.where(DomainInfoModel.domain_expire_days <= domain_expire_days[1])
+        elif domain_expire_days[1] is None:
+            query = query.where(DomainInfoModel.domain_expire_days >= domain_expire_days[0])
+        else:
+            query = query.where(
+                DomainInfoModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
+
+    return query
+
+
+def get_ordering(order_prop='expire_days', order_type='ascending'):
+    ordering = []
+
+    # order by domain_expire_days
+    if order_prop == 'domain_expire_days':
+        if order_type == 'descending':
+            ordering.append(DomainInfoModel.domain_expire_days.desc())
+        else:
+            ordering.append(DomainInfoModel.domain_expire_days.asc())
+
+    # order by domain
+    elif order_prop == 'domain':
+        if order_type == 'descending':
+            ordering.append(DomainInfoModel.domain.desc())
+        else:
+            ordering.append(DomainInfoModel.domain.asc())
+
+    # order by group_id
+    elif order_prop == 'group_name':
+        if order_type == 'descending':
+            ordering.append(DomainInfoModel.group_id.desc())
+        else:
+            ordering.append(DomainInfoModel.group_id.asc())
+
+    # order by update_time
+    elif order_prop == 'update_time':
+        if order_type == 'descending':
+            ordering.append(DomainInfoModel.update_time.desc())
+        else:
+            ordering.append(DomainInfoModel.update_time.asc())
+
+    # order by is_expire_monitor
+    elif order_prop == 'is_expire_monitor':
+        if order_type == 'descending':
+            ordering.append(DomainInfoModel.is_expire_monitor.desc())
+        else:
+            ordering.append(DomainInfoModel.is_expire_monitor.asc())
+
+    # order by is_auto_update
+    elif order_prop == 'is_auto_update':
+        if order_type == 'descending':
+            ordering.append(DomainInfoModel.is_auto_update.desc())
+        else:
+            ordering.append(DomainInfoModel.is_auto_update.asc())
+
+    ordering.append(DomainInfoModel.id.desc())
+
+    return ordering

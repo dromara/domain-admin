@@ -341,7 +341,45 @@ def export_domain_info_file():
     """
     current_user_id = g.user_id
 
-    filename = domain_info_service.export_domain_to_file(current_user_id)
+    keyword = request.json.get('keyword')
+    group_ids = request.json.get('group_ids')
+    domain_expire_days = request.json.get('domain_expire_days')
+    role = request.json.get('role')
+
+    order_prop = request.json.get('order_prop') or 'domain_expire_days'
+    order_type = request.json.get('order_type') or 'ascending'
+
+    params = {
+        'keyword': keyword,
+        'group_ids': group_ids,
+        'domain_expire_days': domain_expire_days,
+        'role': role,
+        'user_id': current_user_id
+    }
+
+    # 列表数据
+    query = domain_info_service.get_domain_inf_query(**params)
+
+    ordering = domain_info_service.get_ordering(order_prop=order_prop, order_type=order_type)
+
+    rows = query.order_by(*ordering)
+
+    lst = [model_to_dict(
+        model=row,
+        extra_attrs=[
+            'domain_start_date',
+            'domain_expire_date',
+            'real_domain_expire_days',
+            'update_time_label',
+            'tags',
+            'tags_str',
+        ]
+    ) for row in rows]
+
+    # 分组名
+    group_service.load_group_name(lst)
+
+    filename = domain_info_service.export_domain_to_file(lst)
 
     return {
         'name': filename,
@@ -358,14 +396,15 @@ def get_domain_info_list():
 
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
+
     keyword = request.json.get('keyword')
     group_ids = request.json.get('group_ids')
     domain_expire_days = request.json.get('domain_expire_days')
-    order_prop = request.json.get('order_prop') or 'domain_expire_days'
-    order_type = request.json.get('order_type') or 'ascending'
     role = request.json.get('role')
 
-    user_group_ids = None
+    order_prop = request.json.get('order_prop') or 'domain_expire_days'
+    order_type = request.json.get('order_type') or 'ascending'
+
     group_user_permission_map = {}
 
     if role == RoleEnum.ADMIN:
@@ -378,93 +417,26 @@ def get_domain_info_list():
         )
 
         group_user_list = list(group_user_rows)
-        user_group_ids = [row.group_id for row in group_user_list]
         # 组员权限
         group_user_permission_map = {row.group_id: row.has_edit_permission for row in group_user_list}
 
+    params = {
+        'keyword': keyword,
+        'group_ids': group_ids,
+        'domain_expire_days': domain_expire_days,
+        'role': role,
+        'user_id': current_user_id
+    }
+
     # 列表数据
-    query = DomainInfoModel.select()
-
-    if keyword:
-        query = query.where(
-            (DomainInfoModel.domain.contains(keyword))
-            |(DomainInfoModel.tags_raw.contains(keyword))
-        )
-
-    if group_ids:
-        query = query.where(DomainInfoModel.group_id.in_(group_ids))
-    else:
-
-        if role == RoleEnum.ADMIN:
-            pass
-
-        elif user_group_ids:
-            query = query.where(
-                (DomainInfoModel.user_id == current_user_id)
-                | (DomainInfoModel.group_id.in_(user_group_ids))
-            )
-        else:
-            query = query.where(DomainInfoModel.user_id == current_user_id)
-
-    if domain_expire_days is not None and len(domain_expire_days) == 2:
-        if domain_expire_days[0] is None:
-            query = query.where(DomainInfoModel.domain_expire_days <= domain_expire_days[1])
-        elif domain_expire_days[1] is None:
-            query = query.where(DomainInfoModel.domain_expire_days >= domain_expire_days[0])
-        else:
-            query = query.where(
-                DomainInfoModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
+    query = domain_info_service.get_domain_inf_query(**params)
 
     total = query.count()
 
     lst = []
     if total > 0:
 
-        ordering = []
-
-        # order by domain_expire_days
-        if order_prop == 'domain_expire_days':
-            if order_type == 'descending':
-                ordering.append(DomainInfoModel.domain_expire_days.desc())
-            else:
-                ordering.append(DomainInfoModel.domain_expire_days.asc())
-
-        # order by domain
-        elif order_prop == 'domain':
-            if order_type == 'descending':
-                ordering.append(DomainInfoModel.domain.desc())
-            else:
-                ordering.append(DomainInfoModel.domain.asc())
-
-        # order by group_id
-        elif order_prop == 'group_name':
-            if order_type == 'descending':
-                ordering.append(DomainInfoModel.group_id.desc())
-            else:
-                ordering.append(DomainInfoModel.group_id.asc())
-
-        # order by update_time
-        elif order_prop == 'update_time':
-            if order_type == 'descending':
-                ordering.append(DomainInfoModel.update_time.desc())
-            else:
-                ordering.append(DomainInfoModel.update_time.asc())
-
-        # order by is_expire_monitor
-        elif order_prop == 'is_expire_monitor':
-            if order_type == 'descending':
-                ordering.append(DomainInfoModel.is_expire_monitor.desc())
-            else:
-                ordering.append(DomainInfoModel.is_expire_monitor.asc())
-
-        # order by is_auto_update
-        elif order_prop == 'is_auto_update':
-            if order_type == 'descending':
-                ordering.append(DomainInfoModel.is_auto_update.desc())
-            else:
-                ordering.append(DomainInfoModel.is_auto_update.asc())
-
-        ordering.append(DomainInfoModel.id.desc())
+        ordering = domain_info_service.get_ordering(order_prop=order_prop, order_type=order_type)
 
         rows = query.order_by(*ordering).paginate(page, size)
 
