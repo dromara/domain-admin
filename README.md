@@ -101,3 +101,6 @@ QQ群号:731742868
 微信扫码二维码
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/coding-big-tree.jpg" width="300">
+
+友情链接：
+- [小熊猫去水印](https://qushuiyin.guijianpan.com)
