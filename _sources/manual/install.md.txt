@@ -14,8 +14,11 @@ Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的
 运行环境：
 
 - Python >= 2.7 或者 Python >= 3.4
+- sqlite、openssl
 
-可以使用 `pyenv` + venv 管理多个Python版本和隔离虚拟环境
+python的安装，可以参考文章：[Linux环境下安装Python3](https://pengshiyu.blog.csdn.net/article/details/85304557)
+
+可以使用 `pyenv` + `venv` 管理多个Python版本和隔离虚拟环境
 
 确保已经安装Python解释器
 
