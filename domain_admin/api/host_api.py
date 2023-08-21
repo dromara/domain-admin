@@ -79,13 +79,17 @@ def get_host_list():
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
     keyword = request.json.get('keyword')
+    host = request.json.get('host')
 
     query = HostModel.select().where(
         HostModel.user_id == current_user_id
     )
 
     if keyword:
-        query.where(HostModel.host.contains(keyword))
+        query = query.where(HostModel.host.contains(keyword))
+
+    if host:
+        query = query.where(HostModel.host == host)
 
     total = query.count()
 
