@@ -196,6 +196,8 @@ def get_certificate_list():
             'domains',
             'create_time_label',
             'update_time_label',
+            'start_date',
+            'expire_date',
             'has_ssl_certificate',
             # 'domain_validation_urls'
         ],
