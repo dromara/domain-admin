@@ -160,7 +160,7 @@ def notify_all_event():
     return success
 
 
-@async_task_service.sync_task_decorator("触发通知用户")
+# @async_task_service.sync_task_decorator("触发通知用户")
 def notify_user_about_some_event(notify_row):
     """
     由于某个事件触发，通知用户
@@ -331,6 +331,7 @@ def notify_user(notify_row, rows):
         logger.warn("type not support")
 
 
+@async_task_service.sync_task_decorator("触发Webhook通知")
 def notify_user_by_webhook(
         notify_row,
         data):
@@ -362,6 +363,7 @@ def notify_user_by_webhook(
     return res.text
 
 
+@async_task_service.sync_task_decorator("触发邮件通知")
 def notify_user_by_email(
         template,
         subject,
@@ -400,6 +402,7 @@ def notify_user_by_email(
     )
 
 
+@async_task_service.sync_task_decorator("触发企业微信通知")
 def notify_user_by_work_weixin(notify_row):
     """
     发送企业微信消息
@@ -412,6 +415,7 @@ def notify_user_by_work_weixin(notify_row):
     return res
 
 
+@async_task_service.sync_task_decorator("触发钉钉通知")
 def notify_user_by_ding_talk(notify_row):
     """
     发送钉钉消息
@@ -424,6 +428,7 @@ def notify_user_by_ding_talk(notify_row):
     return res
 
 
+@async_task_service.sync_task_decorator("触发飞书通知")
 def notify_user_by_feishu(notify_row):
     """
     发送飞书消息
