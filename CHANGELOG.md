@@ -1,8 +1,6 @@
 - v1.5.17(2023-08-22)
     - fix: 定时任务OperationalError: (2006, ‘MySQL server has gone away’)
-    - 完善文档
     - 更新最新版本截图
-    - 完善文档
     - 完善文档
 
 - v1.5.16(2023-08-21)

@@ -81,10 +81,14 @@ class DomainInfoModel(BaseModel):
         if self.domain_start_time and isinstance(self.domain_start_time, datetime):
             return self.domain_start_time.strftime('%Y-%m-%d')
 
+    start_date = domain_start_date
+
     @property
     def domain_expire_date(self):
         if self.domain_expire_time and isinstance(self.domain_expire_time, datetime):
             return self.domain_expire_time.strftime('%Y-%m-%d')
+
+    expire_date = domain_expire_date
 
     @property
     def real_domain_expire_days(self):
@@ -93,6 +97,8 @@ class DomainInfoModel(BaseModel):
         :return: int
         """
         return time_util.get_diff_days(datetime.now(), self.domain_expire_time)
+
+    expire_days = real_domain_expire_days
 
     @property
     def update_time_label(self):

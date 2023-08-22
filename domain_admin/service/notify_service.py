@@ -22,8 +22,8 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import domain_service, render_service, system_service, async_task_service
-from domain_admin.utils import email_util
+from domain_admin.service import domain_service, render_service, system_service, async_task_service, group_service
+from domain_admin.utils import email_util, json_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
 
@@ -225,11 +225,17 @@ def notify_user_about_cert_expired(notify_row):
             'start_date',
             'expire_date',
             'real_time_expire_days',
+            'update_time_label',
         ]
     ) for row in rows]
 
     for row in lst:
         row['expire_days'] = row['real_time_expire_days']
+        row['comment'] = row['alias']
+        row['is_auto_update'] = row['auto_update']
+        row['is_expire_monitor'] = row['is_monitor']
+
+    group_service.load_group_name(lst)
 
     if len(lst) > 0:
         return notify_user(notify_row, lst)
@@ -279,16 +285,22 @@ def notify_user_about_domain_expired(notify_row):
     lst = [model_to_dict(
         model=row,
         extra_attrs=[
-            'domain_start_date',
-            'domain_expire_date',
-            'real_domain_expire_days',
+            'tags',
+            'start_date',
+            'expire_date',
+            'expire_days',
+            'tags_str',
+            'update_time_label',
         ]
     ) for row in rows]
 
     for row in lst:
-        row['start_date'] = row['domain_start_date']
-        row['expire_date'] = row['domain_expire_date']
-        row['expire_days'] = row['real_domain_expire_days']
+        row['start_time'] = row['domain_start_time']
+        row['expire_time'] = row['domain_expire_time']
+    #     row['start_date'] = row['domain_start_date']
+    #     row['expire_date'] = row['domain_expire_date']
+    #     row['expire_days'] = row['real_domain_expire_days']
+    group_service.load_group_name(lst)
 
     if len(lst) > 0:
         return notify_user(notify_row, lst)
@@ -301,6 +313,8 @@ def notify_user(notify_row, rows):
     :param rows: List
     :return:
     """
+    logger.debug(json_util.json_dump(rows))
+
     # 通知用户
     if notify_row.type_id == NotifyTypeEnum.Email:
         notify_config = get_notify_config(notify_row.event_id)
