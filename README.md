@@ -105,3 +105,5 @@ QQ群号:731742868
 
 友情链接：
 - [小熊猫去水印](https://qushuiyin.guijianpan.com)
+
+[![Stargazers over time](https://starchart.cc/mouday/domain-admin.svg)](https://starchart.cc/mouday/domain-admin)
