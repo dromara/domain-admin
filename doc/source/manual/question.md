@@ -137,6 +137,10 @@ www.baidu.com:8080
 
 ## 8、修改数据库链接
 
+系统默认使用sqlite数据库作为后端存储，仅支持单线程操作
+
+如果操作频繁会出现`database locked` 提示，就是数据库锁表了，可以更换后端存储为mysql，或者其他数据库
+
 通过配置`.env` 文件或者直接设置系统环境变量
 
 ```bash
@@ -151,7 +155,12 @@ DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
 # 来自群友 @〖斗魂〗繁←星 的分享
 # 如果 mysql 开启了 ssl，mysql 连接字符串应该写成
 DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain?ssl_verify_cert=true
+
+# postgresql
+DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
 ```
+
+说明：以上配置示例，需要提前创建名为`data_domain` 的数据库，也可以自定义其他名称的数据库
 
 更多mysql的设置可参考：[https://pymysql.readthedocs.io/en/latest/modules/connections.html](https://pymysql.readthedocs.io/en/latest/modules/connections.html)
 

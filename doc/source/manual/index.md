@@ -37,20 +37,6 @@
 
 ## 使用说明
 
-1、批量导入域名
+批量导入域名
 
-导入文本示例: [/docs/domain.txt](/tests/domain.txt)
-
-2、设置系统发送邮件的账号密码
-
-> 如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
-
-3、设置邮件通知
-
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png)
-
-4、其他通知方式
-
-- webhook通知：[推送到微信的webhook第三方工具](https://blog.csdn.net/mouday/article/details/124135877)
+导入文本示例: [/tests/domain.txt](https://raw.githubusercontent.com/mouday/domain-admin/master/tests/domain.txt)
