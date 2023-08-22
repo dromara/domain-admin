@@ -26,6 +26,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
     - 通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式
     - 支持平台：macOS、Linux、Windows
     - 辅助功能：Let’s Encrypt SSL证书申请和自动续期
+    - 多语言：支持中文、英文
 
 - 项目地址：
     - 后端代码（github）： [https://github.com/mouday/domain-admin](https://github.com/mouday/domain-admin)
