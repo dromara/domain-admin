@@ -74,55 +74,6 @@ sqlite> .quit
 
 可尝试更换端口25或465
 
-## 6、webhook模板
-
-采用`jinja2` 模板引擎
-
-传入模板的参数示例：
-
-```json
-{
-    "list":[
-        {
-            "domain": "www.demo.com",
-            "start_date": "2023-06-01",
-            "expire_date": "2023-06-21",
-            "expire_days": 20
-        }
-    ]
-}
-```
-
-参数说明
-
-| 参数  | 类型  | 说明 |
-| -| - | - |
-| domain | string | 域名/证书域名
-| start_date | string | 生效时间
-| expire_date | string | 过期时间
-| expire_days | int | 剩余天数
-
-
-示例
-
-```json
-{
-  "title": "域名到期提醒",
-  "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
-}
-```
-
-渲染结果
-
-```json
-{
-  "title": "域名到期提醒",
-  "content": "www.demo.com 2023-06-01 - 2023-06-21 (20)"
-}
-```
-
-可以参考接口文档：[更新用户通知配置](doc/source/api/notify/updateNotifyOfUser.md)
-
 ## 7、监控域名非443的端口
 
 域名格式

@@ -60,6 +60,135 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 
 [对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/mouday/domain-admin/issues/47)
 
+### webhook模板和参数
+
+采用`jinja2` 模板引擎
+
+传入模板的参数示例：
+
+```json
+{
+    "list":[
+        {
+            "domain": "www.demo.com",
+            "start_date": "2023-06-01",
+            "expire_date": "2023-06-21",
+            "expire_days": 20
+        }
+    ]
+}
+```
+
+参数说明
+
+| 参数  | 类型  | 说明 |
+| -| - | - |
+| domain | string | 域名/证书域名
+| start_date | string | 生效时间
+| expire_date | string | 过期时间
+| expire_days | int | 剩余天数
+
+
+示例
+
+```json
+{
+  "title": "域名到期提醒",
+  "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+}
+```
+
+渲染结果
+
+```json
+{
+  "title": "域名到期提醒",
+  "content": "www.demo.com 2023-06-01 - 2023-06-21 (20)"
+}
+```
+
+不同的事件参数稍有不同，会有其独特的参数
+
+1、域名到期
+
+```json
+{
+    "list": [
+      {
+        "id": 9,
+        "user_id": 1,
+        
+        "domain": "www.baidu.com",
+
+        "group_id": 9,
+        "group_name": "百度系",
+
+        "comment": "备注",
+        
+        "start_time": "2010-08-28 04:11:35",
+        "expire_time": "2023-08-28 04:11:35",
+        "start_date": "2010-08-28",
+        "expire_date": "2023-08-28",
+        "expire_days": 5,
+
+        "domain_registrar": "厦门易名科技股份有限公司",
+        "domain_registrar_url": "https://www.ename.net/",
+        "icp_company": "北京百度网讯科技有限公司",
+        "icp_licence": "京ICP证030173号-1",
+
+        "tags": [
+          "企业服务",
+          "汽车服务"
+        ],
+        "tags_str": "企业服务、汽车服务",
+        
+        "is_auto_update": true,
+        "is_expire_monitor": true,
+
+        "create_time": "2023-07-20 22:59:20",
+        "update_time": "2023-08-22 16:01:13",
+        "update_time_label": "13分钟前"
+      }
+    ]
+}
+```
+
+2、SSL证书到期
+
+```json
+{
+    "list": [
+      {
+        "id": 3,
+        "user_id": 1,
+
+        "domain": "www.baidu.com",
+        "root_domain": "baidu.com",
+        "port": 443,
+
+        "group_id": 4,
+        "group_name": "百度系",
+        
+        "comment": "备注字段",
+
+        "start_time": "2023-07-06 09:51:06",
+        "expire_time": "2024-08-06 09:51:05",
+        "start_date": "2023-07-06",
+        "expire_date": "2024-08-06",
+        "expire_days": 349,
+
+        "is_auto_update": true,
+        "is_expire_monitor": true,
+        "is_dynamic_host": false,
+
+        "create_time": "2023-08-22 16:28:19",
+        "update_time": "2023-08-22 16:28:19",
+        "update_time_label": "刚刚"
+        }
+    ]
+}
+```
+
 ## 企业微信
 
 ```json
