@@ -178,6 +178,13 @@ Press CTRL+C to quit
 
 访问地址：[http://127.0.0.1:8000](http://127.0.0.1:8000)
 
+## 方式四：1Panel面板安装
+
+1Panel是一个Linux 服务器运维管理面板，Domain-Admin已发布到它的应用商店，可以直接安装
+
+安装地址：
+
+[https://apps.fit2cloud.com/1panel/domain-admin](https://apps.fit2cloud.com/1panel/domain-admin)
 
 ## 其他部署方式
 
