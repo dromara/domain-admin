@@ -10,6 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.log import logger
+from domain_admin.model.base_model import db
 from domain_admin.model.log_scheduler_model import LogSchedulerModel
 from domain_admin.service import system_service, domain_service, domain_info_service, notify_service, \
     issue_certificate_service
@@ -119,6 +120,9 @@ def update_job(cron_exp):
     )
 
 
+# fix: OperationalError: (2006, ‘MySQL server has gone away’)
+# see: http://docs.peewee-orm.com/en/latest/peewee/database.html#context-managers
+@db.connection_context()
 def run_task():
     """
     定时任务
