@@ -6,7 +6,13 @@
 
 第一步：需要在 `系统管理/系统设置/邮箱设置` 中设置好系统发件邮件
 
+> 如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png)
+
 第二步：填写收件人列表
+
+![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png)
 
 需要填写json格式的数据，例如：
 
