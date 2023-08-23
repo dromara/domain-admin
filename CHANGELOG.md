@@ -1,3 +1,8 @@
+- v1.5.18(2023-08-23)
+    - 完善文档
+    - 更新文档
+    - 优化 增加webhook模板参数
+
 - v1.5.17(2023-08-22)
     - fix: 定时任务OperationalError: (2006, ‘MySQL server has gone away’)
     - 更新最新版本截图
