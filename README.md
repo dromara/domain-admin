@@ -85,6 +85,11 @@ QQ群号:731742868
 
 [CHANGELOG.md](https://domain-admin.readthedocs.io/zh_CN/latest/manual/changelog.html)
 
+
+## 赞助商
+
+虚位以待
+
 ## Domain Cloud 众筹
 
 由于本项目需要使用者自行安装，对于使用有一定的技术门槛，所以发起一个众筹
