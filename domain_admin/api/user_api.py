@@ -26,10 +26,13 @@ def get_user_info():
 
     row = UserModel.get_by_id(current_user_id)
 
-    return model_to_dict(
+    data = model_to_dict(
         model=row,
+        extra_attrs=['is_default_password'],
         exclude=[UserModel.password],
     )
+
+    return data
 
 
 def update_user_info():

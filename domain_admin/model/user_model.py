@@ -4,7 +4,7 @@ from datetime import datetime
 
 from peewee import CharField, DateTimeField, BooleanField, AutoField, IntegerField
 
-from domain_admin.config import ADMIN_USERNAME, ADMIN_PASSWORD
+from domain_admin.config import ADMIN_USERNAME, ADMIN_PASSWORD, DEFAULT_ADMIN_PASSWORD, DEFAULT_ADMIN_USERNAME
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import bcrypt_util
@@ -37,6 +37,17 @@ class UserModel(BaseModel):
 
     class Meta:
         table_name = 'tb_user'
+
+    @property
+    def is_default_password(self):
+        """
+        管理员是否使用系统给定的默认密码
+        :return:
+        """
+        if self.username != DEFAULT_ADMIN_USERNAME:
+            return False
+        else:
+            return bcrypt_util.check_password(DEFAULT_ADMIN_PASSWORD, self.password)
 
 
 def init_table_data():
