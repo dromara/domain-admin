@@ -74,6 +74,19 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 }
 ```
 
+自定义通知模板示例
+
+```json
+{
+    "touser": "UserName",
+    "msgtype": "text",
+    "agentid": 1000001,
+    "text": {
+        "content": "SSL证书到期提醒：\n{% for row in list %}{{row.domain}} {{row.group_name or '-'}} ({{row.expire_days}}){% endfor %}"
+    }
+}
+```
+
 参考：[https://developer.work.weixin.qq.com/document/path/90236](https://developer.work.weixin.qq.com/document/path/90236)
 
 ## 钉钉
