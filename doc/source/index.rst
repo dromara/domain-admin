@@ -8,6 +8,7 @@
    manual/index.md
    manual/install.md
    manual/notify.md
+   manual/ssl-cert.md
    manual/question.md
    manual/plugins.md
    manual/plan.md
