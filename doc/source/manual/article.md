@@ -20,6 +20,8 @@
 - 2023-07-21 IT仔的笔记本 [一套属于自己的域名、证书管理系统，只需要1分钟就能上手，(收藏起来，会用到的)](https://mp.weixin.qq.com/s/rYpWBgZgizqDWOaPq2g1_g)
 - 2023-07-27 DevOps运维民工 [推荐一款开源的域名和SSL证书监测平台](https://mp.weixin.qq.com/s/LlaD7KUogwdfQMs_v7QgPg)
 - 2023-07-29 云原生运维技术 [运维百宝箱-https证书的过期巡检监控](https://mp.weixin.qq.com/s/iL5AHjw1gZ5_vnWsI8OfNA)
+- 2023-08-21 PHP学习网 [【开源推荐】基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台](https://mp.weixin.qq.com/s/7qvYTALe5uIlkD3jEgQ1Kw)
+- 2023-08-30 运维开发故事 [基于Python + Vue3.js 技术栈实现的域名和SSL证书监测平台](https://mp.weixin.qq.com/s/cOOJN6eUSqP0wmt8-3sOJw)
 
 ## 参考文章
 
