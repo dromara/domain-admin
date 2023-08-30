@@ -4,12 +4,13 @@
 @Date    : 2023-07-23
 """
 from flask import g, request
-from playhouse.shortcuts import model_to_dict
+from playhouse.shortcuts import model_to_dict, chunked
 
+from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
 from domain_admin.service import issue_certificate_service
-from domain_admin.utils import ip_util
+from domain_admin.utils import ip_util, domain_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -46,6 +47,23 @@ def verify_certificate():
     issue_certificate_service.verify_certificate(issue_certificate_id, challenge_type)
 
     issue_certificate_service.renew_certificate(issue_certificate_id)
+
+    # 验证成功后，自动添加到证书监控列表
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
+    lst = [
+        {
+            'domain': domain,
+            'root_domain': domain_util.get_root_domain(domain),
+            'port': 443,
+            'alias': '',
+            'user_id': current_user_id,
+            'group_id': 0,
+        } for domain in issue_certificate_row.domains
+    ]
+
+    for batch in chunked(lst, 500):
+        DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
 
 def get_certificate_challenges():
