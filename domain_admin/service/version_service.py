@@ -23,7 +23,11 @@ from domain_admin.migrate import (
     migrate_1413_to_1414,
     migrate_1422_to_1423,
     migrate_151_to_152,
-    migrate_154_to_155, migrate_158_to_159, migrate_1512_to_1513)
+    migrate_154_to_155,
+    migrate_158_to_159,
+    migrate_1512_to_1513,
+    migrate_1520_to_1521
+)
 from domain_admin.model.version_model import VersionModel
 from domain_admin.version import VERSION
 
@@ -313,3 +317,21 @@ def execute_migrate(local_version):
         migrate_1512_to_1513.execute_migrate()
 
         local_version = VersionEnum.Version_1513
+
+    # 2023-08-30
+    if local_version in [
+        VersionEnum.Version_1513,
+        VersionEnum.Version_1514,
+        VersionEnum.Version_1515,
+        VersionEnum.Version_1516,
+        VersionEnum.Version_1517,
+        VersionEnum.Version_1518,
+        VersionEnum.Version_1519,
+        VersionEnum.Version_1520,
+    ]:
+        # 1.5.20 => 1.5.21
+        logger.info('update version: %s => %s', local_version, VersionEnum.Version_1521)
+
+        migrate_1520_to_1521.execute_migrate()
+
+        local_version = VersionEnum.Version_1521

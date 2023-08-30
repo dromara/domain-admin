@@ -130,3 +130,12 @@ class VersionEnum(object):
     Version_1511 = '1.5.11'
     Version_1512 = '1.5.12'
     Version_1513 = '1.5.13'
+
+    Version_1514 = '1.5.14'
+    Version_1515 = '1.5.15'
+    Version_1516 = '1.5.16'
+    Version_1517 = '1.5.17'
+    Version_1518 = '1.5.18'
+    Version_1519 = '1.5.19'
+    Version_1520 = '1.5.20'
+    Version_1521 = '1.5.21'

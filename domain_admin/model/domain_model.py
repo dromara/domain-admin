@@ -71,7 +71,7 @@ class DomainModel(BaseModel):
 
         indexes = (
             # 唯一索引
-            (('user_id', 'domain'), True),  # Note the trailing comma!
+            (('user_id', 'domain', 'port'), True),  # Note the trailing comma!
         )
 
     @property
