@@ -686,7 +686,7 @@ museum whois.museum
 music whois.nic.music
 mw whois.nic.mw
 mx whois.nic.mx
-my whois.mynic.net.my
+my whois.mynic.my
 mz whois.nic.mz
 na whois.na-nic.com.na
 nab whois.nic.nab

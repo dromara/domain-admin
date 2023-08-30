@@ -4,6 +4,7 @@
 @Date    : 2023-03-25
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
 # 根服务器地址
 ROOT_SERVER = 'whois.iana.org'
 
@@ -81,7 +82,14 @@ CUSTOM_WHOIS_CONFIGS = {
     'im': {
         'expire_time': 'Expiry Date',
         'expire_time_format': '%d/%m/%Y %H:%M:%S',
-    }
+    },
+    'kr': {
+        'whois_server': 'whois.kr',
+        'registry_time': 'Registered Date',
+        "registry_time_format": '%Y. %m. %d.',
+        'expire_time': 'Expiration Date',
+        "expire_time_format": '%Y. %m. %d.',
+    },
 }
 
 # 国内cn域名注册商
