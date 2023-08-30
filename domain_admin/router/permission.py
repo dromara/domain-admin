@@ -10,7 +10,8 @@ from domain_admin.utils.flask_ext.app_exception import UnauthorizedAppException,
 # 白名单
 WHITE_LIST = [
     '/api/login',
-    '/api/register',
+    # 暂时不开放注册，安全起见先关闭
+    # '/api/register',
     '/api/getSystemVersion',
 ]
 
