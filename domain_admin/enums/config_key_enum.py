@@ -5,6 +5,7 @@
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+
 class ConfigKeyEnum(object):
     """
     系统配置key键名常量

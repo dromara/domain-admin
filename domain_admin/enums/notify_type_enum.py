@@ -6,6 +6,7 @@
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+
 class NotifyTypeEnum(object):
     """
     通知方式枚举值
