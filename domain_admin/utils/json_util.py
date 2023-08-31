@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 import json
 from datetime import datetime
-
+from domain_admin.compat import Iterator
 from acme.messages import ChallengeBody
 from peewee import ModelSelect, Model
 from playhouse.shortcuts import model_to_dict
@@ -26,6 +26,9 @@ def default_json_encoder(o):
 
     if isinstance(o, Model):
         return model_to_dict(o)
+
+    if isinstance(o, Iterator):
+        return list(o)
 
     if isinstance(o, datetime):
         return o.strftime(DATETIME_FORMAT)

@@ -20,25 +20,26 @@ class FlaskApp(Flask):
     扩展Flask
     """
     # Flask <=2.0.0
-    json_encoder = JSONEncoder
+    # json_encoder = JSONEncoder
 
     # Flask > 2.0.0
-    json_provider_class = JSONProvider
+    # json_provider_class = JSONProvider
 
     request_class = Request
 
+    # 需要转为json的类型
+    json_data_class = (
+        ModelSelect,
+        Model,
+        Iterator,
+        list,
+        dict,
+        six.integer_types,
+        six.text_type
+    )
+
     def make_response(self, rv):
-
-        if isinstance(rv, ModelSelect):
-            rv = list(rv.dicts())
-
-        if isinstance(rv, Model):
-            rv = model_to_dict(rv)
-
-        if isinstance(rv, Iterator):
-            rv = list(rv)
-
-        if isinstance(rv, (list, dict, six.integer_types, six.text_type)) or rv is None:
+        if isinstance(rv, self.json_data_class) or rv is None:
             rv = ApiResult.success(rv)
 
         if isinstance(rv, ApiResult):
