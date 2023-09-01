@@ -28,24 +28,13 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
     - 辅助功能：Let’s Encrypt SSL证书申请和自动续期
     - 多语言：支持中文、英文
 
-- 项目地址：
-    - 后端代码（github）： [https://github.com/mouday/domain-admin](https://github.com/mouday/domain-admin)
-    - 后端代码（国内镜像）：[https://gitee.com/mouday/domain-admin](https://gitee.com/mouday/domain-admin)
-    - 前端代码：[https://github.com/mouday/domain-admin-web](https://github.com/mouday/domain-admin-web)
-    - H5端代码：[https://github.com/mouday/domain-admin-mini](https://github.com/mouday/domain-admin-mini)
+- 项目地址：[后端代码（github）](https://github.com/mouday/domain-admin)、[后端代码（国内镜像）](https://gitee.com/mouday/domain-admin)、[前端代码](https://github.com/mouday/domain-admin-web)、[H5端代码](https://github.com/mouday/domain-admin-mini)
 
-- 发布渠道：
-    - pypi：[https://pypi.org/project/domain-admin](https://pypi.org/project/domain-admin)
-    - docker：[https://hub.docker.com/r/mouday/domain-admin](https://hub.docker.com/r/mouday/domain-admin)
-    - releases：[https://github.com/mouday/domain-admin/releases](https://github.com/mouday/domain-admin/releases)
-    - 1Panel：[https://apps.fit2cloud.com/1panel/domain-admin](https://apps.fit2cloud.com/1panel/domain-admin)
+- 发布渠道：[PyPI](https://pypi.org/project/domain-admin)、[Docker](https://hub.docker.com/r/mouday/domain-admin)、[Releases](https://github.com/mouday/domain-admin/releases)、[1Panel](https://apps.fit2cloud.com/1panel/domain-admin)
 
-- 使用文档：
-    - readthedocs: [https://domain-admin.readthedocs.io](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
+- 使用文档：[readthedocs](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
 
-- 接口文档：
-    - github: [https://mouday.github.io/domain-admin/](https://mouday.github.io/domain-admin/)
-    - gitee: [https://mouday.gitee.io/domain-admin/](https://mouday.gitee.io/domain-admin/)
+- 接口文档：[github](https://mouday.github.io/domain-admin/)、[gitee](https://mouday.gitee.io/domain-admin/)
 
 ## 安装
 
