@@ -81,6 +81,10 @@ QQ群号:731742868
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
 
+微信交流群
+
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/wechat-group.jpg" width="300">
+
 ## 更新日志
 
 [CHANGELOG.md](https://domain-admin.readthedocs.io/zh_CN/latest/manual/changelog.html)
