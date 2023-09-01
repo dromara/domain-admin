@@ -2,7 +2,7 @@
 
 > 备注：如果点击`测试` 无法接收到消息，可尝试给`剩余天数` 设置一个比较大的值大
 
-## 邮件
+## 1、邮件
 
 第一步：需要在 `系统管理/系统设置/邮箱设置` 中设置好系统发件邮件
 
@@ -23,15 +23,15 @@
 ]
 ``` 
 
-## WebHook
+## 2、WebHook
 
-### webhook发送微信消息
+### 2.1、webhook发送微信消息
 
 可以使用的微信推送平台有很多，可以参考
 
 [微信推送消息通知接口汇总](https://pengshiyu.blog.csdn.net/article/details/124135877)
 
-### webhook发送钉钉消息
+### 2.2、webhook发送钉钉消息
 
 获取请求地址
 
@@ -61,7 +61,7 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 [对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/mouday/domain-admin/issues/47)
 
 
-### webhook发送Resend邮件
+### 2.3、webhook发送Resend邮件
 
 Resend 是一个为开发者提供的email 接口
 
@@ -87,7 +87,7 @@ Resend 是一个为开发者提供的email 接口
 }
 ```
 
-请求体
+- 请求体
 
 ```json
  {
@@ -98,7 +98,34 @@ Resend 是一个为开发者提供的email 接口
 }
 ```
 
-## 企业微信
+### 2.4、webhook配置showdoc
+
+showdoc是一个从服务器推送消息到手机的工具，可以通过api接口推送到微信服务号消息
+
+注册地址：[https://push.showdoc.com.cn/](https://push.showdoc.com.cn/)
+
+- 请求方法: POST
+
+- 请求地址: 
+```bash
+https://push.showdoc.com.cn/server/api/push/<API Key>
+```
+
+- 请求头
+```json
+{
+    "Content-Type": "application/json"
+}
+```
+- 请求体
+```json
+{
+  "title": "域名到期提醒",
+  "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+}
+```
+
+## 3、企业微信
 
 ```json
 {
@@ -126,7 +153,7 @@ Resend 是一个为开发者提供的email 接口
 
 参考：[https://developer.work.weixin.qq.com/document/path/90236](https://developer.work.weixin.qq.com/document/path/90236)
 
-## 钉钉
+## 4、钉钉
 
 ```json
 {
@@ -143,7 +170,7 @@ Resend 是一个为开发者提供的email 接口
 
 参考文档：[https://open.dingtalk.com/document/orgapp/asynchronous-sending-of-enterprise-session-messages](https://open.dingtalk.com/document/orgapp/asynchronous-sending-of-enterprise-session-messages)
 
-## 飞书
+## 5、飞书
 
 ```json
 {
@@ -156,11 +183,13 @@ Resend 是一个为开发者提供的email 接口
 参考文档：[https://open.feishu.cn/document/server-docs/im-v1/message/create](https://open.feishu.cn/document/server-docs/im-v1/message/create)
 
 
-## 模板和参数
+## 6、模板和参数
 
 采用`jinja2` 模板引擎
 
 WebHook、企业微信、飞书、钉钉均支持自定义通知模板
+
+### 6.1、通用示例
 
 传入模板的参数示例：
 
@@ -208,7 +237,7 @@ WebHook、企业微信、飞书、钉钉均支持自定义通知模板
 
 不同的事件参数稍有不同，会有其独特的参数
 
-1、域名到期
+### 6.2、域名到期
 
 ```json
 {
@@ -252,7 +281,7 @@ WebHook、企业微信、飞书、钉钉均支持自定义通知模板
 }
 ```
 
-2、SSL证书到期
+### 6.3、SSL证书到期
 
 ```json
 {
