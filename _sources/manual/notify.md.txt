@@ -61,6 +61,43 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 [对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/mouday/domain-admin/issues/47)
 
 
+### webhook发送Resend邮件
+
+Resend 是一个为开发者提供的email 接口
+
+工作原理：通过api接口使用HTTP协议发送邮件到Resend服务器，再通过Resend服务器使用SMTP协议发送邮件到目标邮箱
+
+步骤：
+
+1、注册账号:[https://resend.com/](https://resend.com/)
+
+2、获取API Key
+
+3、配置webhook
+
+- 请求方法: POST
+
+- 请求地址: https://api.resend.com/emails
+
+- 请求头
+```json
+{
+    "Authorization": "Bearer <API Key>",
+    "Content-Type": "application/json"
+}
+```
+
+请求体
+
+```json
+ {
+    "from": "onboarding@resend.dev",
+    "to": "123456@qq.com",
+    "subject": "Hello World",
+    "html": "<p><strong>证书到期提醒</strong></p>"
+}
+```
+
 ## 企业微信
 
 ```json
