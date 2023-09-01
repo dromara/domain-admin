@@ -107,17 +107,21 @@ showdoc是一个从服务器推送消息到手机的工具，可以通过api接�
 - 请求方法: POST
 
 - 请求地址: 
+
 ```bash
 https://push.showdoc.com.cn/server/api/push/<API Key>
 ```
 
 - 请求头
+
 ```json
 {
     "Content-Type": "application/json"
 }
 ```
+
 - 请求体
+
 ```json
 {
   "title": "域名到期提醒",

@@ -188,30 +188,30 @@
 <h3>2.4、webhook配置showdoc<a class="headerlink" href="#webhookshowdoc" title="此标题的永久链接"></a></h3>
 <p>showdoc是一个从服务器推送消息到手机的工具，可以通过api接口推送到微信服务号消息</p>
 <p>注册地址：<a class="reference external" href="https://push.showdoc.com.cn/">https://push.showdoc.com.cn/</a></p>
-<ul>
+<ul class="simple">
 <li><p>请求方法: POST</p></li>
-<li><p>请求地址:</p>
+<li><p>请求地址:</p></li>
+</ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>https://push.showdoc.com.cn/server/api/push/&lt;API<span class="w"> </span>Key&gt;
 </pre></div>
 </div>
-</li>
-<li><p>请求头</p>
+<ul class="simple">
+<li><p>请求头</p></li>
+</ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span>
+<span class="w">    </span><span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</li>
-<li><p>请求体
-.. code-block:: json</p>
-<blockquote>
-<div><p>{
-“title”: “域名到期提醒”,
-“content”: “{% for row in list %}{{row.domain}} {{row.start_date or ‘-’ }} - {{row.expire_date or ‘-’ }} ({{row.expire_days}}){% endfor %}”
-}</p>
-</div></blockquote>
-</li>
+<ul class="simple">
+<li><p>请求体</p></li>
 </ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;域名到期提醒&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{% for row in list %}{{row.domain}} {{row.start_date or &#39;-&#39; }} - {{row.expire_date or &#39;-&#39; }} ({{row.expire_days}}){% endfor %}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="id7">
