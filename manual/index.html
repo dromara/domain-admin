@@ -50,9 +50,11 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">用户手册</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">项目简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">使用说明</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">1、快速导入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">2、完整导入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">使用说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1、快速导入</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2、完整导入</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">安装方式</a></li>
@@ -141,11 +143,27 @@
 <section id="id3">
 <h2>使用说明<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>批量导入域名</p>
-</section>
 <section id="id4">
-<h2>1、快速导入<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<h3>1、快速导入<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
 <p>以<code class="docutils literal notranslate"><span class="pre">.txt</span></code>结尾的文件，视为快速导入文件</p>
-<p>示例：domain.txt</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>支持字段</th>
+<th>必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>域名</td>
+<td>是</td>
+</tr>
+<tr>
+<td>端口</td>
+<td>否，默认：443</td>
+</tr>
+</tbody>
+</table><p>示例：domain.txt</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>www.baidu.com
 www.zhihu.com:443
 </pre></div>
@@ -153,16 +171,43 @@ www.zhihu.com:443
 <p>默认端口是443，如果是非443端口可以用<code class="docutils literal notranslate"><span class="pre">:</span></code>冒号分隔域名和端口号</p>
 </section>
 <section id="id5">
-<h2>2、完整导入<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<h3>2、完整导入<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
 <p>以<code class="docutils literal notranslate"><span class="pre">.csv</span></code>结尾的文件，视为完整导入文件</p>
-<p>示例：domain.csv</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>域名,端口,证书颁发时间,证书过期时间,证书天数,分组,备注
-www.zhihu.com,,,,,问答,知乎
-www.baidu.com,443,,,,-,-
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>支持字段</th>
+<th>必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>域名</td>
+<td>是</td>
+</tr>
+<tr>
+<td>端口</td>
+<td>否，默认：443</td>
+</tr>
+<tr>
+<td>分组</td>
+<td>否</td>
+</tr>
+<tr>
+<td>备注</td>
+<td>否</td>
+</tr>
+</tbody>
+</table><p>示例：domain.csv</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>域名,端口,分组,备注
+www.zhihu.com,,问答,知乎
+www.baidu.com,443,,
 </pre></div>
 </div>
+<p>备注：逗号不能省略，字段顺序可以改变，多余的字段会被忽略</p>
 <p>首次导入数据后，后台会更新证书信息，此时不要频繁操作，否则会出现锁表错误。</p>
 <p>稍等一会，刷新页面，就能看到完整的证书信息了。</p>
+</section>
 </section>
 </section>
 
