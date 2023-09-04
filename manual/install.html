@@ -56,6 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#panel">方式四：1Panel面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">其他部署方式</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">平滑升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">可选配置</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notify.html">通知配置</a></li>
@@ -260,6 +261,22 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 <p>Domain Admin所有版本都支持平滑升级</p>
 <p>安装最新版，重启即可</p>
 <p>如果是docker安装的，注意<code class="docutils literal notranslate"><span class="pre">database</span></code> 目录是不是手动挂载的，不要删除</p>
+</section>
+<section id="id5">
+<h2>可选配置<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>通过配置<code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件或者直接设置系统环境变量</p>
+<p>1、修改数据库存储方式</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># sqlite 默认 （少量用户推荐）</span>
+<span class="nv">DB_CONNECT_URL</span><span class="o">=</span>sqlite:///database/database.db
+
+<span class="c1"># mysql （团队使用推荐）</span>
+<span class="nv">DB_CONNECT_URL</span><span class="o">=</span>mysql://root:123456@127.0.0.1:3306/data_domain
+
+<span class="c1"># postgresql</span>
+<span class="nv">DB_CONNECT_URL</span><span class="o">=</span>postgresql://root:123456@localhost:5432/data_domain
+</pre></div>
+</div>
+<p>说明：以上配置仅为示例，根据自己实际情况修改</p>
 </section>
 </section>
 

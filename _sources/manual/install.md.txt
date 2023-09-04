@@ -197,3 +197,22 @@ Domain Admin所有版本都支持平滑升级
 安装最新版，重启即可
 
 如果是docker安装的，注意`database` 目录是不是手动挂载的，不要删除
+
+## 可选配置
+
+通过配置`.env` 文件或者直接设置系统环境变量
+
+1、修改数据库存储方式
+
+```bash
+# sqlite 默认 （少量用户推荐）
+DB_CONNECT_URL=sqlite:///database/database.db
+
+# mysql （团队使用推荐）
+DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
+
+# postgresql
+DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
+```
+
+说明：以上配置仅为示例，根据自己实际情况修改
