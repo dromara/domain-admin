@@ -40,13 +40,9 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 请参考安装文档：[https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html](https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html)
 
-如果不想安装，可以直接使用我们部署好的应用，
-
-地址：http://123.249.114.43/
+如果不想安装，可以直接使用我们部署好的应用，需要体验的用户可以加入QQ群，提供邮箱即可
 
 > 服务器由群友 @Panda 赞助提供，服务器到期后不一定会续费
-
-需要体验的用户可以加入QQ群，提供邮箱即可
 
 ## 项目截图
 
