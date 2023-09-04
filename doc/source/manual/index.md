@@ -39,4 +39,31 @@
 
 批量导入域名
 
-导入文本示例: [/tests/domain.txt](https://raw.githubusercontent.com/mouday/domain-admin/master/tests/domain.txt)
+## 1、快速导入
+
+以`.txt`结尾的文件，视为快速导入文件 
+
+示例：domain.txt
+
+```bash
+www.baidu.com
+www.zhihu.com:443
+```
+
+默认端口是443，如果是非443端口可以用`:`冒号分隔域名和端口号
+
+## 2、完整导入
+
+以`.csv`结尾的文件，视为完整导入文件
+
+示例：domain.csv
+
+```bash
+域名,端口,证书颁发时间,证书过期时间,证书天数,分组,备注
+www.zhihu.com,,,,,问答,知乎
+www.baidu.com,443,,,,-,-
+```
+
+首次导入数据后，后台会更新证书信息，此时不要频繁操作，否则会出现锁表错误。
+
+稍等一会，刷新页面，就能看到完整的证书信息了。
