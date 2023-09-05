@@ -15,6 +15,13 @@ from fabric import Connection
 from paramiko import RSAKey
 
 from domain_admin.log import logger
+from domain_admin.utils.flask_ext.app_exception import AppException
+
+# 命令白名单
+allow_commands = [
+    # 重启nginx
+    'service nginx force-reload'
+]
 
 
 def deploy_file(host, user, password, content, remote):
@@ -47,6 +54,9 @@ def run_command(host, user, password, command):
     :return:
     """
     logger.info(command)
+
+    if command not in allow_commands:
+        raise AppException("命令不被允许，请联系管理员")
 
     with Connection(
             host=host,
@@ -87,6 +97,9 @@ def run_command_by_key(host, user, private_key, command):
     :return:
     """
     logger.info(command)
+
+    if command not in allow_commands:
+        raise AppException("命令不被允许，请联系管理员")
 
     with Connection(
             host=host,
