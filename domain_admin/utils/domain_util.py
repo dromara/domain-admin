@@ -30,6 +30,8 @@ class ParsedDomain(object):
     port = 0
     # str
     alias = ''
+    # 标签 list
+    tags = None
 
 
 def parse_domain(domain):
@@ -77,14 +79,20 @@ def parse_domain_from_csv_file(filename):
             # SSL端口
             port = item.get('端口') or port or cert_consts.SSL_DEFAULT_PORT
 
+            # 标签
+            tags = item.get('标签') or None
+            if tags:
+                tags = [tag.strip() for tag in tags.split("、") if tag and tag.strip() and tag.strip() != '-']
+
             if domain:
                 item = ParsedDomain()
 
-                item.domain=domain
-                item.root_domain=get_root_domain(domain)
-                item.port=int(port)
-                item.alias=alias
-                item.group_name=group_name
+                item.domain = domain
+                item.root_domain = get_root_domain(domain)
+                item.port = int(port)
+                item.alias = alias
+                item.group_name = group_name
+                item.tags = tags
 
                 yield item
 

@@ -5,6 +5,7 @@ domain_info_service.py
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 import io
+import json
 import time
 import traceback
 from datetime import datetime, timedelta
@@ -246,6 +247,7 @@ def add_domain_from_file(filename, user_id):
             'comment': item.alias,
             'user_id': user_id,
             'group_id': group_map.get(item.group_name, 0),
+            'tags_raw': json.dumps(item.tags, ensure_ascii=False)
         } for item in lst if item.root_domain
     ]
 
