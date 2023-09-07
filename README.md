@@ -108,7 +108,14 @@ QQ群号:731742868
 
 <img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/coding-big-tree.jpg" width="300">
 
-友情链接：
+
+## 鸣谢
+
+- [code-inspector](https://github.com/zh-lx/code-inspector): 点击页面上的元素自动定位到代码
+
+## 友情链接：
+
 - [小熊猫去水印](https://qushuiyin.guijianpan.com)
+
 
 [![Stargazers over time](https://starchart.cc/mouday/domain-admin.svg)](https://starchart.cc/mouday/domain-admin)
