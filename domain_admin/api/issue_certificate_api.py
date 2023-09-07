@@ -10,7 +10,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
 from domain_admin.service import issue_certificate_service
-from domain_admin.utils import ip_util, domain_util
+from domain_admin.utils import ip_util, domain_util, fabric_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -300,3 +300,11 @@ def renew_issue_certificate_by_id():
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
     issue_certificate_service.renew_certificate_row(issue_certificate_row)
+
+
+def get_allow_commands():
+    """
+    命令白名单
+    :return:
+    """
+    return fabric_util.allow_commands

@@ -168,6 +168,7 @@ routes = {
     '/api/getCertificateChallenges': issue_certificate_api.get_certificate_challenges,
     '/api/deleteCertificateById': issue_certificate_api.delete_certificate_by_id,
     '/api/deleteCertificateByBatch': issue_certificate_api.delete_certificate_by_batch,
+    '/api/getAllowCommands': issue_certificate_api.get_allow_commands,
 
     # 主机管理
     '/api/addHost': host_api.add_host,
