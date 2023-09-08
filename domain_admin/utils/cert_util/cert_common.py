@@ -14,6 +14,113 @@ from dateutil import parser
 from domain_admin.utils import time_util
 from domain_admin.utils.cert_util import cert_consts
 
+# 证书品牌
+cert_brands = [
+    'JoySSL',
+    'Sectigo',
+    'Positive',
+    'CFCA',
+    'Certum',
+    'GlobalSign',
+    'TrustAsia',
+    'WoTrus',
+    'vTrus',
+    'BaiduTrust',
+    'DigiCert',
+    'Symantec',
+    'GeoTrust',
+    'Rapid',
+    'Entrust',
+    'Thawte',
+    'Sectigo',
+    "Let's Encrypt",
+]
+
+
+# 证书类型
+class CertTypeByVerifyWayEnum(object):
+    DV = 'DV'
+    OV = 'OV'
+    EV = 'EV'
+
+
+# 域名数量
+class CertDomainTypeEnum(object):
+    # 单域名
+    Single = 'single'
+    # 多域名
+    Multiple = 'multiple'
+    # 泛域名
+    Wildcard = 'wildcard'
+    # 混合域名
+    Mixed = 'mixed'
+
+
+certTypeByDomainCountMap = {
+    CertDomainTypeEnum.Single: '单域名',
+    CertDomainTypeEnum.Multiple: '多域名',
+    CertDomainTypeEnum.Wildcard: '泛域名',
+    CertDomainTypeEnum.Mixed: '混合域名',
+}
+
+CertTypeByVerifyWayEnumMap = {
+    CertTypeByVerifyWayEnum.DV: '域名型',
+    CertTypeByVerifyWayEnum.OV: '企业型',
+    CertTypeByVerifyWayEnum.EV: '增强型',
+}
+
+
+def get_cert_type_by_domain_count(cert):
+    """
+    获取证书域名数量类型
+    :param cert:
+    :return:
+    """
+    # 单个
+    if len(cert.subjectAltName) == 1:
+        domain = cert.subjectAltName[0]
+        if '*' in domain:
+            return CertDomainTypeEnum.Wildcard
+        else:
+            return CertDomainTypeEnum.Single
+
+    # 多个
+    for domain in cert.subjectAltName:
+        if "*" in domain:
+            return CertDomainTypeEnum.Mixed
+
+    return CertDomainTypeEnum.Multiple
+
+
+def get_cert_brand(cert):
+    org = cert.issuer.get('O')
+
+    for cert_brand in cert_brands:
+        if cert_brand in org:
+            return cert_brand
+
+
+def get_cert_type_by_verify_type(cert):
+    """
+    :param cert:
+    :return:
+    """
+    org = cert.issuer.get('CN')
+    cert_types = [
+        CertTypeByVerifyWayEnum.OV,
+        CertTypeByVerifyWayEnum.DV,
+        CertTypeByVerifyWayEnum.EV,
+    ]
+
+    for cert_type in cert_types:
+        if cert_type in org:
+            return cert_type
+
+    if cert.subject.get('O'):
+        return CertTypeByVerifyWayEnum.OV
+
+    return CertTypeByVerifyWayEnum.DV
+
 
 def parse_time(time_str):
     """
@@ -103,6 +210,11 @@ class X509Item(object):
             'hasExpired': self.hasExpired,
             'totalDays': self.totalDays,
             'expireDays': self.expireDays,
+            'certBrand': self.certBrand,
+            'certTypeByVerifyWay': self.certTypeByVerifyWay,
+            'certTypeByVerifyWayLabel': self.certTypeByVerifyWayLabel,
+            'certTypeByDomainCount': self.certTypeByDomainCount,
+            'certTypeByDomainCountLabel': self.certTypeByDomainCountLabel,
         }
 
     @property
@@ -112,6 +224,47 @@ class X509Item(object):
     @property
     def expireDays(self):
         return time_util.get_diff_days(datetime.now(), self.notAfter)
+
+    @property
+    def certBrand(self):
+        """
+        证书品牌
+        :return:
+        """
+        return get_cert_brand(self)
+
+    @property
+    def certTypeByDomainCountLabel(self):
+        """
+        域名数量
+        :return:
+        """
+        return certTypeByDomainCountMap.get(self.certTypeByDomainCount)
+
+    @property
+    def certTypeByDomainCount(self):
+        """
+        域名数量
+        :return:
+        """
+        return get_cert_type_by_domain_count(self)
+
+    @property
+    def certTypeByVerifyWay(self):
+        """
+        证书类型
+        :return:
+        """
+        return get_cert_type_by_verify_type(self)
+
+    @property
+    def certTypeByVerifyWayLabel(self):
+        """
+        证书类型
+        :return:
+        """
+        return CertTypeByVerifyWayEnumMap.get(self.certTypeByVerifyWay)
+
 
 
 def dump_certificate_to_text(ssl_cert):
