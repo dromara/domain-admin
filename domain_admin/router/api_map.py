@@ -88,6 +88,7 @@ routes = {
 
     # 获取ip信息
     '/api/getIpInfo': ip_api.get_ip_info,
+    '/api/queryDomainCname': ip_api.query_domain_cname,
 
     # 通知方式
     # '/api/getNotifyOfUser': notify_api.get_notify_of_user,
@@ -161,7 +162,6 @@ routes = {
     '/api/verifyCertificateById': issue_certificate_api.verify_certificate,
     '/api/renewIssueCertificateById': issue_certificate_api.renew_issue_certificate_by_id,
 
-
     '/api/getDomainHost': issue_certificate_api.get_domain_host,
     '/api/deployVerifyFile': issue_certificate_api.deploy_verify_file,
     '/api/deployCertificateFile': issue_certificate_api.deploy_certificate_file,
@@ -175,4 +175,5 @@ routes = {
     '/api/getHostById': host_api.get_host_by_id,
     '/api/updateHostById': host_api.update_host_by_id,
     '/api/getHostList': host_api.get_host_list,
+
 }
