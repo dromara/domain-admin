@@ -66,6 +66,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ingress">12、获取ingress的域名</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id9">13、证书监控原理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id10">14、域名监控原理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">16、主机地址显示错误</a></li>
 </ul>
 </li>
 </ul>
@@ -403,6 +404,10 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 <ul class="simple">
 <li><p><a class="reference external" href="https://blog.csdn.net/u013901725/article/details/132394530">domain-admin域名监控的源码搭建</a></p></li>
 </ul>
+</section>
+<section id="id11">
+<h3>16、主机地址显示错误<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
+<p>由于系统不会主动清空已存在的主机地址，对于CND等证书，可以打开【动态主机】，每次更新数据都会先清空主机IP列表，重新获取数据，避免误报的问题。</p>
 </section>
 </section>
 </section>
