@@ -51,8 +51,9 @@ def test_get_ssl_cert_by_openssl():
         # ('juejin.cn', '223.111.193.232'),
         # ('dev.csdn.net', '120.46.209.149'),
         # ('38.60.47.102', '38.60.47.102'),
-        ('pgmanage.qnvip.com', '121.196.205.251'),
+        # ('pgmanage.qnvip.com', '121.196.205.251'),
+        ('mail.drees-email.de', '2.59.135.189'),
     ]
 
     for domain, host in lst:
-        cert_openssl_v2.get_ssl_cert_by_openssl(domain, host)
+        print(cert_openssl_v2.get_ssl_cert_by_openssl(domain, host, 465))
