@@ -67,6 +67,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id9">13、证书监控原理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id10">14、域名监控原理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id11">16、主机地址显示错误</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admin">17、忘记admin密码怎么办</a></li>
 </ul>
 </li>
 </ul>
@@ -408,6 +409,14 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 <section id="id11">
 <h3>16、主机地址显示错误<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
 <p>由于系统不会主动清空已存在的主机地址，对于CND等证书，可以打开【动态主机】，每次更新数据都会先清空主机IP列表，重新获取数据，避免误报的问题。</p>
+</section>
+<section id="admin">
+<h3>17、忘记admin密码怎么办<a class="headerlink" href="#admin" title="此标题的永久链接"></a></h3>
+<p>把数据库表<code class="docutils literal notranslate"><span class="pre">tb_user</span></code>密码字段<code class="docutils literal notranslate"><span class="pre">password</span></code>替换为这个：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$2</span>b<span class="nv">$12$c</span>/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
+</pre></div>
+</div>
+<p>可以重置为：123456</p>
 </section>
 </section>
 </section>
