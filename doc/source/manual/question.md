@@ -72,7 +72,7 @@ sqlite> .quit
 
 ## 5、邮件发送失败
 
-可尝试更换端口25或465
+可尝试更换端口：25、465、587
 
 ## 7、监控域名非443的端口
 
@@ -115,74 +115,6 @@ DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
 
 更多mysql的设置可参考：[https://pymysql.readthedocs.io/en/latest/modules/connections.html](https://pymysql.readthedocs.io/en/latest/modules/connections.html)
 
-## 9、k8s部署
-
-配置文件示例
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/instance: domain-admin-latest
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: domain-admin
-    app.kubernetes.io/version: 1.16.0
-    argocd.argoproj.io/instance: domain-admin-latest
-    helm.sh/chart: domain-admin-0.1.0
-  name: domain-admin-latest
-  namespace: domain-admin-production
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: domain-admin-latest
-      app.kubernetes.io/name: domain-admin
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        app.kubernetes.io/instance: domain-admin-latest
-        app.kubernetes.io/name: domain-admin
-    spec:
-      containers:
-      - name: domain-admin
-        image: mouday/domain-admin:latest
-        imagePullPolicy: Always
-        env:
-        - name: DB_CONNECT_URL
-          value: "sqlite:///database/database.db"
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /
-            port: http
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-        ports:
-        - containerPort: 8000
-          name: http
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /
-            port: http
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-```
-
 ## 10、支持`prometheus` 的`/metrics`接口
 
 1、第一步、需要在 `系统设置/API KEY` 获取授权key
@@ -210,7 +142,7 @@ domain_admin{domain="www.taobao.com"} 37.0
  
 ## 11、部分域名无法查询到信息
  
-已知不支持的域名后缀：`.lc`、`.ml`、`.ai`、`.my`
+已知不支持的域名后缀：`.lc`、`.ml`、`.ai`、`.my`、`.ch`
 
 ## 12、获取ingress的域名
 

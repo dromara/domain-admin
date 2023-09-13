@@ -186,6 +186,75 @@ Press CTRL+C to quit
 
 [https://apps.fit2cloud.com/1panel/domain-admin](https://apps.fit2cloud.com/1panel/domain-admin)
 
+
+## 方式五：k8s部署
+
+配置文件示例
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: domain-admin-latest
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: domain-admin
+    app.kubernetes.io/version: 1.16.0
+    argocd.argoproj.io/instance: domain-admin-latest
+    helm.sh/chart: domain-admin-0.1.0
+  name: domain-admin-latest
+  namespace: domain-admin-production
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: domain-admin-latest
+      app.kubernetes.io/name: domain-admin
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: domain-admin-latest
+        app.kubernetes.io/name: domain-admin
+    spec:
+      containers:
+      - name: domain-admin
+        image: mouday/domain-admin:latest
+        imagePullPolicy: Always
+        env:
+        - name: DB_CONNECT_URL
+          value: "sqlite:///database/database.db"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+```
+
 ## 其他部署方式
 
 可以参考[https://flask.palletsprojects.com/en/2.3.x/deploying/](https://flask.palletsprojects.com/en/2.3.x/deploying/)
