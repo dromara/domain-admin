@@ -60,7 +60,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#id5">5、邮件发送失败</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id6">7、监控域名非443的端口</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id7">8、修改数据库链接</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#k8s">9、k8s部署</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#prometheus-metrics">10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id8">11、部分域名无法查询到信息</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingress">12、获取ingress的域名</a><ul>
@@ -169,7 +168,7 @@ sqlite&gt;<span class="w"> </span>.quit
 </section>
 <section id="id5">
 <h2>5、邮件发送失败<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
-<p>可尝试更换端口25或465</p>
+<p>可尝试更换端口：25、465、587</p>
 </section>
 <section id="id6">
 <h2>7、监控域名非443的端口<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
@@ -206,73 +205,6 @@ sqlite&gt;<span class="w"> </span>.quit
 <p>说明：以上配置示例，需要提前创建名为<code class="docutils literal notranslate"><span class="pre">data_domain</span></code> 的数据库，也可以自定义其他名称的数据库</p>
 <p>更多mysql的设置可参考：<a class="reference external" href="https://pymysql.readthedocs.io/en/latest/modules/connections.html">https://pymysql.readthedocs.io/en/latest/modules/connections.html</a></p>
 </section>
-<section id="k8s">
-<h2>9、k8s部署<a class="headerlink" href="#k8s" title="此标题的永久链接"></a></h2>
-<p>配置文件示例</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
-<span class="w">    </span><span class="nt">app.kubernetes.io/managed-by</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Helm</span>
-<span class="w">    </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
-<span class="w">    </span><span class="nt">app.kubernetes.io/version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.16.0</span>
-<span class="w">    </span><span class="nt">argocd.argoproj.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
-<span class="w">    </span><span class="nt">helm.sh/chart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-0.1.0</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-production</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">progressDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span>
-<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">  </span><span class="nt">revisionHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
-<span class="w">      </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
-<span class="w">  </span><span class="nt">strategy</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">rollingUpdate</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">maxSurge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25%</span>
-<span class="w">      </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25%</span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RollingUpdate</span>
-<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin-latest</span>
-<span class="w">        </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
-<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
-<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mouday/domain-admin:latest</span>
-<span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_CONNECT_URL</span>
-<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sqlite:///database/database.db&quot;</span>
-<span class="w">        </span><span class="nt">livenessProbe</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
-<span class="w">            </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
-<span class="w">          </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">          </span><span class="nt">successThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">          </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8000</span>
-<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
-<span class="w">          </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
-<span class="w">        </span><span class="nt">readinessProbe</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
-<span class="w">            </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
-<span class="w">          </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">          </span><span class="nt">successThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">          </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</pre></div>
-</div>
-</section>
 <section id="prometheus-metrics">
 <h2>10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口<a class="headerlink" href="#prometheus-metrics" title="此标题的永久链接"></a></h2>
 <p>1、第一步、需要在 <code class="docutils literal notranslate"><span class="pre">系统设置/API</span> <span class="pre">KEY</span></code> 获取授权key</p>
@@ -295,7 +227,7 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 </section>
 <section id="id8">
 <h2>11、部分域名无法查询到信息<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
-<p>已知不支持的域名后缀：<code class="docutils literal notranslate"><span class="pre">.lc</span></code>、<code class="docutils literal notranslate"><span class="pre">.ml</span></code>、<code class="docutils literal notranslate"><span class="pre">.ai</span></code>、<code class="docutils literal notranslate"><span class="pre">.my</span></code></p>
+<p>已知不支持的域名后缀：<code class="docutils literal notranslate"><span class="pre">.lc</span></code>、<code class="docutils literal notranslate"><span class="pre">.ml</span></code>、<code class="docutils literal notranslate"><span class="pre">.ai</span></code>、<code class="docutils literal notranslate"><span class="pre">.my</span></code>、<code class="docutils literal notranslate"><span class="pre">.ch</span></code></p>
 </section>
 <section id="ingress">
 <h2>12、获取ingress的域名<a class="headerlink" href="#ingress" title="此标题的永久链接"></a></h2>
