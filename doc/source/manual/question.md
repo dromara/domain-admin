@@ -330,3 +330,14 @@ if __name__ == '__main__':
 ### 16、主机地址显示错误
 
 由于系统不会主动清空已存在的主机地址，对于CND等证书，可以打开【动态主机】，每次更新数据都会先清空主机IP列表，重新获取数据，避免误报的问题。
+
+
+### 17、忘记admin密码怎么办
+
+把数据库表`tb_user`密码字段`password`替换为这个：
+
+```bash
+$2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
+```
+
+可以重置为：123456
