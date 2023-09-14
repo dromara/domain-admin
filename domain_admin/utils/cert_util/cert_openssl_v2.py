@@ -13,6 +13,8 @@ from OpenSSL.crypto import X509
 from domain_admin.utils import domain_util, time_util, json_util
 from domain_admin.utils.cert_util import cert_common
 
+# 默认的ssl端口
+DEFAULT_SSL_PORT = 443
 
 def verify_cert(cert, domain):
     """
@@ -59,6 +61,19 @@ def get_ssl_cert(
     sock.settimeout(timeout)
     sock.connect((host, port))
 
+    # 临时处理 smtp
+    # TODO: 用户可以设置使用协议：STARTTLS、SSL/TLS
+    # issues: https://github.com/mouday/domain-admin/issues/57
+    # ref: https://stackoverflow.com/questions/5108681/use-python-to-get-an-smtp-server-certificate/62695088#62695088
+    # ref: https://serverfault.com/questions/131627/how-to-inspect-remote-smtp-servers-tls-certificate#:~:text=If%20you%20don%27t%20have%20OpenSSL%2C%20you%20can%20also,ssl.DER_cert_to_PEM_cert%20%28connection.sock.getpeercert%20%28binary_form%3DTrue%29%29%20where%20%5Bhostname%5D%20is%20the%20server.
+    if port == 25:
+        try:
+            sock.recv(1000)
+            sock.send('EHLO\nSTARTTLS\n'.encode('utf-8'))
+            sock.recv(1000)
+        except:
+            pass
+
     # ssl
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
     ssl_context.verify_mode = ssl.CERT_NONE
@@ -101,4 +116,3 @@ def get_ssl_cert_by_openssl(
         'start_date': time_util.parse_time(cert.get_notBefore().decode()),
         'expire_date': time_util.parse_time(cert.get_notAfter().decode()),
     }
-
