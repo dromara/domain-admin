@@ -52,7 +52,20 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 ```json
 {
   "msgtype": "text",
-  "text": {"content":"监控报警: 我就是我, 是不一样的烟火"}
+  "text": {
+    "content":"监控报警: 我就是我, 是不一样的烟火"
+  }
+}
+```
+
+使用模板的请求体示例
+
+```json
+{
+  "msgtype": "text",
+  "text": {
+      "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+  }
 }
 ```
 
