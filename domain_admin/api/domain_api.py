@@ -11,6 +11,7 @@ from playhouse.shortcuts import model_to_dict, fn
 
 from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.enums.role_enum import RoleEnum
+from domain_admin.enums.ssl_type_enum import SSLTypeEnum
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
@@ -40,11 +41,12 @@ def add_domain():
 
     alias = request.json.get('alias') or ''
     group_id = request.json.get('group_id') or 0
-    is_dynamic_host = request.json.get('is_dynamic_host', False)
+    # is_dynamic_host = request.json.get('is_dynamic_host', False)
     start_time = request.json.get('start_time')
     expire_time = request.json.get('expire_time')
     auto_update = request.json.get('auto_update', True)
     port = request.json.get('port') or cert_consts.SSL_DEFAULT_PORT
+    ssl_type = request.json.get('ssl_type', SSLTypeEnum.SSL_TLS)
 
     data = {
         # 基本信息
@@ -54,10 +56,11 @@ def add_domain():
         'root_domain': domain_util.get_root_domain(domain),
         'alias': alias,
         'group_id': group_id,
-        'is_dynamic_host': is_dynamic_host,
+        # 'is_dynamic_host': is_dynamic_host,
         'start_time': start_time,
         'expire_time': expire_time,
         'auto_update': auto_update,
+        'ssl_type': ssl_type,
     }
 
     row = DomainModel.create(**data)

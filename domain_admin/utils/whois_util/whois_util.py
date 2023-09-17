@@ -2,7 +2,11 @@
 """
 @File    : whois_util.py
 @Date    : 2023-03-24
+
+https://www.whois.com/whois/
+https://www.iana.org/domains/root/db
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 import json
 import re

@@ -10,11 +10,13 @@ import ssl
 import OpenSSL
 from OpenSSL.crypto import X509
 
+from domain_admin.enums.ssl_type_enum import SSLTypeEnum
 from domain_admin.utils import domain_util, time_util, json_util
 from domain_admin.utils.cert_util import cert_common
 
 # 默认的ssl端口
 DEFAULT_SSL_PORT = 443
+
 
 def verify_cert(cert, domain):
     """
@@ -43,10 +45,13 @@ def get_ssl_cert(
         domain,
         host=None,
         port=443,
-        timeout=3):
+        timeout=3,
+        ssl_type=SSLTypeEnum.SSL_TLS
+):
     """
     不验证证书，仅验证域名
     支持通配符
+    :param ssl_type:
     :param domain: str
     :param host: str
     :param port: int
@@ -61,12 +66,11 @@ def get_ssl_cert(
     sock.settimeout(timeout)
     sock.connect((host, port))
 
-    # 临时处理 smtp
-    # TODO: 用户可以设置使用协议：STARTTLS、SSL/TLS
+    # 用户可以设置使用协议：STARTTLS、SSL/TLS
     # issues: https://github.com/mouday/domain-admin/issues/57
     # ref: https://stackoverflow.com/questions/5108681/use-python-to-get-an-smtp-server-certificate/62695088#62695088
     # ref: https://serverfault.com/questions/131627/how-to-inspect-remote-smtp-servers-tls-certificate#:~:text=If%20you%20don%27t%20have%20OpenSSL%2C%20you%20can%20also,ssl.DER_cert_to_PEM_cert%20%28connection.sock.getpeercert%20%28binary_form%3DTrue%29%29%20where%20%5Bhostname%5D%20is%20the%20server.
-    if port == 25:
+    if ssl_type == SSLTypeEnum.START_TLS:
         try:
             sock.recv(1000)
             sock.send('EHLO\nSTARTTLS\n'.encode('utf-8'))
@@ -93,10 +97,13 @@ def get_ssl_cert_by_openssl(
         domain,
         host=None,
         port=443,
-        timeout=3):
+        timeout=3,
+        ssl_type=SSLTypeEnum.SSL_TLS
+):
     """
     不验证证书，仅验证域名
     支持通配符
+    :param ssl_type:
     :param domain: str
     :param host: str
     :param port: int
@@ -104,7 +111,7 @@ def get_ssl_cert_by_openssl(
     :return:
     """
 
-    cert = get_ssl_cert(domain, host, port, timeout)
+    cert = get_ssl_cert(domain, host, port, timeout, ssl_type=ssl_type)
 
     # verify
     domain_checked = verify_cert(cert, domain)

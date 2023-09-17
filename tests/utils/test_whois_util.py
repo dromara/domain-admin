@@ -39,7 +39,8 @@ def test_get_domain_info():
         # 'kingbus.com.tw',
         # 'pcits.com.sg',
         # 'token.im',
-        'airdry.com.my'
+        # 'airdry.com.my'
+        'karinasharpe.com.au'
     ]
 
     for domain in domain_list:

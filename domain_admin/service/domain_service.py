@@ -92,7 +92,8 @@ def update_address_row_info(address_row, domain_row):
         cert_info = cert_openssl_v2.get_ssl_cert_by_openssl(
             domain=domain_row.domain,
             host=address_row.host,
-            port=domain_row.port
+            port=domain_row.port,
+            ssl_type=domain_row.ssl_type
         )
     except Exception as e:
         err = e.__str__()
@@ -181,9 +182,12 @@ def update_domain_row(domain_row):
 
     # 动态主机ip，需要先删除所有主机地址
     if domain_row.is_dynamic_host:
-        AddressModel.delete().where(
-            AddressModel.domain_id == domain_row.id
-        ).execute()
+        pass
+
+    # 移除动态主机行为，都清空再获取
+    AddressModel.delete().where(
+        AddressModel.domain_id == domain_row.id
+    ).execute()
 
     # 主机ip信息
     update_domain_host_list(domain_row)

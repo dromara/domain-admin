@@ -66,7 +66,7 @@ asia whois.nic.asia
 associates whois.nic.associates
 at whois.nic.at
 attorney whois.nic.attorney
-au whois.ausregistry.net
+au whois.auda.org.au
 auction whois.nic.auction
 audi whois.afilias-srs.net
 audible whois.nic.audible

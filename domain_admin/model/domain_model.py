@@ -5,6 +5,7 @@ from datetime import datetime
 
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
 
+from domain_admin.enums.ssl_type_enum import SSLTypeEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util, time_util
 
@@ -50,7 +51,11 @@ class DomainModel(BaseModel):
     is_monitor = BooleanField(default=True)
 
     # 动态主机 @since 1.4.0
+    # @since 1.5.23 移除动态主机
     is_dynamic_host = BooleanField(default=False)
+
+    # SSL 加密方式 @since 1.5.23
+    ssl_type = IntegerField(default=SSLTypeEnum.SSL_TLS, null=False)
 
     # 连接状态
     # @since v1.2.24 所有ip都连接成功才是成功

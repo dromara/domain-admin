@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 
-from domain_admin.compat import Iterator
-
 import six
-
 from flask import Flask, Response
 from peewee import ModelSelect, Model
-from playhouse.shortcuts import model_to_dict
 
+from domain_admin.compat import Iterator
 from domain_admin.utils.flask_ext.api_result import ApiResult
-from domain_admin.utils.flask_ext.json.json_encoder import JSONEncoder
-from domain_admin.utils.flask_ext.json.json_provider import JSONProvider
 from domain_admin.utils.flask_ext.request import Request
 
 
