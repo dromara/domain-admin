@@ -64,6 +64,10 @@ windows 安装
 $ pip3 install -U domain-admin -i https://pypi.org/simple
 ```
 
+Python2.7如果安装依赖报错，可以使用依赖文件 [production-2.7.txt](https://github.com/mouday/domain-admin/tree/master/requirements/production-2.7.txt)
+
+先安装好依赖文件的依赖，再安装domain-admin即可
+
 ## 方式二：docker启动
 
 感谢[@miss85246](https://github.com/miss85246) 提供Docker支持
