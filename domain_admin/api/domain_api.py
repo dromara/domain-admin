@@ -117,8 +117,10 @@ def update_domain_by_id():
 
     after_domain_row = DomainModel.get_by_id(domain_id)
 
-    # 域名和端口没改变，就不更新
-    if before_domain_row.domain == after_domain_row.domain and before_domain_row.port == after_domain_row.port:
+    # 域名、端口、SSL加密方式没改变，就不更新
+    if before_domain_row.domain == after_domain_row.domain \
+            and before_domain_row.port == after_domain_row.port \
+            and before_domain_row.ssl_type == after_domain_row.ssl_type:
         pass
     else:
         if after_domain_row.auto_update:
@@ -372,7 +374,6 @@ def export_domain_file():
 
     order_prop = request.json.get('order_prop') or 'expire_days'
     order_type = request.json.get('order_type') or 'ascending'
-
 
     params = {
         'keyword': keyword,
