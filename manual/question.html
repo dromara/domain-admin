@@ -62,13 +62,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#id7">8、修改数据库链接</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#prometheus-metrics">10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id8">11、部分域名无法查询到信息</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingress">12、获取ingress的域名</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id9">13、证书监控原理</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">14、域名监控原理</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">16、主机地址显示错误</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#admin">17、忘记admin密码怎么办</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#ingress">12、获取ingress的域名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">13、证书监控原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">14、域名监控原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">15、提示缺少依赖</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">16、主机地址显示错误</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admin">17、忘记admin密码怎么办</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">扩展插件</a></li>
@@ -316,8 +315,9 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
+</section>
 <section id="id9">
-<h3>13、证书监控原理<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<h2>13、证书监控原理<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
 <p>第一步：<code class="docutils literal notranslate"><span class="pre">证书数据更新</span></code>：通过实时访问网站，取回网站部署的证书，解析证书签发时间和过期时间，更新到数据库</p>
 <p>第二步：<code class="docutils literal notranslate"><span class="pre">到期通知</span></code>：通过配置好的通知触发条件，查询数据库，如果查询到记录则发送通知，没有查询到数据就忽略</p>
 <blockquote>
@@ -325,7 +325,7 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 </div></blockquote>
 </section>
 <section id="id10">
-<h3>14、域名监控原理<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<h2>14、域名监控原理<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
 <p>第一步：<code class="docutils literal notranslate"><span class="pre">域名数据更新</span></code>：通过访问域名服务器，取回域名信息，解析出域名注册时间和过期时间，更新到数据库</p>
 <p>第二步：<code class="docutils literal notranslate"><span class="pre">到期通知</span></code>：通过配置好的通知触发条件，查询数据库，如果查询到记录则发送通知，没有查询到数据就忽略</p>
 <blockquote>
@@ -333,23 +333,25 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 考虑到域名注册后到期时间不会改变，所以增加了到期前<code class="docutils literal notranslate"><span class="pre">30</span></code> 天才更新域名信息的条件，减少程序运行时间；
 如果实时查询域名信息，请求过快会被域名信息服务器会拦截，从而查询不到域名信息，触发误报的问题</p>
 </div></blockquote>
+</section>
+<section id="id11">
+<h2>15、提示缺少依赖<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
 <p>可参考网友写的总结文章：</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://blog.csdn.net/u013901725/article/details/132394530">domain-admin域名监控的源码搭建</a></p></li>
 </ul>
 </section>
-<section id="id11">
-<h3>16、主机地址显示错误<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
+<section id="id12">
+<h2>16、主机地址显示错误<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
 <p>由于系统不会主动清空已存在的主机地址，对于CND等证书，可以打开【动态主机】，每次更新数据都会先清空主机IP列表，重新获取数据，避免误报的问题。</p>
 </section>
 <section id="admin">
-<h3>17、忘记admin密码怎么办<a class="headerlink" href="#admin" title="此标题的永久链接"></a></h3>
+<h2>17、忘记admin密码怎么办<a class="headerlink" href="#admin" title="此标题的永久链接"></a></h2>
 <p>把数据库表<code class="docutils literal notranslate"><span class="pre">tb_user</span></code>密码字段<code class="docutils literal notranslate"><span class="pre">password</span></code>替换为这个：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$2</span>b<span class="nv">$12$c</span>/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
 </pre></div>
 </div>
 <p>可以重置为：123456</p>
-</section>
 </section>
 </section>
 
