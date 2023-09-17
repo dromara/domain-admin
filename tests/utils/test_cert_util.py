@@ -7,6 +7,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 import socket
 
+from domain_admin.enums.ssl_type_enum import SSLTypeEnum
 from domain_admin.utils import cert_util
 from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2
 
@@ -62,12 +63,12 @@ def test_get_smtp_cert_by_openssl():
     lst = [
 
         ('mail.drees-email.de', '2.59.135.189', 25),
-        ('mail.drees-email.de', '2.59.135.189', 587),
-        ('mail.drees-email.de', '2.59.135.189', 465),
-        ('smtp.163.com', '123.126.97.113', 465),
-        ('smtp.163.com', '123.126.97.113', 587),
+        # ('mail.drees-email.de', '2.59.135.189', 587),
+        # ('mail.drees-email.de', '2.59.135.189', 465),
+        # ('smtp.163.com', '123.126.97.113', 465),
+        # ('smtp.163.com', '123.126.97.113', 587),
         # ('smtp.163.com', '123.126.97.113', 25),
     ]
 
     for domain, host, port in lst:
-        print(cert_openssl_v2.get_ssl_cert_by_openssl(domain, host, port))
+        print(cert_openssl_v2.get_ssl_cert_by_openssl(domain, host, port, ssl_type=SSLTypeEnum.START_TLS))
