@@ -68,7 +68,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#id11">15、提示缺少依赖</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id12">16、主机地址显示错误</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#admin">17、忘记admin密码怎么办</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#database-is-locked">database is locked</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-is-locked">18、database is locked</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python2-7">19、Python2.7 依赖问题</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">扩展插件</a></li>
@@ -355,10 +356,15 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 <p>可以重置为：123456</p>
 </section>
 <section id="database-is-locked">
-<h2>database is locked<a class="headerlink" href="#database-is-locked" title="此标题的永久链接"></a></h2>
+<h2>18、database is locked<a class="headerlink" href="#database-is-locked" title="此标题的永久链接"></a></h2>
 <p>数据库锁表了，由于默认使用sqlite数据库，不支持多线程操作</p>
 <p>如果遇到此提示，可以等待一会再进行操作</p>
 <p>还可以直接换成mysql数据库，参考<a class="reference external" href="https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html#id5">可选配置</a></p>
+</section>
+<section id="python2-7">
+<h2>19、Python2.7 依赖问题<a class="headerlink" href="#python2-7" title="此标题的永久链接"></a></h2>
+<p>可以手动安装适合Python2.7 的依赖版本，也可以使用整理好的依赖文件</p>
+<p><a class="reference external" href="https://github.com/mouday/domain-admin/blob/master/requirements/production-2.7.txt">production-2.7.txt</a></p>
 </section>
 </section>
 
