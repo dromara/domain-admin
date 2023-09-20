@@ -276,10 +276,16 @@ $2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
 可以重置为：123456
 
 
-## database is locked
+## 18、database is locked
 
 数据库锁表了，由于默认使用sqlite数据库，不支持多线程操作
 
 如果遇到此提示，可以等待一会再进行操作
 
 还可以直接换成mysql数据库，参考[可选配置](https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html#id5)
+
+## 19、Python2.7 依赖问题
+
+可以手动安装适合Python2.7 的依赖版本，也可以使用整理好的依赖文件
+
+[production-2.7.txt](https://github.com/mouday/domain-admin/blob/master/requirements/production-2.7.txt)
