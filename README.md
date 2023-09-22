@@ -56,7 +56,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 为了更多地人参与到项目中来，现已开放前端代码
 
-前端项目地址：[https://github.com/mouday/domain-admin-web](https://github.com/mouday/domain-admin-web)
+前端项目地址（请自行解码）：aHR0cHM6Ly9naXRodWIuY29tL21vdWRheS9kb21haW4tYWRtaW4td2Vi
 
 2、移动端版：
 
@@ -64,7 +64,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 - 移动端预览地址(请使用移动端窗口体验)：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
-移动端项目地址：[https://github.com/mouday/domain-admin-mini](https://github.com/mouday/domain-admin-mini)
+移动端项目地址（请自行解码）：aHR0cHM6Ly9naXRodWIuY29tL21vdWRheS9kb21haW4tYWRtaW4tbWluaQ==
 
 ## 问题反馈交流
 
