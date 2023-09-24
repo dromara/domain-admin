@@ -90,6 +90,8 @@ QQ群号:731742868
 
 虚位以待
 
+<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/zfb-red" width="300">
+
 ## Domain Cloud 众筹
 
 由于本项目需要使用者自行安装，对于使用有一定的技术门槛，所以发起一个众筹
