@@ -50,7 +50,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 1、网页版：
 
-![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture.png)
+![](https://gitee.com/mouday/domain-admin/raw/master/image/screencapture.png)
 
 - 预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
 
@@ -60,7 +60,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 2、移动端版：
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/screencapture-mini.png" width="220">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/screencapture-mini.png" width="220">
 
 - 移动端预览地址(请使用移动端窗口体验)：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
@@ -72,11 +72,11 @@ QQ群号:731742868
 
 邀请码：domain-admin
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/qq-group.jpeg" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/qq-group.jpeg" width="300">
 
 微信交流群
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/wechat-group.jpg" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/wechat-group.jpg" width="300">
 
 ## 更新日志
 
@@ -90,7 +90,9 @@ QQ群号:731742868
 
 虚位以待
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/zfb-red" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/zfb-red" width="300">
+
+
 
 ## Domain Cloud 众筹
 
@@ -102,13 +104,13 @@ QQ群号:731742868
 
 配置：一个域名 + 一台服务器
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/afdian-吃个大西瓜.jpeg" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/afdian-吃个大西瓜.jpeg" width="300">
 
 ## 联系作者
 
 微信扫码二维码
 
-<img src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/coding-big-tree.jpg" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
 
 
 ## 鸣谢
