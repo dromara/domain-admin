@@ -90,7 +90,7 @@ QQ群号:731742868
 
 虚位以待
 
-<img src="https://gitee.com/mouday/domain-admin/raw/master/image/zfb-red" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/zfb-red.jpg" width="300">
 
 
 
