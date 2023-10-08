@@ -141,7 +141,7 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 &gt;<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress<span class="w"> </span>domain-admin
 
 <span class="c1"># 启动运行</span>
-&gt;<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+&gt;<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span>domain_admin.main:app
 </pre></div>
 </div>
 <p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
