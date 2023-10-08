@@ -53,7 +53,7 @@ windows 安装
 > pip install waitress domain-admin
 
 # 启动运行
-> waitress-serve --listen=127.0.0.1:8000 'domain_admin.main:app'
+> waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
 ```
 
 访问地址：http://127.0.0.1:8000
