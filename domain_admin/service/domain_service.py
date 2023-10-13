@@ -381,6 +381,8 @@ def add_domain_from_file(filename, user_id):
         } for item in lst
     ]
 
+    # fix: peewee.OperationalError: too many SQL variables
+    # https://github.com/mouday/domain-admin/issues/63
     for batch in chunked(lst, 500):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
 

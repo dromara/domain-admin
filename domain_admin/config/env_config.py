@@ -27,3 +27,6 @@ SECRET_KEY = env.str("SECRET_KEY", DEFAULT_SECRET_KEY)
 
 # token_expire_days
 TOKEN_EXPIRE_DAYS = env.int("TOKEN_EXPIRE_DAYS", DEFAULT_TOKEN_EXPIRE_DAYS)
+
+# APP_MODE
+APP_MODE = env.str("APP_MODE", 'production')

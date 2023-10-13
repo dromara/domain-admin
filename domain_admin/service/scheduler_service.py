@@ -8,6 +8,7 @@ from logging.handlers import RotatingFileHandler
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
+from domain_admin.config import APP_MODE
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.log import logger
 from domain_admin.model.base_model import db
@@ -32,7 +33,14 @@ handler.setFormatter(formatter)
 
 apscheduler_logger.addHandler(handler)
 
-apscheduler_logger.setLevel(logging.DEBUG)
+apscheduler_logger.setLevel(logging.ERROR)
+
+# development
+if APP_MODE == 'development':
+    apscheduler_logger.setLevel(logging.DEBUG)
+    stream_handler = logging.StreamHandler()
+    apscheduler_logger.addHandler(stream_handler)
+
 
 JOB_DEFAULTS = {
     # seconds after the designated runtime that the job is still allowed to be run

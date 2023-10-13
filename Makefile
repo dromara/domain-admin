@@ -3,11 +3,11 @@
 
 # 运行开发环境
 dev:
-	gunicorn --bind '0.0.0.0:5000' --reload 'domain_admin.main:app'
+	source venv/bin/activate && gunicorn --bind '0.0.0.0:5000' --reload 'domain_admin.main:app' --timeout 120
 
 # 运行生产环境
 pro:
-	gunicorn --bind '0.0.0.0:8000' 'domain_admin.main:app'
+	source venv/bin/activate &&  gunicorn --bind '0.0.0.0:8000' 'domain_admin.main:app' --timeout 120
 
 # 发布 make release
 .PHONY: release
