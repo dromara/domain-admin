@@ -28,7 +28,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
     - 辅助功能：Let’s Encrypt SSL证书申请和自动续期
     - 多语言：支持中文、英文
 
-- 项目地址：[后端代码（github）](https://github.com/mouday/domain-admin)、[后端代码（国内镜像）](https://gitee.com/mouday/domain-admin)、[前端代码](https://github.com/mouday/domain-admin-web)、[H5端代码](https://github.com/mouday/domain-admin-mini)
+- 项目地址：[后端代码（github）](https://github.com/mouday/domain-admin)、[后端代码（国内镜像）](https://gitee.com/mouday/domain-admin)
 
 - 发布渠道：[PyPI](https://pypi.org/project/domain-admin)、[Docker](https://hub.docker.com/r/mouday/domain-admin)、[Releases](https://github.com/mouday/domain-admin/releases)、[1Panel](https://apps.fit2cloud.com/1panel/domain-admin)
 
@@ -54,8 +54,6 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 - 预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
 
-为了更多地人参与到项目中来，现已开放前端代码
-
 前端项目地址（请自行解码）：aHR0cHM6Ly9naXRodWIuY29tL21vdWRheS9kb21haW4tYWRtaW4td2Vi
 
 2、移动端版：
@@ -65,6 +63,8 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 - 移动端预览地址(请使用移动端窗口体验)：[https://mouday.github.io/domain-admin-mini/](https://mouday.github.io/domain-admin-mini/)
 
 移动端项目地址（请自行解码）：aHR0cHM6Ly9naXRodWIuY29tL21vdWRheS9kb21haW4tYWRtaW4tbWluaQ==
+
+为了更多地人参与到项目中来，现已开放前端代码，加入QQ群即可获取前端项目地址
 
 ## 问题反馈交流
 
@@ -92,8 +92,6 @@ QQ群号:731742868
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/zfb-red.jpg" width="300">
 
-
-
 ## Domain Cloud 众筹
 
 由于本项目需要使用者自行安装，对于使用有一定的技术门槛，所以发起一个众筹
@@ -111,11 +109,6 @@ QQ群号:731742868
 微信扫码二维码
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
-
-
-## 鸣谢
-
-- [code-inspector](https://github.com/zh-lx/code-inspector): 点击页面上的元素自动定位到代码
 
 ## 友情链接：
 
