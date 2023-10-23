@@ -199,7 +199,7 @@ def get_certificate_list():
     )
 
     if keyword:
-        query.where(IssueCertificateModel.domain_raw.contains(keyword))
+        query = query.where(IssueCertificateModel.domain_raw.contains(keyword))
 
     total = query.count()
 
