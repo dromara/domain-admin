@@ -80,6 +80,12 @@ QQ群号: 731742868
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/wechat-group.jpg" width="300">
 
+如果二维码过期，请先添加群主微信
+
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
+
+回复备注：domain-admin
+
 ## 更新日志
 
 [CHANGELOG.md](https://domain-admin.readthedocs.io/zh_CN/latest/manual/changelog.html)
@@ -105,12 +111,6 @@ QQ群号: 731742868
 配置：一个域名 + 一台服务器
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/afdian-吃个大西瓜.jpeg" width="300">
-
-## 联系作者
-
-微信扫码二维码
-
-<img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
 
 ## 友情链接：
 
