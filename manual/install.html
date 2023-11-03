@@ -168,6 +168,17 @@ mouday/domain-admin:latest
 <li><p>database：sqlite数据库和重要数据的目录</p></li>
 <li><p>logs：日志目录，用于排查问题</p></li>
 </ul>
+<p>启动命令增加参数：<code class="docutils literal notranslate"><span class="pre">-d</span></code>，可以后台运行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 本地文件夹和容器文件夹映射</span>
+$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+-d<span class="w"> </span><span class="se">\</span>
+-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/database:/app/database<span class="w"> </span><span class="se">\</span>
+-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/logs:/app/logs<span class="w"> </span><span class="se">\</span>
+-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+--name<span class="w"> </span>domain-admin<span class="w"> </span><span class="se">\</span>
+mouday/domain-admin:latest
+</pre></div>
+</div>
 </section>
 <section id="id2">
 <h2>方式三：下载源码安装<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>

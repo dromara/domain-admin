@@ -85,6 +85,19 @@ mouday/domain-admin:latest
 - database：sqlite数据库和重要数据的目录
 - logs：日志目录，用于排查问题
 
+启动命令增加参数：`-d`，可以后台运行
+
+```bash
+# 本地文件夹和容器文件夹映射
+$ docker run \
+-d \
+-v $(pwd)/database:/app/database \
+-v $(pwd)/logs:/app/logs \
+-p 8000:8000 \
+--name domain-admin \
+mouday/domain-admin:latest
+```
+
 ## 方式三：下载源码安装
 
 下载地址：[https://github.com/mouday/domain-admin/releases](https://github.com/mouday/domain-admin/releases)
