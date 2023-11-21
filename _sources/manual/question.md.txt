@@ -128,6 +128,14 @@ scrape_configs:
 
 请求地址：http://127.0.0.1:8000/metrics
 
+示例
+
+```
+POST http://127.0.0.1:8000/metrics
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
 返回数据示例：
 
 ```text
