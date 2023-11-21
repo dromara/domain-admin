@@ -139,6 +139,19 @@ domain_admin{domain="www.tmall.com"} 37.0
 domain_admin{domain="www.baidu.com"} 37.0
 domain_admin{domain="www.taobao.com"} 37.0
 ```
+
+@since v1.5.26 升级为
+
+```
+# HELP domain_admin this is a domain admin data
+# TYPE domain_admin gauge 证书列表数据
+domain_admin{domain="www.baidu.com",group_name="百度系",root_domain="baidu.com"} 258.0
+domain_admin{domain="www.163.com",group_name="",root_domain="163.com"} 153.0
+# HELP domain_info this is a domain info data
+# TYPE domain_info gauge 域名列表数据
+domain_info{domain="163.com",group_name="百度系"} 1392.0
+domain_info{domain="qq.com",group_name=""} 3535.0
+```
  
 ## 11、部分域名无法查询到信息
  

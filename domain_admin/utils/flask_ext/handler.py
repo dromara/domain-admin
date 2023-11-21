@@ -43,4 +43,9 @@ def error_handler(e):
 
         return ApiResult.error(msg=msg, code=code)
     else:
-        return Response("Internal Server Error: {}".format(e.message), status=500)
+
+        message = '未知错误'
+        if hasattr(e, 'message'):
+            message = e.message
+
+        return Response("Internal Server Error: {}".format(message), status=500)

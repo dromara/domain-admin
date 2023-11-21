@@ -16,6 +16,7 @@ from prometheus_client.core import CollectorRegistry
 from domain_admin.config import PROMETHEUS_KEY
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.log import logger
+from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.service import group_service
 
@@ -39,6 +40,7 @@ def metrics():
 
     registry = CollectorRegistry(auto_describe=False)
 
+    # 证书数据
     gauge = Gauge(
         "domain_admin",
         "this is a domain admin data",
@@ -60,5 +62,24 @@ def metrics():
         ).set(row['real_time_expire_days'])
 
     logger.info('success')
+
+    # 域名数据
+    domain_info_gauge = Gauge(
+        "domain_info",
+        "this is a domain info data",
+        ["domain", "group_name"],
+        registry=registry)
+
+    domain_info_rows = DomainInfoModel.select()
+
+    domain_info_lst = [model_to_dict(row, extra_attrs=['real_domain_expire_days']) for row in domain_info_rows]
+
+    # 分组名
+    group_service.load_group_name(domain_info_lst)
+    for row in domain_info_lst:
+        domain_info_gauge.labels(
+            row['domain'],
+            row['group_name']
+        ).set(row['real_domain_expire_days'])
 
     return Response(prometheus_client.generate_latest(registry), mimetype='text/plain')
