@@ -117,6 +117,16 @@ DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
 
 ## 10、支持`prometheus` 的`/metrics`接口
 
+请求地址：http://127.0.0.1:8000/metrics
+
+示例
+
+```
+POST http://127.0.0.1:8000/metrics
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
 1、第一步、需要在 `系统设置/API KEY` 获取授权key
 
 2、第二步、配置 prometheus.yml
@@ -126,14 +136,17 @@ scrape_configs:
     bearer_token: 'f60c03bfff8bb42dcf6821542e5fd11e'
 ```
 
-请求地址：http://127.0.0.1:8000/metrics
+如果是夜莺-Nightingale [参考文档](https://flashcat.cloud/docs/content/flashcat-monitor/categraf/plugin/prometheus/)
 
-示例
+```yaml
+[[instances.domain]]
+urls = [
+   "http://127.0.0.1:8000/metrics"
+]
 
-```
-POST http://127.0.0.1:8000/metrics
-Content-Type: application/json
-Authorization: Bearer <token>
+url_label_key = "instance"
+url_label_value = "{{.Host}}"
+headers = ["Authorization", "Bearer f60c03bfff8bb42dcf6821542e5fd11e"]
 ```
 
 返回数据示例：
@@ -160,7 +173,7 @@ domain_admin{domain="www.163.com",group_name="",root_domain="163.com"} 153.0
 domain_info{domain="163.com",group_name="百度系"} 1392.0
 domain_info{domain="qq.com",group_name=""} 3535.0
 ```
- 
+
 ## 11、部分域名无法查询到信息
  
 已知不支持的域名后缀：`.lc`、`.ml`、`.ai`、`.my`、`.ch`、`.edu.cn`
