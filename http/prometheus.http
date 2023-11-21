@@ -8,6 +8,6 @@
 
 POST {{baseUrl}}/metrics
 Content-Type: application/json
-Authorization: Bearer f60c03bfff8bb42dcf6821542e5fd11e
+Authorization: Bearer 27a79ecddc8947c9f5ce658453c45c9b
 
 ###

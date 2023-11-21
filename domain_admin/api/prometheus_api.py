@@ -64,22 +64,54 @@ def metrics():
     logger.info('success')
 
     # 域名数据 @since v1.5.27
+    domain_info_fields = [
+        "id",
+        "user_id",
+        "domain",
+        "group_id",
+        "group_name",
+        "comment",
+        "domain_registrar",
+        "domain_registrar_url",
+        "domain_start_time",
+        "domain_expire_time",
+        "is_auto_update",
+        "is_expire_monitor",
+        "icp_company",
+        "icp_licence",
+        'tags',
+        'real_domain_expire_days',
+        'update_time_label',
+        'domain_start_date',
+        'domain_expire_date',
+        "create_time",
+        "update_time",
+    ]
+
     domain_info_gauge = Gauge(
-        "domain_info",
-        "this is a domain info data",
-        ["domain", "group_name"],
+        name="domain_info",
+        documentation="this is a domain info data",
+        labelnames=domain_info_fields,
         registry=registry)
 
     domain_info_rows = DomainInfoModel.select()
 
-    domain_info_lst = [model_to_dict(row, extra_attrs=['real_domain_expire_days']) for row in domain_info_rows]
+    domain_info_lst = [model_to_dict(
+        row,
+        extra_attrs=[
+            'tags',
+            'real_domain_expire_days',
+            'update_time_label',
+            'domain_start_date',
+            'domain_expire_date',
+        ]
+    ) for row in domain_info_rows]
 
     # 分组名
     group_service.load_group_name(domain_info_lst)
     for row in domain_info_lst:
         domain_info_gauge.labels(
-            row['domain'],
-            row['group_name']
+            *[row[field] for field in domain_info_fields]
         ).set(row['real_domain_expire_days'])
 
     return Response(prometheus_client.generate_latest(registry), mimetype='text/plain')
