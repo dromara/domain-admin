@@ -225,6 +225,17 @@ domain_admin{domain=&quot;www.baidu.com&quot;} 37.0
 domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 </pre></div>
 </div>
+<p>&#64;since v1.5.26 升级为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># HELP domain_admin this is a domain admin data</span>
+<span class="c1"># TYPE domain_admin gauge 证书列表数据</span>
+<span class="n">domain_admin</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;百度系&quot;</span><span class="p">,</span><span class="n">root_domain</span><span class="o">=</span><span class="s2">&quot;baidu.com&quot;</span><span class="p">}</span> <span class="mf">258.0</span>
+<span class="n">domain_admin</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;www.163.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">root_domain</span><span class="o">=</span><span class="s2">&quot;163.com&quot;</span><span class="p">}</span> <span class="mf">153.0</span>
+<span class="c1"># HELP domain_info this is a domain info data</span>
+<span class="c1"># TYPE domain_info gauge 域名列表数据</span>
+<span class="n">domain_info</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;163.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;百度系&quot;</span><span class="p">}</span> <span class="mf">1392.0</span>
+<span class="n">domain_info</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;qq.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">}</span> <span class="mf">3535.0</span>
+</pre></div>
+</div>
 </section>
 <section id="id8">
 <h2>11、部分域名无法查询到信息<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
