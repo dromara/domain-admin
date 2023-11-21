@@ -63,7 +63,7 @@ def metrics():
 
     logger.info('success')
 
-    # 域名数据
+    # 域名数据 @since v1.5.27
     domain_info_gauge = Gauge(
         "domain_info",
         "this is a domain info data",

@@ -148,7 +148,7 @@ domain_admin{domain="www.baidu.com"} 37.0
 domain_admin{domain="www.taobao.com"} 37.0
 ```
 
-@since v1.5.26 升级为
+@since v1.5.27 升级为
 
 ```
 # HELP domain_admin this is a domain admin data
