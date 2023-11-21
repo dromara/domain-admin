@@ -149,6 +149,8 @@ url_label_value = "{{.Host}}"
 headers = ["Authorization", "Bearer f60c03bfff8bb42dcf6821542e5fd11e"]
 ```
 
+该配置由[@1275788667](https://github.com/1275788667) 提供
+
 返回数据示例：
 
 ```text
