@@ -20,7 +20,9 @@ from domain_admin.utils.flask_ext.app_exception import AppException
 # 命令白名单
 allow_commands = [
     # 重启nginx
-    'service nginx force-reload'
+    'service nginx force-reload',
+    # docker 下的重启命令 @since 1.5.29
+    'docker restart nginx'
 ]
 
 
