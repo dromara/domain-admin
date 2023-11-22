@@ -325,3 +325,10 @@ $2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
 可以手动安装适合Python2.7 的依赖版本，也可以使用整理好的依赖文件
 
 [production-2.7.txt](https://github.com/mouday/domain-admin/blob/master/requirements/production-2.7.txt)
+
+## 20、grafana 的展示模版
+
+可参考群友 友志 提供的模板
+
+https://grafana.com/grafana/dashboards/14605-domain-exporter-for-prometheus/
+
