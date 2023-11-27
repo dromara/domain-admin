@@ -332,3 +332,4 @@ $2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
 
 https://grafana.com/grafana/dashboards/14605-domain-exporter-for-prometheus/
 
+https://grafana.com/grafana/dashboards/13924-9116-domain/
