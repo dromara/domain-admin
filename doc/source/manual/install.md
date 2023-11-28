@@ -102,6 +102,25 @@ $ docker run \
 mouday/domain-admin:latest
 ```
 
+也可以用dokcer-compose来一键启动
+
+可以使用`docker-compose up -d`来启动
+
+当版本更新时，可以用`docker-compose pull`来拉取镜像，然后用`docker-compose up -d`来重启新镜像
+
+```yaml
+version: '3.3'
+services:
+    domain-admin:
+        volumes:
+            - './database:/app/database'
+            - './logs:/app/logs'
+        ports:
+            - '8000:8000'
+        container_name: domain-admin
+        image: mouday/domain-admin:latest
+```
+
 ## 方式三：下载源码安装
 
 下载地址：[https://github.com/mouday/domain-admin/releases](https://github.com/mouday/domain-admin/releases)
