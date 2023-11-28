@@ -23,7 +23,7 @@ allow_commands = [
     # 重启nginx
     'service nginx force-reload',
     # docker 下的重启命令 @since 1.5.30
-    'docker exec -it nginx nginx -s reload',
+    'docker exec -id nginx nginx -s reload',
     # 红帽系reload @since 1.5.31
     'systemctl reload nginx',
     'systemctl reload openresty',
