@@ -52,12 +52,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">安装方式</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pip">方式一：pip安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker">方式二：docker启动</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">方式三：下载源码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">方式三：下载源码安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#panel">方式四：1Panel面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#k8s">方式五：k8s部署</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">其他部署方式</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">平滑升级</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">可选配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">其他部署方式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">平滑升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">可选配置</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notify.html">通知配置</a></li>
@@ -105,6 +105,13 @@
 <div><p><code class="docutils literal notranslate"><span class="pre">强烈建议</span></code>：登录系统后修改默认密码</p>
 </div></blockquote>
 <p>Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">特别注意</span></code>：</p>
+<ul class="simple">
+<li><p>【测试环境】可以使用默认的sqlite数据库;</p></li>
+<li><p>【生产环境】推荐使用MySQL数据库，避免锁表，配置方式:<a class="reference external" href="#id5">可选配置</a></p></li>
+</ul>
+</div></blockquote>
 <section id="pip">
 <h2>方式一：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
 <p>运行环境：</p>
@@ -180,8 +187,8 @@ mouday/domain-admin:latest
 </pre></div>
 </div>
 </section>
-<section id="id2">
-<h2>方式三：下载源码安装<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h2>方式三：下载源码安装<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>下载地址：<a class="reference external" href="https://github.com/mouday/domain-admin/releases">https://github.com/mouday/domain-admin/releases</a></p>
 <p>本方式仅适用于二次开发，推荐采用 pip安装 或者 docker启动 的方式体验</p>
 <p>例如：以<code class="docutils literal notranslate"><span class="pre">v1.5.8</span></code>为例</p>
@@ -333,18 +340,18 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 </pre></div>
 </div>
 </section>
-<section id="id3">
-<h2>其他部署方式<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="id4">
+<h2>其他部署方式<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
 <p>可以参考<a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/deploying/">https://flask.palletsprojects.com/en/2.3.x/deploying/</a></p>
 </section>
-<section id="id4">
-<h2>平滑升级<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="id5">
+<h2>平滑升级<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
 <p>Domain Admin所有版本都支持平滑升级</p>
 <p>安装最新版，重启即可</p>
 <p>如果是docker安装的，注意<code class="docutils literal notranslate"><span class="pre">database</span></code> 目录是不是手动挂载的，不要删除</p>
 </section>
-<section id="id5">
-<h2>可选配置<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<section id="id6">
+<h2>可选配置<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
 <p>通过配置<code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件或者直接设置系统环境变量</p>
 <p>1、修改数据库存储方式</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># sqlite 默认 （少量用户推荐）</span>
