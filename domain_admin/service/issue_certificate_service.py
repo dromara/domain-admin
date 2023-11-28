@@ -294,6 +294,7 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
     host_row = HostModel.get_by_id(host_id)
 
     host = host_row.host
+    port = host_row.port
     user = host_row.user
     password = host_row.password
     private_key = host_row.private_key
@@ -316,6 +317,7 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
         if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
             fabric_util.deploy_file_by_key(
                 host=host,
+                port=port,
                 user=user,
                 private_key=private_key,
                 content=row['validation'],
@@ -324,6 +326,7 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
         else:
             fabric_util.deploy_file(
                 host=host,
+                port=port,
                 user=user,
                 password=password,
                 content=row['validation'],
@@ -344,6 +347,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
     host_row = HostModel.get_by_id(host_id)
 
     host = host_row.host
+    port = host_row.port
     user = host_row.user
     password = host_row.password
     auth_type = host_row.auth_type
@@ -356,6 +360,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
         if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
             fabric_util.deploy_file_by_key(
                 host=host,
+                port=port,
                 user=user,
                 private_key=private_key,
                 content=issue_certificate_row.ssl_certificate_key,
@@ -364,6 +369,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
         else:
             fabric_util.deploy_file(
                 host=host,
+                port=port,
                 user=user,
                 password=password,
                 content=issue_certificate_row.ssl_certificate_key,
@@ -375,6 +381,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
         if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
             fabric_util.deploy_file_by_key(
                 host=host,
+                port=port,
                 user=user,
                 private_key=private_key,
                 content=issue_certificate_row.ssl_certificate,
@@ -383,6 +390,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
         else:
             fabric_util.deploy_file(
                 host=host,
+                port=port,
                 user=user,
                 password=password,
                 content=issue_certificate_row.ssl_certificate,
@@ -394,6 +402,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
         if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
             fabric_util.run_command_by_key(
                 host=host,
+                port=port,
                 user=user,
                 private_key=private_key,
                 command=reload_cmd
@@ -401,6 +410,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
         else:
             fabric_util.run_command(
                 host=host,
+                port=port,
                 user=user,
                 password=password,
                 command=reload_cmd

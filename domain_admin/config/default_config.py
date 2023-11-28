@@ -31,3 +31,6 @@ DEFAULT_PROMETHEUS_KEY = md5_util.md5(DEFAULT_SECRET_KEY)
 
 # 默认数据库链接
 DEFAULT_DB_CONNECT_URL = "sqlite:///database/database.db"
+
+# 默认的ssh连接端口
+DEFAULT_SSH_PORT = 22

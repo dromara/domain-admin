@@ -8,6 +8,7 @@ from datetime import datetime
 
 from peewee import CharField, IntegerField, DateTimeField, AutoField
 
+from domain_admin.config import DEFAULT_SSH_PORT
 from domain_admin.enums.host_auth_type_enum import HostAuthTypeEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util
@@ -26,7 +27,7 @@ class HostModel(BaseModel):
     # 远程主机验证信息
     host = CharField(default=None, null=True)
 
-    port = CharField(default=22, null=True)
+    port = CharField(default=DEFAULT_SSH_PORT, null=True)
 
     user = CharField(default=None, null=True)
 

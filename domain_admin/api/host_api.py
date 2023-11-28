@@ -5,6 +5,8 @@
 """
 from flask import request, g
 
+from domain_admin.config import DEFAULT_SSH_PORT
+from domain_admin.log import logger
 from domain_admin.model.host_model import HostModel
 
 
@@ -16,6 +18,7 @@ def add_host():
     current_user_id = g.user_id
 
     host = request.json['host']
+    port = request.json.get('port') or DEFAULT_SSH_PORT
     user = request.json['user']
     auth_type = request.json['auth_type']
     private_key = request.json['private_key']
@@ -24,6 +27,7 @@ def add_host():
     row = HostModel.create(
         user_id=current_user_id,
         host=host,
+        port=int(port),
         user=user,
         auth_type=auth_type,
         private_key=private_key,
@@ -42,6 +46,7 @@ def update_host_by_id():
 
     host_id = request.json['host_id']
     host = request.json['host']
+    port = request.json.get('port') or DEFAULT_SSH_PORT
     user = request.json['user']
     password = request.json['password']
     auth_type = request.json['auth_type']
@@ -49,6 +54,7 @@ def update_host_by_id():
 
     HostModel.update(
         host=host,
+        port=int(port),
         user=user,
         password=password,
         auth_type=auth_type,
