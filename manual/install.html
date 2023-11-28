@@ -188,6 +188,21 @@ $<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </spa
 mouday/domain-admin:latest
 </pre></div>
 </div>
+<p>也可以用dokcer-compose来一键启动</p>
+<p>可以使用<code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>来启动</p>
+<p>当版本更新时，可以用<code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">pull</span></code>来拉取镜像，然后用<code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>来重启新镜像</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.3&#39;</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">domain-admin</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./database:/app/database&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./logs:/app/logs&#39;</span>
+<span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;8000:8000&#39;</span>
+<span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mouday/domain-admin:latest</span>
+</pre></div>
+</div>
 </section>
 <section id="id3">
 <h2>方式三：下载源码安装<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
