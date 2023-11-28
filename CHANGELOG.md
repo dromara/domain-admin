@@ -1,7 +1,5 @@
 - v1.5.33(2023-11-28)
-    - Merge branch 'master' of github.com:mouday/domain-admin
-    - 完善文档
-    - :bug: fix: 重载docker版nginx (#72)
+    - bugfix: 重载docker版nginx (#72)
     - 完善文档
 
 - v1.5.32(2023-11-28)
