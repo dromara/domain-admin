@@ -175,5 +175,6 @@ routes = {
     '/api/getHostById': host_api.get_host_by_id,
     '/api/updateHostById': host_api.update_host_by_id,
     '/api/getHostList': host_api.get_host_list,
+    '/api/deleteHostById': host_api.delete_host_by_id,
 
 }

@@ -74,6 +74,16 @@ def get_host_by_id():
     return HostModel.get_by_id(host_id)
 
 
+def delete_host_by_id():
+    """
+    移除主机
+    :return:
+    """
+    host_id = request.json['host_id']
+
+    return HostModel.delete_by_id(host_id)
+
+
 def get_host_list():
     """
     主机列表
