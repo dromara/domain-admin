@@ -16,6 +16,7 @@ from playhouse.shortcuts import model_to_dict
 from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.log import logger
+from domain_admin.model.group_model import GroupModel
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.service import notify_service, operation_service
 from domain_admin.utils import datetime_util
@@ -81,8 +82,30 @@ def get_notify_list_of_user():
             exclude=[NotifyModel.value_raw],
             extra_attrs=[
                 'value',
+                'groups',
             ]
         ), rows))
+
+
+        group_ids = []
+        for row in lst:
+            group_ids.extend(row['groups'])
+
+        group_rows = GroupModel.select().where(
+            GroupModel.id.in_(list(set(group_ids)))
+        )
+
+        group_dict = {
+            row.id: row
+            for row in group_rows
+        }
+
+        for row in lst:
+            group_list = []
+            for group in row['groups']:
+                group_list.append(group_dict.get(group))
+
+            row['group_list'] = group_list
 
     return {
         'list': lst,
@@ -105,23 +128,25 @@ def add_notify():
     type_id = request.json['type_id']
     event_id = request.json['event_id']
     value = request.json['value']
+    groups = request.json['groups']
     expire_days = request.json['expire_days']
     comment = request.json.get('comment') or ''
 
     value_raw = json.dumps(value, ensure_ascii=False)
+    groups_raw = json.dumps(groups, ensure_ascii=False)
 
     row = NotifyModel.create(
         user_id=current_user_id,
         event_id=event_id,
         type_id=type_id,
         value_raw=value_raw,
+        groups_raw=groups_raw,
         expire_days=expire_days,
         comment=comment,
         status=StatusEnum.Enabled
     )
 
     return {'id': row.id}
-
 
 
 @operation_service.operation_log_decorator(
@@ -152,13 +177,15 @@ def get_notify_by_id():
 
     row = NotifyModel.get_by_id(notify_id)
 
-    return model_to_dict(
+    data = model_to_dict(
         model=row,
         exclude=[NotifyModel.value_raw],
         extra_attrs=[
             'value',
+            'groups',
         ])
 
+    return data
 
 
 @operation_service.operation_log_decorator(
@@ -177,14 +204,17 @@ def update_notify_by_id():
 
     event_id = request.json['event_id']
     value = request.json['value']
+    groups = request.json['groups']
     expire_days = request.json['expire_days']
     comment = request.json.get('comment') or ''
 
     value_raw = json.dumps(value, ensure_ascii=False)
+    groups_raw = json.dumps(groups, ensure_ascii=False)
 
     NotifyModel.update(
         event_id=event_id,
         value_raw=value_raw,
+        groups_raw=groups_raw,
         expire_days=expire_days,
         comment=comment,
     ).where(

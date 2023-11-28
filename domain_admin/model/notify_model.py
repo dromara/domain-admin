@@ -27,6 +27,9 @@ class NotifyModel(BaseModel):
     # 过期剩余天数
     expire_days = IntegerField(null=False, default=DEFAULT_BEFORE_EXPIRE_DAYS)
 
+    # 分组
+    groups_raw = TextField(default=None, null=True)
+
     # 原始值
     value_raw = TextField(default=None, null=True)
 
@@ -55,6 +58,13 @@ class NotifyModel(BaseModel):
     def value(self):
         if self.value_raw:
             return json.loads(self.value_raw)
+        else:
+            return None
+
+    @property
+    def groups(self):
+        if self.groups_raw:
+            return json.loads(self.groups_raw)
         else:
             return None
 

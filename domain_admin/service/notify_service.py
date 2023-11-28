@@ -201,7 +201,11 @@ def notify_user_about_cert_expired(notify_row):
     )
 
     # 分组
-    if user_group_ids:
+    if notify_row.groups:
+        query = query.where(
+            DomainModel.group_id.in_(notify_row.groups)
+        )
+    elif user_group_ids:
         query = query.where(
             (DomainModel.user_id == notify_row.user_id)
             | (DomainModel.group_id.in_(user_group_ids))
@@ -264,7 +268,11 @@ def notify_user_about_domain_expired(notify_row):
         DomainInfoModel.is_expire_monitor == True
     )
 
-    if user_group_ids:
+    if notify_row.groups:
+        query = query.where(
+            DomainInfoModel.group_id.in_(notify_row.groups)
+        )
+    elif user_group_ids:
         query = query.where(
             (DomainInfoModel.user_id == notify_row.user_id)
             | (DomainInfoModel.group_id.in_(user_group_ids))

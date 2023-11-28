@@ -23,8 +23,8 @@ from domain_admin.migrate.history import (
     migrate_1212_to_1213,
     migrate_1520_to_1521,
     migrate_154_to_155,
-    migrate_106_to_110
-)
+    migrate_106_to_110,
+    migrate_1533_to_1534)
 
 # local_versions 本地版本
 # migrate_func 升级函数
@@ -287,6 +287,25 @@ MIGRATE_CONFIG = [
             VersionEnum.Version_1523,
         ],
         'migrate_func': migrate_1523_to_1524.execute_migrate,
+        'update_version': VersionEnum.Version_1524
+    },
+
+    # 2023-11-28
+    # 1.5.33 => 1.5.34
+    {
+        'local_versions': [
+            VersionEnum.Version_1524,
+            VersionEnum.Version_1525,
+            VersionEnum.Version_1526,
+            VersionEnum.Version_1527,
+            VersionEnum.Version_1528,
+            VersionEnum.Version_1529,
+            VersionEnum.Version_1530,
+            VersionEnum.Version_1531,
+            VersionEnum.Version_1532,
+            VersionEnum.Version_1533,
+        ],
+        'migrate_func': migrate_1533_to_1534.execute_migrate,
         'update_version': VersionEnum.Version_1524
     },
 ]
