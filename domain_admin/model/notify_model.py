@@ -66,7 +66,7 @@ class NotifyModel(BaseModel):
         if self.groups_raw:
             return json.loads(self.groups_raw)
         else:
-            return None
+            return []
 
     # email参数
     @property

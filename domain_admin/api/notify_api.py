@@ -86,7 +86,6 @@ def get_notify_list_of_user():
             ]
         ), rows))
 
-
         group_ids = []
         for row in lst:
             group_ids.extend(row['groups'])
