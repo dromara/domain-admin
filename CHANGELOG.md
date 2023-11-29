@@ -1,3 +1,7 @@
+- v1.5.35(2023-11-29)
+    - fix：TypeError: 'NoneType' object is not iterable
+    - 完善文档
+
 - v1.5.34(2023-11-29)
     - 支持通知指定特定分组
     - 新增主机列表移除功能
