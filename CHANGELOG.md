@@ -1,9 +1,7 @@
 - v1.5.34(2023-11-29)
     - 支持通知指定特定分组
-    - Merge branch 'master' of github.com:mouday/domain-admin
     - 新增主机列表移除功能
-    - :memo: docs: 增加docker-compose启动 (#73)
-    - 完善文档
+    - docs: 增加docker-compose启动 (#73)
 
 - v1.5.33(2023-11-28)
     - bugfix: 重载docker版nginx (#72)
