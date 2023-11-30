@@ -117,3 +117,44 @@ class DomainInfoModel(BaseModel):
     def tags_str(self):
         if self.tags:
             return '、'.join(self.tags)
+
+
+# 数据导入导出字段关系
+FIELD_MAPPING = [
+    {
+        'name': '域名',
+        'field': 'domain',
+    },
+    {
+        'name': '注册时间',
+        'field': 'domain_start_date',
+    },
+    {
+        'name': '到期时间',
+        'field': 'domain_expire_date',
+    },
+    {
+        'name': '剩余天数',
+        'field': 'real_domain_expire_days',
+    },
+    {
+        'name': '分组',
+        'field': 'group_name',
+    },
+    {
+        'name': '标签',
+        'field': 'tags_str',
+    },
+    {
+        'name': '主办单位名称',
+        'field': 'icp_company',
+    },
+    {
+        'name': 'ICP备案/许可证号',
+        'field': 'icp_licence',
+    },
+    {
+        'name': '备注',
+        'field': 'comment',
+    },
+]

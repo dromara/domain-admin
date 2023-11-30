@@ -130,3 +130,12 @@ X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODYyMD
 }
 
 ###
+POST {{baseUrl}}/api/exportDomainInfoFile
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3MDE5MzMyNjN9.M481dinWgiAuoKw12HNU6DuXPwseqGk-5qRNwei7jAU
+
+{
+  "ext": "xlsx"
+}
+
+###

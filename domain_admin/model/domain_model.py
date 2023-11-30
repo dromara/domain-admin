@@ -139,3 +139,36 @@ class DomainModel(BaseModel):
             return None
         else:
             return False
+
+
+# 数据导入导出字段关系
+FIELD_MAPPING = [
+    {
+        'name': '域名',
+        'field': 'domain',
+    },
+    {
+        'name': '端口',
+        'field': 'port',
+    },
+    {
+        'name': '证书颁发时间',
+        'field': 'start_date',
+    },
+    {
+        'name': '证书过期时间',
+        'field': 'expire_date',
+    },
+    {
+        'name': '证书天数',
+        'field': 'real_time_expire_days',
+    },
+    {
+        'name': '分组',
+        'field': 'group_name',
+    },
+    {
+        'name': '备注',
+        'field': 'alias',
+    },
+]

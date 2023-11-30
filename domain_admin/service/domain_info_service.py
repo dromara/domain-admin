@@ -11,6 +11,7 @@ import traceback
 from datetime import datetime, timedelta
 import random
 
+from domain_admin.model import domain_info_model
 from peewee import chunked
 
 from domain_admin.enums.role_enum import RoleEnum
@@ -19,7 +20,7 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import render_service, file_service, group_service, async_task_service
-from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util
+from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util, file_util
 
 
 def add_domain_info(
@@ -235,68 +236,52 @@ def add_domain_from_file(filename, user_id):
     """
     # logger.info('user_id: %s, filename: %s', user_id, filename)
 
-    lst = list(domain_util.parse_domain_from_file(filename))
+    lst = list(domain_util.parse_domain_from_file(filename, domain_info_model.FIELD_MAPPING))
 
     # 导入分组
-    group_name_list = [item.group_name for item in lst]
-    group_map = group_service.get_or_create_group_map(group_name_list, user_id)
+    group_name_list = [item.get('group_name') for item in lst if item.get('group_name')]
+    if group_name_list:
+        group_map = group_service.get_or_create_group_map(group_name_list, user_id)
+    else:
+        group_map = {}
 
     lst = [
         {
-            'domain': item.root_domain,
-            'comment': item.alias,
+            'domain': item['domain'],
+            'comment': item.get('comment'),
+            'group_id': group_map.get(item.get('group_name'), 0),
+            'tags_raw': json.dumps(item.get('tags'), ensure_ascii=False),
             'user_id': user_id,
-            'group_id': group_map.get(item.group_name, 0),
-            'tags_raw': json.dumps(item.tags, ensure_ascii=False)
-        } for item in lst if item.root_domain
+        } for item in lst if item.get('root_domain')
     ]
 
     for batch in chunked(lst, 500):
         DomainInfoModel.insert_many(batch).on_conflict_ignore().execute()
 
 
-def export_domain_to_file(rows):
+def export_domain_to_file(rows, ext):
     """
     导出域名到文件
+    :param ext: 导出格式
     :param rows:
     :return:
     """
-    # 域名数据
-    # rows = DomainInfoModel.select().where(
-    #     DomainInfoModel.user_id == user_id
-    # ).order_by(
-    #     DomainInfoModel.domain_expire_time.asc(),
-    #     DomainInfoModel.id.desc(),
-    # )
-    #
-    # # 分组数据
-    # group_rows = GroupModel.select(
-    #     GroupModel.id,
-    #     GroupModel.name,
-    # ).where(
-    #     GroupModel.user_id == user_id
-    # )
-    #
-    # group_map = {row.id: row.name for row in group_rows}
-    #
-    # lst = []
-    # for row in list(rows):
-    #     row.group_name = group_map.get(row.group_id, '')
-    #     lst.append(row)
 
-    content = render_service.render_template('domain-export.csv', {'list': rows})
-
-    filename = datetime.now().strftime("domain_%Y%m%d%H%M%S") + '.csv'
-
+    filename = datetime.now().strftime("domain_%Y%m%d%H%M%S") + '.' + ext
     temp_filename = file_service.resolve_temp_file(filename)
-    # print(temp_filename)
-    with io.open(temp_filename, 'w', encoding='utf-8') as f:
-        f.write(content)
+
+    if ext == 'txt':
+        lst = [row['domain'] for row in rows]
+    else:
+        lst = file_util.convert_to_export(rows, domain_info_model.FIELD_MAPPING)
+
+    # content = render_service.render_template('domain-export.csv', {'list': rows})
+    file_util.write_data_to_file(temp_filename, lst)
 
     return filename
 
 
-def get_domain_inf_query(keyword, group_ids, domain_expire_days, role, user_id):
+def get_domain_info_query(keyword, group_ids, domain_expire_days, role, user_id):
     user_group_ids = None
 
     if role == RoleEnum.ADMIN:

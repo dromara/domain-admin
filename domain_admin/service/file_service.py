@@ -26,7 +26,7 @@ def get_temp_filename(ext):
 
 def save_temp_file(update_file):
     """保存上传的文件"""
-    ext = update_file.filename.split('.')[-1]
+    ext = file_util.get_filename_ext(update_file.filename)
     filename = get_temp_filename(ext)
     update_file.save(filename)
     return filename

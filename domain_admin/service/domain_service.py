@@ -13,6 +13,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.log import logger
+from domain_admin.model import domain_model
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
@@ -21,7 +22,7 @@ from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import file_service, async_task_service
 from domain_admin.service import render_service, group_service
-from domain_admin.utils import datetime_util, cert_util
+from domain_admin.utils import datetime_util, cert_util, file_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
@@ -364,20 +365,23 @@ def auto_import_from_domain(root_domain, group_id=0, user_id=0):
 def add_domain_from_file(filename, user_id):
     logger.info('user_id: %s, filename: %s', user_id, filename)
 
-    lst = list(domain_util.parse_domain_from_file(filename))
+    lst = list(domain_util.parse_domain_from_file(filename, domain_model.FIELD_MAPPING))
 
     # 导入分组
-    group_name_list = [item.group_name for item in lst]
-    group_map = group_service.get_or_create_group_map(group_name_list, user_id)
+    group_name_list = [item.get('group_name') for item in lst if item.get('group_name')]
+    if group_name_list:
+        group_map = group_service.get_or_create_group_map(group_name_list, user_id)
+    else:
+        group_map = {}
 
     lst = [
         {
-            'domain': item.domain,
-            'root_domain': item.root_domain,
-            'port': item.port,
-            'alias': item.alias,
+            'domain': item['domain'],
+            'root_domain': domain_util.get_root_domain(item['domain']),
+            'port': item.get('port'),
+            'alias': item.get('alias', ''),
             'user_id': user_id,
-            'group_id': group_map.get(item.group_name, 0),
+            'group_id': group_map.get(item.get('group_name'), 0),
         } for item in lst
     ]
 
@@ -387,40 +391,29 @@ def add_domain_from_file(filename, user_id):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
 
-def export_domain_to_file(rows):
+def export_domain_to_file(rows, ext):
     """
     导出域名到文件
     :param rows:
     :return:
     """
-    # # 域名数据
-    # rows = DomainModel.select().where(
-    #     DomainModel.user_id == user_id
-    # ).order_by(
-    #     DomainModel.expire_days.asc(),
-    #     DomainModel.id.desc(),
-    # )
-    #
-    # #  分组数据
-    # group_rows = GroupModel.select().where(
-    #     GroupModel.user_id == user_id
-    # )
-    #
-    # group_map = {row.id: row.name for row in group_rows}
-    #
-    # lst = []
-    # for row in list(rows):
-    #     row.group_name = group_map.get(row.group_id, '')
-    #     lst.append(row)
 
-    content = render_service.render_template('cert-export.csv', {'list': rows})
+    # content = render_service.render_template('cert-export.csv', {'list': rows})
 
-    filename = datetime.now().strftime("cert_%Y%m%d%H%M%S") + '.csv'
-
+    filename = datetime.now().strftime("cert_%Y%m%d%H%M%S") + '.' + ext
     temp_filename = file_service.resolve_temp_file(filename)
-    # print(temp_filename)
-    with io.open(temp_filename, 'w', encoding='utf-8') as f:
-        f.write(content)
+
+    if ext == 'txt':
+        lst = [row['domain'] for row in rows]
+    else:
+        lst = file_util.convert_to_export(rows, domain_model.FIELD_MAPPING)
+
+    file_util.write_data_to_file(temp_filename, lst)
+
+    # temp_filename = file_service.resolve_temp_file(filename)
+    # # print(temp_filename)
+    # with io.open(temp_filename, 'w', encoding='utf-8') as f:
+    #     f.write(content)
 
     return filename
 
@@ -477,7 +470,6 @@ def load_address_count(lst):
 
 
 def get_domain_list_query(keyword, group_id, group_ids, expire_days, user_id, role):
-
     user_group_ids = None
 
     if role == RoleEnum.ADMIN:

@@ -345,6 +345,7 @@ def export_domain_info_file():
     group_ids = request.json.get('group_ids')
     domain_expire_days = request.json.get('domain_expire_days')
     role = request.json.get('role')
+    ext = request.json.get('ext', 'csv')
 
     order_prop = request.json.get('order_prop') or 'domain_expire_days'
     order_type = request.json.get('order_type') or 'ascending'
@@ -358,7 +359,7 @@ def export_domain_info_file():
     }
 
     # 列表数据
-    query = domain_info_service.get_domain_inf_query(**params)
+    query = domain_info_service.get_domain_info_query(**params)
 
     ordering = domain_info_service.get_ordering(order_prop=order_prop, order_type=order_type)
 
@@ -379,7 +380,7 @@ def export_domain_info_file():
     # 分组名
     group_service.load_group_name(lst)
 
-    filename = domain_info_service.export_domain_to_file(lst)
+    filename = domain_info_service.export_domain_to_file(ext=ext, rows=lst)
 
     return {
         'name': filename,
@@ -429,7 +430,7 @@ def get_domain_info_list():
     }
 
     # 列表数据
-    query = domain_info_service.get_domain_inf_query(**params)
+    query = domain_info_service.get_domain_info_query(**params)
 
     total = query.count()
 

@@ -12,6 +12,8 @@ from tldextract.remote import looks_like_ip
 from tldextract.tldextract import ExtractResult
 
 from domain_admin.log import logger
+from domain_admin.model import domain_info_model
+from domain_admin.service import group_service
 from domain_admin.utils import file_util
 from domain_admin.utils.cert_util import cert_consts
 
@@ -37,14 +39,11 @@ class ParsedDomain(object):
 def parse_domain(domain):
     """
     解析域名信息
-    :param domain:
-    :return:
+    :param domain: str
+    :return: str / None
     """
-    # print(domain)
-
     ret = re.match('((http(s)?:)?//)?(?P<domain>[\\w\\._:-]+)/?.*?', domain)
     if ret:
-        # print(ret.groups())
         return ret.groupdict().get("domain")
     else:
         return None
@@ -126,18 +125,47 @@ def parse_domain_from_txt_file(filename):
                 yield item
 
 
-def parse_domain_from_file(filename):
+def parse_domain_from_file(filename, field_mapping):
     """
     解析域名文件的工厂方法
     :param filename:
     :return: ParsedDomain
     """
     file_type = file_util.get_filename_ext(filename)
+    rows = file_util.read_data_from_file(filename)
 
-    if file_type == 'csv':
-        return parse_domain_from_csv_file(filename)
+    if file_type == 'txt':
+        rows = [
+            {'domain': parse_domain(row.strip())}
+            for row in rows
+        ]
     else:
-        return parse_domain_from_txt_file(filename)
+        rows = file_util.convert_to_import(rows, field_mapping)
+
+    for item in rows:
+        domain = parse_domain(item['domain'])
+
+        if ':' in domain:
+            domain, port = domain.split(":")
+        else:
+            # SSL默认端口
+            port = cert_consts.SSL_DEFAULT_PORT
+
+        item['domain'] = domain
+        item['root_domain'] = get_root_domain(domain)
+        item.setdefault('port', port)
+
+        # 标签
+        tags = item.get('tags_str') or None
+        if tags:
+            item['tags'] = [tag.strip() for tag in tags.split("、") if tag and tag.strip() and tag.strip() != '-']
+
+    return rows
+
+    # if file_type == 'csv':
+    #     return parse_domain_from_csv_file(filename)
+    # else:
+    #     return parse_domain_from_txt_file(filename)
 
 
 def extract_domain(domain):

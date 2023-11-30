@@ -18,3 +18,4 @@ prometheus-client
 acme
 fabric
 dnspython
+openpyxl

@@ -371,6 +371,7 @@ def export_domain_file():
     group_ids = request.json.get('group_ids')
     expire_days = request.json.get('expire_days')
     role = request.json.get('role')
+    ext = request.json.get('ext', 'csv')
 
     order_prop = request.json.get('order_prop') or 'expire_days'
     order_type = request.json.get('order_type') or 'ascending'
@@ -408,7 +409,7 @@ def export_domain_file():
 
     group_service.load_group_name(lst)
 
-    filename = domain_service.export_domain_to_file(lst)
+    filename = domain_service.export_domain_to_file(rows=lst, ext=ext)
 
     return {
         'name': filename,
