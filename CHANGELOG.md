@@ -1,3 +1,6 @@
+- v1.5.36(2023-11-30)
+    - 新增excel格式的导入导出
+
 - v1.5.35(2023-11-29)
     - fix：TypeError: 'NoneType' object is not iterable
     - 完善文档
