@@ -315,13 +315,13 @@ Domain Admin所有版本都支持平滑升级
 
 ```bash
 # sqlite 默认 （少量用户推荐）
-DB_CONNECT_URL=sqlite:///database/database.db
+DEFAULT_DB_CONNECT_URL="sqlite:///database/database.db"
 
 # mysql （团队使用推荐）
-DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
+DEFAULT_DB_CONNECT_URL="mysql://root:123456@127.0.0.1:3306/data_domain"
 
 # postgresql
-DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
+DEFAULT_DB_CONNECT_URL="postgresql://root:123456@localhost:5432/data_domain"
 ```
 
 说明：以上配置仅为示例，根据自己实际情况修改
