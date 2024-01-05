@@ -99,6 +99,7 @@ QQ群号: 731742868
 | 日期 | 姓名 | 金额 | 
 | - | - | - |
 | 2023-11-21 | [@1275788667](https://github.com/1275788667) | ￥50.00
+| 2024-01-05 | [@hhdebb](https://github.com/hhdebb) | ￥50.00
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/zfb-red.jpg" width="300">
 
