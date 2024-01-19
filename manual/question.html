@@ -386,6 +386,12 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 </pre></div>
 </div>
 <p>可以重置为：123456</p>
+<p>示例</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="w"> </span><span class="n">sqlite3</span>
+<span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ATTACH</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="s1">&#39;/opt/domain-admin/database/database.db&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mydatabase</span><span class="p">;</span>
+<span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">tb_user</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;$2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK&quot;</span><span class="w"> </span><span class="p">;</span>
+</pre></div>
+</div>
 </section>
 <section id="database-is-locked">
 <h2>18、database is locked<a class="headerlink" href="#database-is-locked" title="此标题的永久链接"></a></h2>
