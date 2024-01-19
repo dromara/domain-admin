@@ -311,6 +311,13 @@ $2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
 
 可以重置为：123456
 
+示例
+
+```sql
+# sqlite3
+sqlite> ATTACH DATABASE '/opt/domain-admin/database/database.db' AS mydatabase;
+sqlite> UPDATE tb_user SET password = "$2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK" ;
+```
 
 ## 18、database is locked
 
