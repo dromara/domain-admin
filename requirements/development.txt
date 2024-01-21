@@ -5,3 +5,4 @@ wheel
 twine
 packaging
 gunicorn
+pytest
