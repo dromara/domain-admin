@@ -70,9 +70,10 @@ def convert_to_export(rows, field_mapping):
 def convert_to_import(rows, field_mapping):
     lst = []
     for row in rows:
-        data = {}
-        for item in field_mapping:
-            data[item['field']] = row.get(item['name'], '')
+        data = {
+            item['field']: row.get(item['name'], item.get('default_value', ''))
+            for item in field_mapping
+        }
 
         lst.append(data)
 

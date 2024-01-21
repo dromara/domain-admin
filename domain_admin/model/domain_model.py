@@ -150,6 +150,7 @@ FIELD_MAPPING = [
     {
         'name': '端口',
         'field': 'port',
+        'default_value': '443',
     },
     {
         'name': '证书颁发时间',

@@ -28,3 +28,25 @@ def extract_chinese(text):
         return result.group(0)
     else:
         return ""
+
+
+def split_string(string, split_char='、', filter_chars=None):
+    """
+    解析字符串为list
+    :param string: str 原始字符串
+    :param split_char: str 拆分字符
+    :param filter_chars: list[str] 过滤字符串
+    :return: List[str]
+    """
+    filter_chars = filter_chars if filter_chars else ['-']
+
+    if not string:
+        return []
+
+    lst = []
+    for tag in string.split(split_char):
+        tag = tag.strip()
+        if tag and tag not in filter_chars:
+            lst.append(tag)
+
+    return lst

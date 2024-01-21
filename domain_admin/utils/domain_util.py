@@ -6,6 +6,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 import io
 import re
+from typing import List
 
 import tldextract
 from tldextract.remote import looks_like_ip
@@ -14,7 +15,7 @@ from tldextract.tldextract import ExtractResult
 from domain_admin.log import logger
 from domain_admin.model import domain_info_model
 from domain_admin.service import group_service
-from domain_admin.utils import file_util
+from domain_admin.utils import file_util, text_util
 from domain_admin.utils.cert_util import cert_consts
 
 
@@ -153,12 +154,12 @@ def parse_domain_from_file(filename, field_mapping):
 
         item['domain'] = domain
         item['root_domain'] = get_root_domain(domain)
-        item.setdefault('port', port)
+
+        if not item.get('port'):
+            item['port'] = port
 
         # 标签
-        tags = item.get('tags_str') or None
-        if tags:
-            item['tags'] = [tag.strip() for tag in tags.split("、") if tag and tag.strip() and tag.strip() != '-']
+        item['tags'] = text_util.split_string(item.get('tags_str'))
 
     return rows
 

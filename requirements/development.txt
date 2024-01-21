@@ -3,6 +3,5 @@
 setuptools
 wheel
 twine
-pytest
 packaging
 gunicorn

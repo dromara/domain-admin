@@ -22,7 +22,7 @@ from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import file_service, async_task_service
 from domain_admin.service import render_service, group_service
-from domain_admin.utils import datetime_util, cert_util, file_util
+from domain_admin.utils import datetime_util, cert_util, file_util, json_util
 from domain_admin.utils import domain_util
 from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
@@ -384,6 +384,8 @@ def add_domain_from_file(filename, user_id):
             'group_id': group_map.get(item.get('group_name'), 0),
         } for item in lst
     ]
+
+    # print(json_util.json_dump(lst))
 
     # fix: peewee.OperationalError: too many SQL variables
     # https://github.com/mouday/domain-admin/issues/63
