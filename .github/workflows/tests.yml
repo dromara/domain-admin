@@ -50,4 +50,4 @@ jobs:
         # Run the tests. I'm using pytest and the file is in the tests directory.
       - name: Run tests
         #  run:  pytest -c pytest.ini tests/api/test_index.py
-        run:  pytest tests/api/test_index.py
+        run:  python -m unittest tests/test_hello.py
