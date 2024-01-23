@@ -118,6 +118,10 @@ QQ群号: 731742868
 ## 友情链接：
 
 - [小熊猫去水印](https://qushuiyin.guijianpan.com)
+- [ICP备案查询：ICP_Query](https://github.com/HG-ha/ICP_Query)
+- [ICP备案查询：ICP-Checker](https://github.com/wongzeon/ICP-Checker)
 
+- [某查询网站点选逆向分析](https://mp.weixin.qq.com/s/1Dw7ylfRmBjV_khOF4nuGQ)
+- [文字点选验证码-破解之路](https://mp.weixin.qq.com/s/Lo9GveZUpnn_NTF8jL2ORg)
 
 [![Stargazers over time](https://starchart.cc/mouday/domain-admin.svg)](https://starchart.cc/mouday/domain-admin)

@@ -121,7 +121,10 @@ def get_icp_from_vvhan(domain):
 
 
 def get_icp(domain):
-    return get_icp_from_qq(domain).to_dict()
+    item = ICPItem()
+    return item.to_dict()
+    # 第三方接口已失效
+    # return get_icp_from_qq(domain).to_dict()
 
 
 if __name__ == '__main__':
