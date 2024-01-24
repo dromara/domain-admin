@@ -1,4 +1,5 @@
 # https://github.com/actions/starter-workflows/blob/main/ci/python-publish.yml
+# https://docs.pypi.org/trusted-publishers/adding-a-publisher/
 name: Upload Python Package
 
 #on:
