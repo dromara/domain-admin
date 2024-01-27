@@ -75,6 +75,8 @@ jobs:
 #            python setup.py sdist bdist_wheel --python-tag py2.py3
 #            twine check dist/*
 #            twine upload dist/*
-
+      # Publishing with a Trusted Publisher
+      # https://docs.pypi.org/trusted-publishers/using-a-publisher/
+      # https://github.com/pypa/gh-action-pypi-publish/
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
