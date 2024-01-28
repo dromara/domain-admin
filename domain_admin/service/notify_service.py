@@ -38,7 +38,13 @@ NOTIFY_CONFIGS = [
         'event_id': EventEnum.DOMAIN_EXPIRE,
         'email_template': 'domain-email.html',
         'email_subject': '[Domain Admin]域名过期提醒',
+    },
+    {
+        'event_id': EventEnum.MONITOR_EXCEPTION,
+        'email_template': 'monitor-email.html',
+        'email_subject': '[Domain Admin]监控异常提醒',
     }
+
 ]
 
 
@@ -145,7 +151,11 @@ def notify_all_event():
     :return: int 成功数量
     """
     rows = NotifyModel.select().where(
-        NotifyModel.status == True
+        NotifyModel.status == True,
+        NotifyModel.event_id.in_(
+            EventEnum.SSL_CERT_EXPIRE,
+            EventEnum.DOMAIN_EXPIRE
+        )
     )
 
     success = 0
@@ -158,6 +168,19 @@ def notify_all_event():
         success = success + 1
 
     return success
+
+
+def notify_user_about_monitor_exception(monitor_row, error):
+    rows = NotifyModel.select().where(
+        NotifyModel.status == True,
+        NotifyModel.event_id == EventEnum.MONITOR_EXCEPTION
+    )
+
+    for row in rows:
+        try:
+            notify_user(notify_row=row, rows=rows, data={'monitor_row': monitor_row, 'error': str(error)})
+        except:
+            logger.error(traceback.format_exc())
 
 
 # @async_task_service.sync_task_decorator("触发通知用户")
@@ -314,7 +337,7 @@ def notify_user_about_domain_expired(notify_row):
         return notify_user(notify_row, lst)
 
 
-def notify_user(notify_row, rows):
+def notify_user(notify_row, rows, data=None):
     """
     通知用户
     :param notify_row: NotifyModel
@@ -323,31 +346,37 @@ def notify_user(notify_row, rows):
     """
     logger.debug(json_util.json_dump(rows))
 
+    data = data if data else {}
+
     # 通知用户
     if notify_row.type_id == NotifyTypeEnum.Email:
         notify_config = get_notify_config(notify_row.event_id)
 
+        if not notify_config:
+            raise AppException('邮件通知模板未配置')
+
         return notify_user_by_email(
             template=notify_config['email_template'],
             subject=notify_config['email_subject'],
-            data={'list': rows},
+            data={**data, 'list': rows},
             email_list=notify_row.email_list
         )
     elif notify_row.type_id == NotifyTypeEnum.WebHook:
         return notify_user_by_webhook(
             notify_row=notify_row,
             data={
+                **data,
                 'list': rows,
                 'domain_list': rows  # 兼容旧版本
             })
     elif notify_row.type_id == NotifyTypeEnum.WORK_WEIXIN:
-        return notify_user_by_work_weixin(notify_row=notify_row, data={'list': rows})
+        return notify_user_by_work_weixin(notify_row=notify_row, data={**data, 'list': rows})
 
     elif notify_row.type_id == NotifyTypeEnum.DING_TALK:
-        return notify_user_by_ding_talk(notify_row=notify_row, data={'list': rows})
+        return notify_user_by_ding_talk(notify_row=notify_row, data={**data, 'list': rows})
 
     elif notify_row.type_id == NotifyTypeEnum.FEISHU:
-        return notify_user_by_feishu(notify_row=notify_row, data={'list': rows})
+        return notify_user_by_feishu(notify_row=notify_row, data={**data, 'list': rows})
 
     else:
         logger.warn("type not support")

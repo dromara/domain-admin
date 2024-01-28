@@ -5,17 +5,25 @@ database.py
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 from domain_admin.log import logger
-from domain_admin.model import address_model, log_operation_model, group_user_model, log_async_task_model, \
-    issue_certificate_model, host_model
-from domain_admin.model import domain_info_model
-from domain_admin.model import domain_model
-from domain_admin.model import group_model
-from domain_admin.model import log_scheduler_model
-from domain_admin.model import notify_model
-from domain_admin.model import system_model
-from domain_admin.model import user_model
-from domain_admin.model import version_model
-from domain_admin.model.base_model import db
+from domain_admin.model import base_model
+from domain_admin.model import (
+    address_model,
+    log_operation_model,
+    group_user_model,
+    log_async_task_model,
+    issue_certificate_model,
+    host_model,
+    monitor_model,
+    log_monitor_model,
+    domain_info_model,
+    domain_model,
+    group_model,
+    log_scheduler_model,
+    notify_model,
+    system_model,
+    user_model,
+    version_model,
+)
 
 # 需要查询初始数据操作的表放前面
 tables = [
@@ -33,6 +41,8 @@ tables = [
     (log_async_task_model.AsyncTaskModel, None),
     (issue_certificate_model.IssueCertificateModel, None),
     (host_model.HostModel, None),
+    (log_monitor_model.LogMonitorModel, None),
+    (monitor_model.MonitorModel, None),
 ]
 
 
@@ -41,9 +51,9 @@ def init_database():
     初始化数据表
     :return:
     """
-    db.connect()
+    base_model.db.connect()
 
-    db_tables = db.get_tables()
+    db_tables = base_model.db.get_tables()
 
     for model, init_func in tables:
         # if not model.table_exists():
@@ -54,4 +64,4 @@ def init_database():
             if init_func:
                 init_func()
 
-    db.close()
+    base_model.db.close()

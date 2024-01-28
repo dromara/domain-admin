@@ -17,3 +17,6 @@ class EventEnum(object):
     # 域名到期
     DOMAIN_EXPIRE = 1
 
+    # 监控异常
+    MONITOR_EXCEPTION = 2
+
