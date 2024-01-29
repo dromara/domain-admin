@@ -27,17 +27,12 @@ def monitor_log_decorator(func):
 
     @wraps(func)
     def wrapper(monitor_row, *args, **kwargs):
-        # before
-        log_monitor_row = LogMonitorModel.create(
-            monitor_id=monitor_row.id,
-            monitor_type=monitor_row.monitor_type,
-            create_time=datetime.now()
-            # create_time=datetime_util.get_datetime_with_microsecond()
-        )
 
         # execute
         result = ''
         error = None
+
+        start_time = datetime.now()
 
         try:
             result = func(monitor_row, *args, **kwargs)
@@ -47,15 +42,15 @@ def monitor_log_decorator(func):
         if error:
             result = six.text_type(error)
 
-        data = {
-            'status': MonitorStatusEnum.ERROR if error else MonitorStatusEnum.SUCCESS,
-            'result': result or '',
-            'update_time': datetime.now()
-        }
-
-        LogMonitorModel.update(data).where(
-            LogMonitorModel.id == log_monitor_row.id
-        ).execute()
+        # 记录日志
+        LogMonitorModel.create(
+            monitor_id=monitor_row.id,
+            monitor_type=monitor_row.monitor_type,
+            create_time=start_time,
+            update_time=datetime.now(),
+            result=result or '',
+            status=MonitorStatusEnum.ERROR if error else MonitorStatusEnum.SUCCESS,
+        )
 
         # 继续抛出异常
         if error:
@@ -114,8 +109,8 @@ def run_monitor_warp(monitor_row):
         return next_run_time
 
 
-@monitor_log_decorator
 @monitor_notify_decorator
+@monitor_log_decorator
 def run_monitor(monitor_row):
     """
     :param monitor_row:
