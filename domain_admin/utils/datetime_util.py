@@ -113,20 +113,20 @@ def microsecond_for_human(value):
     lst = []
 
     if value > DAY:
-        days, seconds = divmod(value, DAY)
+        days, value = divmod(value, DAY)
         lst.append(str(days) + 'd')
 
     if value > HOUR:
-        hours, seconds = divmod(value, HOUR)
+        hours, value = divmod(value, HOUR)
         lst.append(str(hours) + 'h')
 
     if value > MINUTE:
-        minutes, seconds = divmod(value, MINUTE)
+        minutes, value = divmod(value, MINUTE)
         lst.append(str(minutes) + 'm')
 
     if value > SECOND:
-        minutes, seconds = divmod(value, SECOND)
-        lst.append(str(minutes) + 's')
+        seconds, value = divmod(value, SECOND)
+        lst.append(str(seconds) + 's')
 
     if value >= 0:
         lst.append(str(value) + 'ms')
