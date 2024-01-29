@@ -2,8 +2,6 @@
 """
 @File    : icp_util.py
 @Date    : 2023-06-30
-
-备案查询网站：https://www.beianx.cn/
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
@@ -12,6 +10,13 @@ from domain_admin.utils.icp_util.icp_api import uutool_icp_api
 
 
 def get_icp(domain):
+    """
+    备案查询网站：
+    https://www.beianx.cn/
+    https://beian.miit.gov.cn/#/Integrated/index
+    :param domain:
+    :return:
+    """
     # item = ICPItem()
     # return item.to_dict()
     # 第三方接口
