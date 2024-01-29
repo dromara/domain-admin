@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
-from flask import request
+
+from datetime import datetime
+
+from flask import request, g
 
 from domain_admin import version
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
+from domain_admin.enums.monitor_status_enum import MonitorStatusEnum
+from domain_admin.model.domain_info_model import DomainInfoModel
+from domain_admin.model.domain_model import DomainModel
+from domain_admin.model.monitor_model import MonitorModel
 from domain_admin.model.system_model import SystemModel
 from domain_admin.service import scheduler_service
 from domain_admin.utils import datetime_util
@@ -109,3 +116,73 @@ def get_system_version():
     return {
         'version': version.VERSION
     }
+
+
+def get_system_data():
+    current_user_id = g.user_id
+    now = datetime.now()
+
+    ssl_cert_count = DomainModel.select().where(
+        DomainModel.user_id == current_user_id
+    ).count()
+
+    ssl_cert_expire_count = DomainModel.select().where(
+        DomainModel.user_id == current_user_id
+    ).where(
+        (DomainModel.expire_time <= now) |
+        (DomainModel.expire_time.is_null(True))
+    ).count()
+
+    domain_count = DomainInfoModel.select().where(
+        DomainInfoModel.user_id == current_user_id
+    ).count()
+
+    domain_expire_count = DomainInfoModel.select().where(
+        DomainInfoModel.user_id == current_user_id
+    ).where(
+        (DomainInfoModel.domain_expire_time <= now) |
+        (DomainInfoModel.domain_expire_time.is_null(True))
+    ).count()
+
+    monitor_count = MonitorModel.select().where(
+        MonitorModel.user_id == current_user_id
+    ).count()
+
+    monitor_error_count = MonitorModel.select().where(
+        MonitorModel.user_id == current_user_id,
+        MonitorModel.status == MonitorStatusEnum.ERROR,
+    ).count()
+
+    return [
+        {
+            'title': '证书数量',
+            'count': ssl_cert_count,
+            'path': '/cert/list'
+
+        },
+        {
+            'title': '域名数量',
+            'count': domain_count,
+            'path': '/domain/list'
+        },
+        {
+            'title': '监控数量',
+            'count': monitor_count,
+            'path': '/monitor/list'
+        },
+        {
+            'title': '过期证书',
+            'count': ssl_cert_expire_count,
+            'path': '/cert/list'
+        },
+        {
+            'title': '过期域名',
+            'count': domain_expire_count,
+            'path': '/domain/list'
+        },
+        {
+            'title': '监控异常',
+            'count': monitor_error_count,
+            'path': '/monitor/list'
+        }
+    ]

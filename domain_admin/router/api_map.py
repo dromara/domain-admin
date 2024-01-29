@@ -78,6 +78,7 @@ routes = {
     '/api/getCronConfig': system_api.get_cron_config,
     '/api/updateCronConfig': system_api.update_cron_config,
     '/api/getSystemVersion': system_api.get_system_version,
+    '/api/getSystemData': system_api.get_system_data,
 
     # 用户管理 (管理员权限)
     '/api/getUserList': user_api.get_user_list,
