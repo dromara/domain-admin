@@ -19,7 +19,7 @@ from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
-from domain_admin.service import render_service, file_service, group_service, async_task_service
+from domain_admin.service import render_service, file_service, group_service, async_task_service, domain_service
 from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util, file_util
 
 
@@ -104,6 +104,8 @@ def update_domain_info_row(row):
     :param row: DomainInfoModel
     :return: [str, None]
     """
+    logger.info("domain: %s", row.domain)
+
     domain_whois = None
 
     try:
@@ -130,7 +132,8 @@ def update_domain_info_row(row):
         domain_expire_days=update_row.real_domain_expire_days,
         domain_registrar=update_row.domain_registrar,
         domain_registrar_url=update_row.domain_registrar_url,
-        update_time=datetime_util.get_datetime()
+        update_time=datetime_util.get_datetime(),
+        version=DomainInfoModel.version + 1
     ).where(
         DomainInfoModel.id == row.id
     ).execute()
@@ -182,6 +185,8 @@ def update_domain_row_icp(row):
     :param row:
     :return:
     """
+    logger.info("domain: %s", row.domain)
+
     res = None
 
     try:
@@ -302,7 +307,7 @@ def get_domain_info_query(keyword, group_ids, domain_expire_days, role, user_id)
     if keyword:
         query = query.where(
             (DomainInfoModel.domain.contains(keyword))
-            |(DomainInfoModel.tags_raw.contains(keyword))
+            | (DomainInfoModel.tags_raw.contains(keyword))
         )
 
     if group_ids:
@@ -380,3 +385,33 @@ def get_ordering(order_prop='expire_days', order_type='ascending'):
     ordering.append(DomainInfoModel.id.desc())
 
     return ordering
+
+
+@async_task_service.async_task_decorator("从文件导入域名")
+def handle_auto_import_domain_info(current_user_id):
+    rows = DomainInfoModel.select().where(
+        DomainInfoModel.user_id == current_user_id,
+        DomainInfoModel.is_auto_update == True,
+        DomainInfoModel.version == 0
+    )
+
+    lst = list(rows)
+
+    # 注册信息
+    for row in lst:
+        update_domain_info_row(row)
+
+    # icp信息
+    for row in lst:
+        update_domain_row_icp(row)
+
+    # 导入子域名
+    for row in lst:
+        try:
+            domain_service.auto_import_from_domain(
+                root_domain=row.domain,
+                group_id=row.group_id,
+                user_id=current_user_id
+            )
+        except Exception as e:
+            logger.error(traceback.format_exc())

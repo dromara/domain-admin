@@ -62,6 +62,9 @@ class DomainInfoModel(BaseModel):
     # 标签list @since 1.5.2
     tags_raw = TextField(default=None, null=True)
 
+    # 数据版本号 @since 1.6.3
+    version = IntegerField(default=0, null=False)
+
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
 

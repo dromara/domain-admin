@@ -39,5 +39,6 @@ def search(domain):
 
 
 if __name__ == '__main__':
-    lst = search('bilibili.com')
+    # lst = search('bilibili.com')
+    lst = search('baidu.com')
     print([row['common_name'] for row in lst])

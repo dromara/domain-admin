@@ -64,6 +64,9 @@ class DomainModel(BaseModel):
     # SSL有效期总天数，仅用于排序
     total_days = IntegerField(default=0, null=False)
 
+    # 数据版本号 @since 1.6.3
+    version = IntegerField(default=0, null=False)
+
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
 

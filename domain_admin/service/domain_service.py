@@ -327,6 +327,10 @@ def check_permission_and_get_row(domain_id, user_id):
 
 
 @async_task_service.async_task_decorator("自动导入子域名证书")
+def auto_import_from_domain_async(root_domain, group_id=0, user_id=0):
+    return auto_import_from_domain(root_domain=root_domain, group_id=group_id, user_id=user_id)
+
+
 def auto_import_from_domain(root_domain, group_id=0, user_id=0):
     """
     自动导入顶级域名下包含的子域名到证书列表
@@ -335,6 +339,8 @@ def auto_import_from_domain(root_domain, group_id=0, user_id=0):
     :param user_id: int
     :return:
     """
+    logger.info("domain: %s", root_domain)
+
     lst = crtsh_api.search(root_domain)
 
     domain_set = list(set([domain['common_name'] for domain in lst]))
@@ -355,7 +361,8 @@ def auto_import_from_domain(root_domain, group_id=0, user_id=0):
 
     # 更新插入的证书
     rows = DomainModel.select().where(
-        DomainModel.domain.in_(domain_set)
+        DomainModel.version == 0,
+        DomainModel.user_id == user_id,
     )
 
     for row in rows:
