@@ -46,3 +46,4 @@ def is_domain(domain):
     result = re.match('^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$', domain)
 
     return True if result else False
+

@@ -15,12 +15,12 @@ def get_icp(domain):
     https://www.beianx.cn/
     https://beian.miit.gov.cn/#/Integrated/index
     :param domain:
-    :return:
+    :return: ICPItem
     """
     # item = ICPItem()
     # return item.to_dict()
     # 第三方接口
-    return uutool_icp_api.get_icp_from_uutool(domain).to_dict()
+    return uutool_icp_api.get_icp_from_uutool(domain)
 
 
 if __name__ == '__main__':

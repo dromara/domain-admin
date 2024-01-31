@@ -19,7 +19,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
-    operation_service, group_user_service, domain_service, common_service
+    operation_service, group_user_service, domain_service, common_service, domain_icp_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import crtsh_api
@@ -547,8 +547,14 @@ def get_icp():
     # 解析域名
     resolve_domain = domain_util.parse_domain(domain)
 
-    res = icp_util.get_icp(resolve_domain)
+    item = domain_icp_service.get_domain_icp(resolve_domain)
+
+    if not item:
+        raise AppException('没有查到icp信息')
+
+    res = item.to_dict()
     res['resolve_domain'] = resolve_domain
+
     return res
 
 

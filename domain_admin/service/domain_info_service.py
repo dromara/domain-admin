@@ -17,9 +17,11 @@ from peewee import chunked
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.log import logger
 from domain_admin.model.domain_info_model import DomainInfoModel
+from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
-from domain_admin.service import render_service, file_service, group_service, async_task_service, domain_service
+from domain_admin.service import render_service, file_service, group_service, async_task_service, domain_service, \
+    domain_icp_service
 from domain_admin.utils import whois_util, datetime_util, domain_util, icp_util, file_util
 
 
@@ -72,30 +74,6 @@ def add_domain_info(
     # update_domain_info_icp(row)
 
     return row
-
-
-def update_domain_info_icp(row):
-    """
-    更新域名icp备案信息
-    :param row: DomainInfoModel
-    :return:
-    """
-
-    icp_info = None
-
-    try:
-        ret = icp_util.get_icp(row.domain)
-        icp_info = ret['info']
-    except Exception:
-        logger.error(traceback.format_exc())
-
-    if icp_info:
-        DomainInfoModel.update(
-            icp_company=icp_info['name'],
-            icp_licence=icp_info['icp']
-        ).where(
-            DomainInfoModel.id == row.id
-        ).execute()
 
 
 def update_domain_info_row(row):
@@ -187,23 +165,18 @@ def update_domain_row_icp(row):
     """
     logger.info("domain: %s", row.domain)
 
-    res = None
+    item = domain_icp_service.get_domain_icp(domain=row.domain)
 
-    try:
-        res = icp_util.get_icp(row.domain)
-    except Exception as e:
-        logger.debug(traceback.format_exc())
-
-    if not res:
+    if not item:
         return
 
     data = {}
 
     if not row.icp_company:
-        data['icp_company'] = res.get('name')
+        data['icp_company'] = item.name
 
     if not row.icp_licence:
-        data['icp_licence'] = res.get('icp')
+        data['icp_licence'] = item.icp
 
     if len(data) == 0:
         return
@@ -415,3 +388,6 @@ def handle_auto_import_domain_info(current_user_id):
             )
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    # 获取证书信息
+    domain_service.init_domain_cert_info_of_user(user_id=current_user_id)

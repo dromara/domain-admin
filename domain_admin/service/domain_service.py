@@ -328,7 +328,9 @@ def check_permission_and_get_row(domain_id, user_id):
 
 @async_task_service.async_task_decorator("自动导入子域名证书")
 def auto_import_from_domain_async(root_domain, group_id=0, user_id=0):
-    return auto_import_from_domain(root_domain=root_domain, group_id=group_id, user_id=user_id)
+    auto_import_from_domain(root_domain=root_domain, group_id=group_id, user_id=user_id)
+
+    init_domain_cert_info_of_user(user_id=user_id)
 
 
 def auto_import_from_domain(root_domain, group_id=0, user_id=0):
@@ -343,7 +345,28 @@ def auto_import_from_domain(root_domain, group_id=0, user_id=0):
 
     lst = crtsh_api.search(root_domain)
 
-    domain_set = list(set([domain['common_name'] for domain in lst]))
+    domain_set = set()
+
+    for domain in lst:
+        common_name = domain['common_name']
+
+        # 过滤空域名
+        if not common_name:
+            continue
+
+        # 过滤非主域名下子域
+        if not common_name.endswith(root_domain):
+            continue
+
+        # 过滤邮箱数据
+        if '@' in common_name:
+            continue
+
+        # 识别通配符 *.music.163.com -> music.163.com
+        if common_name.startswith('*.'):
+            common_name = common_name[2:]
+
+        domain_set.add(common_name)
 
     data = [
         {
@@ -358,15 +381,6 @@ def auto_import_from_domain(root_domain, group_id=0, user_id=0):
 
     for batch in chunked(data, 500):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
-
-    # 更新插入的证书
-    rows = DomainModel.select().where(
-        DomainModel.version == 0,
-        DomainModel.user_id == user_id,
-    )
-
-    for row in rows:
-        update_domain_row(row)
 
 
 def add_domain_from_file(filename, user_id):
@@ -594,3 +608,19 @@ def get_domain_ordering(order_prop='expire_days', order_type='ascending'):
     ordering.append(DomainModel.id.desc())
 
     return ordering
+
+
+def init_domain_cert_info_of_user(user_id):
+    """
+    初始化证书信息
+    :param user_id:
+    :return:
+    """
+    # 更新插入的证书
+    rows = DomainModel.select().where(
+        DomainModel.version == 0,
+        DomainModel.user_id == user_id,
+    )
+
+    for row in rows:
+        update_domain_row(row)
