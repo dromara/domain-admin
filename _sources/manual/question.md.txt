@@ -178,7 +178,7 @@ domain_info{domain="qq.com",group_name=""} 3535.0
 
 ## 11、部分域名无法查询到信息
  
-已知不支持的域名后缀：`.lc`、`.ml`、`.ai`、`.my`、`.ch`、`.edu.cn`
+已知不支持的域名后缀：`.lc`、`.ml`、`.ai`、`.my`、`.ch`、`.edu.cn`、`.name`
 
 ## 12、获取ingress的域名
 
