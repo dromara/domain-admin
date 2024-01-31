@@ -83,7 +83,6 @@ def remove_monitor_by_id():
     :return:
     """
     monitor_id = request.json['monitor_id']
-    is_active = request.json['is_active']
 
     MonitorModel.delete_by_id(monitor_id)
 
