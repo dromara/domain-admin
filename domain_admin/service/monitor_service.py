@@ -117,14 +117,14 @@ def run_monitor(monitor_row):
     :return:
     """
     if monitor_row.monitor_type == MonitorTypeEnum.HTTP:
-        run_http_monitor(monitor_row)
+        run_http_monitor(monitor_row.content_dict)
 
 
-def run_http_monitor(monitor_row):
+def run_http_monitor(content_dict):
     res = requests.request(
-        method=monitor_row.content_dict['method'],
-        url=monitor_row.content_dict['url'],
-        timeout=monitor_row.content_dict['timeout'],
+        method=content_dict['method'],
+        url=content_dict['url'],
+        timeout=int(content_dict['timeout'])
     )
 
     if not res.ok:

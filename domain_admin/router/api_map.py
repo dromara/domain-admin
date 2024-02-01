@@ -181,7 +181,7 @@ routes = {
     # http监控
     '/api/addMonitor': monitor_api.add_monitor,
     '/api/updateMonitorById': monitor_api.update_monitor_by_id,
-    '/api/addMonitorActive': monitor_api.update_monitor_active,
+    '/api/updateMonitorActive': monitor_api.update_monitor_active,
     '/api/removeMonitorById': monitor_api.remove_monitor_by_id,
     '/api/getMonitorById': monitor_api.get_monitor_by_id,
     '/api/getMonitorList': monitor_api.get_monitor_list,
