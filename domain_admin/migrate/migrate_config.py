@@ -308,8 +308,8 @@ MIGRATE_CONFIG = [
         'migrate_func': migrate_1533_to_1534.execute_migrate,
         'update_version': VersionEnum.Version_1534
     },
-    # 2023-11-28
-    # 1.5.33 => 1.5.34
+    # 2024-01-28
+    # 1.5.34 => 1.6.2
     {
         'local_versions': [
             VersionEnum.Version_1534,

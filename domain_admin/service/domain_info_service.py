@@ -229,6 +229,11 @@ def add_domain_from_file(filename, user_id):
             'comment': item.get('comment'),
             'group_id': group_map.get(item.get('group_name'), 0),
             'tags_raw': json.dumps(item.get('tags'), ensure_ascii=False),
+            'domain_start_time': item.get('domain_start_date'),
+            'domain_expire_time': item.get('domain_expire_date'),
+            'domain_expire_days': item.get('real_domain_expire_days') or 0,
+            'icp_company': item.get('icp_company'),
+            'icp_licence': item.get('icp_licence'),
             'user_id': user_id,
         } for item in lst if item.get('root_domain')
     ]
@@ -376,7 +381,8 @@ def handle_auto_import_domain_info(current_user_id):
 
     # icp信息
     for row in lst:
-        update_domain_row_icp(row)
+        if not row.icp_company:
+            update_domain_row_icp(row)
 
     # 导入子域名
     for row in lst:
