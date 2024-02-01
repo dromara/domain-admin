@@ -49,4 +49,4 @@ class DomainIcpModel(BaseModel):
 
     @property
     def is_expired(self):
-        return self.expire_time < datetime.now()
+        return datetime_util.is_less_than(self.expire_time, datetime.now())
