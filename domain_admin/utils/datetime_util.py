@@ -128,7 +128,7 @@ def microsecond_for_human(value):
         seconds, value = divmod(value, SECOND)
         lst.append(str(seconds) + 's')
 
-    if value >= 0:
+    if value > 0:
         lst.append(str(value) + 'ms')
 
     return ' '.join(lst)

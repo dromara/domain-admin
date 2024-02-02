@@ -150,12 +150,13 @@ def notify_all_event():
     触发所有通知事件
     :return: int 成功数量
     """
+    # fix: TypeError: inner() takes 2 positional arguments but 3 were given
     rows = NotifyModel.select().where(
         NotifyModel.status == True,
-        NotifyModel.event_id.in_(
+        NotifyModel.event_id.in_([
             EventEnum.SSL_CERT_EXPIRE,
             EventEnum.DOMAIN_EXPIRE
-        )
+        ])
     )
 
     success = 0
