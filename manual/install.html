@@ -137,6 +137,9 @@ $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </sp
 
 <span class="c1"># 启动运行</span>
 $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+
+<span class="c1"># 开启异步处理，增加并发</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span>--worker-class<span class="w"> </span>gevent<span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
 </pre></div>
 </div>
 <p>windows 安装</p>
