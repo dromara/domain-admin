@@ -19,7 +19,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
-    operation_service, group_user_service, domain_service, common_service, domain_icp_service
+    operation_service, group_user_service, domain_service, common_service, domain_icp_service, tag_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import crtsh_api
@@ -76,6 +76,8 @@ def add_domain_info():
         #     group_id=group_id,
         #     user_id=current_user_id
         # )
+
+    tag_service.add_tags(tags)
 
     return {'domain_info_id': row.id}
 
@@ -151,6 +153,8 @@ def update_domain_info_by_id():
         #     group_id=group_id,
         #     user_id=current_user_id
         # )
+
+    tag_service.add_tags(tags)
 
 
 @operation_service.operation_log_decorator(

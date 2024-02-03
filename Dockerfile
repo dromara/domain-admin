@@ -11,4 +11,4 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && pip install --no-cache-dir -r requirements/production.txt \
     && apk del .build-deps
 
-CMD gunicorn --bind '0.0.0.0:8000'  --timeout 120 --worker-class gevent 'domain_admin.main:app'
+CMD gunicorn --bind '0.0.0.0:8000'  --timeout 120 'domain_admin.main:app'

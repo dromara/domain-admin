@@ -42,9 +42,6 @@ $ pip install gunicorn domain-admin
 
 # 启动运行
 $ gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
-
-# 开启异步处理，增加并发
-$ gunicorn --bind '127.0.0.1:8000' --worker-class gevent 'domain_admin.main:app' 
 ```
 
 windows 安装

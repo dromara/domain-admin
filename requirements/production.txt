@@ -20,4 +20,3 @@ fabric
 dnspython
 openpyxl
 psycopg2
-

@@ -70,6 +70,8 @@ def get_tag_list():
     if keyword:
         query = query.where(TagModel.name.contains(keyword))
 
+    query = query.order_by(TagModel.id.desc())
+
     lst = list(query)
 
     return {
