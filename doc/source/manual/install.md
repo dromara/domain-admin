@@ -320,7 +320,7 @@ DB_CONNECT_URL=sqlite:///database/database.db
 # mysql （团队使用推荐）
 DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data_domain
 
-# postgresql
+# postgresql，需自己安装psycopg2依赖：pip install psycopg2
 DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
 ```
 
