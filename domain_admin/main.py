@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 
-
 from flask import request, make_response, send_file
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from domain_admin import compat
+from domain_admin.log import logger
 from domain_admin.config import TEMP_DIR
 from domain_admin.model.base_model import db
 from domain_admin.model.database import init_database
@@ -83,6 +83,7 @@ def init_app(flask_app):
     :param flask_app:
     :return:
     """
+    logger.info('init_app')
 
     # 注册路由
     register.register_app_routers(flask_app, api_map.routes)

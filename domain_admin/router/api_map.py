@@ -8,7 +8,9 @@ from domain_admin.api import (
     whois_api, address_api,
     domain_info_api, prometheus_api,
     log_operation_api, group_user_api,
-    log_async_task_api, issue_certificate_api, host_api, monitor_api, log_monitor_api)
+    log_async_task_api, issue_certificate_api,
+    host_api, monitor_api, log_monitor_api
+)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api

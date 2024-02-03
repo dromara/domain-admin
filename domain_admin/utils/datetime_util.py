@@ -46,7 +46,7 @@ def get_timestamp_with_microsecond(datetime_obj):
     ref: https://stackoverflow.com/questions/50650704/attributeerror-datetime-datetime-object-has-no-attribute-timestamp
 
     :param datetime_obj:
-    :return: float
+    :return: int
     """
     if sys.version_info[0] < 3 or sys.version_info[1] < 4:
         # python version < 3.3
@@ -207,16 +207,14 @@ def get_diff_time_with_microsecond(start_date, end_date):
     获取两个时间对象的时间差秒数
     :param start_date:
     :param end_date:
-    :return:
+    :return: int
     """
-    print('get_diff_time_with_microsecond', start_date, end_date)
-
     if start_date and end_date \
             and isinstance(start_date, datetime) \
             and isinstance(end_date, datetime):
         return get_timestamp_with_microsecond(end_date) - get_timestamp_with_microsecond(start_date)
     else:
-        return 0.0
+        return 0
 
 
 def is_less_than(source_date, target_date):
