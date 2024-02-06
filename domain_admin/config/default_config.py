@@ -40,4 +40,7 @@ DEFAULT_SSH_PORT = 22
 PROJECT_HOME_URL = 'https://github.com/mouday/domain-admin'
 
 # user agent
-USER_AGENT = f"Mozilla/5.0 (compatible; DomainAdmin/{VERSION}; +{PROJECT_HOME_URL})"
+USER_AGENT = "Mozilla/5.0 (compatible; DomainAdmin/{version}; +{url})".format(
+    version=VERSION,
+    url=PROJECT_HOME_URL,
+)
