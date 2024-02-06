@@ -6,6 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 from domain_admin.utils import secret_util, md5_util
+from domain_admin.version import VERSION
 
 # 管理员默认的 账号，用户名
 DEFAULT_ADMIN_USERNAME = 'admin'
@@ -34,3 +35,9 @@ DEFAULT_DB_CONNECT_URL = "sqlite:///database/database.db"
 
 # 默认的ssh连接端口
 DEFAULT_SSH_PORT = 22
+
+# 项目主页地址
+PROJECT_HOME_URL = 'https://github.com/mouday/domain-admin'
+
+# user agent
+USER_AGENT = f"Mozilla/5.0 (compatible; DomainAdmin/{VERSION}; +{PROJECT_HOME_URL})"

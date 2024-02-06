@@ -25,3 +25,9 @@ class MonitorServiceTest(unittest.TestCase):
 
     def test_run_monitor_task(self):
         monitor_service.run_monitor_task()
+
+    def test_run_http_monitor(self):
+        url = 'https://www.qq.com/'
+        url = 'https://httpbin.org/get'
+        ret = monitor_service.run_http_monitor(url, method='GET', timeout=3)
+        print(ret)

@@ -11,6 +11,7 @@ import requests
 import six
 from peewee import fn
 
+from domain_admin.config import USER_AGENT
 from domain_admin.enums.monitor_status_enum import MonitorStatusEnum
 from domain_admin.enums.monitor_type_enum import MonitorTypeEnum
 from domain_admin.model.base_model import db
@@ -117,18 +118,27 @@ def run_monitor(monitor_row):
     :return:
     """
     if monitor_row.monitor_type == MonitorTypeEnum.HTTP:
-        run_http_monitor(monitor_row.content_dict)
+        run_http_monitor(
+            method=monitor_row.content_dict['method'],
+            url=monitor_row.content_dict['url'],
+            timeout=int(monitor_row.content_dict['timeout'])
+        )
 
 
-def run_http_monitor(content_dict):
+def run_http_monitor(url, method='GET', timeout=3):
     res = requests.request(
-        method=content_dict['method'],
-        url=content_dict['url'],
-        timeout=int(content_dict['timeout'])
+        method=method,
+        url=url,
+        timeout=timeout,
+        headers={
+            "User-Agent": USER_AGENT
+        }
     )
 
     if not res.ok:
         res.raise_for_status()
+
+    return res.text
 
 
 @db.connection_context()
