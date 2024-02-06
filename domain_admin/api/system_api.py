@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask import request, g
 
@@ -121,7 +121,7 @@ def get_system_version():
 def get_system_data():
     current_user_id = g.user_id
     now = datetime.now()
-
+    now_add_7_day = datetime.now() + timedelta(days=7)
     ssl_cert_count = DomainModel.select().where(
         DomainModel.user_id == current_user_id
     ).count()
@@ -133,6 +133,13 @@ def get_system_data():
         (DomainModel.expire_time.is_null(True))
     ).count()
 
+    ssl_cert_will_expire_count = DomainModel.select().where(
+        DomainModel.user_id == current_user_id
+    ).where(
+        (DomainModel.expire_time > now) &
+        (DomainModel.expire_time <= now_add_7_day)
+    ).count()
+
     domain_count = DomainInfoModel.select().where(
         DomainInfoModel.user_id == current_user_id
     ).count()
@@ -142,6 +149,13 @@ def get_system_data():
     ).where(
         (DomainInfoModel.domain_expire_time <= now) |
         (DomainInfoModel.domain_expire_time.is_null(True))
+    ).count()
+
+    domain_will_expire_count = DomainInfoModel.select().where(
+        DomainInfoModel.user_id == current_user_id
+    ).where(
+        (DomainInfoModel.domain_expire_time > now) &
+        (DomainInfoModel.domain_expire_time < now_add_7_day)
     ).count()
 
     monitor_count = MonitorModel.select().where(
@@ -156,32 +170,50 @@ def get_system_data():
     return [
         {
             'title': '证书数量',
+            'key': 'ssl_cert_count',
             'count': ssl_cert_count,
+            'path': '/cert/list',
+        },
+        {
+            'title': '即将过期证书',
+            'key': 'ssl_cert_will_expire_count',
+            'count': ssl_cert_will_expire_count,
+            'path': '/cert/list',
+        },
+        {
+            'title': '过期证书',
+            'key': 'ssl_cert_expire_count',
+            'count': ssl_cert_expire_count,
             'path': '/cert/list'
-
         },
         {
             'title': '域名数量',
+            'key': 'domain_count',
             'count': domain_count,
+            'path': '/domain/list'
+        },
+        {
+            'title': '即将过期域名',
+            'key': 'domain_will_expire_count',
+            'count': domain_will_expire_count,
+            'path': '/domain/list',
+        },
+        {
+            'title': '过期域名',
+            'key': 'domain_expire_count',
+            'count': domain_expire_count,
             'path': '/domain/list'
         },
         {
             'title': '监控数量',
             'count': monitor_count,
+            'key': 'monitor_count',
             'path': '/monitor/list'
         },
-        {
-            'title': '过期证书',
-            'count': ssl_cert_expire_count,
-            'path': '/cert/list'
-        },
-        {
-            'title': '过期域名',
-            'count': domain_expire_count,
-            'path': '/domain/list'
-        },
+
         {
             'title': '监控异常',
+            'key': 'monitor_error_count',
             'count': monitor_error_count,
             'path': '/monitor/list'
         }
