@@ -30,5 +30,6 @@ class MonitorServiceTest(unittest.TestCase):
         url = 'https://www.qq.com/'
         url = 'https://www.163.com/'
         url = 'https://httpbin.org/get'
+        url = 'https://www.csdn.net/'
         ret = monitor_service.run_http_monitor(url, method='GET', timeout=3)
         print(ret)

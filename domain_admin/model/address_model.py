@@ -2,7 +2,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField
+from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField, TextField
 
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util, time_util
@@ -29,6 +29,14 @@ class AddressModel(BaseModel):
 
     # SSL过期剩余天数，仅用于排序
     ssl_expire_days = IntegerField(default=0, null=False)
+
+    # 添加方式 0 自动 1 手动
+    # @since v1.6.8
+    source = IntegerField(default=0, null=False)
+
+    # 备注说明
+    # @since v1.6.8
+    comment = TextField(default='', null=False)
 
     # 创建时间
     create_time = DateTimeField(default=datetime.now)

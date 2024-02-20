@@ -185,9 +185,10 @@ def update_domain_row(domain_row):
     if domain_row.is_dynamic_host:
         pass
 
-    # 移除动态主机行为，都清空再获取
+    # 移除动态主机行为，都清空自动添加的数据再获取
     AddressModel.delete().where(
-        AddressModel.domain_id == domain_row.id
+        AddressModel.domain_id == domain_row.id,
+        AddressModel.source == 0
     ).execute()
 
     # 主机ip信息

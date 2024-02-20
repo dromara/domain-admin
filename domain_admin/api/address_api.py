@@ -68,6 +68,7 @@ def add_address():
     host = request.json['host']
     ssl_start_time = request.json.get('ssl_start_time')
     ssl_expire_time = request.json.get('ssl_expire_time')
+    comment = request.json.get('comment') or ''
     # ssl_auto_update = request.json.get('ssl_auto_update', True)
     # ssl_expire_monitor = request.json.get('ssl_expire_monitor', True)
 
@@ -76,6 +77,8 @@ def add_address():
     data = {
         'domain_id': domain_id,
         'host': host,
+        'source': 1,
+        'comment': comment,
     }
 
     if not domain_row.auto_update:
@@ -169,6 +172,7 @@ def update_address_by_id():
     host = request.json['host']
     ssl_start_time = request.json.get('ssl_start_time')
     ssl_expire_time = request.json.get('ssl_expire_time')
+    comment = request.json.get('comment') or ''
     # ssl_auto_update = request.json.get('ssl_auto_update', True)
     # ssl_expire_monitor = request.json.get('ssl_expire_monitor', True)
 
@@ -176,7 +180,8 @@ def update_address_by_id():
     domain_row = DomainModel.get_by_id(address_row.domain_id)
 
     data = {
-        'host': host
+        'host': host,
+        'comment': comment,
     }
 
     if not domain_row.auto_update:
