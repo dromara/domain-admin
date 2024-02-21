@@ -30,6 +30,7 @@ routes = {
     "/api/addDomain": domain_api.add_domain,
     "/api/updateDomainById": domain_api.update_domain_by_id,
     "/api/updateDomainFieldById": domain_api.update_domain_field_by_id,
+    "/api/updateDomainFieldByIds": domain_api.update_domain_field_by_ids,
     "/api/updateDomainExpireMonitorById": domain_api.update_domain_expire_monitor_by_id,
     "/api/deleteDomainById": domain_api.delete_domain_by_id,
     "/api/deleteDomainByIds": domain_api.delete_domain_by_ids,
@@ -39,6 +40,7 @@ routes = {
     "/api/updateDomainRowInfoById": domain_api.update_domain_row_info_by_id,
     "/api/updateAllDomainCertInfo": domain_api.update_all_domain_cert_info,
     "/api/getDomainGroupFilter": domain_api.get_domain_group_filter,
+
 
     # "/api/updateDomainSetting": domain_api.update_domain_setting,
 

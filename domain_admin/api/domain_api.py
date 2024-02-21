@@ -176,6 +176,27 @@ def update_domain_field_by_id():
     ).execute()
 
 
+def update_domain_field_by_ids():
+    """
+    批量更新单个字段值
+    :return:
+    """
+
+    current_user_id = g.user_id
+
+    domain_ids = request.json['domain_ids']
+    field = request.json.get('field')
+    value = request.json.get('value')
+
+    data = {
+        field: value,
+    }
+
+    DomainModel.update(data).where(
+        DomainModel.id.in_(domain_ids)
+    ).execute()
+
+
 @operation_service.operation_log_decorator(
     model=DomainModel,
     operation_type_id=OperationEnum.DELETE,
