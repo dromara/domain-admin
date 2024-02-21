@@ -69,12 +69,20 @@ def update_monitor_active():
     monitor_id = request.json['monitor_id']
     is_active = request.json['is_active']
 
+    if is_active:
+        next_run_time = datetime.now()
+    else:
+        next_run_time = None
+
     MonitorModel.update(
         is_active=is_active,
-        next_run_time=None
+        next_run_time=next_run_time
     ).where(
         MonitorModel.id == monitor_id
     ).execute()
+
+    if is_active:
+        scheduler_main.run_one_monitor_task(MonitorModel.get_by_id(monitor_id))
 
 
 def remove_monitor_by_id():
