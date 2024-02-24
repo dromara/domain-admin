@@ -98,7 +98,7 @@ def handle_monitor_exception(monitor_row, error):
         ).order_by(
             LogMonitorModel.id.desc()
         ).limit(
-            monitor_row.allow_error_count
+            monitor_row.allow_error_count + 1
         )
 
         error_count = len([row for row in rows if row.status == MonitorStatusEnum.ERROR])
