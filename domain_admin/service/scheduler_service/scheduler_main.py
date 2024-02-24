@@ -72,6 +72,7 @@ def run_one_monitor_task(monitor_row):
 def update_monitor_task(next_run_time):
     monitor_job = scheduler.get_job(scheduler_config.MONITOR_TASK_JOB_ID)
 
+    # 如果下次运行时间比唤起时间早，就替换唤起时间
     if monitor_job and datetime_util.is_greater_than(next_run_time, monitor_job.next_run_time):
         return
 
@@ -81,6 +82,13 @@ def update_monitor_task(next_run_time):
         id=scheduler_config.MONITOR_TASK_JOB_ID,
         replace_existing=True
     )
+
+
+def get_monitor_task_next_run_time():
+    monitor_task = scheduler.get_job(job_id=scheduler_config.MONITOR_TASK_JOB_ID)
+
+    if monitor_task:
+        return monitor_task.next_run_time
 
 
 def run_monitor_task():

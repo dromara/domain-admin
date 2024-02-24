@@ -7,7 +7,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from domain_admin import compat
 from domain_admin.log import logger
-from domain_admin.config import TEMP_DIR
+from domain_admin.config import TEMP_DIR, APP_MODE
 from domain_admin.model.base_model import db
 from domain_admin.model.database import init_database
 from domain_admin.router import api_map, permission
@@ -107,6 +107,7 @@ def init_app(flask_app):
     # 版本自动升级
     version_service.update_version()
 
+    # if APP_MODE == 'production':
     # 启动定时器
     scheduler_service.init_scheduler()
 

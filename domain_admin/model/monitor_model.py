@@ -48,6 +48,9 @@ class MonitorModel(BaseModel):
     # 下一次运行时间
     next_run_time = DateTimeField(default=None, null=True)
 
+    # 数据版本号 @since 1.6.11
+    version = IntegerField(default=0, null=False)
+
     # 创建时间
     create_time = DateTimeField(default=datetime.now)
 
@@ -73,6 +76,14 @@ class MonitorModel(BaseModel):
     def content_dict(self):
         return json.loads(self.content)
 
+    @property
+    def http_url(self):
+        return self.content_dict.get('url')
+
+    @property
+    def http_timeout(self):
+        return self.content_dict.get('timeout')
+
     def to_dict(self):
         data = model_to_dict(
             model=self,
@@ -81,8 +92,31 @@ class MonitorModel(BaseModel):
                 'update_time_label',
                 'content_dict',
                 'monitor_id',
+                'http_url',
+                'http_timeout',
             ]
         )
 
         data['content'] = data.pop('content_dict')
         return data
+
+
+# 数据导入导出字段关系
+FIELD_MAPPING = [
+    {
+        'name': '名称',
+        'field': 'title',
+    },
+    {
+        'name': '请求URL',
+        'field': 'http_url',
+    },
+    {
+        'name': '请求超时（秒）',
+        'field': 'http_timeout',
+    },
+    {
+        'name': '检测频率（分钟）',
+        'field': 'interval',
+    },
+]

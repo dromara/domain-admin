@@ -13,6 +13,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.monitor_model import MonitorModel
 from domain_admin.model.system_model import SystemModel
 from domain_admin.service import scheduler_service
+from domain_admin.service.scheduler_service import scheduler_main
 from domain_admin.utils import datetime_util
 
 
@@ -218,3 +219,9 @@ def get_system_data():
             'path': '/monitor/list'
         }
     ]
+
+
+def get_monitor_task_next_run_time():
+    return {
+        'next_run_time': scheduler_main.get_monitor_task_next_run_time()
+    }

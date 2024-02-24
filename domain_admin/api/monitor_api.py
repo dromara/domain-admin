@@ -13,7 +13,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.log_monitor_model import LogMonitorModel
 from domain_admin.model.monitor_model import MonitorModel
-from domain_admin.service import monitor_service
+from domain_admin.service import monitor_service, file_service, async_task_service
 from domain_admin.service.scheduler_service import scheduler_main
 
 
@@ -25,12 +25,14 @@ def add_monitor():
     current_user_id = g.user_id
     title = request.json['title']
     monitor_type = request.json['monitor_type']
+    allow_error_count = request.json.get('allow_error_count') or 0
     content = request.json['content']
     interval = request.json['interval']
 
     monitor_row = MonitorModel.create(
         user_id=current_user_id,
         title=title,
+        allow_error_count=allow_error_count,
         monitor_type=monitor_type,
         content=json.dumps(content),
         interval=interval
@@ -50,11 +52,13 @@ def update_monitor_by_id():
     title = request.json['title']
     content = request.json['content']
     interval = request.json['interval']
+    allow_error_count = request.json.get('allow_error_count') or 0
 
     MonitorModel.update(
         title=title,
         content=json.dumps(content),
-        interval=interval
+        interval=interval,
+        allow_error_count=allow_error_count,
     ).where(
         MonitorModel.id == monitor_id
     ).execute()
@@ -119,6 +123,7 @@ def get_monitor_list():
     order_prop = request.json.get('order_prop') or 'create_time'
     order_type = request.json.get('order_type') or 'desc'
     keyword = request.json.get('keyword')
+    status = request.json.get('status')
 
     query = MonitorModel.select().where(
         MonitorModel.user_id == current_user_id
@@ -126,6 +131,9 @@ def get_monitor_list():
 
     if keyword:
         query = query.where(MonitorModel.title.contains(keyword))
+
+    if isinstance(status, int):
+        query = query.where(MonitorModel.status == status)
 
     total = query.count()
 
@@ -147,3 +155,73 @@ def get_monitor_list():
         'list': lst,
         'total': total
     }
+
+
+def export_monitor_file():
+    """
+    导出监控文件
+    csv格式
+    :return:
+    """
+    current_user_id = g.user_id
+
+    keyword = request.json.get('keyword')
+    status = request.json.get('status')
+    ext = request.json.get('ext', 'csv')
+
+    order_prop = request.json.get('order_prop') or 'create_time'
+    order_type = request.json.get('order_type') or 'desc'
+
+    params = {
+        'keyword': keyword,
+        'status': status,
+        'user_id': current_user_id,
+    }
+
+    query = monitor_service.get_monitor_list_query(**params)
+
+    ordering = [
+        SQL(f"`{order_prop}` {order_type}"),
+        MonitorModel.id.desc()
+    ]
+
+    rows = query.order_by(*ordering)
+
+    lst = [row.to_dict() for row in rows]
+
+    filename = monitor_service.export_monitor_to_file(rows=lst, ext=ext)
+
+    return {
+        'name': filename,
+        'url': file_service.resolve_temp_url(filename)
+    }
+
+
+def import_monitor_from_file():
+    """
+    从文件导入域名
+    支持 xlsx 和 csv格式
+    :return:
+    """
+    current_user_id = g.user_id
+
+    update_file = request.files.get('file')
+
+    filename = file_service.save_temp_file(update_file)
+
+    # 导入数据
+    monitor_service.import_monitor_from_file(filename, current_user_id)
+
+    # 异步查询
+    run_init_monitor_task_async(user_id=current_user_id)
+
+
+@async_task_service.async_task_decorator("更新监控信息")
+def run_init_monitor_task_async(user_id):
+    rows = MonitorModel.select().where(
+        MonitorModel.user_id == user_id,
+        MonitorModel.version == 0
+    )
+
+    for row in rows:
+        scheduler_main.run_one_monitor_task(row)

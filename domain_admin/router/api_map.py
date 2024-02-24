@@ -41,7 +41,6 @@ routes = {
     "/api/updateAllDomainCertInfo": domain_api.update_all_domain_cert_info,
     "/api/getDomainGroupFilter": domain_api.get_domain_group_filter,
 
-
     # "/api/updateDomainSetting": domain_api.update_domain_setting,
 
     "/api/updateAllDomainCertInfoOfUser": domain_api.update_all_domain_cert_info_of_user,
@@ -83,6 +82,7 @@ routes = {
     '/api/updateCronConfig': system_api.update_cron_config,
     '/api/getSystemVersion': system_api.get_system_version,
     '/api/getSystemData': system_api.get_system_data,
+    '/api/getMonitorTaskNextRunTime': system_api.get_monitor_task_next_run_time,
 
     # 用户管理 (管理员权限)
     '/api/getUserList': user_api.get_user_list,
@@ -189,6 +189,8 @@ routes = {
     '/api/removeMonitorById': monitor_api.remove_monitor_by_id,
     '/api/getMonitorById': monitor_api.get_monitor_by_id,
     '/api/getMonitorList': monitor_api.get_monitor_list,
+    '/api/exportMonitorFile': monitor_api.export_monitor_file,
+    '/api/importMonitorFromFile': monitor_api.import_monitor_from_file,
 
     # http监控日志
     '/api/getLogMonitorList': log_monitor_api.get_log_monitor_list,
@@ -196,4 +198,5 @@ routes = {
     '/api/clearAllLogMonitor': log_monitor_api.clear_all_log_monitor,
 
     '/api/getTagList': tag_api.get_tag_list,
+
 }
