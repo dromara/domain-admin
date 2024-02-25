@@ -339,3 +339,14 @@ def get_certificate_san(x509cert):
                     dns_names.append(value.strip())
 
     return dns_names
+
+
+def parse_public_cert(public_cert):
+    """
+    解析证书信息
+    :param public_cert:
+    :return:
+    """
+    cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, public_cert.encode())
+
+    return parse_cert(cert)

@@ -5,7 +5,7 @@ database.py
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 from domain_admin.log import logger
-from domain_admin.model import base_model, domain_icp_model, tag_model
+from domain_admin.model import base_model, domain_icp_model, tag_model, certificate_model
 from domain_admin.model import (
     address_model,
     log_operation_model,
@@ -45,6 +45,7 @@ tables = [
     (monitor_model.MonitorModel, None),
     (domain_icp_model.DomainIcpModel, None),
     (tag_model.TagModel, None),
+    (certificate_model.CertificateModel, None),
 ]
 
 

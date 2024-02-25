@@ -184,7 +184,7 @@ def renew_certificate():
     )
 
 
-def get_certificate_list():
+def get_issue_certificate_list():
     """
     发起申请
     :return:
@@ -260,7 +260,7 @@ def get_issue_certificate_by_id():
     return data
 
 
-def delete_certificate_by_id():
+def delete_issue_certificate_by_id():
     """
     获取
     :return:

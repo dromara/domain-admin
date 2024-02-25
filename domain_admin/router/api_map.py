@@ -10,7 +10,7 @@ from domain_admin.api import (
     log_operation_api, group_user_api,
     log_async_task_api, issue_certificate_api,
     host_api, monitor_api, log_monitor_api,
-    tag_api)
+    tag_api, certificate_api)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -21,6 +21,7 @@ from domain_admin.api import log_scheduler_api
 routes = {
     # 域名信息
     "/api/getCertInformation": cert_api.get_cert_information,
+    "/api/parsePublicCert": cert_api.parse_public_cert,
 
     # 登录注册
     "/api/login": auth_api.login,
@@ -160,7 +161,7 @@ routes = {
     '/api/clearAsyncTaskLogList': log_async_task_api.clear_async_task_log_list,
 
     # SSL证书
-    '/api/getCertificateList': issue_certificate_api.get_certificate_list,
+    '/api/getIssueCertificateList': issue_certificate_api.get_issue_certificate_list,
     '/api/issueCertificate': issue_certificate_api.issue_certificate,
     '/api/renewCertificate': issue_certificate_api.renew_certificate,
     '/api/getIssueCertificateById': issue_certificate_api.get_issue_certificate_by_id,
@@ -171,7 +172,7 @@ routes = {
     '/api/deployVerifyFile': issue_certificate_api.deploy_verify_file,
     '/api/deployCertificateFile': issue_certificate_api.deploy_certificate_file,
     '/api/getCertificateChallenges': issue_certificate_api.get_certificate_challenges,
-    '/api/deleteCertificateById': issue_certificate_api.delete_certificate_by_id,
+    '/api/deleteIssueCertificateById': issue_certificate_api.delete_issue_certificate_by_id,
     '/api/deleteCertificateByBatch': issue_certificate_api.delete_certificate_by_batch,
     '/api/getAllowCommands': issue_certificate_api.get_allow_commands,
 
@@ -199,5 +200,13 @@ routes = {
     '/api/clearAllLogMonitor': log_monitor_api.clear_all_log_monitor,
 
     '/api/getTagList': tag_api.get_tag_list,
+
+    # 证书托管
+    '/api/getCertificateList': certificate_api.get_certificate_list,
+    '/api/addCertificate': certificate_api.add_certificate,
+    '/api/updateCertificateById': certificate_api.update_certificate_by_id,
+    '/api/deleteCertificateById': certificate_api.delete_certificate_by_id,
+    '/api/deleteCertificateByIds': certificate_api.delete_certificate_by_ids,
+    '/api/getCertificateById': certificate_api.get_certificate_by_id,
 
 }

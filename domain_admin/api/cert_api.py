@@ -31,3 +31,9 @@ def get_cert_information():
         'cert_pem': cert_pem,
         'cert_text': cert_text,
     }
+
+
+def parse_public_cert():
+    certificate = request.json['certificate']
+    parsed_cert = cert_common.parse_public_cert(certificate)
+    return parsed_cert.to_dict() if parsed_cert else parsed_cert
