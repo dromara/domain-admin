@@ -107,9 +107,9 @@ def init_app(flask_app):
     # 版本自动升级
     version_service.update_version()
 
-    # if APP_MODE == 'production':
-    # 启动定时器
-    scheduler_service.init_scheduler()
+    if APP_MODE == 'production':
+        # 启动定时器
+        scheduler_service.init_scheduler()
 
     # 初始化全局常量配置
     system_service.init_system_config(flask_app)

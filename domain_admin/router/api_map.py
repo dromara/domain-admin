@@ -187,6 +187,7 @@ routes = {
     '/api/updateMonitorById': monitor_api.update_monitor_by_id,
     '/api/updateMonitorActive': monitor_api.update_monitor_active,
     '/api/removeMonitorById': monitor_api.remove_monitor_by_id,
+    '/api/deleteMonitorByIds': monitor_api.delete_monitor_by_ids,
     '/api/getMonitorById': monitor_api.get_monitor_by_id,
     '/api/getMonitorList': monitor_api.get_monitor_list,
     '/api/exportMonitorFile': monitor_api.export_monitor_file,

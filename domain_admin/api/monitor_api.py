@@ -11,9 +11,10 @@ from flask import request, g
 from peewee import SQL, fn
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.model.log_monitor_model import LogMonitorModel
 from domain_admin.model.monitor_model import MonitorModel
-from domain_admin.service import monitor_service, file_service, async_task_service
+from domain_admin.service import monitor_service, file_service, async_task_service, operation_service
 from domain_admin.service.scheduler_service import scheduler_main
 
 
@@ -97,6 +98,28 @@ def remove_monitor_by_id():
     monitor_id = request.json['monitor_id']
 
     MonitorModel.delete_by_id(monitor_id)
+
+
+
+@operation_service.operation_log_decorator(
+    model=MonitorModel,
+    operation_type_id=OperationEnum.BATCH_DELETE,
+    primary_key='monitor_ids'
+)
+def delete_monitor_by_ids():
+    """
+    批量删除
+    @since v1.6.12
+    :return:
+    """
+    current_user_id = g.user_id
+
+    monitor_ids = request.json['monitor_ids']
+
+    MonitorModel.delete().where(
+        MonitorModel.id.in_(monitor_ids),
+        MonitorModel.user_id == current_user_id
+    ).execute()
 
 
 def get_monitor_by_id():
