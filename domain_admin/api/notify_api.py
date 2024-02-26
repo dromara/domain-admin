@@ -102,7 +102,9 @@ def get_notify_list_of_user():
         for row in lst:
             group_list = []
             for group in row['groups']:
-                group_list.append(group_dict.get(group))
+                # bugfix: 如果用户删除分组后，分组数据不存在会出现null问题
+                if group in group_dict:
+                    group_list.append(group_dict.get(group))
 
             row['group_list'] = group_list
 
