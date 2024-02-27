@@ -84,6 +84,7 @@ routes = {
     '/api/getSystemVersion': system_api.get_system_version,
     '/api/getSystemData': system_api.get_system_data,
     '/api/getMonitorTaskNextRunTime': system_api.get_monitor_task_next_run_time,
+    '/api/sendTestEmail': system_api.send_test_email,
 
     # 用户管理 (管理员权限)
     '/api/getUserList': user_api.get_user_list,

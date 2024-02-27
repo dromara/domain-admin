@@ -101,7 +101,7 @@ QQ群号: 731742868
 | 2023-11-21 | [@1275788667](https://github.com/1275788667) | ￥50.00
 | 2024-01-05 | [@hhdebb](https://github.com/hhdebb) | ￥50.00
 
-<img src="https://gitee.com/mouday/domain-admin/raw/master/image/zfb-red.jpg" width="300">
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
 
 ## Domain Cloud 众筹
 

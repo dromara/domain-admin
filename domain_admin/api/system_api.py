@@ -14,7 +14,7 @@ from domain_admin.model.monitor_model import MonitorModel
 from domain_admin.model.system_model import SystemModel
 from domain_admin.service import scheduler_service
 from domain_admin.service.scheduler_service import scheduler_main
-from domain_admin.utils import datetime_util
+from domain_admin.utils import datetime_util, email_util
 
 
 def update_system_config():
@@ -225,3 +225,31 @@ def get_monitor_task_next_run_time():
     return {
         'next_run_time': scheduler_main.get_monitor_task_next_run_time()
     }
+
+
+def send_test_email():
+    """
+    发送测试邮件
+    :return:
+    """
+    mail_host = request.json['mail_host']
+    mail_port = request.json['mail_port']
+    mail_alias = request.json['mail_alias']
+    mail_username = request.json['mail_username']
+    mail_password = request.json['mail_password']
+
+    subject = request.json['subject']
+    content = request.json['content']
+    email_list = request.json['email_list']
+
+    email_util.send_email(
+        mail_host=mail_host,
+        mail_port=int(mail_port),
+        mail_alias=mail_alias,
+        subject=subject,
+        content=content,
+        to_addresses=email_list,
+        mail_username=mail_username,
+        mail_password=mail_password,
+        content_type='plain'
+    )

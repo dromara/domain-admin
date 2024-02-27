@@ -28,4 +28,20 @@ X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NjYwOD
 {}
 
 ###
+POST {{baseUrl}}/api/sendTestEmail
+Content-Type: application/json
+X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3MDk2MDc5NTZ9.XqXwQY3n0UAm_javXgmGeWNq-atA8jrylIKMiJwiFjw
+
+{
+  "mail_host": "smtp.163.com",
+  "mail_port": "465",
+  "mail_alias": "Domain Admin Test",
+  "mail_username": "",
+  "mail_password": "",
+  "subject": "测试邮件标题",
+  "content": "测试邮件内容",
+  "email_list": [""]
+}
+
+###
 
