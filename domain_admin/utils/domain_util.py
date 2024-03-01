@@ -180,13 +180,23 @@ def extract_domain(domain):
 
 def get_root_domain(domain):
     """
-    解析出域名和顶级后缀
+    解析出域名和顶级后缀 rootdomain + suffix
     :param domain: str
     :return: str
     """
     extract_result = extract_domain(domain)
     return extract_result.registered_domain
     # return '.'.join([extract_result.domain, extract_result.suffix])
+
+
+def get_subdomain(domain):
+    """
+    解析出子域名前缀
+    :param domain: str
+    :return: str
+    """
+    extract_result = extract_domain(domain)
+    return extract_result.subdomain
 
 
 def is_ipv4(ip):
@@ -232,4 +242,5 @@ def verify_cert_common_name(common_name, domain):
 
 
 if __name__ == '__main__':
-    print(get_root_domain("*.juejin.cn"))
+    # print(get_root_domain("*.juejin.cn"))
+    print(get_subdomain("chinafruitime.com"))

@@ -15,7 +15,7 @@ from domain_admin.enums.host_auth_type_enum import HostAuthTypeEnum
 from domain_admin.log import logger
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
-from domain_admin.utils import datetime_util, fabric_util
+from domain_admin.utils import datetime_util, fabric_util, domain_util
 from domain_admin.utils.acme_util import acme_v2_api
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.cert_util import cert_common
@@ -70,6 +70,7 @@ def get_certificate_challenges(issue_certificate_id):
 
             data = {
                 'domain': domain,
+                'sub_domain': domain_util.get_subdomain(domain),
                 'validation': validation,
                 'challenge': challenge
             }
