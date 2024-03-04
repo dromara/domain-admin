@@ -11,6 +11,7 @@ logger = logging.getLogger('domain-admin')
 # 单个日志文件最大为1M
 handler = RotatingFileHandler(
     filename=resolve_log_file("domain-admin.log"),
+    backupCount=1,
     maxBytes=1024 * 1024 * 1,
     encoding='utf-8'
 )

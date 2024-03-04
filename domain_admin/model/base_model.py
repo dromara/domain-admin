@@ -16,6 +16,7 @@ logger = logging.getLogger('peewee')
 handler = RotatingFileHandler(
     filename=resolve_log_file("peewee.log"),
     maxBytes=1024 * 1024 * 1,
+    backupCount=1,
     encoding='utf-8')
 
 logger.addHandler(handler)
