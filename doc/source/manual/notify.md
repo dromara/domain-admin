@@ -394,3 +394,28 @@ WebHook、企业微信、飞书、钉钉均支持自定义通知模板
     ]
 }
 ```
+
+
+### 6.4、监控异常
+                   
+```json
+{
+    "monitor_row": {
+        "title": "名称",
+        "http_url": "请求URL",
+        "allow_error_count": 3,
+        "status": 2
+    },
+    "error": "报错信息"
+}
+```
+
+参数说明
+
+| 参数  | 类型  | 说明 |
+| -| - | - |
+| error | string | 报错信息
+| monitor_row.title | string | 名称
+| monitor_row.http_url | string | 请求URL
+| monitor_row.allow_error_count | int | 重试次数
+| monitor_row.status | int | 状态：0未知，1成功，2失败
