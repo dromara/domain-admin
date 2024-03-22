@@ -57,7 +57,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#id1">1、填写域名</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">2、验证域名</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">3、下载证书</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">4、远程部署</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">说明</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="question.html">常见问题</a></li>
@@ -140,7 +141,59 @@ www.baidu.com
 </ul>
 </section>
 <section id="id4">
-<h2>说明<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<h2>4、远程部署<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>通过调用远程api接口，将证书数据发送到远程接口，可自定义实现的部署逻辑</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;domains&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;zhidao.baidu.com&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;ssl_certificate&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ssl_certificate_key&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-04 14:33:39&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expire_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04 14:33:39&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>参数说明</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>domains</td>
+<td><code>array&lt;string&gt;</code></td>
+<td>域名列表</td>
+</tr>
+<tr>
+<td>ssl_certificate</td>
+<td>string</td>
+<td>证书公钥</td>
+</tr>
+<tr>
+<td>ssl_certificate_key</td>
+<td>string</td>
+<td>证书私钥</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>string</td>
+<td>证书生效时间</td>
+</tr>
+<tr>
+<td>expire_time</td>
+<td>string</td>
+<td>证书过期时间</td>
+</tr>
+</tbody>
+</table></section>
+<section id="id5">
+<h2>说明<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
 <ul class="simple">
 <li><p>如果是全程采用<code class="docutils literal notranslate"><span class="pre">一键部署</span></code>方式操作，域名到期前30天会自动续期</p></li>
 <li><p>申请到的证书，不会到期提醒，如需到期提醒，请将部署该证书的域名添加到<code class="docutils literal notranslate"><span class="pre">证书监控</span></code>列表</p></li>
