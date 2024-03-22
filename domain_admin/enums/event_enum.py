@@ -20,3 +20,5 @@ class EventEnum(object):
     # 监控异常
     MONITOR_EXCEPTION = 2
 
+    # 托管证书到期
+    SSL_CERT_FILE_EXPIRE = 3

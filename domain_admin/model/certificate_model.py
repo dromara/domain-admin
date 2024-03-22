@@ -10,7 +10,7 @@ from peewee import IntegerField, DateTimeField, AutoField, TextField, CharField
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.model.base_model import BaseModel
-from domain_admin.utils import datetime_util
+from domain_admin.utils import datetime_util, time_util
 
 
 class CertificateModel(BaseModel):
@@ -76,12 +76,22 @@ class CertificateModel(BaseModel):
         if self.expire_time and isinstance(self.expire_time, datetime):
             return self.expire_time.strftime('%Y-%m-%d')
 
+    @property
+    def real_time_expire_days(self):
+        """
+        实时ssl过期剩余天数
+        expire_days 是更新数据时所计算的时间，有滞后性
+        :return: int
+        """
+        return time_util.get_diff_days(datetime.now(), self.expire_time)
+
     def to_dict(self):
         data = model_to_dict(
             model=self,
             extra_attrs=[
                 'create_time_label',
                 'update_time_label',
+                'real_time_expire_days',
                 'start_date',
                 'expire_date',
                 'certificate_id',

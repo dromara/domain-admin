@@ -18,6 +18,7 @@ from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.enums.event_enum import EventEnum
 from domain_admin.enums.notify_type_enum import NotifyTypeEnum
 from domain_admin.log import logger
+from domain_admin.model.certificate_model import CertificateModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_user_model import GroupUserModel
@@ -43,8 +44,12 @@ NOTIFY_CONFIGS = [
         'event_id': EventEnum.MONITOR_EXCEPTION,
         'email_template': 'monitor-email.html',
         'email_subject': '[Domain Admin]监控异常提醒',
+    },
+    {
+        'event_id': EventEnum.SSL_CERT_FILE_EXPIRE,
+        'email_template': 'cert-email.html',
+        'email_subject': '[Domain Admin]托管证书到期提醒',
     }
-
 ]
 
 
@@ -155,7 +160,8 @@ def notify_all_event():
         NotifyModel.status == True,
         NotifyModel.event_id.in_([
             EventEnum.SSL_CERT_EXPIRE,
-            EventEnum.DOMAIN_EXPIRE
+            EventEnum.DOMAIN_EXPIRE,
+            EventEnum.SSL_CERT_FILE_EXPIRE
         ])
     )
 
@@ -197,6 +203,9 @@ def notify_user_about_some_event(notify_row):
     elif notify_row.event_id == EventEnum.DOMAIN_EXPIRE:
         # 域名过期
         return notify_user_about_domain_expired(notify_row)
+    elif notify_row.event_id == EventEnum.SSL_CERT_FILE_EXPIRE:
+        # 托管证书到期
+        return notify_user_about_cert_file_expired(notify_row)
     else:
         raise AppException("notify_row event_id not support: {}".format(notify_row.event_id))
 
@@ -264,6 +273,36 @@ def notify_user_about_cert_expired(notify_row):
         row['is_expire_monitor'] = row['is_monitor']
 
     group_service.load_group_name(lst)
+
+    if len(lst) > 0:
+        return notify_user(notify_row, lst)
+
+
+def notify_user_about_cert_file_expired(notify_row):
+    """
+    托管证书到期
+    :param notify_row:
+    :return:
+    """
+    now = datetime.now()
+
+    notify_expire_time = now + timedelta(days=notify_row.expire_days)
+
+    # 注意null的情况
+    query = CertificateModel.select()
+
+    rows = query.where(
+        (CertificateModel.expire_time <= notify_expire_time)
+        | (CertificateModel.expire_time.is_null(True))
+    ).order_by(
+        CertificateModel.expire_time.asc(),
+        CertificateModel.id.desc()
+    )
+
+    lst = [row.to_dict() for row in rows]
+
+    for row in lst:
+        row['expire_days'] = row['real_time_expire_days']
 
     if len(lst) > 0:
         return notify_user(notify_row, lst)
