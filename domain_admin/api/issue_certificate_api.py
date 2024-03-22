@@ -3,6 +3,7 @@
 @File    : issue_certificate_api.py
 @Date    : 2023-07-23
 """
+import requests
 from flask import g, request
 from playhouse.shortcuts import model_to_dict, chunked
 
@@ -10,7 +11,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
 from domain_admin.service import issue_certificate_service
-from domain_admin.utils import ip_util, domain_util, fabric_util
+from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -308,3 +309,36 @@ def get_allow_commands():
     :return:
     """
     return fabric_util.allow_commands
+
+
+def notify_web_hook():
+    """
+    用户调用webhook
+    :return:
+    """
+    issue_certificate_id = request.json['issue_certificate_id']
+    url = request.json['url']
+    headers = request.json.get('headers')
+
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
+    if not issue_certificate_row:
+        raise AppException('数据不存在')
+
+    res = requests.request(
+        method='POST',
+        url=url,
+        headers=headers,
+        json={
+            'domains': issue_certificate_row.domains,
+            'ssl_certificate': issue_certificate_row.ssl_certificate,
+            'ssl_certificate_key': issue_certificate_row.ssl_certificate_key,
+            'start_time': datetime_util.format_datetime(issue_certificate_row.start_time),
+            'expire_time': datetime_util.format_datetime(issue_certificate_row.expire_time),
+        }
+    )
+
+    if not res.ok:
+        raise res.raise_for_status()
+
+    return res.text

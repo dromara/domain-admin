@@ -49,6 +49,34 @@ www.baidu.com
 - 同样配置好这几个参数：`服务器地址`、`私钥部署路径`、`公钥部署路径`、`重启命令`
 - 点击`一键部署`，证书文件就会自动拷贝到指定的服务器目录，并重启nginx服务
 
+## 4、远程部署
+
+通过调用远程api接口，将证书数据发送到远程接口，可自定义实现的部署逻辑
+
+```json
+{
+  "domains": [
+      "www.baidu.com",
+      "zhidao.baidu.com"
+  ],
+  "ssl_certificate":"-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----",
+  "ssl_certificate_key":"-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----",
+  "start_time": "2023-01-04 14:33:39",
+  "expire_time": "2023-04-04 14:33:39"
+}
+```
+
+参数说明
+
+| 参数  | 类型   | 说明 |
+| -| - | - |
+| domains | `array<string>` | 域名列表
+| ssl_certificate | string  | 证书公钥
+| ssl_certificate_key | string  | 证书私钥
+| start_time | string  | 证书生效时间
+| expire_time | string  | 证书过期时间
+
+
 ## 说明
 
 - 如果是全程采用`一键部署`方式操作，域名到期前30天会自动续期

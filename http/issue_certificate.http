@@ -122,3 +122,17 @@ X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODYyMD
 }
 
 ###
+POST {{baseUrl}}/api/notifyWebHook
+Content-Type: application/json
+X-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3MTE2OTMyMjR9.2MHCHjpy-yiAkSrtoM73qCyK5ABYVIQVOHX-1iT8GE0
+
+{
+  "issue_certificate_id": 3,
+  "url": "http://127.0.0.1:8082/issueCertificate",
+  "headers": {
+     "X-Token": "xxx"
+  }
+}
+
+###
+

@@ -176,6 +176,7 @@ routes = {
     '/api/deleteIssueCertificateById': issue_certificate_api.delete_issue_certificate_by_id,
     '/api/deleteCertificateByBatch': issue_certificate_api.delete_certificate_by_batch,
     '/api/getAllowCommands': issue_certificate_api.get_allow_commands,
+    '/api/notifyWebHook': issue_certificate_api.notify_web_hook,
 
     # 主机管理
     '/api/addHost': host_api.add_host,

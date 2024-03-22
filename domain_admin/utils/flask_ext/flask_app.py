@@ -34,6 +34,7 @@ class FlaskApp(Flask):
     )
 
     def make_response(self, rv):
+
         if isinstance(rv, self.json_data_class) or rv is None:
             rv = ApiResult.success(rv)
 
