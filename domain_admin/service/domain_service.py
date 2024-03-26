@@ -6,7 +6,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 import io
 import traceback
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from peewee import chunked, fn
 from playhouse.shortcuts import model_to_dict
@@ -532,11 +532,19 @@ def get_domain_list_query(keyword, group_id, group_ids, expire_days, user_id, ro
 
     if expire_days is not None:
         if expire_days[0] is None:
-            query = query.where(DomainModel.expire_days <= expire_days[1])
+            max_expire_time = datetime.now() + timedelta(days=expire_days[1])
+            query = query.where(
+                (DomainModel.expire_time <= max_expire_time)
+                | (DomainModel.expire_time.is_null(True))
+            )
         elif expire_days[1] is None:
-            query = query.where(DomainModel.expire_days >= expire_days[0])
+            min_expire_time = datetime.now() + timedelta(days=expire_days[0])
+            query = query.where(DomainModel.expire_time >= min_expire_time)
         else:
-            query = query.where(DomainModel.expire_days.between(expire_days[0], expire_days[1]))
+            min_expire_time = datetime.now() + timedelta(days=expire_days[0])
+            max_expire_time = datetime.now() + timedelta(days=expire_days[1])
+
+            query = query.where(DomainModel.expire_time.between(min_expire_time, max_expire_time))
 
     return query
 

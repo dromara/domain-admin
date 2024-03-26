@@ -127,7 +127,11 @@ def update_domain_info_by_id():
     if is_auto_update is False:
         data['domain_start_time'] = domain_start_time
         data['domain_expire_time'] = domain_expire_time
-        data['domain_expire_days'] = time_util.get_diff_days(datetime.now(), domain_expire_time)
+
+        if domain_expire_time:
+            data['domain_expire_days'] = time_util.get_diff_days(datetime.now(), time_util.parse_time(domain_expire_time))
+        else:
+            data['domain_expire_days'] = 0
 
     if user_id:
         data['user_id'] = user_id

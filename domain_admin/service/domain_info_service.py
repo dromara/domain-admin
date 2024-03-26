@@ -305,12 +305,20 @@ def get_domain_info_query(keyword, group_ids, domain_expire_days, role, user_id)
 
     if domain_expire_days is not None and len(domain_expire_days) == 2:
         if domain_expire_days[0] is None:
-            query = query.where(DomainInfoModel.domain_expire_days <= domain_expire_days[1])
-        elif domain_expire_days[1] is None:
-            query = query.where(DomainInfoModel.domain_expire_days >= domain_expire_days[0])
-        else:
+            max_expire_time = datetime.now() + timedelta(days=domain_expire_days[1])
             query = query.where(
-                DomainInfoModel.domain_expire_days.between(domain_expire_days[0], domain_expire_days[1]))
+                (DomainInfoModel.domain_expire_time <= max_expire_time)
+                | (DomainInfoModel.domain_expire_time.is_null(True))
+            )
+        elif domain_expire_days[1] is None:
+            min_expire_time = datetime.now() + timedelta(days=domain_expire_days[0])
+            query = query.where(DomainInfoModel.domain_expire_time >= min_expire_time)
+        else:
+            min_expire_time = datetime.now() + timedelta(days=domain_expire_days[0])
+            max_expire_time = datetime.now() + timedelta(days=domain_expire_days[1])
+
+            query = query.where(
+                DomainInfoModel.domain_expire_time.between(min_expire_time, max_expire_time))
 
     return query
 
