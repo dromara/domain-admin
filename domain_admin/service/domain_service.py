@@ -5,6 +5,7 @@ domain_service.py
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 import io
+import time
 import traceback
 from datetime import datetime, timedelta
 
@@ -12,6 +13,7 @@ from peewee import chunked, fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.role_enum import RoleEnum
+from domain_admin.enums.source_enum import SourceEnum
 from domain_admin.log import logger
 from domain_admin.model import domain_model
 from domain_admin.model.address_model import AddressModel
@@ -71,9 +73,36 @@ def update_domain_address_list_cert(domain_row):
 
     err = ''
     for address_row in lst:
-        err = update_address_row_info(address_row, domain_row)
+        err = update_address_row_info_wrap(address_row, domain_row)
 
     sync_address_info_to_domain_info(domain_row)
+    return err
+
+
+def update_address_row_info_wrap(address_row, domain_row):
+    """
+    更新单个地址信息 的代理方法 增加重试次数
+    :param address_row:
+    :param domain_row:
+    :return: error
+    """
+    # 最大重试次数
+    MAX_RETRY_COUNT = 3
+    retry_count = 0
+    err = ''
+
+    while True:
+        retry_count += 1
+        logger.info("retry_count: %s", retry_count)
+
+        err = update_address_row_info(address_row, domain_row)
+
+        if not err or retry_count >= MAX_RETRY_COUNT:
+            break
+
+        # sleep
+        time.sleep(0.5)
+
     return err
 
 
@@ -82,7 +111,7 @@ def update_address_row_info(address_row, domain_row):
     更新单个地址信息
     :param domain_row:
     :param address_row:
-    :return:
+    :return: error
     """
 
     # 获取证书信息
@@ -129,7 +158,7 @@ def update_address_row_info_with_sync_domain_row(address_id):
 
     domain_row = DomainModel.get_by_id(address_row.domain_id)
 
-    update_address_row_info(address_row, domain_row)
+    update_address_row_info_wrap(address_row, domain_row)
 
     sync_address_info_to_domain_info(domain_row)
 
@@ -188,7 +217,7 @@ def update_domain_row(domain_row):
     # 移除动态主机行为，都清空自动添加的数据再获取
     AddressModel.delete().where(
         AddressModel.domain_id == domain_row.id,
-        AddressModel.source == 0
+        AddressModel.source == SourceEnum.AUTO
     ).execute()
 
     # 主机ip信息

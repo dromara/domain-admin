@@ -4,6 +4,7 @@ from datetime import datetime
 
 from peewee import CharField, IntegerField, DateTimeField, BooleanField, AutoField, TextField
 
+from domain_admin.enums.source_enum import SourceEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util, time_util
 
@@ -32,7 +33,7 @@ class AddressModel(BaseModel):
 
     # 添加方式 0 自动 1 手动
     # @since v1.6.8
-    source = IntegerField(default=0, null=False)
+    source = IntegerField(default=SourceEnum.AUTO, null=False)
 
     # 备注说明
     # @since v1.6.8

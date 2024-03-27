@@ -229,7 +229,7 @@ def verify_cert_common_name(common_name, domain):
     :param domain:
     :return:
     """
-    logger.debug("%s <=> %s", common_name, domain)
+    # logger.debug("%s <=> %s", common_name, domain)
 
     if '*' in common_name:
         # 通配符 SSL 证书
