@@ -77,6 +77,31 @@ www.baidu.com
 | expire_time | string  | 证书过期时间
 
 
+远程服务器实现示例
+
+```python
+# -*- coding: utf-8 -*-
+"""
+@File    : fake_server.py
+@Date    : 2024-03-22
+"""
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+
+@app.route(rule='/issueCertificate', methods=['POST'])
+def issue_certificate():
+    print(request.json)
+    print(request.headers)
+    # 此处可自行实现部署逻辑
+    return jsonify({'result': 'ok'})
+
+
+if __name__ == '__main__':
+    app.run(port=8082)
+```
+
 ## 说明
 
 - 如果是全程采用`一键部署`方式操作，域名到期前30天会自动续期
