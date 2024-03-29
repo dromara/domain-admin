@@ -325,3 +325,9 @@ DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
 ```
 
 说明：以上配置仅为示例，根据自己实际情况修改
+
+如果使用mysql数据库，建议指定默认字符编码为`utf8mb4`
+
+```sql
+create database data_domain default character set=utf8mb4;
+```
