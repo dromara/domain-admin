@@ -3,17 +3,12 @@
 @File    : deploy_cert_api.py
 @Date    : 2024-03-31
 """
-import traceback
 
 from flask import g, request
 
-from domain_admin.enums.deploy_status_enum import DeployStatusEnum
-from domain_admin.log import logger
-from domain_admin.model.certificate_model import CertificateModel
 from domain_admin.model.deploy_cert_model import DeployCertModel
 from domain_admin.model.host_model import HostModel
-from domain_admin.service import deploy_cert_service, issue_certificate_service
-from domain_admin.utils import datetime_util
+from domain_admin.service import deploy_cert_service
 
 
 def get_deploy_list_by_cert_id():
@@ -156,5 +151,11 @@ def get_deploy_cert_by_id():
 
 
 def handle_deploy_cert():
+    """
+    部署证书
+    :return:
+    """
     deploy_cert_id = request.json['deploy_cert_id']
-    deploy_cert_service.handle_deploy_cert(deploy_cert_id)
+    err = deploy_cert_service.handle_deploy_cert(deploy_cert_id)
+    if err:
+        raise err

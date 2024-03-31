@@ -31,13 +31,20 @@ def load_cert_deploy_host(lst):
 
 
 def handle_deploy_cert(deploy_cert_id):
+    """
+    根据配置信息部署证书
+    :param deploy_cert_id:
+    :return:
+    """
     # 部署信息
     deploy_cert_row = DeployCertModel.get_by_id(deploy_cert_id)
     # 部署证书
     cert_row = CertificateModel.get_by_id(deploy_cert_row.cert_id)
 
     status = DeployStatusEnum.PENDING
-    
+
+    err = None
+
     # deploy
     try:
         issue_certificate_service.deploy_certificate_file(
@@ -50,6 +57,7 @@ def handle_deploy_cert(deploy_cert_id):
         )
         status = DeployStatusEnum.SUCCESS
     except Exception as e:
+        err = e
         logger.error(traceback.format_exc())
         status = DeployStatusEnum.ERROR
 
@@ -60,3 +68,5 @@ def handle_deploy_cert(deploy_cert_id):
     ).where(
         DeployCertModel.id == deploy_cert_id
     ).execute()
+
+    return err
