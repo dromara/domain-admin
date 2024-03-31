@@ -15,6 +15,11 @@ from domain_admin.utils import datetime_util
 
 
 def load_cert_deploy_host(lst):
+    """
+    @since v1.6.20
+    :param lst:
+    :return:
+    """
     deploy_host_ids = [row['deploy_host_id'] for row in lst]
 
     deploy_host_rows = HostModel.select().where(
@@ -33,6 +38,7 @@ def load_cert_deploy_host(lst):
 def handle_deploy_cert(deploy_cert_id):
     """
     根据配置信息部署证书
+    @since v1.6.20
     :param deploy_cert_id:
     :return:
     """

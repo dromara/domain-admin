@@ -153,6 +153,7 @@ def get_deploy_cert_by_id():
 def handle_deploy_cert():
     """
     部署证书
+    @since v1.6.20
     :return:
     """
     deploy_cert_id = request.json['deploy_cert_id']
