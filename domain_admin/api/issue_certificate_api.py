@@ -141,9 +141,13 @@ def deploy_certificate_file():
         issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
     # deploy key
+
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
     issue_certificate_service.deploy_certificate_file(
         host_id=host_id,
-        issue_certificate_id=issue_certificate_id,
+        key_content=issue_certificate_row.ssl_certificate_key,
+        pem_content=issue_certificate_row.ssl_certificate,
         key_deploy_path=key_deploy_path,
         pem_deploy_path=pem_deploy_path,
         reload_cmd=reload_cmd

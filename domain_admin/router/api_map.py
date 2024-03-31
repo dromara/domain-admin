@@ -10,7 +10,7 @@ from domain_admin.api import (
     log_operation_api, group_user_api,
     log_async_task_api, issue_certificate_api,
     host_api, monitor_api, log_monitor_api,
-    tag_api, certificate_api)
+    tag_api, certificate_api, deploy_cert_api)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -211,4 +211,12 @@ routes = {
     '/api/deleteCertificateByIds': certificate_api.delete_certificate_by_ids,
     '/api/getCertificateById': certificate_api.get_certificate_by_id,
 
+    # 证书部署
+    '/api/getDeployListByCertId': deploy_cert_api.get_deploy_list_by_cert_id,
+    '/api/addDeployCert': deploy_cert_api.add_deploy_cert,
+    '/api/updateDeployCertById': deploy_cert_api.update_deploy_cert_by_id,
+    '/api/deleteByDeployCertId': deploy_cert_api.delete_by_deploy_cert_id,
+    '/api/deleteByDeployCertIds': deploy_cert_api.delete_by_deploy_cert_ids,
+    '/api/getDeployCertById': deploy_cert_api.get_deploy_cert_by_id,
+    '/api/handleDeployCert': deploy_cert_api.handle_deploy_cert,
 }

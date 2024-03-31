@@ -276,9 +276,12 @@ def renew_certificate_row(row):
     renew_certificate(row.id)
 
     # 自动部署，重启服务
+    issue_certificate_row = IssueCertificateModel.get_by_id(row.id)
+
     deploy_certificate_file(
         host_id=row.deploy_host_id,
-        issue_certificate_id=row.id,
+        key_content=issue_certificate_row.ssl_certificate_key,
+        pem_content=issue_certificate_row.ssl_certificate,
         key_deploy_path=row.deploy_key_file,
         pem_deploy_path=row.deploy_fullchain_file,
         reload_cmd=row.deploy_reloadcmd
@@ -335,14 +338,25 @@ def deploy_verify_file(host_id, verify_deploy_path, challenges):
             )
 
 
-def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_deploy_path, reload_cmd):
+def deploy_certificate_file(
+        host_id,
+        key_content,
+        key_deploy_path,
+        pem_content,
+        pem_deploy_path,
+        reload_cmd
+):
     """
     自动部署SSL证书到服务器
-    :param host_id:
-    :param issue_certificate_id:
-    :param key_deploy_path:
-    :param pem_deploy_path:
-    :param reload_cmd:
+    :param host_id: 主机id
+
+    :param key_deploy_path: 私钥部署路径
+    :param key_content: 私钥内容
+
+    :param pem_deploy_path: 公钥部署路径
+    :param pem_content: 公钥内容
+
+    :param reload_cmd: 重启命令
     :return:
     """
     host_row = HostModel.get_by_id(host_id)
@@ -354,8 +368,6 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
     auth_type = host_row.auth_type
     private_key = host_row.private_key
 
-    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
-
     # deploy key
     if key_deploy_path:
         if auth_type == HostAuthTypeEnum.PRIVATE_KEY:
@@ -364,7 +376,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
                 port=port,
                 user=user,
                 private_key=private_key,
-                content=issue_certificate_row.ssl_certificate_key,
+                content=key_content,
                 remote=key_deploy_path
             )
         else:
@@ -373,7 +385,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
                 port=port,
                 user=user,
                 password=password,
-                content=issue_certificate_row.ssl_certificate_key,
+                content=key_content,
                 remote=key_deploy_path
             )
 
@@ -385,7 +397,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
                 port=port,
                 user=user,
                 private_key=private_key,
-                content=issue_certificate_row.ssl_certificate,
+                content=pem_content,
                 remote=pem_deploy_path
             )
         else:
@@ -394,7 +406,7 @@ def deploy_certificate_file(host_id, issue_certificate_id, key_deploy_path, pem_
                 port=port,
                 user=user,
                 password=password,
-                content=issue_certificate_row.ssl_certificate,
+                content=pem_content,
                 remote=pem_deploy_path
             )
 

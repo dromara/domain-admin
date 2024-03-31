@@ -28,3 +28,8 @@ class ForbiddenAppException(AppException):
 class UnauthorizedAppException(AppException):
     def __init__(self, message='用户未登录', code=HttpCodeEnum.Unauthorized):
         super(UnauthorizedAppException, self).__init__(message, code)
+
+
+class DataNotFoundAppException(AppException):
+    def __init__(self, message='数据不存在', code=HttpCodeEnum.Not_Found):
+        super(DataNotFoundAppException, self).__init__(message, code)

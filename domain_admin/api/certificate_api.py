@@ -6,6 +6,8 @@
 from flask import g, request
 
 from domain_admin.model.certificate_model import CertificateModel
+from domain_admin.service import certificate_service
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 
 
 def get_certificate_list():
@@ -37,6 +39,9 @@ def get_certificate_list():
         ).paginate(page, size)
 
         lst = [row.to_dict() for row in rows]
+
+        # 查询部署数量
+        certificate_service.load_cert_deploy_count(lst)
 
     return {
         "list": lst,
@@ -149,6 +154,11 @@ def get_certificate_by_id():
     certificate_id = request.json['certificate_id']
     certificate_row = CertificateModel.get_by_id(certificate_id)
 
-    if certificate_row:
-        return certificate_row.to_dict()
+    if not certificate_row:
+        raise DataNotFoundAppException()
 
+    # 查询部署数量
+    certificate_dict = certificate_row.to_dict()
+    certificate_service.load_cert_deploy_count([certificate_dict])
+
+    return certificate_dict
