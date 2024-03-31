@@ -50,6 +50,8 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 1、网页版：
 
+![](https://gitee.com/mouday/domain-admin/raw/master/image/dashboard.png)
+
 ![](https://gitee.com/mouday/domain-admin/raw/master/image/screencapture.png)
 
 - 预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
