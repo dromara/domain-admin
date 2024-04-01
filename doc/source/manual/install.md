@@ -305,7 +305,7 @@ Domain Admin所有版本都支持平滑升级
 
 安装最新版，重启即可
 
-如果是docker安装的，注意`database` 目录是不是手动挂载的，不要删除
+> 注意：如果是docker安装的，注意`database` 目录是不是手动挂载的，不要删除
 
 ## 可选配置
 
@@ -331,3 +331,83 @@ DB_CONNECT_URL=postgresql://root:123456@localhost:5432/data_domain
 ```sql
 create database data_domain default character set=utf8mb4;
 ```
+
+
+## 配置参数
+
+可以通过运行目录下添加 `.evn` 文件配置项目的可选参数
+
+```bash
+# 数据库链接参数
+# 支持数据库：sqlite（默认）、mysql、postgresql
+DB_CONNECT_URL=mysql://root:123456@127.0.0.1:3306/data
+
+# 运行模式
+# 可选：production（默认） / development（可以打印更多的调试日志）
+APP_MODE=production
+
+# 允许远程执行的命令白名单，多个英文分号（;）分隔
+ALLOW_COMMANDS=/opt/nginx/sbin/nginx -s reload;nginx -s reload
+```
+
+还可以通过环境变量来暴露
+
+```bash
+export APP_MODE=production
+```
+
+在 `Dockerfile` 中使用 `ENV` 指令设置环境变量
+
+```bash
+# 设置单个环境变量
+ENV APP_MODE production
+ 
+# 设置多个环境变量
+ENV APP_MODE=production ALLOW_COMMANDS='nginx -s reload'
+```
+
+使用 `docker run` 命令的 `-e` 或 `--env` 选项在运行容器时设置环境变量
+
+```bash
+# 设置单个环境变量
+docker run -e APP_MODE=production my_image
+ 
+# 设置多个环境变量
+docker run -e APP_MODE=production -e ALLOW_COMMANDS='nginx -s reload' my_image
+```
+
+在`docker-compose.yml`文件中使用`environment`关键字
+
+```yaml
+version: '3.3'
+services:
+    domain-admin:
+        volumes:
+            - './database:/app/database'
+            - './logs:/app/logs'
+        ports:
+            - '8000:8000'
+        environment:
+            - APP_MODE=production
+        container_name: domain-admin
+        image: mouday/domain-admin:latest
+```
+
+在`docker-compose.yml`文件从宿主机获取环境变量，可以使用`env_file`关键字指向一个文件
+
+```yaml
+version: '3.3'
+services:
+    domain-admin:
+        volumes:
+            - './database:/app/database'
+            - './logs:/app/logs'
+        ports:
+            - '8000:8000'
+        env_file:
+            - .env
+        container_name: domain-admin
+        image: mouday/domain-admin:latest
+```
+
+可以通过 `printenv` 命令查看设置的环境变量

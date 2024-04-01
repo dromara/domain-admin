@@ -14,7 +14,7 @@ import six
 from fabric import Connection
 from paramiko import RSAKey
 
-from domain_admin.config import DEFAULT_SSH_PORT
+from domain_admin.config import DEFAULT_SSH_PORT, ALLOW_COMMANDS
 from domain_admin.log import logger
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -27,6 +27,9 @@ allow_commands = [
     # 红帽系reload @since 1.5.31
     'systemctl reload nginx',
     'systemctl reload openresty',
+
+    # 用户自定义配置的命令
+    *ALLOW_COMMANDS,
 ]
 
 

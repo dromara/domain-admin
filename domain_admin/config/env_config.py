@@ -30,3 +30,6 @@ TOKEN_EXPIRE_DAYS = env.int("TOKEN_EXPIRE_DAYS", DEFAULT_TOKEN_EXPIRE_DAYS)
 
 # APP_MODE : production, development
 APP_MODE = env.str("APP_MODE", 'production')
+
+# ALLOW_COMMANDS
+ALLOW_COMMANDS = [cmd.strip() for cmd in env.str("ALLOW_COMMANDS", '').split(';')]
