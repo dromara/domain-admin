@@ -5,6 +5,13 @@
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+from os import path
+
+from domain_admin.config import TEMP_DIR
+
+DEFAULT_WHOIS_SERVERS_PATH = path.join(path.dirname(__file__), 'whois-servers.txt')
+TEMP_WHOIS_SERVERS_PATH = path.join(TEMP_DIR, 'whois-servers.txt')
+
 # 根服务器地址
 ROOT_SERVER = 'whois.iana.org'
 

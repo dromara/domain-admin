@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+import traceback
+
 from flask import request, make_response, send_file
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -16,6 +18,7 @@ from domain_admin.service import version_service
 from domain_admin.utils.flask_ext import handler
 from domain_admin.utils.flask_ext import register
 from domain_admin.utils.flask_ext.flask_app import FlaskApp
+from domain_admin.utils.whois_util import whois_util
 
 app = FlaskApp(
     import_name=__name__,
@@ -113,6 +116,12 @@ def init_app(flask_app):
 
     # 初始化全局常量配置
     system_service.init_system_config(flask_app)
+
+    # 尝试更新whois_servers文件
+    try:
+        whois_util.update_whois_servers()
+    except Exception as e:
+        logger.error(traceback.format_exc())
 
 
 init_app(app)

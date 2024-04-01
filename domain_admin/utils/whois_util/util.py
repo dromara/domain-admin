@@ -5,9 +5,14 @@
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+import io
+import os
 import socket
 from os import path
-import io
+
+import requests
+
+from domain_admin.utils.whois_util.config import TEMP_WHOIS_SERVERS_PATH, DEFAULT_WHOIS_SERVERS_PATH
 
 
 def parse_whois_raw(whois_raw):
@@ -73,8 +78,16 @@ def load_whois_servers():
     }
     """
     dct = {}
+
+    # 获取文件路径
+    whois_servers_file_path = None
+    if os.path.exists(TEMP_WHOIS_SERVERS_PATH):
+        whois_servers_file_path = TEMP_WHOIS_SERVERS_PATH
+    else:
+        whois_servers_file_path = DEFAULT_WHOIS_SERVERS_PATH
+
     # fix：Python2 encoding error
-    with io.open(path.join(path.dirname(__file__), 'whois-servers.txt'), 'r', encoding='utf-8') as f:
+    with io.open(whois_servers_file_path, 'r', encoding='utf-8') as f:
         for line in f:
             if line.startswith(";"):
                 pass
@@ -86,3 +99,4 @@ def load_whois_servers():
                 dct[root.strip()] = server.strip()
 
     return dct
+
