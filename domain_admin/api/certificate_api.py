@@ -4,6 +4,7 @@
 @Date    : 2024-02-25
 """
 from flask import g, request
+from peewee import SQL
 
 from domain_admin.model.certificate_model import CertificateModel
 from domain_admin.service import certificate_service
@@ -22,6 +23,11 @@ def get_certificate_list():
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
     keyword = request.json.get('keyword')
+    order_prop = request.json.get('order_prop') or 'create_time'
+    order_type = request.json.get('order_type') or 'desc'
+
+    if order_type not in ['desc', 'asc']:
+        raise AppException('params error: order_type')
 
     query = CertificateModel.select().where(
         CertificateModel.user_id == current_user_id,
@@ -34,9 +40,12 @@ def get_certificate_list():
     lst = []
 
     if total > 0:
-        rows = query.order_by(
+        ordering = [
+            SQL(f"`{order_prop}` {order_type}"),
             CertificateModel.id.desc()
-        ).paginate(page, size)
+        ]
+
+        rows = query.order_by(*ordering).paginate(page, size)
 
         lst = [row.to_dict() for row in rows]
 
