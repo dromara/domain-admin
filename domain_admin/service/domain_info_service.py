@@ -361,7 +361,7 @@ def get_ordering(order_prop='expire_days', order_type='ascending'):
         else:
             ordering.append(DomainInfoModel.is_expire_monitor.asc())
 
-    # order by is_auto_update
+    # fix: order by is_auto_update
     elif order_prop == 'is_auto_update':
         if order_type == 'descending':
             ordering.append(DomainInfoModel.is_auto_update.desc())
