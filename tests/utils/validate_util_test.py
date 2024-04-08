@@ -14,3 +14,7 @@ class ValidateUtilTest(unittest.TestCase):
         assert validate_util.is_domain('13760613402@163.com') == False
         assert validate_util.is_domain('alleyliang@163.com') == False
         assert validate_util.is_domain('*.dai.163.com') == False
+
+    def test_is_domain(self):
+        assert validate_util.is_domain('www.baidu.com') is True
+        assert validate_util.is_domain('*.baidu.com') is False

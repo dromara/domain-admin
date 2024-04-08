@@ -11,7 +11,7 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
 from domain_admin.service import issue_certificate_service
-from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util
+from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util, validate_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.flask_ext.app_exception import AppException
 
@@ -52,6 +52,7 @@ def verify_certificate():
     # 验证成功后，自动添加到证书监控列表
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
+    # fix: 过滤通配符的域名
     lst = [
         {
             'domain': domain,
@@ -60,7 +61,9 @@ def verify_certificate():
             'alias': '',
             'user_id': current_user_id,
             'group_id': 0,
-        } for domain in issue_certificate_row.domains
+        }
+        for domain in issue_certificate_row.domains
+        if validate_util.is_domain(domain)
     ]
 
     for batch in chunked(lst, 500):
