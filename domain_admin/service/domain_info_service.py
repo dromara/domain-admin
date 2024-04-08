@@ -329,9 +329,9 @@ def get_ordering(order_prop='expire_days', order_type='ascending'):
     # order by domain_expire_days
     if order_prop == 'domain_expire_days':
         if order_type == 'descending':
-            ordering.append(DomainInfoModel.domain_expire_days.desc())
+            ordering.append(DomainInfoModel.domain_expire_time.desc())
         else:
-            ordering.append(DomainInfoModel.domain_expire_days.asc())
+            ordering.append(DomainInfoModel.domain_expire_time.asc())
 
     # order by domain
     elif order_prop == 'domain':

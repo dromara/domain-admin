@@ -56,7 +56,15 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 - 预览地址：[https://mouday.github.io/domain-admin-web/](https://mouday.github.io/domain-admin-web/)
 
+本项目采用的是前后端分离模式，前端代码在另外一个仓库。
+
 前端项目地址（请自行解码）：aHR0cHM6Ly9naXRodWIuY29tL21vdWRheS9kb21haW4tYWRtaW4td2Vi
+
+或者关注微信公众号：
+
+<img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
+
+回复：`domain-admin-web`，获取完整的前端代码
 
 2、移动端版：
 
