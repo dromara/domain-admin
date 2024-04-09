@@ -121,7 +121,7 @@ def init_app(flask_app):
     try:
         whois_util.update_whois_servers()
     except Exception as e:
-        if APP_MODE == 'production':
+        if APP_MODE == 'development':
             logger.error(traceback.format_exc())
 
 
