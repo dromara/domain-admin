@@ -6,7 +6,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 from datetime import datetime
 
-from peewee import CharField, IntegerField, DateTimeField, AutoField
+from peewee import CharField, IntegerField, DateTimeField, AutoField, TextField
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.config import DEFAULT_SSH_PORT
@@ -35,7 +35,8 @@ class HostModel(BaseModel):
     # 验证方式，默认密码
     auth_type = IntegerField(default=HostAuthTypeEnum.PASSWORD)
 
-    private_key = CharField(default=None, null=True)
+    # CharField -> TextField
+    private_key = TextField(default=None, null=True)
 
     password = CharField(default=None, null=True)
 

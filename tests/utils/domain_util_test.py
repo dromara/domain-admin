@@ -54,9 +54,12 @@ class DomainUtilTest(unittest.TestCase):
         assert domain_util.is_ipv4('www.baidu.com') == False
 
     def test_get_root_domain(self):
-        print(domain_util.get_root_domain('38.60.47.102'))
-        print(domain_util.get_root_domain('www.baidu.com'))
-        print(domain_util.get_root_domain('www.baidu.com.cn'))
+        # print(domain_util.get_root_domain('38.60.47.102'))
+        # print(domain_util.get_root_domain('www.baidu.com'))
+        # print(domain_util.get_root_domain('www.baidu.com.cn'))
+        print(domain_util.get_root_domain('xxx.com.de'))
+        print(domain_util.get_root_domain('xxx.co.nl'))
+        print(domain_util.get_root_domain('xxx.com.ru'))
         # assert domain_util.get_root_domain('www.baidu.com') == True
 
     def test_encode_hostname(self):

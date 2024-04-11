@@ -118,11 +118,11 @@ def init_app(flask_app):
     system_service.init_system_config(flask_app)
 
     # 尝试更新whois_servers文件
-    try:
-        whois_util.update_whois_servers()
-    except Exception as e:
-        if APP_MODE == 'development':
-            logger.error(traceback.format_exc())
+    # try:
+    #     whois_util.update_whois_servers()
+    # except Exception as e:
+    #     if APP_MODE == 'development':
+    #         logger.error(traceback.format_exc())
 
 
 init_app(app)

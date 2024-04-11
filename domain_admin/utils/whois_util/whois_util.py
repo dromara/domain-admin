@@ -232,7 +232,7 @@ def update_whois_servers():
     # https://github.com/WooMai/whois-servers/blob/master/list.txt
     # url = 'https://raw.githubusercontent.com/WooMai/whois-servers/master/list.txt'
     url = 'https://raw.gitmirror.com/WooMai/whois-servers/master/list.txt'
-    res = requests.get(url)
+    res = requests.get(url, timeout=3)
 
     if res.ok:
         with io.open(TEMP_WHOIS_SERVERS_PATH, 'w', encoding='utf-8') as f:
