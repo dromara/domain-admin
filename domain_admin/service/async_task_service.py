@@ -14,6 +14,7 @@ import six
 from flask import g
 
 from domain_admin.log import logger
+from domain_admin.model.base_model import db
 from domain_admin.model.log_async_task_model import AsyncTaskModel
 from domain_admin.utils import datetime_util
 
@@ -79,9 +80,10 @@ def async_task_decorator(task_name):
                     'update_time': datetime_util.get_datetime(),
                 }
 
-                AsyncTaskModel.update(data).where(
-                    AsyncTaskModel.id == async_task_row.id
-                ).execute()
+                with db.connection_context():
+                    AsyncTaskModel.update(data).where(
+                        AsyncTaskModel.id == async_task_row.id
+                    ).execute()
 
             # execute
             ret = submit_task(func, *args, **kwargs)

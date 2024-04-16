@@ -91,7 +91,6 @@ def get_monitor_task_next_run_time():
         return monitor_task.next_run_time
 
 
-@db.connection_context()
 def run_monitor_task():
     next_run_time = monitor_service.run_monitor_task()
 
