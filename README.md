@@ -102,37 +102,12 @@ QQ群号: 731742868
 
 ## 使用者
 
-虚位以待
+虚位以待（可以将使用者公司或个人的名字放到这里）
 
-## 赞助商
-
-| 日期 | 姓名 | 金额 | 
-| - | - | - |
-| 2023-11-21 | [@1275788667](https://github.com/1275788667) | ￥50.00
-| 2024-01-05 | [@hhdebb](https://github.com/hhdebb) | ￥50.00
+- [@1275788667](https://github.com/1275788667)
+- [@hhdebb](https://github.com/hhdebb) 
+- `星河 ๑. `
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
 
-## Domain Cloud 众筹
-
-由于本项目需要使用者自行安装，对于使用有一定的技术门槛，所以发起一个众筹
-
-资金将用于部署一个线上版本的domain-admin，直接通过网页就可以使用
-
-目标：￥2000
-
-配置：一个域名 + 一台服务器
-
-<img src="https://gitee.com/mouday/domain-admin/raw/master/image/afdian-吃个大西瓜.jpeg" width="300">
-
-## 友情链接：
-
-- [小熊猫去水印](https://qushuiyin.guijianpan.com)
-- [ICP备案查询：ICP_Query](https://github.com/HG-ha/ICP_Query)
-- [ICP备案查询：ICP-Checker](https://github.com/wongzeon/ICP-Checker)
-
-- [某查询网站点选逆向分析](https://mp.weixin.qq.com/s/1Dw7ylfRmBjV_khOF4nuGQ)
-- [文字点选验证码-破解之路](https://mp.weixin.qq.com/s/Lo9GveZUpnn_NTF8jL2ORg)
-
 [![Stargazers over time](https://starchart.cc/mouday/domain-admin.svg)](https://starchart.cc/mouday/domain-admin)
-
