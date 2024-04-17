@@ -38,3 +38,12 @@
     - `已完成` 通知配置增加分组参数
     - `已完成` 主机host管理列表，支持移除
     - 通过webhook重启
+
+一些又有的链接
+
+- [小熊猫去水印](https://qushuiyin.guijianpan.com)
+- [ICP备案查询：ICP_Query](https://github.com/HG-ha/ICP_Query)
+- [ICP备案查询：ICP-Checker](https://github.com/wongzeon/ICP-Checker)
+
+- [某查询网站点选逆向分析](https://mp.weixin.qq.com/s/1Dw7ylfRmBjV_khOF4nuGQ)
+- [文字点选验证码-破解之路](https://mp.weixin.qq.com/s/Lo9GveZUpnn_NTF8jL2ORg)

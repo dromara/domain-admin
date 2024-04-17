@@ -102,6 +102,85 @@ if __name__ == '__main__':
     app.run(port=8082)
 ```
 
+完整示例，由群友 `@星河 ๑.`提供
+
+```python
+import os
+import shutil
+import subprocess
+import threading
+import time
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+def delayed_restart_nginx():
+    """在延迟5秒后重启nginx"""
+    time.sleep(5)
+    try:
+        subprocess.run(['docker', 'restart', 'nginx'])
+        print('重启nginx完成。')
+    except subprocess.CalledProcessError as e:
+        print('重启nginx失败: ', e)
+
+@app.route('/deploy-cert', methods=['POST'])
+def deploy_cert():
+    token = request.headers.get('token')
+    if token != 'token':
+        return jsonify({'error': 'Invalid token'}), 401
+
+    # 获取请求参数
+    data = request.get_json()
+    # 获取域名列表
+    domains = data.get('domains', [])
+    # 获取证书文件
+    ssl_certificate = data.get('ssl_certificate', '')
+    # 获取证书密钥
+    ssl_certificate_key = data.get('ssl_certificate_key', '')
+
+    # 检测是否有值，避免无效请求
+    if not domains or not ssl_certificate or not ssl_certificate_key:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    # 定义基础路径，因为本人的 nginx 是 docker 运行的，做了磁盘映射
+    # nginx 的配置文件都在此目录，加上域名作为不同域名的证书目录
+    # 如：/server/dockerApps/nginx/nginx/certs/simple.com/fullchain.pem
+    # 如：/server/dockerApps/nginx/nginx/certs/simple.com/cert.key
+    base_path = '/server/dockerApps/nginx/nginx/certs'
+
+    # 遍历域名列表
+    for domain in domains:
+        # 将泛域名中的 *. 去掉
+        if domain.startswith('*.'):
+            domain = domain.replace('*.', '', 1)
+        # 创建目录
+        domain_dir = os.path.join(base_path, domain)
+        if os.path.exists(domain_dir):
+            shutil.rmtree(domain_dir)
+        os.makedirs(domain_dir)
+
+        # 生成证书文件
+        cert_path = os.path.join(domain_dir, 'fullchain.pem')
+        key_path = os.path.join(domain_dir, 'cert.key')
+
+        with open(cert_path, 'w') as cert_file:
+            cert_file.write(ssl_certificate)
+
+        with open(key_path, 'w') as key_file:
+            key_file.write(ssl_certificate_key)
+
+        print(domain, " ==> 证书创建成功")
+
+    # 执行重启nginx的线程
+    threading.Thread(target=delayed_restart_nginx).start()
+
+    # 返回前端结果
+    return jsonify({'result': 'ok'}), 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8001)
+```
+
 ## 说明
 
 - 如果是全程采用`一键部署`方式操作，域名到期前30天会自动续期
