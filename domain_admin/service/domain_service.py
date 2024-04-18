@@ -191,6 +191,7 @@ def sync_address_info_to_domain_info(domain_row):
         expire_days=first_address_row.real_time_ssl_expire_days,
         connect_status=connect_status,
         update_time=datetime_util.get_datetime(),
+        version=DomainModel.version + 1
     ).where(
         DomainModel.id == domain_row.id
     ).execute()

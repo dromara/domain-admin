@@ -226,14 +226,14 @@ def add_domain_from_file(filename, user_id):
     lst = [
         {
             'domain': item['domain'],
-            'comment': item.get('comment'),
-            'group_id': group_map.get(item.get('group_name'), 0),
+            'comment': item.get('comment') or '',
+            'group_id': group_map.get(item.get('group_name')) or 0,
             'tags_raw': json.dumps(item.get('tags'), ensure_ascii=False),
             'domain_start_time': item.get('domain_start_date'),
             'domain_expire_time': item.get('domain_expire_date'),
             'domain_expire_days': item.get('real_domain_expire_days') or 0,
-            'icp_company': item.get('icp_company'),
-            'icp_licence': item.get('icp_licence'),
+            'icp_company': item.get('icp_company') or '',
+            'icp_licence': item.get('icp_licence') or '',
             'user_id': user_id,
         } for item in lst if item.get('root_domain')
     ]
