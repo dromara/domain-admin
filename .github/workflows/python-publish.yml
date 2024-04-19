@@ -60,6 +60,10 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin/public/m'
 
+      # remove .git
+      - name: Remove .git Dir
+        run: rm -rf '.git' 'domain_admin/public/.git' 'domain_admin/public/m/.git'
+
       - name: Build
         run: |
             python setup.py sdist bdist_wheel --python-tag py2.py3

@@ -80,6 +80,10 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: 'domain_admin_mini'
 
+      # remove .git
+      - name: Remove .git Dir
+        run: rm -rf '.git' 'domain_admin/public/.git' 'domain_admin/public/m/.git'
+
       - name: Compress action step Mini
         uses: a7ul/tar-action@v1.1.0
         id: compress-mini
