@@ -585,6 +585,7 @@ def get_sub_domain_cert():
 def auto_import_subdomain_by_ids():
     """
     批量导入子域证书
+    @since v1.6.30
     :return:
     """
     current_user_id = g.user_id
