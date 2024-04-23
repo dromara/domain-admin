@@ -142,6 +142,7 @@ routes = {
     '/api/getSubDomainCert': domain_info_api.get_sub_domain_cert,
     '/api/updateDomainICPOfUser': domain_info_api.update_all_domain_icp_of_user,
     '/api/updateDomainRowICP': domain_info_api.update_domain_row_icp,
+    '/api/autoImportSubDomainByIds': domain_info_api.auto_import_subdomain_by_ids,
 
     # prometheus
     '/metrics': prometheus_api.metrics,

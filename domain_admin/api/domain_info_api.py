@@ -129,7 +129,8 @@ def update_domain_info_by_id():
         data['domain_expire_time'] = domain_expire_time
 
         if domain_expire_time:
-            data['domain_expire_days'] = time_util.get_diff_days(datetime.now(), time_util.parse_time(domain_expire_time))
+            data['domain_expire_days'] = time_util.get_diff_days(datetime.now(),
+                                                                 time_util.parse_time(domain_expire_time))
         else:
             data['domain_expire_days'] = 0
 
@@ -579,3 +580,20 @@ def get_sub_domain_cert():
         'list': lst,
         'total': len(lst)
     }
+
+
+def auto_import_subdomain_by_ids():
+    """
+    批量导入子域证书
+    :return:
+    """
+    current_user_id = g.user_id
+
+    domain_ids = request.json['domain_ids']
+
+    rows = DomainInfoModel.select().where(
+        DomainInfoModel.id.in_(domain_ids)
+    )
+
+    # 异步提交
+    domain_service.auto_import_from_domain_batch_async(rows=rows, user_id=current_user_id)

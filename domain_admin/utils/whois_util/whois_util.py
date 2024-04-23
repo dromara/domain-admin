@@ -138,6 +138,8 @@ def get_domain_raw_whois(domain):
 
     whois_server = whois_config['whois_server']
 
+    logger.info('whois_server: %s', whois_server)
+
     raw_data = get_whois_raw(domain, whois_server, timeout=10)
     logger.debug(raw_data)
     return raw_data

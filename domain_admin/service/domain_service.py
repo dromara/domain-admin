@@ -357,8 +357,24 @@ def check_permission_and_get_row(domain_id, user_id):
     return row
 
 
+@async_task_service.async_task_decorator("自动批量导入子域名证书")
+def auto_import_from_domain_batch_async(rows, user_id):
+    # type: (list[DomainInfoModel], int)->None
+    """
+    自动批量导入子域名证书
+    :param rows:
+    :param user_id:
+    :return:
+    """
+    for row in rows:
+        auto_import_from_domain(root_domain=row.domain, group_id=row.group_id, user_id=user_id)
+
+    init_domain_cert_info_of_user(user_id=user_id)
+
+
 @async_task_service.async_task_decorator("自动导入子域名证书")
 def auto_import_from_domain_async(root_domain, group_id=0, user_id=0):
+    # type: (str, int, int)->None
     auto_import_from_domain(root_domain=root_domain, group_id=group_id, user_id=user_id)
 
     init_domain_cert_info_of_user(user_id=user_id)
