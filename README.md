@@ -90,7 +90,7 @@ QQ群号: 731742868
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
 
-回复：`domain-admin加群`，和众多使用者一起交流学习使用经验，反馈使用问题，获得更及时的解答和修复
+回复：`domain-admin`，和众多使用者一起交流学习使用经验，反馈使用问题，获得更及时的解答和修复
 
 ## 更新日志
 
