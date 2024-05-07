@@ -26,6 +26,10 @@ jobs:
         exclude:
           - os: ubuntu-latest
             python-version: "3.5"
+          - os: macos-latest
+            python-version: "3.5"
+          - os: macos-latest
+            python-version: "3.7"
 
     steps:
       # Checkout the latest code from the repo
