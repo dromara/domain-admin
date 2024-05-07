@@ -1,0 +1,217 @@
+{# 查询域名到期情况 #}
+<html lang="zh">
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<div>
+    <div
+            style="
+          box-sizing: border-box;
+          text-align: center;
+          min-width: 320px;
+          max-width: 800px;
+          border: 1px solid #f6f6f6;
+          background-color: #f6f6f6;
+          margin: auto;
+          padding: 20px 0 30px;
+          font-family: 'helvetica neue', PingFangSC-Light, arial,
+            'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun,
+            sans-serif;
+        "
+    >
+        <div>
+            <table
+                    style="
+              width: 100%;
+              font-weight: 300;
+              margin-bottom: 10px;
+              border-collapse: collapse;
+            "
+            >
+                <tbody>
+                <tr style="font-weight: 300">
+                    <td style="width: 3%; max-width: 30px"></td>
+                    <td style="max-width: 600px">
+                        <div
+                                style="
+                      height: 25px;
+                      text-align: left;
+                      margin-bottom: 10px;
+                      margin-top: 10px;
+                    "
+                        >
+                            <a
+                                    href="https://github.com/mouday/domain-admin"
+                                    rel="noopener"
+                                    target="_blank"
+                                    style="text-decoration: none; color: black"
+                            >
+                                <div style="display: flex">
+                        <span
+                                style="
+                            font-size: 30px;
+                            margin-left: 3px;
+                            font-family: sans-serif;
+                            height: 24px;
+                            line-height: 24px;
+                          "
+                        >Domain Admin</span
+                        >
+                                </div>
+                            </a
+                            >
+                        </div>
+                        <p
+                                style="
+                      height: 2px;
+                      background-color: #006EFF;
+                      border: 0;
+                      font-size: 0;
+                      padding: 0;
+                      width: 100%;
+                      margin-top: 10px;
+                    "
+                        ></p>
+                        <div
+                                style="
+                      background-color: #fff;
+                      padding: 23px 0 20px;
+                      box-shadow: 0px 1px 1px 0px rgba(122, 55, 55, 0.2);
+                      text-align: left;
+                    "
+                        >
+                            <table
+                                    style="
+                        width: 100%;
+                        font-weight: 300;
+                        margin-bottom: 10px;
+                        border-collapse: collapse;
+                        text-align: left;
+                      "
+                            >
+                                <tbody>
+                                <tr style="font-weight: 300">
+                                    <td style="width: 3.2%; max-width: 30px"><br/></td>
+                                    <td style="max-width: 480px; text-align: left">
+                                        <div
+                                                style="
+                                font-size: 14px;
+                                color: #333;
+                                line-height: 24px;
+                                margin: 6px 0 0 0;
+                                word-wrap: break-word;
+                                word-break: break-all;
+                              "
+                                        >
+
+                                            <div style="font-size: 12px;">监控异常恢复提醒：</div>
+
+                                            <div style="font-size: 14px; color: #000000; margin-top: 20px;">
+                                                <div>名称：{{monitor_row.title}}</div>
+                                                <div>URL：{{monitor_row.http_url}}</div>
+                                                <div>监控异常已恢复</div>
+                                            </div>
+
+                                            <div style="margin-top: 20px; font-size: 12px;">请持续关注</div>
+
+                                        </div>
+                                        <br/>
+                                        <dl
+                                                style="
+                                font-size: 14px;
+                                color: #333;
+                                line-height: 18px;
+                              "
+                                        ></dl>
+                                        <p
+                                                style="
+                                color: #333;
+                                font-size: 14px;
+                                line-height: 26px;
+                                word-wrap: break-word;
+                                word-break: break-all;
+                                margin-top: 32px;
+                              "
+                                        >
+                                            此致<br/><strong>Domain Admin团队</strong>
+                                        </p>
+                                    </td>
+                                    <td style="width: 3.2%; max-width: 30px"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div
+                                style="
+                      text-align: center;
+                      font-size: 12px;
+                      line-height: 18px;
+                      color: #999;
+                    "
+                        >
+                            <table
+                                    style="
+                        width: 100%;
+                        font-weight: 300;
+                        margin-bottom: 10px;
+                        border-collapse: collapse;
+                      "
+                            >
+                                <tbody>
+                                <tr style="font-weight: 300">
+                                    <td style="width: 3.2%; max-width: 30px"></td>
+                                    <td style="max-width: 540px">
+                                        <p
+                                                style="
+                                text-align: center;
+                                margin: 20px auto 14px auto;
+                                font-size: 12px;
+                                color: #999;
+                                font-family: sans-serif;
+                              "
+                                        >
+                                            此为系统邮件，请勿回复。
+                                        </p>
+                                        <p
+                                                style="
+                                text-align: center;
+                                margin: 20px auto 5px auto;
+                                font-size: 12px;
+                                color: #999;
+                                font-family: sans-serif;
+                              "
+                                        >
+                                            Copyright © 2023 Domain Admin
+                                        </p>
+                                        <p
+                                                style="
+                                text-align: center;
+                                margin: 5px auto 0px auto;
+                                font-size: 12px;
+                                color: #999;
+                                font-family: sans-serif;
+                              "
+                                        >
+                                            All Rights Reserved Domain Admin 版权所有
+                                        </p>
+                                    </td>
+                                    <td style="width: 3.2%; max-width: 30px"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                    <td style="width: 3%; max-width: 30px"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -46,6 +46,11 @@ NOTIFY_CONFIGS = [
         'email_subject': '[Domain Admin]监控异常提醒',
     },
     {
+        'event_id': EventEnum.MONITOR_EXCEPTION_RESTORE,
+        'email_template': 'monitor-restore-email.html',
+        'email_subject': '[Domain Admin]监控异常恢复提醒',
+    },
+    {
         'event_id': EventEnum.SSL_CERT_FILE_EXPIRE,
         'email_template': 'cert-email.html',
         'email_subject': '[Domain Admin]托管证书到期提醒',
@@ -186,6 +191,25 @@ def notify_user_about_monitor_exception(monitor_row, error):
     for row in rows:
         try:
             notify_user(notify_row=row, rows=rows, data={'monitor_row': monitor_row, 'error': str(error)})
+        except:
+            logger.error(traceback.format_exc())
+
+
+def notify_user_about_monitor_exception_restore(monitor_row):
+    """
+    监控异常恢复通知
+    :param monitor_row:
+    :param error:
+    :return:
+    """
+    rows = NotifyModel.select().where(
+        NotifyModel.status == True,
+        NotifyModel.event_id == EventEnum.MONITOR_EXCEPTION_RESTORE
+    )
+
+    for row in rows:
+        try:
+            notify_user(notify_row=row, rows=rows, data={'monitor_row': monitor_row})
         except:
             logger.error(traceback.format_exc())
 

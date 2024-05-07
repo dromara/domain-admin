@@ -85,26 +85,29 @@ def monitor_notify_decorator(func):
             handle_monitor_exception(monitor_row, error)
             raise error
         else:
+            handle_monitor_exception_restore(monitor_row)
+
             return result
 
     return wrapper
 
 
+def handle_monitor_exception_restore(monitor_row):
+    # 如果上一次记录是失败的，则需要触发监测异常恢复通知
+    if monitor_row.status != MonitorStatusEnum.ERROR:
+        return
+
+    # 检查连续失败次数是否大于最大允许失败次数，增加容错
+    if monitor_row.allow_error_count > 0 and is_between_allow_error_count(monitor_row):
+        return
+
+    notify_service.notify_user_about_monitor_exception_restore(monitor_row)
+
+
 def handle_monitor_exception(monitor_row, error):
-    if monitor_row.allow_error_count > 0:
-        # 检查连续失败次数是否大于最大允许失败次数，增加容错
-        rows = LogMonitorModel.select().where(
-            LogMonitorModel.monitor_id == monitor_row.id,
-        ).order_by(
-            LogMonitorModel.id.desc()
-        ).limit(
-            monitor_row.allow_error_count + 1
-        )
-
-        error_count = len([row for row in rows if row.status == MonitorStatusEnum.ERROR])
-
-        if error_count <= monitor_row.allow_error_count:
-            return
+    # 检查连续失败次数是否大于最大允许失败次数，增加容错
+    if monitor_row.allow_error_count > 0 and is_between_allow_error_count(monitor_row):
+        return
 
     # 发送异常通知
     notify_service.notify_user_about_monitor_exception(monitor_row, error)
@@ -267,3 +270,25 @@ def import_monitor_from_file(filename, user_id):
     # https://github.com/mouday/domain-admin/issues/63
     for batch in chunked(lst, 500):
         MonitorModel.insert_many(batch).on_conflict_ignore().execute()
+
+
+def is_between_allow_error_count(monitor_row):
+    """
+    连续失败次数是否在允许范围内
+    :param monitor_row:
+    :return:
+
+    注意：先触发的事件，才写入日志
+    """
+    # 检查连续失败次数是否大于最大允许失败次数，增加容错
+    rows = LogMonitorModel.select().where(
+        LogMonitorModel.monitor_id == monitor_row.id,
+    ).order_by(
+        LogMonitorModel.id.desc()
+    ).limit(
+        monitor_row.allow_error_count + 1
+    )
+
+    error_count = len([row for row in rows if row.status == MonitorStatusEnum.ERROR])
+
+    return error_count <= monitor_row.allow_error_count
