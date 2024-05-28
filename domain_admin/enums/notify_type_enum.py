@@ -28,3 +28,6 @@ class NotifyTypeEnum(object):
 
     # 飞书
     FEISHU = 5
+
+    # 电报
+    Telegram = 6

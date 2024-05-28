@@ -442,6 +442,9 @@ def notify_user(notify_row, rows, data=None):
     elif notify_row.type_id == NotifyTypeEnum.FEISHU:
         return notify_user_by_feishu(notify_row=notify_row, data={**data, 'list': rows})
 
+    elif notify_row.type_id == NotifyTypeEnum.Telegram:
+        return notify_user_by_telegram(notify_row=notify_row, data={**data, 'list': rows})
+
     else:
         logger.warn("type not support")
 
@@ -574,3 +577,13 @@ def notify_user_by_feishu(notify_row, data):
     )
 
     return res
+
+
+@async_task_service.sync_task_decorator("触发电报通知")
+def notify_user_by_telegram(notify_row, data):
+    """
+    触发电报通知
+    :param notify_row: NotifyModel
+    :return:
+    """
+    pass
