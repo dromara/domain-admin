@@ -9,4 +9,4 @@ https://github.com/louislam/uptime-kuma
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 
-VERSION = '1.6.31'
+VERSION = '1.6.32'
