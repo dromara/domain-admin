@@ -26,7 +26,7 @@ from domain_admin.model.notify_model import NotifyModel
 from domain_admin.service import domain_service, render_service, system_service, async_task_service, group_service
 from domain_admin.utils import email_util, json_util
 from domain_admin.utils.flask_ext.app_exception import AppException
-from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api
+from domain_admin.utils.open_api import feishu_api, work_weixin_api, ding_talk_api, telegram_api
 
 # 通知参数配置
 NOTIFY_CONFIGS = [
@@ -580,10 +580,26 @@ def notify_user_by_feishu(notify_row, data):
 
 
 @async_task_service.sync_task_decorator("触发电报通知")
-def notify_user_by_telegram(notify_row, data):
+def notify_user_by_telegram(notify_row: NotifyModel, data):
     """
     触发电报通知
     :param notify_row: NotifyModel
     :return:
     """
-    pass
+
+    # 支持模板变量
+    template = Template(notify_row.telegram_body)
+    telegram_body = template.render(data)
+
+    data = {
+        'token': notify_row.telegram_token,
+        'chat_id': notify_row.telegram_chat_id,
+        'text': telegram_body,
+        'proxies': notify_row.telegram_proxies,
+    }
+
+    logger.info(data)
+
+    res = telegram_api.send_message(**data)
+
+    return res

@@ -147,3 +147,24 @@ class NotifyModel(BaseModel):
     def feishu_app_secret(self):
         if self.value:
             return self.value.get('app_secret')
+
+    # telegram
+    @property
+    def telegram_token(self):
+        if self.value:
+            return self.value.get('token')
+
+    @property
+    def telegram_chat_id(self):
+        if self.value:
+            return self.value.get('chat_id')
+
+    @property
+    def telegram_proxies(self):
+        if self.value:
+            return self.value.get('proxies')
+
+    @property
+    def telegram_body(self):
+        if self.value:
+            return self.value.get('body')
