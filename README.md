@@ -107,3 +107,5 @@ QQ群号: 731742868
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
 
 [![Stargazers over time](https://starchart.cc/mouday/domain-admin.svg)](https://starchart.cc/mouday/domain-admin)
+
+<a href="https://hellogithub.com/repository/2b44fb56aca14df7a6279b0997f7325c" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=2b44fb56aca14df7a6279b0997f7325c&claim_uid=Hb7yUF2AEhnmSwJ" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
