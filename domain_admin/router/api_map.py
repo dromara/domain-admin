@@ -10,7 +10,7 @@ from domain_admin.api import (
     log_operation_api, group_user_api,
     log_async_task_api, issue_certificate_api,
     host_api, monitor_api, log_monitor_api,
-    tag_api, certificate_api, deploy_cert_api)
+    tag_api, certificate_api, deploy_cert_api, dns_api)
 from domain_admin.api import domain_api
 from domain_admin.api import group_api
 from domain_admin.api import auth_api
@@ -220,4 +220,12 @@ routes = {
     '/api/deleteByDeployCertIds': deploy_cert_api.delete_by_deploy_cert_ids,
     '/api/getDeployCertById': deploy_cert_api.get_deploy_cert_by_id,
     '/api/handleDeployCert': deploy_cert_api.handle_deploy_cert,
+
+    # DNS账户管理
+    '/api/addDns': dns_api.add_dns,
+    '/api/getDnsById': dns_api.get_dns_by_id,
+    '/api/updateDnsById': dns_api.update_dns_by_id,
+    '/api/getDnsList': dns_api.get_dns_list,
+    '/api/deleteDnsById': dns_api.delete_dns_by_id,
+
 }
