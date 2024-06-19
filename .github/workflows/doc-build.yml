@@ -3,7 +3,7 @@ name: Doc Build
 
 on:
   push:
-    branch: ['master']
+    branch: ['masterx']
 
 permissions:
   contents: write

@@ -1,5 +1,17 @@
 # 接口文档
 
+## 使用说明
+
+请求方式统一为`POST json`
+
+```
+POST /api/<url>
+Content-Type: application/json
+X-TOKEN: <token>
+
+{}
+```
+
 ## 注册登录
 
 | 接口 | 说明 | 文档 | 
