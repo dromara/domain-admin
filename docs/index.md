@@ -36,6 +36,6 @@ features:
 
 微信交流群
 
-<img src="https://gitee.com/mouday/domain-admin/raw/master/image/coding-big-tree.jpg" width="300">
+<img src="https://mouday.github.io/img/2024/06/20/h1buset.png" width="300">
 
 回复：`domain-admin`，和众多使用者一起交流学习使用经验，反馈使用问题，获得更及时的解答和修复
