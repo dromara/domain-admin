@@ -60,6 +60,7 @@ class IssueCertificateModel(BaseModel):
     expire_time = DateTimeField(default=None, null=True)
 
     # 部署机器
+    # @since 1.6.33 部署机器 && 部署dns账户
     deploy_host_id = IntegerField(default=0)
 
     # 验证文件部署目录
