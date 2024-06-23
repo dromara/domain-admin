@@ -71,6 +71,7 @@ def get_certificate_challenges(issue_certificate_id):
             data = {
                 'domain': domain,
                 'sub_domain': domain_util.get_subdomain(domain),
+                'root_domain': domain_util.get_root_domain(domain),
                 'validation': validation,
                 'challenge': challenge
             }

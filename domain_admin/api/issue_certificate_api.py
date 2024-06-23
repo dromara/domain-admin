@@ -7,6 +7,7 @@ import requests
 from flask import g, request
 from playhouse.shortcuts import model_to_dict, chunked
 
+from domain_admin.model.dns_model import DnsModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel
@@ -14,6 +15,8 @@ from domain_admin.service import issue_certificate_service
 from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util, validate_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.open_api import aliyun_domain_api
+from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 
 
 def issue_certificate():
@@ -349,3 +352,36 @@ def notify_web_hook():
         raise res.raise_for_status()
 
     return res.text
+
+
+def add_dns_domain_record():
+    """
+    添加dns记录
+    :return:
+    """
+    dns_id = request.json['dns_id']
+    issue_certificate_id = request.json['issue_certificate_id']
+    print(dns_id, ' ', issue_certificate_id)
+
+    dns_row = DnsModel.get_by_id(dns_id)
+
+    # 获取验证方式
+    challenge_list = issue_certificate_service.get_certificate_challenges(issue_certificate_id)
+
+    for challenge_row in challenge_list:
+        challenge_json = challenge_row['challenge'].to_json()
+        if challenge_json['type'] == ChallengeType.DNS01:
+
+            if challenge_row['sub_domain']:
+                record_key = '_acme-challenge.' + challenge_row['sub_domain']
+            else:
+                record_key = '_acme-challenge'
+
+            aliyun_domain_api.add_domain_record(
+                access_key_id=dns_row.access_key,
+                access_key_secret=dns_row.secret_key,
+                domain_name=challenge_row['root_domain'],
+                record_type=RecordTypeEnum.TXT,
+                record_key=record_key,
+                record_value=challenge_row['validation']
+            )

@@ -178,6 +178,7 @@ routes = {
     '/api/deleteCertificateByBatch': issue_certificate_api.delete_certificate_by_batch,
     '/api/getAllowCommands': issue_certificate_api.get_allow_commands,
     '/api/notifyWebHook': issue_certificate_api.notify_web_hook,
+    '/api/addDnsDomainRecord': issue_certificate_api.add_dns_domain_record,
 
     # 主机管理
     '/api/addHost': host_api.add_host,

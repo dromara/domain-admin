@@ -8,6 +8,8 @@ from aliyunsdkalidns.request.v20150109.AddDomainRecordRequest import AddDomainRe
 from aliyunsdkcore.auth.credentials import AccessKeyCredential
 from aliyunsdkcore.client import AcsClient
 
+from domain_admin.log import logger
+
 
 class RecordTypeEnum:
     """
@@ -37,6 +39,14 @@ def add_domain_record(
     :param record_value: 记录值
     :return:
     """
+    logger.info("%s", {
+        'access_key_id': access_key_id,
+        'access_key_secret': access_key_secret,
+        'domain_name': domain_name,
+        'record_key': record_key,
+        'record_type': record_type,
+        'record_value': record_value,
+    })
 
     # Please ensure that the environment variables ALIBABA_CLOUD_ACCESS_KEY_ID and ALIBABA_CLOUD_ACCESS_KEY_SECRET are set.
     credentials = AccessKeyCredential(
