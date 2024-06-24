@@ -24,6 +24,9 @@ DEFAULT_TOKEN_EXPIRE_DAYS = 7
 # 默认的过期提醒时间 单位：天
 DEFAULT_BEFORE_EXPIRE_DAYS = 3
 
+# 默认续期时间 单位：天
+DEFAULT_RENEW_DAYS = 30
+
 # secret_key
 DEFAULT_SECRET_KEY = secret_util.get_random_secret()
 

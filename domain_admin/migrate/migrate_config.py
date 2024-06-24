@@ -28,7 +28,7 @@ from domain_admin.migrate.history import (
     migrate_162_to_163,
     migrate_168_to_169,
     migrate_1610_to_1611,
-    migrate_1625_to_1626)
+    migrate_1625_to_1626, migrate_1633_to_1634)
 
 # 参数说明
 # local_versions 本地版本
@@ -355,27 +355,37 @@ MIGRATE_CONFIG = [
         'migrate_func': migrate_1610_to_1611.execute_migrate,
         'update_version': VersionEnum.Version_1611
     },
-    # 2024-04-11
-    # 1.6.25 => 1.6.26
-    # {
-    #     'local_versions': [
-    #         VersionEnum.Version_1611,
-    #         VersionEnum.Version_1612,
-    #         VersionEnum.Version_1613,
-    #         VersionEnum.Version_1614,
-    #         VersionEnum.Version_1615,
-    #         VersionEnum.Version_1616,
-    #         VersionEnum.Version_1617,
-    #         VersionEnum.Version_1618,
-    #         VersionEnum.Version_1619,
-    #         VersionEnum.Version_1620,
-    #         VersionEnum.Version_1621,
-    #         VersionEnum.Version_1622,
-    #         VersionEnum.Version_1623,
-    #         VersionEnum.Version_1624,
-    #         VersionEnum.Version_1625,
-    #     ],
-    #     'migrate_func': migrate_1625_to_1626.execute_migrate,
-    #     'update_version': VersionEnum.Version_1626
-    # },
+
+    # 2024-06-24
+    # 1.6.33 => 1.6.34
+    {
+        'local_versions': [
+            VersionEnum.Version_1611,
+            VersionEnum.Version_1612,
+            VersionEnum.Version_1613,
+            VersionEnum.Version_1614,
+            VersionEnum.Version_1615,
+            VersionEnum.Version_1616,
+            VersionEnum.Version_1617,
+            VersionEnum.Version_1618,
+            VersionEnum.Version_1619,
+            VersionEnum.Version_1620,
+            VersionEnum.Version_1621,
+            VersionEnum.Version_1622,
+            VersionEnum.Version_1623,
+            VersionEnum.Version_1624,
+            VersionEnum.Version_1625,
+            VersionEnum.Version_1626,
+            VersionEnum.Version_1627,
+            VersionEnum.Version_1628,
+            VersionEnum.Version_1629,
+            VersionEnum.Version_1630,
+            VersionEnum.Version_1631,
+            VersionEnum.Version_1632,
+            VersionEnum.Version_1633,
+        ],
+
+        'migrate_func': migrate_1633_to_1634.execute_migrate,
+        'update_version': VersionEnum.Version_1634
+    },
 ]

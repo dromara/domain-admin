@@ -3,6 +3,8 @@
 @File    : issue_certificate_api.py
 @Date    : 2023-07-23
 """
+import json
+
 import requests
 from flask import g, request
 from playhouse.shortcuts import model_to_dict, chunked
@@ -10,7 +12,8 @@ from playhouse.shortcuts import model_to_dict, chunked
 from domain_admin.model.dns_model import DnsModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
-from domain_admin.model.issue_certificate_model import IssueCertificateModel
+from domain_admin.model.issue_certificate_model import IssueCertificateModel, ChallengeDeployTypeEnum, \
+    SSLDeployTypeEnum, DeployStatusEnum
 from domain_admin.service import issue_certificate_service
 from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util, validate_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
@@ -32,10 +35,7 @@ def issue_certificate():
 
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
-    return model_to_dict(
-        issue_certificate_row,
-        extra_attrs=['domains', 'create_time_label']
-    )
+    return issue_certificate_row.to_dict()
 
 
 def verify_certificate():
@@ -51,6 +51,11 @@ def verify_certificate():
     issue_certificate_service.verify_certificate(issue_certificate_id, challenge_type)
 
     issue_certificate_service.renew_certificate(issue_certificate_id)
+
+    # 验证成功后, check_auto_renew
+    issue_certificate_service.check_auto_renew(
+        issue_certificate_id=issue_certificate_id
+    )
 
     # 验证成功后，自动添加到证书监控列表
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
@@ -69,7 +74,7 @@ def verify_certificate():
         if validate_util.is_domain(domain)
     ]
 
-    for batch in chunked(lst, 500):
+    for batch in chunked(lst, 10):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
 
@@ -117,14 +122,20 @@ def deploy_verify_file():
     )
 
     IssueCertificateModel.update(
-        deploy_host_id=host_id,
+        challenge_deploy_type_id=ChallengeDeployTypeEnum.SSH,
+        challenge_deploy_id=host_id,
         deploy_verify_path=verify_deploy_path,
+        challenge_deploy_status=DeployStatusEnum.SUCCESS
     ).where(
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
 
 
 def deploy_certificate_file():
+    """
+    ssh方式部署证书文件
+    :return:
+    """
     current_user_id = g.user_id
 
     issue_certificate_id = request.json['issue_certificate_id']
@@ -160,17 +171,18 @@ def deploy_certificate_file():
     )
 
     # update only support file verify
-    if issue_certificate_row.challenge_type == ChallengeType.HTTP01:
-        is_auto_renew = True
-    else:
-        is_auto_renew = False
+    # if issue_certificate_row.challenge_type == ChallengeType.HTTP01:
+    #     is_auto_renew = True
+    # else:
+    #     is_auto_renew = False
 
     IssueCertificateModel.update(
+        deploy_type_id=SSLDeployTypeEnum.SSH,
         deploy_host_id=host_id,
         deploy_key_file=key_deploy_path,
         deploy_fullchain_file=pem_deploy_path,
         deploy_reloadcmd=reload_cmd,
-        is_auto_renew=is_auto_renew
+        ssl_deploy_status=DeployStatusEnum.SUCCESS,
     ).where(
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
@@ -189,10 +201,10 @@ def renew_certificate():
 
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
-    return model_to_dict(
-        issue_certificate_row,
-        extra_attrs=['domains', 'create_time_label', 'domain_validation_urls']
-    )
+    if not issue_certificate_row:
+        raise AppException('数据不存在')
+
+    return issue_certificate_row.to_dict()
 
 
 def get_issue_certificate_list():
@@ -253,20 +265,15 @@ def get_issue_certificate_by_id():
 
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
-    data = model_to_dict(
-        issue_certificate_row,
-        extra_attrs=[
-            'domains',
-            'create_time_label',
-            'update_time_label',
-            'domain_validation_urls'
-        ]
-    )
+    data = issue_certificate_row.to_dict()
+    data['deploy_dns'] = None
+    data['deploy_host'] = None
 
-    if data['deploy_host_id']:
-        data['deploy_host'] = HostModel.get_by_id(data['deploy_host_id'])
-    else:
-        data['deploy_host'] = None
+    if issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
+        data['deploy_host'] = HostModel.get_by_id(issue_certificate_row.challenge_deploy_id)
+
+    elif issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
+        data['deploy_dns'] = DnsModel.get_by_id(issue_certificate_row.challenge_deploy_id)
 
     return data
 
@@ -330,28 +337,23 @@ def notify_web_hook():
     url = request.json['url']
     headers = request.json.get('headers')
 
-    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
-
-    if not issue_certificate_row:
-        raise AppException('数据不存在')
-
-    res = requests.request(
-        method='POST',
+    ret = issue_certificate_service.deploy_ssl_by_web_hook(
+        issue_certificate_id=issue_certificate_id,
         url=url,
         headers=headers,
-        json={
-            'domains': issue_certificate_row.domains,
-            'ssl_certificate': issue_certificate_row.ssl_certificate,
-            'ssl_certificate_key': issue_certificate_row.ssl_certificate_key,
-            'start_time': datetime_util.format_datetime(issue_certificate_row.start_time),
-            'expire_time': datetime_util.format_datetime(issue_certificate_row.expire_time),
-        }
     )
 
-    if not res.ok:
-        raise res.raise_for_status()
+    # 更新验证信息
+    IssueCertificateModel.update(
+        deploy_type_id=SSLDeployTypeEnum.WEB_HOOK,
+        deploy_url=url,
+        deploy_header_raw=json.dumps(headers or {}),
+        ssl_deploy_status=DeployStatusEnum.SUCCESS
+    ).where(
+        IssueCertificateModel.id == issue_certificate_id
+    ).execute()
 
-    return res.text
+    return ret
 
 
 def add_dns_domain_record():
@@ -363,25 +365,16 @@ def add_dns_domain_record():
     issue_certificate_id = request.json['issue_certificate_id']
     print(dns_id, ' ', issue_certificate_id)
 
-    dns_row = DnsModel.get_by_id(dns_id)
+    # 添加txt记录
+    issue_certificate_service.add_dns_domain_record(
+        dns_id=dns_id,
+        issue_certificate_id=issue_certificate_id
+    )
 
-    # 获取验证方式
-    challenge_list = issue_certificate_service.get_certificate_challenges(issue_certificate_id)
-
-    for challenge_row in challenge_list:
-        challenge_json = challenge_row['challenge'].to_json()
-        if challenge_json['type'] == ChallengeType.DNS01:
-
-            if challenge_row['sub_domain']:
-                record_key = '_acme-challenge.' + challenge_row['sub_domain']
-            else:
-                record_key = '_acme-challenge'
-
-            aliyun_domain_api.add_domain_record(
-                access_key_id=dns_row.access_key,
-                access_key_secret=dns_row.secret_key,
-                domain_name=challenge_row['root_domain'],
-                record_type=RecordTypeEnum.TXT,
-                record_key=record_key,
-                record_value=challenge_row['validation']
-            )
+    # 更新验证信息
+    IssueCertificateModel.update(
+        challenge_deploy_type_id=ChallengeDeployTypeEnum.DNS,
+        challenge_deploy_id=dns_id
+    ).where(
+        IssueCertificateModel.id == issue_certificate_id
+    ).execute()

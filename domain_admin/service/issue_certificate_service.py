@@ -13,13 +13,18 @@ import requests
 
 from domain_admin.enums.host_auth_type_enum import HostAuthTypeEnum
 from domain_admin.log import logger
+from domain_admin.model.dns_model import DnsModel
 from domain_admin.model.host_model import HostModel
-from domain_admin.model.issue_certificate_model import IssueCertificateModel
+from domain_admin.model.issue_certificate_model import IssueCertificateModel, ValidStatus, ChallengeDeployTypeEnum, \
+    SSLDeployTypeEnum
 from domain_admin.utils import datetime_util, fabric_util, domain_util
 from domain_admin.utils.acme_util import acme_v2_api
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.cert_util import cert_common
 from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.open_api import aliyun_domain_api
+from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
+from domain_admin import config
 
 
 def issue_certificate(domains, user_id):
@@ -215,7 +220,7 @@ def renew_all_certificate():
     """
 
     now = datetime.now()
-    notify_expire_time = now + timedelta(days=30)
+    notify_expire_time = now + timedelta(days=config.DEFAULT_RENEW_DAYS)
 
     rows = IssueCertificateModel.select().where(
         (IssueCertificateModel.is_auto_renew == True)
@@ -246,47 +251,61 @@ def renew_certificate_row(row):
         ssl_certificate='',
         start_time=None,
         expire_time=None,
-        status='pending',
+        status=ValidStatus.PENDING,
     ).where(
         IssueCertificateModel.id == row.id
     )
 
-    # 获取验证方式
-    challenge_list = get_certificate_challenges(row.id)
-
-    challenge_rows = []
-    for challenge_row in challenge_list:
-        challenge_json = challenge_row['challenge'].to_json()
-        if challenge_json['type'] == ChallengeType.HTTP01:
-            challenge_rows.append({
-                'token': challenge_json['token'],
-                'validation': challenge_row['validation']
-            })
-
     # 验证文件部署
-    deploy_verify_file(
-        host_id=row.deploy_host_id,
-        verify_deploy_path=row.deploy_verify_path,
-        challenges=challenge_rows
-    )
+    if row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
+        # 获取验证方式
+        challenge_list = get_certificate_challenges(row.id)
+
+        challenge_rows = []
+        for challenge_row in challenge_list:
+            challenge_json = challenge_row['challenge'].to_json()
+            if challenge_json['type'] == ChallengeType.HTTP01:
+                challenge_rows.append({
+                    'token': challenge_json['token'],
+                    'validation': challenge_row['validation']
+                })
+
+        deploy_verify_file(
+            host_id=row.challenge_deploy_id,
+            verify_deploy_path=row.deploy_verify_path,
+            challenges=challenge_rows
+        )
+    elif row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
+        # 添加txt记录
+        add_dns_domain_record(
+            dns_id=row.challenge_deploy_id,
+            issue_certificate_id=row.id
+        )
 
     # 验证域名
-    verify_certificate(row.id, ChallengeType.HTTP01)
+    verify_certificate(row.id, row.challenge_type)
 
     # 下载证书
     renew_certificate(row.id)
 
     # 自动部署，重启服务
-    issue_certificate_row = IssueCertificateModel.get_by_id(row.id)
+    if row.deploy_type_id == SSLDeployTypeEnum.SSH:
+        issue_certificate_row = IssueCertificateModel.get_by_id(row.id)
 
-    deploy_certificate_file(
-        host_id=row.deploy_host_id,
-        key_content=issue_certificate_row.ssl_certificate_key,
-        pem_content=issue_certificate_row.ssl_certificate,
-        key_deploy_path=row.deploy_key_file,
-        pem_deploy_path=row.deploy_fullchain_file,
-        reload_cmd=row.deploy_reloadcmd
-    )
+        deploy_certificate_file(
+            host_id=row.deploy_host_id,
+            key_content=issue_certificate_row.ssl_certificate_key,
+            pem_content=issue_certificate_row.ssl_certificate,
+            key_deploy_path=row.deploy_key_file,
+            pem_deploy_path=row.deploy_fullchain_file,
+            reload_cmd=row.deploy_reloadcmd
+        )
+    elif row.deploy_type_id == SSLDeployTypeEnum.WEB_HOOK:
+        deploy_ssl_by_web_hook(
+            issue_certificate_id=row.id,
+            url=row.deploy_url,
+            headers=row.deploy_header,
+        )
 
 
 def deploy_verify_file(host_id, verify_deploy_path, challenges):
@@ -429,3 +448,84 @@ def deploy_certificate_file(
                 password=password,
                 command=reload_cmd
             )
+
+
+def add_dns_domain_record(dns_id, issue_certificate_id):
+    """
+    添加dns记录
+    :param dns_id:
+    :param issue_certificate_id:
+    :return:
+    """
+    dns_row = DnsModel.get_by_id(dns_id)
+
+    # 获取验证方式
+    challenge_list = get_certificate_challenges(issue_certificate_id)
+
+    for challenge_row in challenge_list:
+        challenge_json = challenge_row['challenge'].to_json()
+        if challenge_json['type'] == ChallengeType.DNS01:
+
+            if challenge_row['sub_domain']:
+                record_key = '_acme-challenge.' + challenge_row['sub_domain']
+            else:
+                record_key = '_acme-challenge'
+
+            aliyun_domain_api.add_domain_record(
+                access_key_id=dns_row.access_key,
+                access_key_secret=dns_row.secret_key,
+                domain_name=challenge_row['root_domain'],
+                record_type=RecordTypeEnum.TXT,
+                record_key=record_key,
+                record_value=challenge_row['validation']
+            )
+
+
+def deploy_ssl_by_web_hook(issue_certificate_id, url, headers):
+    """
+    通过webhook部署ssl证书
+    :param issue_certificate_id:
+    :param url:
+    :param headers:
+    :return:
+    """
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
+    if not issue_certificate_row:
+        raise AppException('数据不存在')
+
+    data = {
+        'domains': issue_certificate_row.domains,
+        'ssl_certificate': issue_certificate_row.ssl_certificate,
+        'ssl_certificate_key': issue_certificate_row.ssl_certificate_key,
+        'start_time': datetime_util.format_datetime(issue_certificate_row.start_time),
+        'expire_time': datetime_util.format_datetime(issue_certificate_row.expire_time),
+    }
+
+    res = requests.request(
+        method='POST',
+        url=url,
+        headers=headers,
+        json=data
+    )
+
+    if not res.ok:
+        raise res.raise_for_status()
+
+    return res.text
+
+
+def check_auto_renew(issue_certificate_id):
+    """
+    首次申请，自动判断是否可以自动续期
+    :param issue_certificate_id:
+    :return:
+    """
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
+    if issue_certificate_row.can_auto_renew:
+        IssueCertificateModel.update(
+            is_auto_renew=True
+        ).where(
+            IssueCertificateModel.id == issue_certificate_id
+        ).execute()

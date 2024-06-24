@@ -5,15 +5,8 @@
 """
 from flask import request, g
 
-from domain_admin.config import DEFAULT_SSH_PORT
 from domain_admin.enums.dns_type_enum import DnsTypeEnum
-from domain_admin.log import logger
 from domain_admin.model.dns_model import DnsModel
-from domain_admin.model.issue_certificate_model import IssueCertificateModel
-from domain_admin.service import issue_certificate_service
-from domain_admin.utils.acme_util.challenge_type import ChallengeType
-from domain_admin.utils.open_api import aliyun_domain_api
-from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 
 
 def add_dns():
