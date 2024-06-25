@@ -240,6 +240,7 @@ def get_issue_certificate_list():
             'start_date',
             'expire_date',
             'has_ssl_certificate',
+            'can_auto_renew',
             # 'domain_validation_urls'
         ],
         exclude=[
@@ -270,10 +271,10 @@ def get_issue_certificate_by_id():
     data['deploy_host'] = None
 
     if issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
-        data['deploy_host'] = HostModel.get_by_id(issue_certificate_row.challenge_deploy_id)
+        data['deploy_host'] = HostModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
 
     elif issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
-        data['deploy_dns'] = DnsModel.get_by_id(issue_certificate_row.challenge_deploy_id)
+        data['deploy_dns'] = DnsModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
 
     return data
 
@@ -378,3 +379,25 @@ def add_dns_domain_record():
     ).where(
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
+
+
+def update_row_auto_renew():
+    """
+    修改自动更新字段
+    :return:
+    """
+
+    issue_certificate_id = request.json['issue_certificate_id']
+    is_auto_renew = request.json['is_auto_renew']
+
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
+    if issue_certificate_row and issue_certificate_row.can_auto_renew:
+        # 更新验证信息
+        IssueCertificateModel.update(
+            is_auto_renew=is_auto_renew
+        ).where(
+            IssueCertificateModel.id == issue_certificate_id
+        ).execute()
+    else:
+        raise AppException("不支持自动续期")

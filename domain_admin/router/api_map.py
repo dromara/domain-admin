@@ -179,6 +179,7 @@ routes = {
     '/api/getAllowCommands': issue_certificate_api.get_allow_commands,
     '/api/notifyWebHook': issue_certificate_api.notify_web_hook,
     '/api/addDnsDomainRecord': issue_certificate_api.add_dns_domain_record,
+    '/api/updateRowAutoRenew': issue_certificate_api.update_row_auto_renew,
 
     # 主机管理
     '/api/addHost': host_api.add_host,

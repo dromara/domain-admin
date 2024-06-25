@@ -76,7 +76,12 @@ from domain_admin.utils.flask_ext.app_exception import AppException
 # DIRECTORY_URL = 'https://acme-staging-v02.api.letsencrypt.org/directory'
 
 # ACME V2 生产环境
+# letsencrypt
 DIRECTORY_URL = "https://acme-v02.api.letsencrypt.org/directory"
+
+# zerossl
+# https://zerossl.com/documentation/acme/
+# DIRECTORY_URL = "https://acme.zerossl.com/v2/DV90/directory"
 
 USER_AGENT = 'domain-admin'
 

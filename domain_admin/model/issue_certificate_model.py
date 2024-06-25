@@ -223,6 +223,7 @@ class IssueCertificateModel(BaseModel):
                 'domains',
                 'create_time_label',
                 'update_time_label',
+                'can_auto_renew',
                 'domain_validation_urls'
             ]
         )
