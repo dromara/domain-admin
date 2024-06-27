@@ -17,6 +17,8 @@ from domain_admin.model.issue_certificate_model import IssueCertificateModel, Ch
 from domain_admin.service import issue_certificate_service
 from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util, validate_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
+from domain_admin.utils.acme_util.key_type_enum import KEY_TYPE_OPTIONS, KeyTypeEnum
+from domain_admin.utils.acme_util.directory_type_enum import DIRECTORY_URL_OPTIONS, DirectoryTypeEnum
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import aliyun_domain_api
 from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
@@ -30,8 +32,15 @@ def issue_certificate():
     current_user_id = g.user_id
 
     domains = request.json['domains']
+    directory_type = request.json.get('directory_type') or DirectoryTypeEnum.LETS_ENCRYPT
+    key_type = request.json.get('key_type') or KeyTypeEnum.RSA
 
-    issue_certificate_id = issue_certificate_service.issue_certificate(domains, current_user_id)
+    issue_certificate_id = issue_certificate_service.issue_certificate(
+        domains=domains,
+        user_id=current_user_id,
+        directory_type=directory_type,
+        key_type=key_type
+    )
 
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
@@ -274,7 +283,7 @@ def get_issue_certificate_by_id():
         data['deploy_host'] = HostModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
 
     elif issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
-        data['deploy_dns'] = DnsModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
+        data['deploy_dns'] = DnsModel.get_or_none(DnsModel.id == issue_certificate_row.challenge_deploy_id)
 
     return data
 
@@ -401,3 +410,14 @@ def update_row_auto_renew():
         ).execute()
     else:
         raise AppException("不支持自动续期")
+
+
+def get_issue_certificate_options():
+    """
+    获取常量
+    :return:
+    """
+    return {
+        'KEY_TYPE_OPTIONS': KEY_TYPE_OPTIONS,
+        'DIRECTORY_URL_OPTIONS': DIRECTORY_URL_OPTIONS
+    }

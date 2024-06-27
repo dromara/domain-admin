@@ -21,6 +21,8 @@ https://datatracker.ietf.org/doc/html/rfc8555
 
 https://github.com/Trim/acme-dns-tiny
 
+https://github.com/shuhanghang/cdn-auto-cert
+
 Example ACME-V2 API for HTTP-01 challenge.
 
 Brief:
@@ -68,6 +70,10 @@ from domain_admin.config import ACME_DIR
 from domain_admin.log import logger
 # This is the staging point for ACME-V2 within Let's Encrypt.
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
+from domain_admin.utils.acme_util import key_type_enum
+from domain_admin.utils.acme_util import directory_type_enum
+from domain_admin.utils.acme_util.directory_type_enum import DirectoryTypeEnum
+from domain_admin.utils.acme_util.key_type_enum import KeyTypeEnum
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 # Constants:
@@ -91,21 +97,30 @@ ACC_KEY_BITS = 2048
 # Certificate private key size
 CERT_PKEY_BITS = 2048
 
+
 # account.key
-ACCOUNT_KEY_FILENAME = os.path.join(ACME_DIR, 'account.key')
+def get_account_key_filename(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
+    return os.path.join(ACME_DIR, directory_type + '-account.key')
+
+
+# ACCOUNT_KEY_FILENAME = os.path.join(ACME_DIR, 'account.key')
 
 # account.json
-ACCOUNT_DATA_FILENAME = os.path.join(ACME_DIR, 'account.json')
+# ACCOUNT_DATA_FILENAME = os.path.join(ACME_DIR, 'account.json')
+def get_account_data_filename(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
+    return os.path.join(ACME_DIR, directory_type + '-account.json')
 
 
 # Useful methods and classes:
 
-def new_csr_comp(domains, pkey_pem=None):
+def new_csr_comp(domains, pkey_pem=None, key_type=KeyTypeEnum.RSA):
     """Create certificate signing request."""
     if pkey_pem is None:
+        pkey_type = key_type_enum.get_key_type(key_type)
+
         # Create private key.
         pkey = OpenSSL.crypto.PKey()
-        pkey.generate_key(OpenSSL.crypto.TYPE_RSA, CERT_PKEY_BITS)
+        pkey.generate_key(type=pkey_type, bits=CERT_PKEY_BITS)
         pkey_pem = OpenSSL.crypto.dump_privatekey(
             OpenSSL.crypto.FILETYPE_PEM, pkey)
 
@@ -201,16 +216,17 @@ def perform_http01(client_acme, orderr):
     return finalized_orderr.fullchain_pem
 
 
-def get_account_key():
+def get_account_key(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
     """
     Python cryptography库及RSA非对称加密
     https://blog.csdn.net/photon222/article/details/109447327
     :return:
     """
+    account_key_filename = get_account_key_filename(directory_type)
 
-    if os.path.exists(ACCOUNT_KEY_FILENAME):
+    if os.path.exists(account_key_filename):
         # load private key
-        with open(ACCOUNT_KEY_FILENAME, "rb") as f:
+        with open(account_key_filename, "rb") as f:
             private_key = serialization.load_pem_private_key(
                 f.read(),
                 password=None,
@@ -231,21 +247,24 @@ def get_account_key():
         )
 
         # store private key
-        with open(ACCOUNT_KEY_FILENAME, 'wb') as f:
+        with open(account_key_filename, 'wb') as f:
             f.write(pem)
 
     return jose.JWKRSA(key=private_key)
 
 
-def ensure_account_exists(client_acme):
+def ensure_account_exists(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
     """
     确保账户存在
+    :param directory_type:
     :param client_acme:
     :return:
     """
-    if os.path.exists(ACCOUNT_DATA_FILENAME):
+    account_data_filename = get_account_data_filename(directory_type)
+
+    if os.path.exists(account_data_filename):
         # 账户已存在
-        with open(ACCOUNT_DATA_FILENAME, 'r') as f:
+        with open(account_data_filename, 'r') as f:
             account_data = json.loads(f.read())
 
         try:
@@ -254,30 +273,36 @@ def ensure_account_exists(client_acme):
         except errors.Error as e:
             logger.debug(traceback.format_exc())
 
-            create_account(client_acme)
+            create_account(client_acme, directory_type)
     else:
         # 账户不存在
-        create_account(client_acme)
+        create_account(client_acme, directory_type)
 
 
-def create_account(client_acme):
+def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
+    account_data_filename = get_account_data_filename(directory_type)
+
     register = client_acme.new_account(messages.NewRegistration.from_data(
-        # email=('mouday@qq.com'),
         terms_of_service_agreed=True)
     )
 
-    with open(ACCOUNT_DATA_FILENAME, 'w') as f:
+    with open(account_data_filename, 'w') as f:
         f.write(json.dumps(register.to_json(), indent=2))
 
 
-def get_acme_client():
+def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
+    directory_url = directory_type_enum.get_directory_url(directory_type)
+    if not directory_url:
+        raise AppException("not found directory_url")
+
     # Register account and accept TOS
-    account_key = get_account_key()
+    account_key = get_account_key(directory_type)
 
     net = client.ClientNetwork(account_key, user_agent=USER_AGENT)
-    directory = client.ClientV2.get_directory(DIRECTORY_URL, net)
-    client_acme = client.ClientV2(directory, net=net)
 
-    ensure_account_exists(client_acme)
+    directory = client.ClientV2.get_directory(url=directory_url, net=net)
+    client_acme = client.ClientV2(directory=directory, net=net)
+
+    ensure_account_exists(client_acme, directory_type)
 
     return client_acme

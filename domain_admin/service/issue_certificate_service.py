@@ -20,6 +20,8 @@ from domain_admin.model.issue_certificate_model import IssueCertificateModel, Va
 from domain_admin.utils import datetime_util, fabric_util, domain_util
 from domain_admin.utils.acme_util import acme_v2_api
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
+from domain_admin.utils.acme_util.directory_type_enum import DirectoryTypeEnum
+from domain_admin.utils.acme_util.key_type_enum import KeyTypeEnum
 from domain_admin.utils.cert_util import cert_common
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import aliyun_domain_api
@@ -27,9 +29,15 @@ from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 from domain_admin import config
 
 
-def issue_certificate(domains, user_id):
+def issue_certificate(
+        domains, user_id,
+        directory_type=DirectoryTypeEnum.LETS_ENCRYPT,
+        key_type=KeyTypeEnum.RSA
+):
     """
     申请新证书
+    :param key_type:
+    :param directory_type:
     :param domains:
     :param user_id:
     :return:
@@ -37,13 +45,15 @@ def issue_certificate(domains, user_id):
     # Issue certificate
 
     # Create domain private key and CSR
-    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(domains)
+    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(domains=domains, key_type=key_type)
 
     issue_certificate_row = IssueCertificateModel.create(
         user_id=user_id,
         # challenge_type=challenge_type,
         domain_raw=json.dumps(domains),
         ssl_certificate_key=pkey_pem,
+        directory_type=directory_type,
+        key_type=key_type,
         # status='pending',
     )
 
@@ -61,9 +71,13 @@ def get_certificate_challenges(issue_certificate_id):
     domains = issue_certificate_row.domains
     pkey_pem = issue_certificate_row.ssl_certificate_key
 
-    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(domains, pkey_pem)
+    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(
+        domains=domains,
+        pkey_pem=pkey_pem,
+        key_type=issue_certificate_row.key_type
+    )
 
-    acme_client = acme_v2_api.get_acme_client()
+    acme_client = acme_v2_api.get_acme_client(directory_type=issue_certificate_row.directory_type)
     orderr = acme_client.new_order(csr_pem)
 
     # Select HTTP-01 within offered challenges by the CA server
@@ -93,8 +107,11 @@ def verify_certificate(issue_certificate_id, challenge_type):
     :param challenge_type:
     :return:
     """
+
+    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+
     items = get_certificate_challenges(issue_certificate_id)
-    acme_client = acme_v2_api.get_acme_client()
+    acme_client = acme_v2_api.get_acme_client(directory_type=issue_certificate_row.directory_type)
 
     verify_count = 0
     for item in items:
@@ -157,10 +174,14 @@ def renew_certificate(row_id):
     pkey_pem = issue_certificate_row.ssl_certificate_key
     domains = issue_certificate_row.domains
 
-    acme_client = acme_v2_api.get_acme_client()
+    acme_client = acme_v2_api.get_acme_client(directory_type=issue_certificate_row.directory_type)
 
     # Create domain private key and CSR
-    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(domains, pkey_pem)
+    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(
+        domains=domains,
+        pkey_pem=pkey_pem,
+        key_type=issue_certificate_row.key_type
+    )
 
     orderr = acme_client.new_order(csr_pem)
 
@@ -244,7 +265,10 @@ def renew_certificate_row(row):
     :return:
     """
     # 重新申请
-    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(row.domains)
+    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(
+        domains=row.domains,
+        key_type=row.key_type
+    )
 
     IssueCertificateModel.update(
         ssl_certificate_key=pkey_pem,

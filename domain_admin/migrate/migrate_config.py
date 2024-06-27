@@ -28,7 +28,7 @@ from domain_admin.migrate.history import (
     migrate_162_to_163,
     migrate_168_to_169,
     migrate_1610_to_1611,
-    migrate_1625_to_1626, migrate_1633_to_1634)
+    migrate_1625_to_1626, migrate_1633_to_1634, migrate_1634_to_1635)
 
 # 参数说明
 # local_versions 本地版本
@@ -387,5 +387,15 @@ MIGRATE_CONFIG = [
 
         'migrate_func': migrate_1633_to_1634.execute_migrate,
         'update_version': VersionEnum.Version_1634
+    },
+
+    # 2024-06-27
+    # 1.6.34 => 1.6.35
+    {
+        'local_versions': [
+            VersionEnum.Version_1634,
+        ],
+        'migrate_func': migrate_1634_to_1635.execute_migrate,
+        'update_version': VersionEnum.Version_1635
     },
 ]

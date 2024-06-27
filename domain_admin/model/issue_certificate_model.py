@@ -10,50 +10,18 @@ from datetime import datetime
 from peewee import CharField, IntegerField, DateTimeField, AutoField, TextField, BooleanField
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.challenge_deploy_type_enum import ChallengeDeployTypeEnum
+from domain_admin.enums.deploy_status_enum import DeployStatusEnum
+from domain_admin.enums.ssl_deploy_type_enum import SSLDeployTypeEnum
+from domain_admin.enums.valid_status_enum import ValidStatus
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
+from domain_admin.utils.acme_util.directory_type_enum import DirectoryTypeEnum
+from domain_admin.utils.acme_util.key_type_enum import KeyTypeEnum
 
 # 常量
 URI_ROOT_PATH = ".well-known/acme-challenge"
-
-
-class ValidStatus(object):
-    """
-    验证状态
-    """
-    PENDING = 'pending'
-
-    VALID = 'valid'
-
-
-class ChallengeDeployTypeEnum(object):
-    """
-    验证文件部署方式
-    """
-    SSH = 0
-
-    DNS = 1
-
-
-class SSLDeployTypeEnum(object):
-    """
-    ssl证书部署方式
-    """
-    SSH = 0
-
-    WEB_HOOK = 1
-
-
-class DeployStatusEnum(object):
-    """
-    部署状态
-    """
-    UNKNOWN = 0
-
-    SUCCESS = 1
-
-    ERROR = 2
 
 
 class IssueCertificateModel(BaseModel):
@@ -86,6 +54,12 @@ class IssueCertificateModel(BaseModel):
     # SSL过期时间
     expire_time = DateTimeField(default=None, null=True)
 
+    # 证书提供商 @since v1.6.35
+    directory_type = CharField(default=DirectoryTypeEnum.LETS_ENCRYPT, null=True)
+
+    # 加密方式 @since v1.6.35
+    key_type = CharField(default=KeyTypeEnum.RSA, null=True)
+
     # 域名验证类型 http dns
     challenge_type = CharField(default=ChallengeType.HTTP01, null=True)
 
@@ -96,7 +70,7 @@ class IssueCertificateModel(BaseModel):
     challenge_deploy_id = IntegerField(default=0)
 
     # 验证文件部署状态
-    challenge_deploy_status = IntegerField(default=DeployStatusEnum.UNKNOWN)
+    challenge_deploy_status = IntegerField(default=DeployStatusEnum.PENDING)
 
     # 验证文件部署目录
     deploy_verify_path = CharField(default=None, null=True)
@@ -139,7 +113,7 @@ class IssueCertificateModel(BaseModel):
     deploy_header_raw = TextField(default=None, null=True)
 
     # ssl证书文件部署状态
-    ssl_deploy_status = IntegerField(default=DeployStatusEnum.UNKNOWN)
+    ssl_deploy_status = IntegerField(default=DeployStatusEnum.PENDING)
 
     # 自动续期
     is_auto_renew = BooleanField(default=False)
