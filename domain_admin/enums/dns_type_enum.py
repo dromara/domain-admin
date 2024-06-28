@@ -11,3 +11,6 @@ class DnsTypeEnum(object):
     """
     # 阿里云
     ALIYUN = 1
+
+    # 腾讯云
+    TENCENT_CLOUD = 2

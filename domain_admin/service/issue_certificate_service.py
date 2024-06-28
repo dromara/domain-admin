@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import OpenSSL
 import requests
 
+from domain_admin.enums.dns_type_enum import DnsTypeEnum
 from domain_admin.enums.host_auth_type_enum import HostAuthTypeEnum
 from domain_admin.log import logger
 from domain_admin.model.dns_model import DnsModel
@@ -24,7 +25,7 @@ from domain_admin.utils.acme_util.directory_type_enum import DirectoryTypeEnum
 from domain_admin.utils.acme_util.key_type_enum import KeyTypeEnum
 from domain_admin.utils.cert_util import cert_common
 from domain_admin.utils.flask_ext.app_exception import AppException
-from domain_admin.utils.open_api import aliyun_domain_api
+from domain_admin.utils.open_api import aliyun_domain_api, tencentcloud_domain_api
 from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 from domain_admin import config
 
@@ -494,15 +495,24 @@ def add_dns_domain_record(dns_id, issue_certificate_id):
                 record_key = '_acme-challenge.' + challenge_row['sub_domain']
             else:
                 record_key = '_acme-challenge'
-
-            aliyun_domain_api.add_domain_record(
-                access_key_id=dns_row.access_key,
-                access_key_secret=dns_row.secret_key,
-                domain_name=challenge_row['root_domain'],
-                record_type=RecordTypeEnum.TXT,
-                record_key=record_key,
-                record_value=challenge_row['validation']
-            )
+            if dns_row.dns_type_id == DnsTypeEnum.ALIYUN:
+                aliyun_domain_api.add_domain_record(
+                    access_key_id=dns_row.access_key,
+                    access_key_secret=dns_row.secret_key,
+                    domain_name=challenge_row['root_domain'],
+                    record_type=RecordTypeEnum.TXT,
+                    record_key=record_key,
+                    record_value=challenge_row['validation']
+                )
+            elif dns_row.dns_type_id == DnsTypeEnum.TENCENT_CLOUD:
+                tencentcloud_domain_api.add_domain_record(
+                    access_key_id=dns_row.access_key,
+                    access_key_secret=dns_row.secret_key,
+                    domain_name=challenge_row['root_domain'],
+                    record_type=RecordTypeEnum.TXT,
+                    record_key=record_key,
+                    record_value=challenge_row['validation']
+                )
 
 
 def deploy_ssl_by_web_hook(issue_certificate_id, url, headers):

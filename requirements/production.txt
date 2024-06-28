@@ -19,4 +19,5 @@ acme
 fabric
 dnspython
 openpyxl
-aliyun-python-sdk-alidns==3.0.7
+aliyun-python-sdk-alidns
+tencentcloud-sdk-python

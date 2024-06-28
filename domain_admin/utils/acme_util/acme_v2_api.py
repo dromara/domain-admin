@@ -23,6 +23,8 @@ https://github.com/Trim/acme-dns-tiny
 
 https://github.com/shuhanghang/cdn-auto-cert
 
+https://geeknote.net/log/posts/1426
+
 Example ACME-V2 API for HTTP-01 challenge.
 
 Brief:
