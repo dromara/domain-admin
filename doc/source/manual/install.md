@@ -338,7 +338,7 @@ create database data_domain default character set=utf8mb4;
 
 ## 配置参数
 
-可以通过运行目录下添加 `.evn` 文件配置项目的可选参数
+可以通过运行目录下添加 `.env` 文件配置项目的可选参数
 
 ```bash
 # 数据库链接参数

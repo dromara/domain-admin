@@ -21,11 +21,11 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 - 功能描述
     - 核心功能：`域名`、`SSL证书` 和 `托管证书文件` 的过期监控，到期提醒
-    - 支持证书：单域名证书、多域名证书、通配符证书、IP证书、自签名证书
-    - 证书部署： 单一主机部署、多主机部署、动态主机部署
+    - 支持证书：单域名证书、多域名证书、泛域名（通配符）证书、IP证书、自签名证书
+    - 证书部署：单一主机部署、多主机部署、动态主机部署
     - 通知渠道：支持邮件、Webhook、企业微信、钉钉、飞书等通知方式
     - 支持平台：macOS、Linux、Windows
-    - 辅助功能：`Let’s Encrypt` SSL证书申请和自动续期
+    - 辅助功能：`Let’s Encrypt` SSL证书免费申请和SSL证书自动续期
     - 多语言：支持中文、英文
 
 - 项目地址：[后端代码（github）](https://github.com/mouday/domain-admin)、[后端代码（国内镜像）](https://gitee.com/mouday/domain-admin)
@@ -40,9 +40,14 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 请参考安装文档：[https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html](https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html)
 
-如果不想安装，可以直接使用我们部署好的线上应用，需要体验的用户可以加入QQ群，提供邮箱即可
 
-> 服务器由群友 @Panda 赞助提供
+如果不想安装，可以直接使用我们部署好的线上应用，需要体验的用户可以加入`QQ群` 或 `微信群`，提供邮箱即可
+
+体验版入口：https://domain-admin.20a.top/
+
+建议自行部署，这样比较安全
+
+> 服务器和域名由群友赞助提供
 
 ## 项目截图
 
