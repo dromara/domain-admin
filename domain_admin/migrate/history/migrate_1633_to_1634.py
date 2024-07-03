@@ -77,6 +77,20 @@ def execute_migrate():
             field=IssueCertificateModel.version
         ),
 
+        # fix peewee.OperationalError: (1054, "Unknown column 't1.directory_type' in 'field list'")
+        # directory_type
+        migrator.add_column(
+            table=IssueCertificateModel._meta.table_name,
+            column_name=IssueCertificateModel.directory_type.name,
+            field=IssueCertificateModel.directory_type
+        ),
+
+        # key_type
+        migrator.add_column(
+            table=IssueCertificateModel._meta.table_name,
+            column_name=IssueCertificateModel.key_type.name,
+            field=IssueCertificateModel.key_type
+        ),
     ]
 
     migrate_common.try_execute_migrate(migrate_rows)
