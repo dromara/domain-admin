@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 
 from domain_admin.utils import json_util
-from domain_admin.utils.icp_util.icp_api import uutool_icp_api
+from domain_admin.utils.icp_util.icp_api import uutool_icp_api, uomg_icp_api
 
 
 def get_icp(domain):
@@ -17,12 +17,10 @@ def get_icp(domain):
     :param domain:
     :return: ICPItem
     """
-    # item = ICPItem()
-    # return item.to_dict()
     # 第三方接口
-    return uutool_icp_api.get_icp_from_uutool(domain)
+    return uomg_icp_api.get_icp_from_uomg(domain)
 
 
 if __name__ == '__main__':
     # print(json_util.json_encode(get_icp('baidu.com'), indent=2, ensure_ascii=False))
-    print(json_util.json_encode(get_icp('baidu.com'), indent=2, ensure_ascii=False))
+    print(json_util.json_encode(get_icp('qq.com'), indent=2, ensure_ascii=False))

@@ -68,3 +68,18 @@ class DomainUtilTest(unittest.TestCase):
         assert domain_util.encode_hostname('baidu.中国') == 'baidu.xn--fiqs8s'
 
         assert domain_util.encode_hostname('百度.中国') == 'xn--wxtr44c.xn--fiqs8s'
+
+    def test_verify_cert_common_name(self):
+        assert domain_util.verify_cert_common_name('chinafruitime.com', 'chinafruitime.com') is True
+        assert domain_util.verify_cert_common_name('*.chinafruitime.com', 'chinafruitime.com') is True
+        assert domain_util.verify_cert_common_name('*.chinafruitime.com', 'www.chinafruitime.com') is True
+        assert domain_util.verify_cert_common_name('*.chinafruitime.com', 'blog.www.chinafruitime.com') is False
+        assert domain_util.verify_cert_common_name('xxx.com', 'yyy.com') is False
+
+    def test_get_domain_parent(self):
+        assert domain_util.get_domain_parent('www.chinafruitime.com') == 'chinafruitime.com'
+        assert domain_util.get_domain_parent('blog.www.chinafruitime.com') == 'www.chinafruitime.com'
+        assert domain_util.get_domain_parent('ok.www.chinafruitime.com') == 'www.chinafruitime.com'
+        assert domain_util.get_domain_parent('*.www.chinafruitime.com') == 'www.chinafruitime.com'
+        assert domain_util.get_domain_parent('www') == ''
+        assert domain_util.get_domain_parent('') == ''

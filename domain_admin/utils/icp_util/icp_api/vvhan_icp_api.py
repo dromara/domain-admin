@@ -50,3 +50,7 @@ def get_icp_from_vvhan(domain):
     item.icp = info.get('icp', '')
 
     return item
+
+
+if __name__ == '__main__':
+    print(get_icp_from_vvhan('qq.com'))
