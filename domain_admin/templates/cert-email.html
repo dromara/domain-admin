@@ -118,6 +118,8 @@
             <th style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;">证书开始日期</th>
             <th style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;">证书结束日期</th>
             <th style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;">证书天数</th>
+            <th style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;">备注</th>
+
         </tr>
         </thead>
 
@@ -153,9 +155,11 @@
                         <td style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #67C23A;font-size: 14px;">{{ item.expire_days }}</td>
                     {% endif %}
 
+                <td style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;font-size: 14px;">{{ item.comment or '-' }}</td>
 <!--                    <td style="border: 1px solid #f6f6f6;border-collapse: collapse;line-height: 30px; padding: 0 15px;color: #909399;">{{ item.expire_days }}</td>-->
 
             </tr>
+
         {% endfor %}
         </tbody>
     </table>
