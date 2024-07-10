@@ -105,9 +105,14 @@ QQ群号: 731742868
 
 虚位以待（可以将使用者公司或个人的名字放到这里）
 
-- [@1275788667](https://github.com/1275788667)
-- [@hhdebb](https://github.com/hhdebb) 
-- `星河 ๑. `
+| 时间 | 赞助者 | 金额 |
+| - | - | - |
+|2023-11-21 | [@1275788667](https://github.com/1275788667) | ￥50
+| | [@hhdebb](https://github.com/hhdebb) |  
+|2024-04-23 | [@1275788667](https://github.com/1275788667) | ￥50
+| | `星河 ๑. ` |
+|2024-07-10 | [@1275788667](https://github.com/1275788667) | ￥50
+
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
 

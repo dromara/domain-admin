@@ -188,7 +188,8 @@ class IssueCertificateModel(BaseModel):
         能够选择自动续期
         :return:
         """
-        return self.ssl_deploy_status and self.challenge_deploy_status
+        return self.ssl_deploy_status == DeployStatusEnum.SUCCESS \
+               and self.challenge_deploy_status == DeployStatusEnum.SUCCESS
 
     def to_dict(self):
         return model_to_dict(

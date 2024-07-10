@@ -61,11 +61,6 @@ def verify_certificate():
 
     issue_certificate_service.renew_certificate(issue_certificate_id)
 
-    # 验证成功后, check_auto_renew
-    issue_certificate_service.check_auto_renew(
-        issue_certificate_id=issue_certificate_id
-    )
-
     # 验证成功后，自动添加到证书监控列表
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
@@ -195,6 +190,11 @@ def deploy_certificate_file():
     ).where(
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
+
+    # 验证成功后, check_auto_renew
+    issue_certificate_service.check_auto_renew(
+        issue_certificate_id=issue_certificate_id
+    )
 
 
 def renew_certificate():
@@ -363,6 +363,11 @@ def notify_web_hook():
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
 
+    # 验证成功后, check_auto_renew
+    issue_certificate_service.check_auto_renew(
+        issue_certificate_id=issue_certificate_id
+    )
+
     return ret
 
 
@@ -384,7 +389,8 @@ def add_dns_domain_record():
     # 更新验证信息
     IssueCertificateModel.update(
         challenge_deploy_type_id=ChallengeDeployTypeEnum.DNS,
-        challenge_deploy_id=dns_id
+        challenge_deploy_id=dns_id,
+        challenge_deploy_status=DeployStatusEnum.SUCCESS
     ).where(
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
