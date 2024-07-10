@@ -31,7 +31,7 @@ def get_icp_from_uomg(domain):
     }
 
     # 发送GET请求
-    response = requests.get(url, params=data)
+    response = requests.get(url, params=data, timeout=5)
     print(response.text)
     res = response.json()
     if res.get('icp') == '未备案':
