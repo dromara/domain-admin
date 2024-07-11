@@ -121,8 +121,9 @@ services:
         image: mouday/domain-admin:latest
 ```
 
-可用的docker镜像
-- https://docker.aityp.com/image/docker.io/mouday/domain-admin:v1.6.33
+可用的docker镜像站
+- https://docker.aityp.com/
+- https://docker.catiz.eu.org/
 
 ## 方式三：下载源码安装
 
