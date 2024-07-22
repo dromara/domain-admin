@@ -1,3 +1,6 @@
+- v1.6.42(2024-07-22)
+    - fix：not found directory_url
+
 - v1.6.41(2024-07-22)
     - fix: type must be an integer
     - fix
