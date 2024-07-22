@@ -294,6 +294,10 @@ def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 
 
 def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
+    # default use letsencrypt directory_url
+    if not directory_type:
+        directory_type = DirectoryTypeEnum.LETS_ENCRYPT
+
     directory_url = directory_type_enum.get_directory_url(directory_type)
     if not directory_url:
         raise AppException("not found directory_url")
