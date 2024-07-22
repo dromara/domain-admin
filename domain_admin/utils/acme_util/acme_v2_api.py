@@ -118,7 +118,8 @@ def get_account_data_filename(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 def new_csr_comp(domains, pkey_pem=None, key_type=KeyTypeEnum.RSA):
     """Create certificate signing request."""
     if pkey_pem is None:
-        pkey_type = key_type_enum.get_key_type(key_type)
+        # fix: type must be an integer
+        pkey_type = key_type_enum.get_key_type(key_type) or OpenSSL.crypto.TYPE_RSA
 
         # Create private key.
         pkey = OpenSSL.crypto.PKey()
