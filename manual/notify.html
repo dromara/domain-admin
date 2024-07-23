@@ -60,16 +60,17 @@
 <li class="toctree-l3"><a class="reference internal" href="#webhookresend">2.3、webhook发送Resend邮件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#webhookshowdoc">2.4、webhook配置showdoc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id7">2.5、webhook发送飞书消息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.6、webhook发送企业微信消息</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">3、企业微信</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">4、钉钉</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">5、飞书</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">6、模板和参数</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id12">6.1、通用示例</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">6.2、域名到期</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">3、企业微信</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">4、钉钉</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">5、飞书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">6、模板和参数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">6.1、通用示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">6.2、域名到期</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ssl">6.3、SSL证书到期</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id14">6.4、监控异常</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">6.4、监控异常</a></li>
 </ul>
 </li>
 </ul>
@@ -118,6 +119,10 @@
 <blockquote>
 <div><p>如果需要对域名进行到期监控和邮件提醒，必须设置发件邮件</p>
 </div></blockquote>
+<p>注意：</p>
+<ol class="arabic simple">
+<li><p>如果使用的是163邮箱，密码处填写的是<code class="docutils literal notranslate"><span class="pre">授权码</span></code></p></li>
+</ol>
 <a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/system-list.png" /></a>
 <p>第二步：填写收件人列表</p>
 <a class="reference external image-reference" href="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png"><img alt="" src="https://raw.githubusercontent.com/mouday/domain-admin/master/image/notify-email.png" /></a>
@@ -289,9 +294,40 @@
 </pre></div>
 </div>
 </section>
-</section>
 <section id="id8">
-<h2>3、企业微信<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<h3>2.6、webhook发送企业微信消息<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>文档：<a class="reference external" href="https://developer.work.weixin.qq.com/document/path/99110">https://developer.work.weixin.qq.com/document/path/99110</a></p>
+<p>webhook地址</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=693a91f6-7xxx-4bc4-97a0-0ec2sifa5aaa
+</pre></div>
+</div>
+<p>消息体</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;广州今日天气：29度，大部分多云，降雨概率：60%&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mentioned_list&quot;</span><span class="p">:[</span><span class="s2">&quot;wangqing&quot;</span><span class="p">,</span><span class="s2">&quot;@all&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;mentioned_mobile_list&quot;</span><span class="p">:[</span><span class="s2">&quot;13800001111&quot;</span><span class="p">,</span><span class="s2">&quot;@all&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>例如：网站监控的示例</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;markdown&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{monitor_row.title}}监测提醒，请相关同事注意。\n</span>
+<span class="s2">         &gt;请求URL:&lt;font color=\&quot;red\&quot;&gt;{{monitor_row.http_url}}&lt;/font&gt;</span>
+<span class="s2">         &gt;重试次数:&lt;font color=\&quot;red\&quot;&gt;{{monitor_row.allow_error_count}}&lt;/font&gt;</span>
+<span class="s2">         &gt;状态:{% if monitor_row.status==2 %}&lt;font color=\&quot;red\&quot;&gt;失败&lt;/font&gt;{% elif monitor_row.status==1 %}&lt;font color=\&quot;green\&quot;&gt;成功&lt;/font&gt;{% else %}&lt;font color=\&quot;comment\&quot;&gt;未知&lt;/font&gt;{% endif %}&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h2>3、企业微信<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;touser&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UserName&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
@@ -315,8 +351,8 @@
 </div>
 <p>参考：<a class="reference external" href="https://developer.work.weixin.qq.com/document/path/90236">https://developer.work.weixin.qq.com/document/path/90236</a></p>
 </section>
-<section id="id9">
-<h2>4、钉钉<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<section id="id10">
+<h2>4、钉钉<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;agent_id&gt;&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;userid_list&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;userid_list&gt;&quot;</span><span class="p">,</span>
@@ -331,8 +367,8 @@
 </div>
 <p>参考文档：<a class="reference external" href="https://open.dingtalk.com/document/orgapp/asynchronous-sending-of-enterprise-session-messages">https://open.dingtalk.com/document/orgapp/asynchronous-sending-of-enterprise-session-messages</a></p>
 </section>
-<section id="id10">
-<h2>5、飞书<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<section id="id11">
+<h2>5、飞书<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;receive_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;receive_id&gt;&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;msg_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
@@ -342,12 +378,12 @@
 </div>
 <p>参考文档：<a class="reference external" href="https://open.feishu.cn/document/server-docs/im-v1/message/create">https://open.feishu.cn/document/server-docs/im-v1/message/create</a></p>
 </section>
-<section id="id11">
-<h2>6、模板和参数<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+<section id="id12">
+<h2>6、模板和参数<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
 <p>采用<code class="docutils literal notranslate"><span class="pre">jinja2</span></code> 模板引擎</p>
 <p>WebHook、企业微信、飞书、钉钉均支持自定义通知模板</p>
-<section id="id12">
-<h3>6.1、通用示例<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h3>
+<section id="id13">
+<h3>6.1、通用示例<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h3>
 <p>传入模板的参数示例：</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;list&quot;</span><span class="p">:[</span>
@@ -411,8 +447,8 @@
 </div>
 <p>不同的事件参数稍有不同，会有其独特的参数</p>
 </section>
-<section id="id13">
-<h3>6.2、域名到期<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h3>
+<section id="id14">
+<h3>6.2、域名到期<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;list&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="p">{</span>
@@ -491,8 +527,8 @@
 </pre></div>
 </div>
 </section>
-<section id="id14">
-<h3>6.4、监控异常<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
+<section id="id15">
+<h3>6.4、监控异常<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h3>
 <p>异常通知和异常恢复通知的字段一致</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;monitor_row&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
