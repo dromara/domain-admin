@@ -335,8 +335,6 @@ def renew_certificate_row(row):
     elif row.deploy_type_id == SSLDeployTypeEnum.OSS:
         deploy_cert_to_oss(
             issue_certificate_id=row.id,
-            bucket_name=row.deploy_params['bucket_name'],
-            endpoint=row.deploy_params['bucket_name'],
             dns_id=row.deploy_host_id
         )
 
@@ -557,7 +555,7 @@ def deploy_ssl_by_web_hook(issue_certificate_id, url, headers):
     return res.text
 
 
-def deploy_cert_to_oss(issue_certificate_id, bucket_name, endpoint, dns_id):
+def deploy_cert_to_oss(issue_certificate_id, dns_id):
     """
     部署ssl证书到oss
     """
@@ -570,14 +568,18 @@ def deploy_cert_to_oss(issue_certificate_id, bucket_name, endpoint, dns_id):
     if not dns_row:
         raise AppException('DNS数据不存在')
 
+    domain = issue_certificate_row.domains[0]
+
+    oss_info = aliyun_oss_api.cname_to_oss_info(domain)
+
     aliyun_oss_api.put_bucket_cname(
         access_key_id=dns_row.access_key,
         access_key_secret=dns_row.secret_key,
-        bucket_name=bucket_name,
-        domain=issue_certificate_row.domains[0],
+        bucket_name=oss_info['bucket_name'],
+        domain=domain,
         certificate=issue_certificate_row.ssl_certificate,
         private_key=issue_certificate_row.ssl_certificate_key,
-        endpoint=endpoint,
+        endpoint=oss_info['endpoint'],
     )
 
 

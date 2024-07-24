@@ -373,31 +373,21 @@ def notify_web_hook():
 
 def deploy_cert_to_oss():
     """
-    部署证书到oss
+    部署证书到阿里云oss
     :return:
     """
     issue_certificate_id = request.json['issue_certificate_id']
-    bucket_name = request.json['bucket_name']
-    endpoint = request.json.get['endpoint']
     dns_id = request.json.get['dns_id']
 
     ret = issue_certificate_service.deploy_cert_to_oss(
         issue_certificate_id=issue_certificate_id,
-        bucket_name=bucket_name,
-        endpoint=endpoint,
         dns_id=dns_id,
     )
-
-    deploy_params = {
-        'endpoint': endpoint,
-        'bucket_name': bucket_name,
-    }
 
     # 更新验证信息
     IssueCertificateModel.update(
         deploy_type_id=SSLDeployTypeEnum.OSS,
         deploy_host_id=dns_id,
-        deploy_params_raw=json.dumps(deploy_params),
         ssl_deploy_status=DeployStatusEnum.SUCCESS
     ).where(
         IssueCertificateModel.id == issue_certificate_id

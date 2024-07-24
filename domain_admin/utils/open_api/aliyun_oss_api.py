@@ -12,6 +12,8 @@ import oss2
 from oss2.credentials import EnvironmentVariableCredentialsProvider, StaticCredentialsProvider
 
 # https://next.api.aliyun.com/product/Oss
+from domain_admin.utils import domain_util
+
 ENDPOINT_OPTIONS = [
     {
         'label': '华北1（青岛）',
@@ -67,6 +69,18 @@ def get_endpoint_by_value(value):
             return item['endpoint']
 
 
+def cname_to_oss_info(cname):
+    """
+    'zaiting.oss-cn-beijing.aliyuncs.com.'
+    :param cname:
+    :return: zaiting  oss-cn-beijing.aliyuncs.com
+    """
+    return {
+        'bucket_name': cname.split('.')[0],
+        'endpoint': 'https://' + domain_util.get_domain_parent(cname).strip('.')
+    }
+
+
 def put_bucket_cname(
         access_key_id,
         access_key_secret,
@@ -74,7 +88,7 @@ def put_bucket_cname(
         domain,
         certificate,
         private_key,
-        endpoint='cn-beijing',
+        endpoint='https://oss-cn-beijing.aliyuncs.com',
 ):
     """
     将证书部署到oss
@@ -96,7 +110,8 @@ def put_bucket_cname(
     # 填写Bucket名称，例如examplebucket。
     bucket = oss2.Bucket(
         auth=auth,
-        endpoint=get_endpoint_by_value(endpoint),
+        # https://oss-cn-beijing.aliyuncs.com
+        endpoint=endpoint,
         bucket_name=bucket_name
     )
 
