@@ -181,7 +181,12 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8001)
 ```
 
+基于golang实现的部署方案，由网友提供
+
+- [https://github.com/Gourds/domain-admin-ssl-deploy](https://github.com/Gourds/domain-admin-ssl-deploy) [issues#121](https://github.com/mouday/domain-admin/issues/121)
+
 ## 说明
 
 - 如果是全程采用`一键部署`方式操作，域名到期前30天会自动续期
 - 申请到的证书，不会到期提醒，如需到期提醒，请将部署该证书的域名添加到`证书监控`列表
+
