@@ -9,6 +9,7 @@ from flask import g, request
 from domain_admin.model.deploy_cert_model import DeployCertModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.service import deploy_cert_service
+from domain_admin.utils.open_api import aliyun_oss_api
 
 
 def get_deploy_list_by_cert_id():
@@ -160,3 +161,11 @@ def handle_deploy_cert():
     err = deploy_cert_service.handle_deploy_cert(deploy_cert_id)
     if err:
         raise err
+
+
+def get_aliyun_endpoint_options():
+    """
+    阿里云endpoint
+    :return:
+    """
+    return aliyun_oss_api.ENDPOINT_OPTIONS

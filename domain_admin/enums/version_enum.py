@@ -198,3 +198,12 @@ class VersionEnum(object):
     Version_1633 = '1.6.33'
     Version_1634 = '1.6.34'
     Version_1635 = '1.6.35'
+
+    Version_1636 = '1.6.36'
+    Version_1637 = '1.6.37'
+    Version_1638 = '1.6.38'
+    Version_1639 = '1.6.39'
+    Version_1640 = '1.6.40'
+    Version_1641 = '1.6.41'
+    Version_1642 = '1.6.42'
+    Version_1643 = '1.6.43'

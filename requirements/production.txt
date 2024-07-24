@@ -21,3 +21,6 @@ dnspython
 openpyxl
 aliyun-python-sdk-alidns
 tencentcloud-sdk-python
+alibabacloud_cdn20180510==4.0.0
+alibabacloud_cas20200407==1.4.0
+oss2

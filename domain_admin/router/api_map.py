@@ -178,6 +178,7 @@ routes = {
     '/api/deleteCertificateByBatch': issue_certificate_api.delete_certificate_by_batch,
     '/api/getAllowCommands': issue_certificate_api.get_allow_commands,
     '/api/notifyWebHook': issue_certificate_api.notify_web_hook,
+    '/api/deployCertToOss': issue_certificate_api.deploy_cert_to_oss,
     '/api/addDnsDomainRecord': issue_certificate_api.add_dns_domain_record,
     '/api/updateRowAutoRenew': issue_certificate_api.update_row_auto_renew,
     '/api/getIssueCertificateOptions': issue_certificate_api.get_issue_certificate_options,
@@ -223,6 +224,7 @@ routes = {
     '/api/deleteByDeployCertIds': deploy_cert_api.delete_by_deploy_cert_ids,
     '/api/getDeployCertById': deploy_cert_api.get_deploy_cert_by_id,
     '/api/handleDeployCert': deploy_cert_api.handle_deploy_cert,
+    '/api/getAliyunEndpointOptions': deploy_cert_api.get_aliyun_endpoint_options,
 
     # DNS账户管理
     '/api/addDns': dns_api.add_dns,

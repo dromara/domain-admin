@@ -91,6 +91,7 @@ class IssueCertificateModel(BaseModel):
     status = CharField(default=ValidStatus.PENDING, null=True)
 
     # 部署方式 @since 1.6.33 可选：ssh api
+    # @since 1.6.43 新增 oss
     deploy_type_id = IntegerField(default=SSLDeployTypeEnum.SSH)
 
     # 部署机器
@@ -111,6 +112,10 @@ class IssueCertificateModel(BaseModel):
 
     # 部署请求头
     deploy_header_raw = TextField(default=None, null=True)
+
+    # 部署参数
+    # @since 1.6.43
+    deploy_params_raw = TextField(default=None, null=True)
 
     # ssl证书文件部署状态
     ssl_deploy_status = IntegerField(default=DeployStatusEnum.PENDING)
@@ -202,3 +207,10 @@ class IssueCertificateModel(BaseModel):
                 'domain_validation_urls'
             ]
         )
+
+    @property
+    def deploy_params(self):
+        if self.deploy_params_raw:
+            return json.loads(self.deploy_params_raw)
+        else:
+            return {}
