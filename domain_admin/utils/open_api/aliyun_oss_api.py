@@ -12,7 +12,7 @@ import oss2
 from oss2.credentials import EnvironmentVariableCredentialsProvider, StaticCredentialsProvider
 
 # https://next.api.aliyun.com/product/Oss
-from domain_admin.utils import domain_util
+from domain_admin.utils import domain_util, dns_util
 
 ENDPOINT_OPTIONS = [
     {
@@ -75,10 +75,17 @@ def cname_to_oss_info(cname):
     :param cname:
     :return: zaiting  oss-cn-beijing.aliyuncs.com
     """
-    return {
-        'bucket_name': cname.split('.')[0],
-        'endpoint': 'https://' + domain_util.get_domain_parent(cname).strip('.')
-    }
+    lst = dns_util.query_domain_cname(cname)
+
+    if lst and len(lst) > 0:
+        domain = lst[0]
+
+        return {
+            'bucket_name': domain.split('.')[0],
+            'endpoint': 'https://' + domain_util.get_domain_parent(domain).strip('.')
+        }
+    else:
+        return None
 
 
 def put_bucket_cname(

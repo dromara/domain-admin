@@ -377,7 +377,7 @@ def deploy_cert_to_oss():
     :return:
     """
     issue_certificate_id = request.json['issue_certificate_id']
-    dns_id = request.json.get['dns_id']
+    dns_id = request.json['dns_id']
 
     ret = issue_certificate_service.deploy_cert_to_oss(
         issue_certificate_id=issue_certificate_id,

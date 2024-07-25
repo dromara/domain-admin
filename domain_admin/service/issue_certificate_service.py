@@ -571,6 +571,10 @@ def deploy_cert_to_oss(issue_certificate_id, dns_id):
     domain = issue_certificate_row.domains[0]
 
     oss_info = aliyun_oss_api.cname_to_oss_info(domain)
+    if not oss_info:
+        raise AppException('dns 未设置')
+
+    logger.info("oss_info: %s", oss_info)
 
     aliyun_oss_api.put_bucket_cname(
         access_key_id=dns_row.access_key,
