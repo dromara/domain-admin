@@ -14,3 +14,7 @@ class SSLDeployTypeEnum(object):
     WEB_HOOK = 1
 
     OSS = 2
+
+    CDN = 3
+
+    DCDN = 4

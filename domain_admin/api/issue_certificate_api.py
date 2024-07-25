@@ -278,12 +278,19 @@ def get_issue_certificate_by_id():
     data = issue_certificate_row.to_dict()
     data['deploy_dns'] = None
     data['deploy_host'] = None
+    data['cert_deploy_host'] = None
+    data['cert_deploy_dns'] = None
 
     if issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
         data['deploy_host'] = HostModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
 
     elif issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
         data['deploy_dns'] = DnsModel.get_or_none(DnsModel.id == issue_certificate_row.challenge_deploy_id)
+
+    if issue_certificate_row.deploy_type_id == SSLDeployTypeEnum.SSH:
+        data['cert_deploy_host'] = HostModel.get_or_none(HostModel.id == issue_certificate_row.deploy_host_id)
+    elif issue_certificate_row.deploy_type_id in [SSLDeployTypeEnum.OSS, SSLDeployTypeEnum.CDN, SSLDeployTypeEnum.DCDN]:
+        data['cert_deploy_dns'] = DnsModel.get_or_none(DnsModel.id == issue_certificate_row.deploy_host_id)
 
     return data
 
@@ -387,6 +394,66 @@ def deploy_cert_to_oss():
     # 更新验证信息
     IssueCertificateModel.update(
         deploy_type_id=SSLDeployTypeEnum.OSS,
+        deploy_host_id=dns_id,
+        ssl_deploy_status=DeployStatusEnum.SUCCESS
+    ).where(
+        IssueCertificateModel.id == issue_certificate_id
+    ).execute()
+
+    # 验证成功后, check_auto_renew
+    issue_certificate_service.check_auto_renew(
+        issue_certificate_id=issue_certificate_id
+    )
+
+    return ret
+
+
+def deploy_cert_to_cdn():
+    """
+    部署证书到阿里云cdn
+    :return:
+    """
+    issue_certificate_id = request.json['issue_certificate_id']
+    dns_id = request.json['dns_id']
+
+    ret = issue_certificate_service.deploy_cert_to_cdn(
+        issue_certificate_id=issue_certificate_id,
+        dns_id=dns_id,
+    )
+
+    # 更新验证信息
+    IssueCertificateModel.update(
+        deploy_type_id=SSLDeployTypeEnum.CDN,
+        deploy_host_id=dns_id,
+        ssl_deploy_status=DeployStatusEnum.SUCCESS
+    ).where(
+        IssueCertificateModel.id == issue_certificate_id
+    ).execute()
+
+    # 验证成功后, check_auto_renew
+    issue_certificate_service.check_auto_renew(
+        issue_certificate_id=issue_certificate_id
+    )
+
+    return ret
+
+
+def deploy_cert_to_dcdn():
+    """
+    部署证书到阿里云dcdn
+    :return:
+    """
+    issue_certificate_id = request.json['issue_certificate_id']
+    dns_id = request.json['dns_id']
+
+    ret = issue_certificate_service.deploy_cert_to_dcdn(
+        issue_certificate_id=issue_certificate_id,
+        dns_id=dns_id,
+    )
+
+    # 更新验证信息
+    IssueCertificateModel.update(
+        deploy_type_id=SSLDeployTypeEnum.DCDN,
         deploy_host_id=dns_id,
         ssl_deploy_status=DeployStatusEnum.SUCCESS
     ).where(
