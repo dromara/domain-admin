@@ -229,14 +229,26 @@ https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=693a91f6-7xxx-4bc4-97a0-0ec
 }
 ```
 
-示例：监控证书到期
+示例：监控证书到期（文本格式）
 
 ```json
 {
-  "msgtype": "text",
-   "text": {
-      "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
-    } 
+    "msgtype": "text",
+    "text": {
+        "content": "SSL证书到期提醒：{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+    }
+}
+```
+
+示例：监控证书到期（markdown格式）
+
+```json
+{
+  "msgtype": "markdown",
+  "markdown": {
+    "title": "SSL证书到期提醒",
+    "content": "### SSL证书到期提醒 🔔\n\n| 域名 | 生效日期 | 到期日期 | 剩余天数 |\n| ---- | -------- | -------- | :--------: |\n{% for row in list %}| {{row.domain}} | {{row.start_date or '未知'}} | {{row.expire_date or '未知'}} | {{row.expire_days}}天 |\n{% endfor %}\n\n> 请及时更新即将到期的SSL证书，以确保网站安全性。"
+  }
 }
 ```
 
