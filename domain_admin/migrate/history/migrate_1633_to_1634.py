@@ -103,7 +103,10 @@ def execute_migrate():
     migrate_common.try_execute_migrate(migrate_rows)
 
     # update data
-    rows = IssueCertificateModel.select().where(
+    rows = IssueCertificateModel.select(
+        IssueCertificateModel.id,
+        IssueCertificateModel.deploy_host_id,
+    ).where(
         IssueCertificateModel.is_auto_renew == True
     )
 

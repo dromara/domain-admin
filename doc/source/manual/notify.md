@@ -229,7 +229,18 @@ https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=693a91f6-7xxx-4bc4-97a0-0ec
 }
 ```
 
-例如：网站监控的示例
+示例：监控证书到期
+
+```json
+{
+  "msgtype": "text",
+   "text": {
+      "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+    } 
+}
+```
+
+示例：网站监控
 
 ```json
 {

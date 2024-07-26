@@ -28,3 +28,13 @@ def register():
     password_repeat = request.json['password_repeat']
 
     auth_service.register(username, password, password_repeat)
+
+
+def send_code():
+    """
+    发送验证码
+    :return:
+    """
+    username = request.json['username']
+
+    # auth_service.register()
