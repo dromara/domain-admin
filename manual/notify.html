@@ -312,7 +312,16 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>例如：网站监控的示例</p>
+<p>示例：监控证书到期</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{% for row in list %}{{row.domain}} {{row.start_date or &#39;-&#39; }} - {{row.expire_date or &#39;-&#39; }} ({{row.expire_days}}){% endfor %}&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>示例：网站监控</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;markdown&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
