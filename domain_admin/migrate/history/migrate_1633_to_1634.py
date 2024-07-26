@@ -91,6 +91,13 @@ def execute_migrate():
             column_name=IssueCertificateModel.key_type.name,
             field=IssueCertificateModel.key_type
         ),
+
+        # deploy_params_raw
+        migrator.add_column(
+            table=IssueCertificateModel._meta.table_name,
+            column_name=IssueCertificateModel.deploy_params_raw.name,
+            field=IssueCertificateModel.deploy_params_raw
+        )
     ]
 
     migrate_common.try_execute_migrate(migrate_rows)
