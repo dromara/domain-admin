@@ -9,6 +9,7 @@ from flask import g, request
 from domain_admin.model.deploy_cert_model import DeployCertModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.service import deploy_cert_service
+from domain_admin.utils.flask_ext.app_exception import DataNotFoundAppException
 from domain_admin.utils.open_api import aliyun_oss_api
 
 
@@ -27,6 +28,7 @@ def get_deploy_list_by_cert_id():
 
     query = DeployCertModel.select().where(
         DeployCertModel.cert_id == cert_id,
+        DeployCertModel.user_id == current_user_id,
     )
 
     total = query.count()
@@ -90,6 +92,15 @@ def update_deploy_cert_by_id():
     deploy_fullchain_file = request.json['deploy_fullchain_file']
     deploy_reloadcmd = request.json['deploy_reloadcmd']
 
+    # check data
+    deploy_cert_row = DeployCertModel.select().where(
+        DeployCertModel.id == deploy_cert_id,
+        DeployCertModel.user_id == current_user_id
+    ).first()
+
+    if not deploy_cert_row:
+        raise DataNotFoundAppException()
+
     data = {
         'deploy_host_id': deploy_host_id,
         'deploy_key_file': deploy_key_file,
@@ -98,7 +109,7 @@ def update_deploy_cert_by_id():
     }
 
     DeployCertModel.update(data).where(
-        DeployCertModel.id == deploy_cert_id
+        DeployCertModel.id == deploy_cert_row.id
     ).execute()
 
 
@@ -112,6 +123,15 @@ def delete_by_deploy_cert_id():
     current_user_id = g.user_id
 
     deploy_cert_id = request.json['deploy_cert_id']
+
+    # check data
+    deploy_cert_row = DeployCertModel.select().where(
+        DeployCertModel.id == deploy_cert_id,
+        DeployCertModel.user_id == current_user_id
+    ).first()
+
+    if not deploy_cert_row:
+        raise DataNotFoundAppException()
 
     DeployCertModel.delete_by_id(deploy_cert_id)
 
@@ -128,7 +148,8 @@ def delete_by_deploy_cert_ids():
     deploy_cert_ids = request.json['deploy_cert_ids']
 
     DeployCertModel.delete().where(
-        DeployCertModel.id.in_(deploy_cert_ids)
+        DeployCertModel.id.in_(deploy_cert_ids),
+        DeployCertModel.user_id == current_user_id
     ).execute()
 
 
@@ -143,7 +164,15 @@ def get_deploy_cert_by_id():
 
     deploy_cert_id = request.json['deploy_cert_id']
 
-    deploy_cert_row = DeployCertModel.get_by_id(deploy_cert_id)
+    # check data
+    deploy_cert_row = DeployCertModel.select().where(
+        DeployCertModel.id == deploy_cert_id,
+        DeployCertModel.user_id == current_user_id
+    ).first()
+
+    if not deploy_cert_row:
+        raise DataNotFoundAppException()
+
     deploy_cert_dict = deploy_cert_row.to_dict()
 
     deploy_cert_dict['deploy_host'] = HostModel.get_by_id(deploy_cert_dict['deploy_host_id'])
@@ -157,8 +186,20 @@ def handle_deploy_cert():
     @since v1.6.20
     :return:
     """
+    current_user_id = g.user_id
+
     deploy_cert_id = request.json['deploy_cert_id']
-    err = deploy_cert_service.handle_deploy_cert(deploy_cert_id)
+
+    # check data
+    deploy_cert_row = DeployCertModel.select().where(
+        DeployCertModel.id == deploy_cert_id,
+        DeployCertModel.user_id == current_user_id
+    ).first()
+
+    if not deploy_cert_row:
+        raise DataNotFoundAppException()
+
+    err = deploy_cert_service.handle_deploy_cert(deploy_cert_row)
     if err:
         raise err
 

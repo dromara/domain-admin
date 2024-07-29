@@ -105,6 +105,15 @@ def update_certificate_by_id():
     expire_time = request.json.get('expire_time')
     comment = request.json.get('comment') or ''
 
+    # check data
+    certificate_row = CertificateModel.select().where(
+        CertificateModel.id == certificate_id,
+        CertificateModel.user_id == current_user_id
+    ).first()
+
+    if not certificate_row:
+        raise AppException('数据不存在')
+
     data = {
         'domain': domain,
         'start_time': start_time,
@@ -130,8 +139,18 @@ def delete_certificate_by_id():
 
     certificate_id = request.json['certificate_id']
 
+    # check data
+    certificate_row = CertificateModel.select().where(
+        CertificateModel.id == certificate_id,
+        CertificateModel.user_id == current_user_id
+    ).first()
+
+    if not certificate_row:
+        raise AppException('数据不存在')
+
+    # delete
     CertificateModel.delete().where(
-        CertificateModel.id == certificate_id
+        CertificateModel.id == certificate_row.id
     ).execute()
 
 
@@ -147,7 +166,8 @@ def delete_certificate_by_ids():
     certificate_ids = request.json['certificate_ids']
 
     CertificateModel.delete().where(
-        CertificateModel.id.in_(certificate_ids)
+        CertificateModel.id.in_(certificate_ids),
+        CertificateModel.user_id == current_user_id
     ).execute()
 
 
@@ -161,7 +181,12 @@ def get_certificate_by_id():
     current_user_id = g.user_id
 
     certificate_id = request.json['certificate_id']
-    certificate_row = CertificateModel.get_by_id(certificate_id)
+
+    # check data
+    certificate_row = CertificateModel.select().where(
+        CertificateModel.id == certificate_id,
+        CertificateModel.user_id == current_user_id
+    ).first()
 
     if not certificate_row:
         raise DataNotFoundAppException()

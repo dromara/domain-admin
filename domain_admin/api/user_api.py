@@ -7,16 +7,19 @@ from flask import request, g
 from playhouse.shortcuts import model_to_dict, fn
 
 from domain_admin.config import DEFAULT_BEFORE_EXPIRE_DAYS
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.address_model import AddressModel
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.notify_model import NotifyModel
 from domain_admin.model.user_model import UserModel
+from domain_admin.service import auth_service
 from domain_admin.utils import datetime_util, bcrypt_util, secret_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_user_info():
     """
     获取当前用户信息
@@ -35,6 +38,7 @@ def get_user_info():
     return data
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_user_info():
     """
     更新当前用户信息
@@ -56,6 +60,7 @@ def update_user_info():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_user_password():
     """
     更新用户密码
@@ -80,6 +85,7 @@ def update_user_password():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def get_user_list():
     """
     获取用户列表
@@ -180,6 +186,7 @@ def get_user_list():
     }
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def add_user():
     """
     添加用户
@@ -201,6 +208,7 @@ def add_user():
     )
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def update_user_status():
     """
     更新账号可用状态
@@ -236,6 +244,7 @@ def reset_user_password():
     }
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def delete_user():
     """
     删除用户账号

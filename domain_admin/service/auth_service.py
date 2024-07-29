@@ -3,6 +3,13 @@
 auth_service.py
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+
+from functools import wraps
+
+from flask import g
+
+from domain_admin.enums.role_enum import RoleEnum, ROLE_PERMISSION
+from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import token_service
 from domain_admin.utils import bcrypt_util
@@ -56,3 +63,64 @@ def register(username, password, password_repeat):
         username=username,
         password=bcrypt_util.encode_password(password)
     )
+
+
+def permission(role=RoleEnum.ADMIN):
+    """
+    权限控制
+    :param role:
+    :return:
+    """
+
+    def outer_wrapper(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if role is None:
+                # 跳过权限校验
+                pass
+            else:
+                current_user_id = g.user_id
+
+                if not current_user_id:
+                    raise AppException('用户未登录')
+
+                user_row = UserModel.get_by_id(current_user_id)
+                if not user_row:
+                    raise AppException('用户不存在')
+
+                if user_row.status != StatusEnum.Enabled:
+                    raise AppException('用户已禁用')
+
+                if has_role_permission(current_role=user_row.role, need_permission=role):
+                    raise AppException('暂无权限')
+
+                # 当前用户数据全局可用
+                g.current_user_row = user_row
+
+            # execute
+            ret = func(*args, **kwargs)
+
+            return ret
+
+        return wrapper
+
+    return outer_wrapper
+
+
+def has_role_permission(current_role, need_permission):
+    """
+    角色权限判断
+    :param current_role:
+    :param need_permission:
+    :return:
+    """
+    if not need_permission:
+        return True
+
+    current_permission = []
+
+    for item in ROLE_PERMISSION:
+        if item['role'] == current_role:
+            current_permission = item['permission']
+
+    return need_permission in current_permission

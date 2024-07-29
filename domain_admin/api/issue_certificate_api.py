@@ -19,7 +19,7 @@ from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util,
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.acme_util.key_type_enum import KEY_TYPE_OPTIONS, KeyTypeEnum
 from domain_admin.utils.acme_util.directory_type_enum import DIRECTORY_URL_OPTIONS, DirectoryTypeEnum
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 from domain_admin.utils.open_api import aliyun_domain_api
 from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 
@@ -273,7 +273,14 @@ def get_issue_certificate_by_id():
 
     issue_certificate_id = request.json['issue_certificate_id']
 
-    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+    # check data
+    issue_certificate_row = IssueCertificateModel.select().where(
+        IssueCertificateModel.id == issue_certificate_id,
+        IssueCertificateModel.user_id == current_user_id
+    ).first()
+
+    if not issue_certificate_row:
+        raise DataNotFoundAppException()
 
     data = issue_certificate_row.to_dict()
     data['deploy_dns'] = None
@@ -304,7 +311,16 @@ def delete_issue_certificate_by_id():
 
     issue_certificate_id = request.json['issue_certificate_id']
 
-    IssueCertificateModel.delete_by_id(issue_certificate_id)
+    # check data
+    issue_certificate_row = IssueCertificateModel.select().where(
+        IssueCertificateModel.id == issue_certificate_id,
+        IssueCertificateModel.user_id == current_user_id
+    ).first()
+
+    if not issue_certificate_row:
+        raise DataNotFoundAppException()
+
+    IssueCertificateModel.delete_by_id(issue_certificate_row.id)
 
 
 def delete_certificate_by_batch():
@@ -332,7 +348,14 @@ def renew_issue_certificate_by_id():
 
     issue_certificate_id = request.json['issue_certificate_id']
 
-    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+    # check data
+    issue_certificate_row = IssueCertificateModel.select().where(
+        IssueCertificateModel.id == issue_certificate_id,
+        IssueCertificateModel.user_id == current_user_id
+    ).first()
+
+    if not issue_certificate_row:
+        raise DataNotFoundAppException()
 
     issue_certificate_service.renew_certificate_row(issue_certificate_row)
 
@@ -498,11 +521,19 @@ def update_row_auto_renew():
     修改自动更新字段
     :return:
     """
+    current_user_id = g.user_id
 
     issue_certificate_id = request.json['issue_certificate_id']
     is_auto_renew = request.json['is_auto_renew']
 
-    issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
+    # check data
+    issue_certificate_row = IssueCertificateModel.select().where(
+        IssueCertificateModel.id == issue_certificate_id,
+        IssueCertificateModel.user_id == current_user_id
+    ).first()
+
+    if not issue_certificate_row:
+        raise DataNotFoundAppException()
 
     if issue_certificate_row and issue_certificate_row.can_auto_renew:
         # 更新验证信息

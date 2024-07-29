@@ -16,3 +16,16 @@ class RoleEnum(object):
 
     # admin
     ADMIN = 10
+
+
+# 角色和权限对应关系
+ROLE_PERMISSION = [
+    {
+        'role': RoleEnum.ADMIN,
+        'permission': [RoleEnum.USER, RoleEnum.ADMIN]
+    },
+    {
+        'role': RoleEnum.USER,
+        'permission': [RoleEnum.USER]
+    }
+]

@@ -35,15 +35,13 @@ def load_cert_deploy_host(lst):
         row['deploy_host'] = deploy_host_map.get(str(row['deploy_host_id']), None)
 
 
-def handle_deploy_cert(deploy_cert_id):
+def handle_deploy_cert(deploy_cert_row):
     """
     根据配置信息部署证书
     @since v1.6.20
-    :param deploy_cert_id:
+    :param deploy_cert_row: DeployCertModel
     :return:
     """
-    # 部署信息
-    deploy_cert_row = DeployCertModel.get_by_id(deploy_cert_id)
     # 部署证书
     cert_row = CertificateModel.get_by_id(deploy_cert_row.cert_id)
 
@@ -72,7 +70,7 @@ def handle_deploy_cert(deploy_cert_id):
         status=status,
         update_time=datetime_util.get_datetime(),
     ).where(
-        DeployCertModel.id == deploy_cert_id
+        DeployCertModel.id == deploy_cert_row.id
     ).execute()
 
     return err

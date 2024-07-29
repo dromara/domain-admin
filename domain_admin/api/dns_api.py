@@ -7,6 +7,7 @@ from flask import request, g
 
 from domain_admin.enums.dns_type_enum import DnsTypeEnum
 from domain_admin.model.dns_model import DnsModel
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def add_dns():
@@ -45,13 +46,21 @@ def update_dns_by_id():
     access_key = request.json['access_key']
     secret_key = request.json['secret_key']
 
+    dns_row = DnsModel.select().where(
+        DnsModel.id == dns_id,
+        DnsModel.user_id == current_user_id
+    ).first()
+
+    if not dns_row:
+        raise AppException('数据不存在')
+
     DnsModel.update(
         dns_type_id=dns_type_id,
         name=name,
         access_key=access_key,
         secret_key=secret_key,
     ).where(
-        DnsModel.id == dns_id
+        DnsModel.id == dns_row.id
     ).execute()
 
 
@@ -60,9 +69,18 @@ def get_dns_by_id():
     获取Dns
     :return:
     """
+    current_user_id = g.user_id
     dns_id = request.json['dns_id']
 
-    return DnsModel.get_by_id(dns_id)
+    dns_row = DnsModel.select().where(
+        DnsModel.id == dns_id,
+        DnsModel.user_id == current_user_id
+    ).first()
+
+    if not dns_row:
+        raise AppException('数据不存在')
+
+    return dns_row
 
 
 def delete_dns_by_id():
@@ -70,9 +88,18 @@ def delete_dns_by_id():
     移除Dns
     :return:
     """
+    current_user_id = g.user_id
     dns_id = request.json['dns_id']
 
-    return DnsModel.delete_by_id(dns_id)
+    dns_row = DnsModel.select().where(
+        DnsModel.id == dns_id,
+        DnsModel.user_id == current_user_id
+    ).first()
+
+    if not dns_row:
+        raise AppException('数据不存在')
+
+    return DnsModel.delete_by_id(dns_row.id)
 
 
 def get_dns_list():
