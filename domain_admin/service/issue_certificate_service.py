@@ -47,7 +47,7 @@ def issue_certificate(
     # Issue certificate
 
     # Create domain private key and CSR
-    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(domains=domains, key_type=key_type)
+    pkey_pem, csr_pem = acme_v2_api.new_csr_comp(domains=domains)
 
     issue_certificate_row = IssueCertificateModel.create(
         user_id=user_id,
@@ -76,10 +76,13 @@ def get_certificate_challenges(issue_certificate_id):
     pkey_pem, csr_pem = acme_v2_api.new_csr_comp(
         domains=domains,
         pkey_pem=pkey_pem,
+    )
+    print('directory_type', issue_certificate_row.directory_type)
+
+    acme_client = acme_v2_api.get_acme_client(
+        directory_type=issue_certificate_row.directory_type,
         key_type=issue_certificate_row.key_type
     )
-
-    acme_client = acme_v2_api.get_acme_client(directory_type=issue_certificate_row.directory_type)
     orderr = acme_client.new_order(csr_pem)
 
     # Select HTTP-01 within offered challenges by the CA server
@@ -113,7 +116,10 @@ def verify_certificate(issue_certificate_id, challenge_type):
     issue_certificate_row = IssueCertificateModel.get_by_id(issue_certificate_id)
 
     items = get_certificate_challenges(issue_certificate_id)
-    acme_client = acme_v2_api.get_acme_client(directory_type=issue_certificate_row.directory_type)
+    acme_client = acme_v2_api.get_acme_client(
+        directory_type=issue_certificate_row.directory_type,
+        key_type=issue_certificate_row.key_type
+    )
 
     verify_count = 0
     for item in items:
@@ -176,13 +182,15 @@ def renew_certificate(row_id):
     pkey_pem = issue_certificate_row.ssl_certificate_key
     domains = issue_certificate_row.domains
 
-    acme_client = acme_v2_api.get_acme_client(directory_type=issue_certificate_row.directory_type)
+    acme_client = acme_v2_api.get_acme_client(
+        directory_type=issue_certificate_row.directory_type,
+        key_type=issue_certificate_row.key_type
+    )
 
     # Create domain private key and CSR
     pkey_pem, csr_pem = acme_v2_api.new_csr_comp(
         domains=domains,
         pkey_pem=pkey_pem,
-        key_type=issue_certificate_row.key_type
     )
 
     orderr = acme_client.new_order(csr_pem)
@@ -269,7 +277,6 @@ def renew_certificate_row(row):
     # 重新申请
     pkey_pem, csr_pem = acme_v2_api.new_csr_comp(
         domains=row.domains,
-        key_type=row.key_type
     )
 
     IssueCertificateModel.update(

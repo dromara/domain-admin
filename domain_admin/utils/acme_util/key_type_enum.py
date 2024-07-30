@@ -11,9 +11,9 @@ class KeyTypeEnum(object):
     加密方式
     """
     RSA = "RSA"
-    DSA = "DSA"
+    # DSA = "DSA"
     EC = "EC"
-    DH = "DH"
+    # DH = "DH"
 
 
 KEY_TYPE_OPTIONS = [
@@ -22,21 +22,21 @@ KEY_TYPE_OPTIONS = [
         'value': KeyTypeEnum.RSA,
         'type': OpenSSL.crypto.TYPE_RSA
     },
-    {
-        'label': "DSA",
-        'value': KeyTypeEnum.DSA,
-        'type': OpenSSL.crypto.TYPE_DSA
-    },
+    # {
+    #     'label': "DSA",
+    #     'value': KeyTypeEnum.DSA,
+    #     'type': OpenSSL.crypto.TYPE_DSA
+    # },
     {
         'label': "EC",
         'value': KeyTypeEnum.EC,
         'type': OpenSSL.crypto.TYPE_EC
     },
-    {
-        'label': "DH",
-        'value': KeyTypeEnum.DH,
-        'type': OpenSSL.crypto.TYPE_DH
-    },
+    # {
+    #     'label': "DH",
+    #     'value': KeyTypeEnum.DH,
+    #     'type': OpenSSL.crypto.TYPE_DH
+    # },
 ]
 
 

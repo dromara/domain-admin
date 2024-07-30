@@ -36,7 +36,7 @@ def before_request():
         response.headers.set('Access-Control-Max-Age', 60 * 30)
         return response
 
-    permission.check_permission()
+    permission.parse_token()
 
     db.connect(reuse_if_open=True)
 

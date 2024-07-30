@@ -91,7 +91,7 @@ def permission(role=RoleEnum.ADMIN):
                 if user_row.status != StatusEnum.Enabled:
                     raise AppException('用户已禁用')
 
-                if has_role_permission(current_role=user_row.role, need_permission=role):
+                if not has_role_permission(current_role=user_row.role, need_permission=role):
                     raise AppException('暂无权限')
 
                 # 当前用户数据全局可用

@@ -10,7 +10,7 @@ from flask import current_app
 
 from domain_admin.config import SECRET_KEY, TOKEN_EXPIRE_DAYS
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
-from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
+from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException, AppException
 
 
 def encode_token(payload):
@@ -48,7 +48,7 @@ def decode_token(token):
     try:
         return jwt.decode(jwt=token, key=secret_key, algorithms=['HS256'])
     except Exception:
-        raise ForbiddenAppException()
+        raise AppException('token无效')
 
 
 if __name__ == '__main__':

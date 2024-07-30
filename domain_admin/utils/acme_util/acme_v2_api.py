@@ -60,6 +60,7 @@ from datetime import datetime, timedelta
 
 import OpenSSL
 import josepy as jose
+import requests
 from acme import challenges, errors
 from acme import client
 from acme import crypto_util
@@ -115,15 +116,13 @@ def get_account_data_filename(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 
 # Useful methods and classes:
 
-def new_csr_comp(domains, pkey_pem=None, key_type=KeyTypeEnum.RSA):
+def new_csr_comp(domains, pkey_pem=None):
     """Create certificate signing request."""
     if pkey_pem is None:
         # fix: type must be an integer
-        pkey_type = key_type_enum.get_key_type(key_type) or OpenSSL.crypto.TYPE_RSA
-
         # Create private key.
         pkey = OpenSSL.crypto.PKey()
-        pkey.generate_key(type=pkey_type, bits=CERT_PKEY_BITS)
+        pkey.generate_key(type=OpenSSL.crypto.TYPE_RSA, bits=CERT_PKEY_BITS)
         pkey_pem = OpenSSL.crypto.dump_privatekey(
             OpenSSL.crypto.FILETYPE_PEM, pkey)
 
@@ -253,7 +252,7 @@ def get_account_key(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
         with open(account_key_filename, 'wb') as f:
             f.write(pem)
 
-    return jose.JWKRSA(key=private_key)
+    return private_key
 
 
 def ensure_account_exists(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
@@ -282,18 +281,54 @@ def ensure_account_exists(client_acme, directory_type=DirectoryTypeEnum.LETS_ENC
         create_account(client_acme, directory_type)
 
 
+def get_zerossl_eab():
+    """
+    :return:
+    eg:
+    {
+        "success": true,
+        "eab_kid": "xxx",
+        "eab_hmac_key": "yyy"
+    }
+    """
+    url = 'https://api.zerossl.com/acme/eab-credentials-email'
+    res = requests.post(
+        url=url,
+        data={'email': "admin@domain-admin.com"}
+    )
+
+    return res.json()
+
+
 def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
     account_data_filename = get_account_data_filename(directory_type)
 
-    register = client_acme.new_account(messages.NewRegistration.from_data(
-        terms_of_service_agreed=True)
+    # 参考 certbot
+    if client_acme.external_account_required():
+        config = get_zerossl_eab()
+        print('config', config)
+
+        eab = messages.ExternalAccountBinding.from_data(
+            account_public_key=client_acme.net.key.public_key(),
+            kid=config['eab_kid'],
+            hmac_key=config['eab_hmac_key'],
+            directory=client_acme.directory
+        )
+    else:
+        eab = None
+
+    new_account = messages.NewRegistration.from_data(
+        terms_of_service_agreed=True,
+        external_account_binding=eab
     )
+
+    register = client_acme.new_account(new_account)
 
     with open(account_data_filename, 'w') as f:
         f.write(json.dumps(register.to_json(), indent=2))
 
 
-def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
+def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyTypeEnum.RSA):
     # default use letsencrypt directory_url
     if not directory_type:
         directory_type = DirectoryTypeEnum.LETS_ENCRYPT
@@ -303,9 +338,26 @@ def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
         raise AppException("not found directory_url")
 
     # Register account and accept TOS
-    account_key = get_account_key(directory_type)
+    private_key = get_account_key(directory_type)
 
-    net = client.ClientNetwork(account_key, user_agent=USER_AGENT)
+    if key_type == KeyTypeEnum.EC:
+        account_key = jose.JWKEC(key=private_key)
+        public_key = account_key.key
+        if public_key.key_size == 256:
+            alg = jose.ES256
+        elif public_key.key_size == 384:
+            alg = jose.ES384
+        elif public_key.key_size == 521:
+            alg = jose.ES512
+        else:
+            raise errors.NotSupportedError(
+                "No matching signing algorithm can be found for the key"
+            )
+    else:
+        alg = jose.RS256
+        account_key = jose.JWKRSA(key=private_key)
+
+    net = client.ClientNetwork(account_key, alg=alg, user_agent=USER_AGENT)
 
     directory = client.ClientV2.get_directory(url=directory_url, net=net)
     client_acme = client.ClientV2(directory=directory, net=net)
@@ -313,3 +365,7 @@ def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
     ensure_account_exists(client_acme, directory_type)
 
     return client_acme
+
+
+if __name__ == '__main__':
+    print(get_zerossl_eab())

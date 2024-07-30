@@ -3,6 +3,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 from flask import request, g
 
 from domain_admin.config import ADMIN_USERNAME, TOKEN_KEY
+from domain_admin.log import logger
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import token_service
 from domain_admin.utils.flask_ext.app_exception import UnauthorizedAppException, ForbiddenAppException
@@ -35,28 +36,28 @@ ADMIN_API_LIST = [
 API_PREFIX = '/api'
 
 
-def check_permission():
+def parse_token():
+    logger.info('check_permission: %s', request.path)
+
     # 仅校验api
     if not request.path.startswith(API_PREFIX):
         return
 
     # 白名单直接通过
-    if request.path in WHITE_LIST:
-        return
+    # if request.path in WHITE_LIST:
+    #     return
 
     # 获取token
     token = request.headers.get(TOKEN_KEY)
 
-    if not token:
-        raise UnauthorizedAppException()
-
-    # 解析token，并全局挂载
-    payload = token_service.decode_token(token)
-    g.user_id = payload['user_id']
+    if token:
+        # 解析token，并全局挂载
+        payload = token_service.decode_token(token)
+        g.user_id = payload['user_id']
 
     # root 权限 api
-    if request.path in ADMIN_API_LIST:
-        user_row = UserModel.get_by_id(g.user_id)
-
-        if user_row.username != ADMIN_USERNAME:
-            raise ForbiddenAppException()
+    # if request.path in ADMIN_API_LIST:
+    #     user_row = UserModel.get_by_id(g.user_id)
+    #
+    #     if user_row.username != ADMIN_USERNAME:
+    #         raise ForbiddenAppException()
