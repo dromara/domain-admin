@@ -6,7 +6,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 from datetime import datetime
 
-from peewee import DateTimeField, AutoField, TextField, CharField
+from peewee import DateTimeField, AutoField, TextField, CharField, IntegerField
 
 from domain_admin.model.base_model import BaseModel
 
@@ -18,6 +18,10 @@ class TagModel(BaseModel):
 
     # 标签名
     name = CharField(default='', null=False, unique=True)
+
+    # 用户id
+    # @since v1.6.47
+    user_id = IntegerField(default=0)
 
     # 创建时间
     create_time = DateTimeField(default=datetime.now)

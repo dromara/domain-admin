@@ -292,3 +292,14 @@ def is_between_allow_error_count(monitor_row):
     error_count = len([row for row in rows if row.status == MonitorStatusEnum.ERROR])
 
     return error_count <= monitor_row.allow_error_count
+
+
+@async_task_service.async_task_decorator("更新监控信息")
+def run_init_monitor_task_async(user_id):
+    rows = MonitorModel.select().where(
+        MonitorModel.user_id == user_id,
+        MonitorModel.version == 0
+    )
+
+    for row in rows:
+        scheduler_main.run_one_monitor_task(row)

@@ -11,6 +11,7 @@ from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import group_service, operation_service, common_service, auth_service
+from domain_admin.utils.flask_ext.app_exception import DataNotFoundAppException
 
 
 @auth_service.permission(role=RoleEnum.USER)
@@ -42,6 +43,7 @@ def add_group_user():
 
     return {'id': row.id}
 
+
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=GroupUserModel,
@@ -69,6 +71,7 @@ def update_group_user_by_id():
         GroupUserModel.id == group_user_id
     ).execute()
 
+
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=GroupUserModel,
@@ -91,6 +94,7 @@ def delete_group_user_by_id():
     GroupUserModel.delete().where(
         GroupUserModel.id == group_user_id,
     ).execute()
+
 
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
@@ -117,6 +121,7 @@ def delete_group_user_by_ids():
     GroupUserModel.delete().where(
         GroupUserModel.id.in_(group_user_ids),
     ).execute()
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def get_group_user_list():
@@ -164,6 +169,7 @@ def get_group_user_list():
         'list': lst,
         'total': len(lst),
     }
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def get_group_user_by_id():

@@ -21,8 +21,9 @@ from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
     operation_service, group_user_service, domain_service, common_service, domain_icp_service, tag_service, auth_service
 from domain_admin.utils import domain_util, time_util, icp_util
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 from domain_admin.utils.open_api import crtsh_api
+
 
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
@@ -81,6 +82,7 @@ def add_domain_info():
 
     return {'domain_info_id': row.id}
 
+
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
@@ -109,7 +111,15 @@ def update_domain_info_by_id():
     icp_licence = request.json.get('icp_licence', '')
     user_id = request.json.get('user_id')
 
-    domain_info_row = DomainInfoModel.get_by_id(domain_info_id)
+    # check data
+    domain_info_row = DomainInfoModel.select().where(
+        DomainInfoModel.id == domain_info_id,
+        DomainInfoModel.user_id == current_user_id
+    ).first()
+
+    if not domain_info_row:
+        raise DataNotFoundAppException()
+
     # is_auto_update = request.json.get('is_auto_update', True)
     # is_expire_monitor = request.json.get('is_expire_monitor', True)
 
@@ -161,6 +171,7 @@ def update_domain_info_by_id():
 
     tag_service.add_tags(tags)
 
+
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
@@ -186,9 +197,19 @@ def update_domain_info_field_by_id():
         field: value,
     }
 
+    # check data
+    domain_info_row = DomainInfoModel.select().where(
+        DomainInfoModel.id == domain_info_id,
+        DomainInfoModel.user_id == current_user_id
+    ).first()
+
+    if not domain_info_row:
+        raise DataNotFoundAppException()
+
     DomainInfoModel.update(data).where(
-        DomainInfoModel.id == domain_info_id
+        DomainInfoModel.id == domain_info_row.id
     ).execute()
+
 
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
@@ -205,7 +226,17 @@ def delete_domain_info_by_id():
 
     domain_info_id = request.json['domain_info_id']
 
-    DomainInfoModel.delete_by_id(domain_info_id)
+    # check data
+    domain_info_row = DomainInfoModel.select().where(
+        DomainInfoModel.id == domain_info_id,
+        DomainInfoModel.user_id == current_user_id
+    ).first()
+
+    if not domain_info_row:
+        raise DataNotFoundAppException()
+
+    DomainInfoModel.delete_by_id(domain_info_row.id)
+
 
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
@@ -226,6 +257,7 @@ def delete_domain_info_by_ids():
         DomainInfoModel.user_id == current_user_id
     ).execute()
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def get_domain_info_by_id():
     """
@@ -236,10 +268,17 @@ def get_domain_info_by_id():
 
     domain_info_id = request.json['domain_info_id']
 
-    domain_row = DomainInfoModel.get_by_id(domain_info_id)
+    # check data
+    domain_info_row = DomainInfoModel.select().where(
+        DomainInfoModel.id == domain_info_id,
+        DomainInfoModel.user_id == current_user_id
+    ).first()
+
+    if not domain_info_row:
+        raise DataNotFoundAppException()
 
     domain_row = model_to_dict(
-        model=domain_row,
+        model=domain_info_row,
         extra_attrs=[
             'real_domain_expire_days',
             'update_time_label',
@@ -271,17 +310,28 @@ def get_domain_info_by_id():
 
     return domain_row
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def update_domain_info_row_by_id():
     """
     更新当前行的域名信息
     :return:
     """
+    current_user_id = g.user_id
+
     domain_info_id = request.json['domain_info_id']
 
-    row = DomainInfoModel.get_by_id(domain_info_id)
+    # check data
+    domain_info_row = DomainInfoModel.select().where(
+        DomainInfoModel.id == domain_info_id,
+        DomainInfoModel.user_id == current_user_id
+    ).first()
 
-    domain_info_service.update_domain_info_row(row)
+    if not domain_info_row:
+        raise DataNotFoundAppException()
+
+    domain_info_service.update_domain_info_row(row=domain_info_row)
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def update_all_domain_info_of_user():
@@ -293,6 +343,7 @@ def update_all_domain_info_of_user():
 
     domain_info_service.update_all_domain_info_of_user(user_id=current_user_id)
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def update_all_domain_icp_of_user():
@@ -306,6 +357,7 @@ def update_all_domain_icp_of_user():
 
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_icp_of_user, user_id=current_user_id)
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def update_domain_row_icp():
     """
@@ -316,9 +368,17 @@ def update_domain_row_icp():
 
     domain_info_id = request.json['domain_info_id']
 
-    row = DomainInfoModel.get_by_id(domain_info_id)
+    # check data
+    domain_info_row = DomainInfoModel.select().where(
+        DomainInfoModel.id == domain_info_id,
+        DomainInfoModel.user_id == current_user_id
+    ).first()
 
-    domain_info_service.update_domain_row_icp(row)
+    if not domain_info_row:
+        raise DataNotFoundAppException()
+
+    domain_info_service.update_domain_row_icp(row=domain_info_row)
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def import_domain_info_from_file():
@@ -339,6 +399,7 @@ def import_domain_info_from_file():
     # 异步查询
     domain_info_service.handle_auto_import_domain_info(current_user_id)
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def export_domain_info_file():
@@ -394,6 +455,7 @@ def export_domain_info_file():
         'name': filename,
         'url': file_service.resolve_temp_url(filename)
     }
+
 
 @auth_service.permission(role=RoleEnum.USER)
 def get_domain_info_list():
@@ -497,6 +559,7 @@ def get_domain_info_list():
         'total': total,
     }
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def get_domain_info_group_filter():
     """
@@ -546,6 +609,7 @@ def get_domain_info_group_filter():
         'total': len(lst),
     }
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def get_icp():
     """
@@ -566,6 +630,7 @@ def get_icp():
 
     return res
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def get_sub_domain_cert():
     """
@@ -581,6 +646,7 @@ def get_sub_domain_cert():
         'total': len(lst)
     }
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def auto_import_subdomain_by_ids():
     """
@@ -593,7 +659,8 @@ def auto_import_subdomain_by_ids():
     domain_ids = request.json['domain_ids']
 
     rows = DomainInfoModel.select().where(
-        DomainInfoModel.id.in_(domain_ids)
+        DomainInfoModel.id.in_(domain_ids),
+        DomainInfoModel.user_id == current_user_id
     )
 
     # 异步提交

@@ -9,7 +9,7 @@ from domain_admin.enums.dns_type_enum import DnsTypeEnum
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.dns_model import DnsModel
 from domain_admin.service import auth_service
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 
 
 @auth_service.permission(role=RoleEnum.USER)
@@ -50,13 +50,14 @@ def update_dns_by_id():
     access_key = request.json['access_key']
     secret_key = request.json['secret_key']
 
+    # data check
     dns_row = DnsModel.select().where(
         DnsModel.id == dns_id,
         DnsModel.user_id == current_user_id
     ).first()
 
     if not dns_row:
-        raise AppException('数据不存在')
+        raise DataNotFoundAppException()
 
     DnsModel.update(
         dns_type_id=dns_type_id,
@@ -83,7 +84,7 @@ def get_dns_by_id():
     ).first()
 
     if not dns_row:
-        raise AppException('数据不存在')
+        raise DataNotFoundAppException()
 
     return dns_row
 
@@ -103,7 +104,7 @@ def delete_dns_by_id():
     ).first()
 
     if not dns_row:
-        raise AppException('数据不存在')
+        raise DataNotFoundAppException()
 
     return DnsModel.delete_by_id(dns_row.id)
 

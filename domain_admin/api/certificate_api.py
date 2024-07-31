@@ -9,7 +9,7 @@ from peewee import SQL
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.certificate_model import CertificateModel
 from domain_admin.service import certificate_service, auth_service
-from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException, ForbiddenAppException
 
 
 @auth_service.permission(role=RoleEnum.USER)
@@ -27,6 +27,9 @@ def get_certificate_list():
     keyword = request.json.get('keyword')
     order_prop = request.json.get('order_prop') or 'create_time'
     order_type = request.json.get('order_type') or 'desc'
+
+    if order_prop not in ['create_time']:
+        raise AppException('params error: order_prop')
 
     if order_type not in ['desc', 'asc']:
         raise AppException('params error: order_type')
@@ -116,7 +119,7 @@ def update_certificate_by_id():
     ).first()
 
     if not certificate_row:
-        raise AppException('数据不存在')
+        raise DataNotFoundAppException()
 
     data = {
         'domain': domain,
@@ -151,7 +154,7 @@ def delete_certificate_by_id():
     ).first()
 
     if not certificate_row:
-        raise AppException('数据不存在')
+        raise DataNotFoundAppException()
 
     # delete
     CertificateModel.delete().where(

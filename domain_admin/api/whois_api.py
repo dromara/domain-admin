@@ -10,6 +10,7 @@ from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.service import auth_service
 from domain_admin.utils import whois_util
 
+
 @auth_service.permission(role=RoleEnum.USER)
 def get_whois_raw():
     """

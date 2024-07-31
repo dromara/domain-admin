@@ -22,7 +22,7 @@ from domain_admin.service import domain_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
 from domain_admin.utils.cert_util import cert_consts
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 
 
 @auth_service.permission(role=RoleEnum.USER)
@@ -111,7 +111,14 @@ def update_domain_by_id():
     data['update_time'] = datetime_util.get_datetime()
     data['group_id'] = data.get('group_id') or 0
 
-    before_domain_row = DomainModel.get_by_id(domain_id)
+    # data check
+    before_domain_row = DomainModel.select().where(
+        DomainModel.id == domain_id,
+        DomainModel.user_id == current_user_id
+    ).first()
+
+    if not before_domain_row:
+        raise DataNotFoundAppException()
 
     DomainModel.update(data).where(
         DomainModel.id == domain_id
@@ -139,6 +146,15 @@ def update_domain_expire_monitor_by_id():
 
     domain_id = request.json.get('domain_id')
 
+    # data check
+    domain_row = DomainModel.select().where(
+        DomainModel.id == domain_id,
+        DomainModel.user_id == current_user_id
+    ).first()
+
+    if not domain_row:
+        raise DataNotFoundAppException()
+
     data = {
         "is_monitor": request.json.get('is_monitor', True)
     }
@@ -146,7 +162,7 @@ def update_domain_expire_monitor_by_id():
     DomainModel.update(
         data
     ).where(
-        DomainModel.id == domain_id
+        DomainModel.id == domain_row.id
     ).execute()
 
 
@@ -175,8 +191,17 @@ def update_domain_field_by_id():
         field: value,
     }
 
+    # data check
+    domain_row = DomainModel.select().where(
+        DomainModel.id == domain_id,
+        DomainModel.user_id == current_user_id
+    ).first()
+
+    if not domain_row:
+        raise DataNotFoundAppException()
+
     DomainModel.update(data).where(
-        DomainModel.id == domain_id
+        DomainModel.id == domain_row.id
     ).execute()
 
 
@@ -193,12 +218,16 @@ def update_domain_field_by_ids():
     field = request.json.get('field')
     value = request.json.get('value')
 
+    if field not in ['auto_update']:
+        raise AppException("not allow field")
+
     data = {
         field: value,
     }
 
     DomainModel.update(data).where(
-        DomainModel.id.in_(domain_ids)
+        DomainModel.id.in_(domain_ids),
+        DomainModel.user_id == current_user_id
     ).execute()
 
 
@@ -219,10 +248,16 @@ def delete_domain_by_id():
 
     # domain_service.check_permission_and_get_row(domain_id, current_user_id)
 
-    DomainModel.delete().where(
+    # data check
+    domain_row = DomainModel.select().where(
         DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id,
-    ).execute()
+        DomainModel.user_id == current_user_id
+    ).first()
+
+    if not domain_row:
+        raise DataNotFoundAppException()
+
+    DomainModel.delete_by_id(domain_row.id)
 
     # 同时移除主机信息
     AddressModel.delete().where(
@@ -268,9 +303,19 @@ def get_domain_by_id():
     domain_id = request.json.get('domain_id') or request.json['id']
 
     # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
-    row = DomainModel.get_by_id(domain_id)
+    # row = DomainModel.get_by_id(domain_id)
+
+    # data check
+    domain_row = DomainModel.select().where(
+        DomainModel.id == domain_id,
+        DomainModel.user_id == current_user_id
+    ).first()
+
+    if not domain_row:
+        raise DataNotFoundAppException()
+
     row = model_to_dict(
-        model=row,
+        model=domain_row,
         extra_attrs=[
             'real_time_expire_days',
             'domain_url',
@@ -316,6 +361,7 @@ def update_all_domain_cert_info():
     domain_service.update_all_domain_cert_info()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_all_domain_cert_info_of_user():
     """
     更新当前用户的所有域名信息
@@ -340,9 +386,18 @@ def update_domain_row_info_by_id():
     domain_id = request.json.get('domain_id') or request.json['id']
 
     # row = domain_service.check_permission_and_get_row(domain_id, current_user_id)
-    row = DomainModel.get_by_id(domain_id)
+    # row = DomainModel.get_by_id(domain_id)
 
-    domain_service.update_domain_row(row)
+    # data check
+    domain_row = DomainModel.select().where(
+        DomainModel.id == domain_id,
+        DomainModel.user_id == current_user_id
+    ).first()
+
+    if not domain_row:
+        raise DataNotFoundAppException()
+
+    domain_service.update_domain_row(domain_row=domain_row)
 
 
 @auth_service.permission(role=RoleEnum.USER)
@@ -465,7 +520,8 @@ def domain_relation_group():
     DomainModel.update(
         group_id=group_id
     ).where(
-        DomainModel.id.in_(domain_ids)
+        DomainModel.id.in_(domain_ids),
+        DomainModel.user_id == current_user_id
     ).execute()
 
 

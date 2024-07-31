@@ -16,7 +16,7 @@ from domain_admin.model.notify_model import NotifyModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import auth_service
 from domain_admin.utils import datetime_util, bcrypt_util, secret_util
-from domain_admin.utils.flask_ext.app_exception import AppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 
 
 @auth_service.permission(role=RoleEnum.USER)

@@ -11,7 +11,7 @@ from domain_admin.model.log_operation_model import LogOperationModel
 from domain_admin.service import common_service, auth_service
 
 
-@auth_service.permission(role=RoleEnum.USER)
+@auth_service.permission(role=RoleEnum.ADMIN)
 def get_operation_log_list():
     """
     获取操作日志列表
@@ -46,7 +46,7 @@ def get_operation_log_list():
     }
 
 
-@auth_service.permission(role=RoleEnum.USER)
+@auth_service.permission(role=RoleEnum.ADMIN)
 def clear_log_operation_list():
     """
     清空日志

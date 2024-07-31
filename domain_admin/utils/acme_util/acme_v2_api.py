@@ -117,7 +117,12 @@ def get_account_data_filename(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 # Useful methods and classes:
 
 def new_csr_comp(domains, pkey_pem=None):
-    """Create certificate signing request."""
+    """
+    Create certificate signing request.
+    :param domains: list
+    :param pkey_pem:
+    :return: tuple (pkey_pem, csr_pem)
+    """
     if pkey_pem is None:
         # fix: type must be an integer
         # Create private key.
@@ -355,7 +360,7 @@ def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyT
             )
     else:
         alg = jose.RS256
-        account_key = jose.JWKRSA(key=private_key)
+        account_key = jose.JWKRSA(key=jose.ComparableRSAKey(private_key))
 
     net = client.ClientNetwork(account_key, alg=alg, user_agent=USER_AGENT)
 
