@@ -6,11 +6,14 @@
 from flask import request, g
 
 from domain_admin.config import DEFAULT_SSH_PORT
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.log import logger
 from domain_admin.model.host_model import HostModel
+from domain_admin.service import auth_service
 from domain_admin.utils.flask_ext.app_exception import DataNotFoundAppException
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def add_host():
     """
     添加主机
@@ -38,6 +41,7 @@ def add_host():
     return row
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_host_by_id():
     """
     更新主机
@@ -74,6 +78,7 @@ def update_host_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_host_by_id():
     """
     获取主机
@@ -95,6 +100,7 @@ def get_host_by_id():
     return host_row
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_host_by_id():
     """
     移除主机
@@ -116,6 +122,7 @@ def delete_host_by_id():
     return HostModel.delete_by_id(host_row.id)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_host_list():
     """
     主机列表

@@ -9,12 +9,13 @@ import requests
 from flask import g, request
 from playhouse.shortcuts import model_to_dict, chunked
 
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.dns_model import DnsModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.host_model import HostModel
 from domain_admin.model.issue_certificate_model import IssueCertificateModel, ChallengeDeployTypeEnum, \
     SSLDeployTypeEnum, DeployStatusEnum
-from domain_admin.service import issue_certificate_service
+from domain_admin.service import issue_certificate_service, auth_service
 from domain_admin.utils import ip_util, domain_util, fabric_util, datetime_util, validate_util
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.acme_util.key_type_enum import KEY_TYPE_OPTIONS, KeyTypeEnum
@@ -23,7 +24,7 @@ from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoun
 from domain_admin.utils.open_api import aliyun_domain_api
 from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def issue_certificate():
     """
     发起申请
@@ -46,7 +47,7 @@ def issue_certificate():
 
     return issue_certificate_row.to_dict()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def verify_certificate():
     """
     通知验证
@@ -81,7 +82,7 @@ def verify_certificate():
     for batch in chunked(lst, 10):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_certificate_challenges():
     issue_certificate_id = request.json['issue_certificate_id']
 
@@ -92,7 +93,7 @@ def get_certificate_challenges():
         'list': lst
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_domain_host():
     domain = request.json['domain']
     host = ip_util.get_domain_ip(domain)
@@ -102,7 +103,7 @@ def get_domain_host():
         'host': host
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def deploy_verify_file():
     """
     部署验证文件
@@ -134,7 +135,7 @@ def deploy_verify_file():
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def deploy_certificate_file():
     """
     ssh方式部署证书文件
@@ -196,7 +197,7 @@ def deploy_certificate_file():
         issue_certificate_id=issue_certificate_id
     )
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def renew_certificate():
     """
     发起申请
@@ -215,7 +216,7 @@ def renew_certificate():
 
     return issue_certificate_row.to_dict()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_issue_certificate_list():
     """
     发起申请
@@ -263,7 +264,7 @@ def get_issue_certificate_list():
         'total': total,
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_issue_certificate_by_id():
     """
     获取
@@ -301,7 +302,7 @@ def get_issue_certificate_by_id():
 
     return data
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def delete_issue_certificate_by_id():
     """
     获取
@@ -322,7 +323,7 @@ def delete_issue_certificate_by_id():
 
     IssueCertificateModel.delete_by_id(issue_certificate_row.id)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def delete_certificate_by_batch():
     """
     批量删除
@@ -338,7 +339,7 @@ def delete_certificate_by_batch():
         IssueCertificateModel.user_id == current_user_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def renew_issue_certificate_by_id():
     """
     手动续期SSL证书
@@ -359,7 +360,7 @@ def renew_issue_certificate_by_id():
 
     issue_certificate_service.renew_certificate_row(issue_certificate_row)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_allow_commands():
     """
     命令白名单
@@ -367,7 +368,7 @@ def get_allow_commands():
     """
     return fabric_util.allow_commands
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def notify_web_hook():
     """
     用户调用webhook
@@ -400,7 +401,7 @@ def notify_web_hook():
 
     return ret
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def deploy_cert_to_oss():
     """
     部署证书到阿里云oss
@@ -430,7 +431,7 @@ def deploy_cert_to_oss():
 
     return ret
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def deploy_cert_to_cdn():
     """
     部署证书到阿里云cdn
@@ -460,7 +461,7 @@ def deploy_cert_to_cdn():
 
     return ret
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def deploy_cert_to_dcdn():
     """
     部署证书到阿里云dcdn
@@ -490,7 +491,7 @@ def deploy_cert_to_dcdn():
 
     return ret
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def add_dns_domain_record():
     """
     添加dns记录
@@ -515,7 +516,7 @@ def add_dns_domain_record():
         IssueCertificateModel.id == issue_certificate_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def update_row_auto_renew():
     """
     修改自动更新字段
@@ -545,7 +546,7 @@ def update_row_auto_renew():
     else:
         raise AppException("不支持自动续期")
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_issue_certificate_options():
     """
     获取常量

@@ -224,6 +224,7 @@ def update_user_status():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def reset_user_password():
     """
     重置用户密码

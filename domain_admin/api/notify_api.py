@@ -14,14 +14,16 @@ from flask import request, g
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.operation_enum import OperationEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.log import logger
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.notify_model import NotifyModel
-from domain_admin.service import notify_service, operation_service
+from domain_admin.service import notify_service, operation_service, auth_service
 from domain_admin.utils import datetime_util
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_notify_list_of_user():
     """
     获取用户通知配置
@@ -114,6 +116,7 @@ def get_notify_list_of_user():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=NotifyModel,
     operation_type_id=OperationEnum.CREATE,
@@ -150,6 +153,7 @@ def add_notify():
     return {'id': row.id}
 
 
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=NotifyModel,
     operation_type_id=OperationEnum.DELETE,
@@ -167,6 +171,7 @@ def delete_notify_by_id():
     NotifyModel.delete_by_id(notify_id)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_notify_by_id():
     """
     获取用户通知配置
@@ -189,6 +194,7 @@ def get_notify_by_id():
     return data
 
 
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=NotifyModel,
     operation_type_id=OperationEnum.UPDATE,
@@ -224,6 +230,7 @@ def update_notify_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=NotifyModel,
     operation_type_id=OperationEnum.UPDATE,
@@ -247,6 +254,7 @@ def update_notify_status_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def handle_test_notify_by_id():
     """
     测试通知配置
@@ -273,6 +281,7 @@ def handle_test_notify_by_id():
     return notify_service.notify_user_about_some_event(notify_row)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def handle_notify_by_event_id():
     """
     触发用户的某一类通知操作

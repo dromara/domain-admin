@@ -6,13 +6,15 @@
 
 from flask import g, request
 
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.deploy_cert_model import DeployCertModel
 from domain_admin.model.host_model import HostModel
-from domain_admin.service import deploy_cert_service
+from domain_admin.service import deploy_cert_service, auth_service
 from domain_admin.utils.flask_ext.app_exception import DataNotFoundAppException
 from domain_admin.utils.open_api import aliyun_oss_api
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_deploy_list_by_cert_id():
     """
     获取列表
@@ -50,6 +52,7 @@ def get_deploy_list_by_cert_id():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def add_deploy_cert():
     """
     添加详情
@@ -77,6 +80,7 @@ def add_deploy_cert():
     DeployCertModel.create(**data)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_deploy_cert_by_id():
     """
     更新详情
@@ -113,6 +117,7 @@ def update_deploy_cert_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_by_deploy_cert_id():
     """
     删除详情
@@ -136,6 +141,7 @@ def delete_by_deploy_cert_id():
     DeployCertModel.delete_by_id(deploy_cert_id)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_by_deploy_cert_ids():
     """
     批量删除详情
@@ -153,6 +159,7 @@ def delete_by_deploy_cert_ids():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_deploy_cert_by_id():
     """
     获取详情
@@ -180,6 +187,7 @@ def get_deploy_cert_by_id():
     return deploy_cert_dict
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def handle_deploy_cert():
     """
     部署证书
@@ -204,6 +212,7 @@ def handle_deploy_cert():
         raise err
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_aliyun_endpoint_options():
     """
     阿里云endpoint

@@ -3,6 +3,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 from flask import request
 
 from domain_admin.service import auth_service
+from domain_admin.utils.flask_ext.app_exception import AppException
 
 
 def login():
@@ -23,6 +24,8 @@ def register():
     用户注册
     :return:
     """
+    raise AppException('暂未开放')
+
     username = request.json['username']
     password = request.json['password']
     password_repeat = request.json['password_repeat']

@@ -6,11 +6,13 @@
 from flask import g, request
 from peewee import SQL
 
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.certificate_model import CertificateModel
-from domain_admin.service import certificate_service
+from domain_admin.service import certificate_service, auth_service
 from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_certificate_list():
     """
     获取列表
@@ -58,6 +60,7 @@ def get_certificate_list():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def add_certificate():
     """
     添加
@@ -87,6 +90,7 @@ def add_certificate():
     CertificateModel.create(**data)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_certificate_by_id():
     """
     更新主机地址
@@ -128,6 +132,7 @@ def update_certificate_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_certificate_by_id():
     """
     删除
@@ -154,6 +159,7 @@ def delete_certificate_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_certificate_by_ids():
     """
     批量删除
@@ -171,6 +177,7 @@ def delete_certificate_by_ids():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_certificate_by_id():
     """
     获取

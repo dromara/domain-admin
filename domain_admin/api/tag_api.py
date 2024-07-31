@@ -5,9 +5,12 @@
 """
 from flask import request
 
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.tag_model import TagModel
+from domain_admin.service import auth_service
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_tag_by_id():
     """
     添加标签
@@ -18,6 +21,7 @@ def get_tag_by_id():
     return TagModel.get_by_id(tag_id)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def add_tag():
     """
     添加标签
@@ -28,6 +32,7 @@ def add_tag():
     TagModel.create(name=name)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_tag_by_id():
     """
     添加标签
@@ -43,6 +48,7 @@ def update_tag_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_all_tag_list():
     """
     获取所有标签，用于筛选器
@@ -58,6 +64,7 @@ def get_all_tag_list():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_tag_list():
     """
     获取所有标签，用于列表显示
@@ -80,6 +87,7 @@ def get_tag_list():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_tag_by_id():
     """
     删除标签

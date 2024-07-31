@@ -10,27 +10,27 @@ from domain_admin.utils.flask_ext.app_exception import UnauthorizedAppException,
 
 # 白名单
 WHITE_LIST = [
-    '/api/login',
+    # '/api/login',
     # 暂时不开放注册，安全起见先关闭
-    '/api/register',
-    '/api/getSystemVersion',
+    # '/api/register',
+    # '/api/getSystemVersion',
 ]
 
 # 仅管理账号可访问的接口
 ADMIN_API_LIST = [
     # 全局配置管理
-    '/api/getAllSystemConfig',
-    '/api/updateSystemConfig',
-    '/api/getSystemEnvConfig',
-    '/api/getCronConfig',
-    '/api/updateCronConfig',
+    # '/api/getAllSystemConfig',
+    # '/api/updateSystemConfig',
+    # '/api/getSystemEnvConfig',
+    # '/api/getCronConfig',
+    # '/api/updateCronConfig',
 
     # 用户管理
     # '/api/getUserList',
-    '/api/addUser',
-    '/api/updateUserStatus',
-    '/api/deleteUser'
-    '/api/resetUserPasswordUser'
+    # '/api/addUser',
+    # '/api/updateUserStatus',
+    # '/api/deleteUser'
+    # '/api/resetUserPasswordUser'
 ]
 
 API_PREFIX = '/api'

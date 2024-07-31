@@ -12,9 +12,10 @@ from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
-from domain_admin.service import group_service, operation_service, group_user_service
+from domain_admin.service import group_service, operation_service, group_user_service, auth_service
 
 
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=GroupModel,
     operation_type_id=OperationEnum.CREATE,
@@ -37,7 +38,7 @@ def add_group():
 
     return {'id': row.id}
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=GroupModel,
     operation_type_id=OperationEnum.UPDATE,
@@ -62,7 +63,7 @@ def update_group_by_id():
         GroupModel.id == group_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=GroupModel,
     operation_type_id=OperationEnum.DELETE,
@@ -99,7 +100,7 @@ def delete_group_by_id():
         GroupUserModel.group_id == group_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=GroupModel,
     operation_type_id=OperationEnum.BATCH_DELETE,
@@ -136,7 +137,7 @@ def delete_group_by_ids():
         GroupUserModel.group_id.in_(group_ids)
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_group_list():
     """
     获取域名列表
@@ -251,7 +252,7 @@ def get_group_list():
         'total': total,
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_group_by_id():
     """
     获取

@@ -19,12 +19,12 @@ from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.group_model import GroupModel
 from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.service import domain_info_service, async_task_service, file_service, group_service, \
-    operation_service, group_user_service, domain_service, common_service, domain_icp_service, tag_service
+    operation_service, group_user_service, domain_service, common_service, domain_icp_service, tag_service, auth_service
 from domain_admin.utils import domain_util, time_util, icp_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 from domain_admin.utils.open_api import crtsh_api
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
     operation_type_id=OperationEnum.CREATE,
@@ -81,7 +81,7 @@ def add_domain_info():
 
     return {'domain_info_id': row.id}
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
     operation_type_id=OperationEnum.UPDATE,
@@ -161,7 +161,7 @@ def update_domain_info_by_id():
 
     tag_service.add_tags(tags)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
     operation_type_id=OperationEnum.UPDATE,
@@ -190,7 +190,7 @@ def update_domain_info_field_by_id():
         DomainInfoModel.id == domain_info_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
     operation_type_id=OperationEnum.DELETE,
@@ -207,7 +207,7 @@ def delete_domain_info_by_id():
 
     DomainInfoModel.delete_by_id(domain_info_id)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=DomainInfoModel,
     operation_type_id=OperationEnum.BATCH_DELETE,
@@ -226,7 +226,7 @@ def delete_domain_info_by_ids():
         DomainInfoModel.user_id == current_user_id
     ).execute()
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_domain_info_by_id():
     """
     获取
@@ -271,7 +271,7 @@ def get_domain_info_by_id():
 
     return domain_row
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def update_domain_info_row_by_id():
     """
     更新当前行的域名信息
@@ -283,7 +283,7 @@ def update_domain_info_row_by_id():
 
     domain_info_service.update_domain_info_row(row)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def update_all_domain_info_of_user():
     """
     更新当前用户的域名信息
@@ -294,7 +294,7 @@ def update_all_domain_info_of_user():
     domain_info_service.update_all_domain_info_of_user(user_id=current_user_id)
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def update_all_domain_icp_of_user():
     """
     更新当前用户的域名icp信息
@@ -306,7 +306,7 @@ def update_all_domain_icp_of_user():
 
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_icp_of_user, user_id=current_user_id)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def update_domain_row_icp():
     """
     更新当前域名icp信息
@@ -320,7 +320,7 @@ def update_domain_row_icp():
 
     domain_info_service.update_domain_row_icp(row)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def import_domain_info_from_file():
     """
     从文件导入域名
@@ -340,7 +340,7 @@ def import_domain_info_from_file():
     domain_info_service.handle_auto_import_domain_info(current_user_id)
     # async_task_service.submit_task(fn=domain_info_service.update_all_domain_info_of_user, user_id=current_user_id)
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def export_domain_info_file():
     """
     导出域名文件
@@ -395,7 +395,7 @@ def export_domain_info_file():
         'url': file_service.resolve_temp_url(filename)
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_domain_info_list():
     """
     获取域名列表
@@ -497,7 +497,7 @@ def get_domain_info_list():
         'total': total,
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_domain_info_group_filter():
     """
     获取域名分组筛选器
@@ -546,7 +546,7 @@ def get_domain_info_group_filter():
         'total': len(lst),
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_icp():
     """
     查询icp信息
@@ -566,7 +566,7 @@ def get_icp():
 
     return res
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def get_sub_domain_cert():
     """
     获取子域证书列表
@@ -581,7 +581,7 @@ def get_sub_domain_cert():
         'total': len(lst)
     }
 
-
+@auth_service.permission(role=RoleEnum.USER)
 def auto_import_subdomain_by_ids():
     """
     批量导入子域证书

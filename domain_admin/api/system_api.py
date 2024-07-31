@@ -8,15 +8,17 @@ from flask import request, g
 from domain_admin import version
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.enums.monitor_status_enum import MonitorStatusEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.domain_info_model import DomainInfoModel
 from domain_admin.model.domain_model import DomainModel
 from domain_admin.model.monitor_model import MonitorModel
 from domain_admin.model.system_model import SystemModel
-from domain_admin.service import scheduler_service
+from domain_admin.service import scheduler_service, auth_service
 from domain_admin.service.scheduler_service import scheduler_main
 from domain_admin.utils import datetime_util, email_util
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def update_system_config():
     """
     更新单个配置
@@ -43,6 +45,7 @@ def update_system_config():
         ).execute()
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def get_all_system_config():
     """
     获取所有配置项
@@ -61,6 +64,7 @@ def get_all_system_config():
     return {item.key: item.value for item in lst}
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def get_system_env_config():
     """
     获取配置项
@@ -75,6 +79,7 @@ def get_system_env_config():
     return {item.key: item.value for item in lst}
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def get_cron_config():
     """
     获取配置项
@@ -89,6 +94,7 @@ def get_cron_config():
     return {item.key: item.value for item in lst}
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def update_cron_config():
     """
     更新cron配置
@@ -119,6 +125,7 @@ def get_system_version():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_system_data():
     current_user_id = g.user_id
     now = datetime.now()
@@ -221,12 +228,14 @@ def get_system_data():
     ]
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def get_monitor_task_next_run_time():
     return {
         'next_run_time': scheduler_main.get_monitor_task_next_run_time()
     }
 
 
+@auth_service.permission(role=RoleEnum.ADMIN)
 def send_test_email():
     """
     发送测试邮件

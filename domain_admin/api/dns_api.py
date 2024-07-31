@@ -6,10 +6,13 @@
 from flask import request, g
 
 from domain_admin.enums.dns_type_enum import DnsTypeEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.dns_model import DnsModel
+from domain_admin.service import auth_service
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def add_dns():
     """
     添加Dns
@@ -33,6 +36,7 @@ def add_dns():
     return row
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_dns_by_id():
     """
     更新Dns
@@ -64,6 +68,7 @@ def update_dns_by_id():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_dns_by_id():
     """
     获取Dns
@@ -83,6 +88,7 @@ def get_dns_by_id():
     return dns_row
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def delete_dns_by_id():
     """
     移除Dns
@@ -102,6 +108,7 @@ def delete_dns_by_id():
     return DnsModel.delete_by_id(dns_row.id)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_dns_list():
     """
     Dns列表
@@ -135,4 +142,3 @@ def get_dns_list():
         'list': rows,
         'total': total,
     }
-

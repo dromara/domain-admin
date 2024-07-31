@@ -12,12 +12,14 @@ from peewee import SQL, fn
 from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.operation_enum import OperationEnum
+from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.log_monitor_model import LogMonitorModel
 from domain_admin.model.monitor_model import MonitorModel
-from domain_admin.service import monitor_service, file_service, async_task_service, operation_service
+from domain_admin.service import monitor_service, file_service, async_task_service, operation_service, auth_service
 from domain_admin.service.scheduler_service import scheduler_main
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def add_monitor():
     """
 
@@ -42,6 +44,7 @@ def add_monitor():
     scheduler_main.run_one_monitor_task(MonitorModel.get_by_id(monitor_row.id))
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_monitor_by_id():
     """
 
@@ -67,6 +70,7 @@ def update_monitor_by_id():
     scheduler_main.run_one_monitor_task(MonitorModel.get_by_id(monitor_id))
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def update_monitor_active():
     """
     :return:
@@ -90,6 +94,7 @@ def update_monitor_active():
         scheduler_main.run_one_monitor_task(MonitorModel.get_by_id(monitor_id))
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def remove_monitor_by_id():
     """
 
@@ -100,7 +105,7 @@ def remove_monitor_by_id():
     MonitorModel.delete_by_id(monitor_id)
 
 
-
+@auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
     model=MonitorModel,
     operation_type_id=OperationEnum.BATCH_DELETE,
@@ -122,6 +127,7 @@ def delete_monitor_by_ids():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_monitor_by_id():
     """
 
@@ -134,6 +140,7 @@ def get_monitor_by_id():
     return monitor_row.to_dict()
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_monitor_list():
     """
 
@@ -180,6 +187,7 @@ def get_monitor_list():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def export_monitor_file():
     """
     导出监控文件
@@ -220,6 +228,7 @@ def export_monitor_file():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def import_monitor_from_file():
     """
     从文件导入域名
@@ -239,6 +248,7 @@ def import_monitor_from_file():
     run_init_monitor_task_async(user_id=current_user_id)
 
 
+@auth_service.permission(role=RoleEnum.USER)
 @async_task_service.async_task_decorator("更新监控信息")
 def run_init_monitor_task_async(user_id):
     rows = MonitorModel.select().where(

@@ -3,10 +3,13 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 
 from flask import request, Response
 
+from domain_admin.enums.role_enum import RoleEnum
+from domain_admin.service import auth_service
 from domain_admin.utils import domain_util
 from domain_admin.utils.cert_util import cert_openssl_v2, cert_common
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def get_cert_information():
     """
     获取域名证书信息
@@ -33,6 +36,7 @@ def get_cert_information():
     }
 
 
+@auth_service.permission(role=RoleEnum.USER)
 def parse_public_cert():
     certificate = request.json['certificate']
     parsed_cert = cert_common.parse_public_cert(certificate)
