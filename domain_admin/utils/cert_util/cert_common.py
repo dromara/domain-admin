@@ -100,11 +100,19 @@ def get_cert_brand(cert):
             return cert_brand
 
 
+def is_extended_validation(cn):
+    if 'Extended Validation' in cn:
+        return True
+    else:
+        return False
+
+
 def get_cert_type_by_verify_type(cert):
     """
     :param cert:
     :return:
     """
+
     org = cert.issuer.get('CN')
     cert_types = [
         CertTypeByVerifyWayEnum.OV,
@@ -115,6 +123,9 @@ def get_cert_type_by_verify_type(cert):
     for cert_type in cert_types:
         if cert_type in org:
             return cert_type
+
+    if is_extended_validation(org):
+        return CertTypeByVerifyWayEnum.EV
 
     if cert.subject.get('O'):
         return CertTypeByVerifyWayEnum.OV
@@ -264,7 +275,6 @@ class X509Item(object):
         :return:
         """
         return CertTypeByVerifyWayEnumMap.get(self.certTypeByVerifyWay)
-
 
 
 def dump_certificate_to_text(ssl_cert):
