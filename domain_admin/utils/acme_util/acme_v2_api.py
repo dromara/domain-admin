@@ -100,6 +100,10 @@ ACC_KEY_BITS = 2048
 # Certificate private key size
 CERT_PKEY_BITS = 2048
 
+# ACCOUNT_STORAGE = AccountMemoryStorage()
+# {directory_type: acme_client}
+ACME_CACHE = {}
+
 
 # account.key
 def get_account_key_filename(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
@@ -229,33 +233,33 @@ def get_account_key(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
     https://blog.csdn.net/photon222/article/details/109447327
     :return:
     """
-    account_key_filename = get_account_key_filename(directory_type)
+    # account_key_filename = get_account_key_filename(directory_type)
 
-    if os.path.exists(account_key_filename):
-        # load private key
-        with open(account_key_filename, "rb") as f:
-            private_key = serialization.load_pem_private_key(
-                f.read(),
-                password=None,
-                backend=default_backend()
-            )
-    else:
-        # Create account key
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=ACC_KEY_BITS,
-            backend=default_backend())
+    # if os.path.exists(account_key_filename):
+    #     # load private key
+    #     with open(account_key_filename, "rb") as f:
+    #         private_key = serialization.load_pem_private_key(
+    #             f.read(),
+    #             password=None,
+    #             backend=default_backend()
+    #         )
+    # else:
+    # Create account key
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=ACC_KEY_BITS,
+        backend=default_backend())
 
-        # serialized private key
-        pem = private_key.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.PKCS8,
-            encryption_algorithm=serialization.NoEncryption()
-        )
+    # serialized private key
+    # pem = private_key.private_bytes(
+    #     encoding=serialization.Encoding.PEM,
+    #     format=serialization.PrivateFormat.PKCS8,
+    #     encryption_algorithm=serialization.NoEncryption()
+    # )
 
-        # store private key
-        with open(account_key_filename, 'wb') as f:
-            f.write(pem)
+        # # store private key
+        # with open(account_key_filename, 'wb') as f:
+        #     f.write(pem)
 
     return private_key
 
@@ -276,10 +280,10 @@ def ensure_account_exists(client_acme, directory_type=DirectoryTypeEnum.LETS_ENC
 
         try:
             account_resource = messages.RegistrationResource.from_json(account_data)
+
             account = client_acme.query_registration(account_resource)
         except errors.Error as e:
-            logger.debug(traceback.format_exc())
-
+            # logger.debug(traceback.format_exc())
             create_account(client_acme, directory_type)
     else:
         # 账户不存在
@@ -299,14 +303,16 @@ def get_zerossl_eab():
     url = 'https://api.zerossl.com/acme/eab-credentials-email'
     res = requests.post(
         url=url,
-        data={'email': "admin@domain-admin.com"}
+        data={'email': "admin@domain-admin.cn"}
     )
 
     return res.json()
 
 
 def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
-    account_data_filename = get_account_data_filename(directory_type)
+    print('create_account')
+
+    # account_data_filename = get_account_data_filename(directory_type)
 
     # 参考 certbot
     if client_acme.external_account_required():
@@ -329,14 +335,18 @@ def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 
     register = client_acme.new_account(new_account)
 
-    with open(account_data_filename, 'w') as f:
-        f.write(json.dumps(register.to_json(), indent=2))
+    # with open(account_data_filename, 'w') as f:
+    #     f.write(json.dumps(register.to_json(), indent=2))
 
 
 def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyTypeEnum.RSA):
     # default use letsencrypt directory_url
     if not directory_type:
         directory_type = DirectoryTypeEnum.LETS_ENCRYPT
+
+    if directory_type in ACME_CACHE:
+        logger.info('directory_type exists')
+        return ACME_CACHE.get(directory_type)
 
     directory_url = directory_type_enum.get_directory_url(directory_type)
     if not directory_url:
@@ -345,29 +355,31 @@ def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyT
     # Register account and accept TOS
     private_key = get_account_key(directory_type)
 
-    if key_type == KeyTypeEnum.EC:
-        account_key = jose.JWKEC(key=private_key)
-        public_key = account_key.key
-        if public_key.key_size == 256:
-            alg = jose.ES256
-        elif public_key.key_size == 384:
-            alg = jose.ES384
-        elif public_key.key_size == 521:
-            alg = jose.ES512
-        else:
-            raise errors.NotSupportedError(
-                "No matching signing algorithm can be found for the key"
-            )
-    else:
-        alg = jose.RS256
-        account_key = jose.JWKRSA(key=jose.ComparableRSAKey(private_key))
+    # if key_type == KeyTypeEnum.EC:
+    #     account_key = jose.JWKEC(key=private_key)
+    #     public_key = account_key.key
+    #     if public_key.key_size == 256:
+    #         alg = jose.ES256
+    #     elif public_key.key_size == 384:
+    #         alg = jose.ES384
+    #     elif public_key.key_size == 521:
+    #         alg = jose.ES512
+    #     else:
+    #         raise errors.NotSupportedError(
+    #             "No matching signing algorithm can be found for the key"
+    #         )
+    # else:
+    account_key = jose.JWKRSA(key=jose.ComparableRSAKey(private_key))
 
-    net = client.ClientNetwork(account_key, alg=alg, user_agent=USER_AGENT)
+    net = client.ClientNetwork(account_key, alg=jose.RS256, user_agent=USER_AGENT)
 
     directory = client.ClientV2.get_directory(url=directory_url, net=net)
     client_acme = client.ClientV2(directory=directory, net=net)
 
-    ensure_account_exists(client_acme, directory_type)
+    create_account(client_acme, directory_type)
+
+    # ensure_account_exists(client_acme, directory_type)
+    ACME_CACHE[directory_type] = client_acme
 
     return client_acme
 
