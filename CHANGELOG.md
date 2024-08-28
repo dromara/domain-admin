@@ -2,7 +2,6 @@
     - 修复zerossl无法申请的问题
     - fix #126
     - 版本升级
-    - fix
     - 修改权限策略
     - add zerossl
     - 优化权限控制

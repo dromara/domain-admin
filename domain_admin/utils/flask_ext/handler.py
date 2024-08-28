@@ -19,6 +19,7 @@ def error_handler(e):
     :return:
     """
 
+    logger.error("request.path: %s", request.path)
     logger.error(traceback.format_exc())
 
     if request.path.startswith('/api'):

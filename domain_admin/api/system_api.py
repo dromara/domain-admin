@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from flask import request, g
 
 from domain_admin import version
+from domain_admin import config
 from domain_admin.enums.config_key_enum import ConfigKeyEnum
 from domain_admin.enums.monitor_status_enum import MonitorStatusEnum
 from domain_admin.enums.role_enum import RoleEnum
@@ -121,7 +122,8 @@ def get_system_version():
     :return:
     """
     return {
-        'version': version.VERSION
+        'version': version.VERSION,
+        'enabled_register': config.ENABLED_REGISTER
     }
 
 

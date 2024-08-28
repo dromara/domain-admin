@@ -55,6 +55,7 @@ def init_table_data():
         {
             'username': ADMIN_USERNAME,
             'password': bcrypt_util.encode_password(ADMIN_PASSWORD),
+            'role': RoleEnum.ADMIN
         }
     ]
 
