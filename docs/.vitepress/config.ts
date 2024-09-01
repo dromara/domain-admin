@@ -82,6 +82,10 @@ export default defineConfig({
     },
 
     sidebar: [],
+    footer: {
+      message: '<a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2024081455号-2</a>',
+      copyright: 'Copyright © 2024'
+    }
   },
   vite: {
     plugins: [
