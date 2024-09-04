@@ -39,3 +39,10 @@ features:
 <img src="https://mouday.github.io/img/2024/06/20/h1buset.png" width="300">
 
 回复：`domain-admin`，和众多使用者一起交流学习使用经验，反馈使用问题，获得更及时的解答和修复
+
+## 友情链接
+
+<a href="http://captcha.tianai.cloud/" target="_blank">tianai-captcha</a> 
+<a href="https://sa-token.cc/" target="_blank">Sa-Token</a> 
+
+<a href="https://x-file-storage.xuyanwu.cn/" target="_blank">X Spring File Storage</a> 
