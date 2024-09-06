@@ -83,7 +83,7 @@ export default defineConfig({
 
     sidebar: [],
     footer: {
-      message: '<a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2024081455号-2</a><a href="https://beian.mps.gov.cn/#/query/webSearch?code=11011302007323" rel="noreferrer" target="_blank">京公网安备11011302007323</a>',
+      message: '<a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2024081455号-2</a> | <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11011302007323" rel="noreferrer" target="_blank">京公网安备11011302007323</a>',
       copyright: 'Copyright © 2024'
     }
   },
