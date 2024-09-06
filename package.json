@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs --base=/",
+    "docs:build": "vitepress build docs",
     "docs:build:www": "vitepress build docs --base=/",
     "docs:preview": "vitepress preview docs"
   },
