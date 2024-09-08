@@ -1,3 +1,18 @@
+- v1.6.49(2024-09-08)
+    - move project to dromara
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix
+    - fix doc
+
 - v1.6.48(2024-08-28)
     - bugfix：修复管理员提示无权限问题
 
