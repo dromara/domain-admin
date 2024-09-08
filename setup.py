@@ -74,7 +74,7 @@ setup(
     author='Peng Shiyu',
     author_email='pengshiyuyx@gmail.com',
     license='MIT',
-    url="https://github.com/mouday/domain-admin",
+    url="https://github.com/dromara/domain-admin",
 
     long_description=long_description,
     long_description_content_type='text/markdown',

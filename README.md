@@ -8,8 +8,8 @@
 [![Build Status](https://app.travis-ci.com/mouday/domain-admin.svg?branch=master)](https://app.travis-ci.com/mouday/domain-admin)
 [![PyPI - License](https://img.shields.io/pypi/l/domain-admin)](https://github.com/mouday/domain-admin/blob/master/LICENSE)
 [![Documentation Status](https://readthedocs.org/projects/domain-admin/badge/?version=latest)](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
-[![GitHub release](https://img.shields.io/github/v/release/mouday/domain-admin)](https://github.com/mouday/domain-admin/releases)
-[![GitHub Stars](https://img.shields.io/github/stars/mouday/domain-admin?color=%231890FF&style=flat-square)](https://github.com/mouday/domain-admin)
+[![GitHub release](https://img.shields.io/github/v/release/dromara/domain-admin)](https://github.com/dromara/domain-admin/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/dromara/domain-admin?color=%231890FF&style=flat-square)](https://github.com/dromara/domain-admin)
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg)
 
