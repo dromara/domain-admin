@@ -45,7 +45,7 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 如果不想安装，可以直接使用我们部署好的线上应用，需要体验的用户可以加入`QQ群` 或 `微信群`，提供邮箱即可
 
 - 预览版（纯静态、无实际功能，账号密码随意）：https://mouday.github.io/domain-admin-web/
-- 体验版（由热心用户贡献服务器，体验账号找群主）：https://domain-admin.20a.top/
+- 体验版（由热心用户贡献服务器，体验账号找群主）：https://demo.domain-admin.cn/
 
 建议自行部署，这样比较安全
 
