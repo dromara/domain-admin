@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Domain Admin"
   text: "SSL证书监测平台"
-  tagline: 申请证书，自动续签，到期提醒
+  tagline: 申请证书，自动续签，到期提醒，支持独立部署
   image:
     src: https://mouday.github.io/img/2024/06/20/xvg0dfg.png
     alt: Domain Admin
@@ -13,20 +13,16 @@ hero:
   actions:
 
     - theme: brand
-      text: 快速开始
-      link: https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html
-  
-    - theme: alt
-      text: 使用文档
-      link: https://domain-admin.readthedocs.io/
-
-    - theme: alt
-      text: 在线预览
-      link: https://mouday.github.io/domain-admin-web/
-  
-    - theme: brand
       text: 在线体验
       link: https://demo.domain-admin.cn/
+  
+    - theme: alt
+      text: 部署文档
+      link: https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html
+
+    - theme: alt
+      text: Github
+      link: https://github.com/dromara/domain-admin
 
 features:
   - title: 申请证书
