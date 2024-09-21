@@ -23,6 +23,12 @@ def login(username, password):
     :param password: 明文密码
     :return: string token
     """
+    if not username:
+        raise AppException('用户名不能为空')
+
+    if not password:
+        raise AppException('密码不能为空')
+
     user_row = UserModel.select().where(
         UserModel.username == username
     ).get_or_none()
@@ -150,6 +156,9 @@ def send_verify_code(email):
 def login_by_email(email, code):
     if not validate_util.is_email(email):
         raise AppException('邮箱格式不正确')
+
+    if not code:
+        raise AppException('验证码不能为空')
 
     cache_code = cache_util.get_value(email)
 
