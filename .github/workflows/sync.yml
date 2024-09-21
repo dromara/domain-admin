@@ -23,8 +23,8 @@ jobs:
               with:
                   target_repo_token: ${{ secrets.GITHUB_TOKEN }}
                   upstream_sync_repo: dromara/domain-admin
-                  upstream_sync_branch: main
-                  target_sync_branch: main
+                  upstream_sync_branch: master
+                  target_sync_branch: master
                   test_mode: false
 
             - name: Check for Failure
