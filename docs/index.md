@@ -24,6 +24,9 @@ hero:
       text: 在线预览
       link: https://mouday.github.io/domain-admin-web/
   
+    - theme: brand
+      text: 在线体验
+      link: https://demo.domain-admin.cn/
 
 features:
   - title: 申请证书
