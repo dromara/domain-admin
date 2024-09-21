@@ -44,7 +44,10 @@ def async_task_decorator(task_name):
     def outer_wrapper(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            current_user_id = g.user_id
+            if hasattr(g, 'user_id'):
+                current_user_id = g.user_id
+            else:
+                current_user_id = 0
 
             # before
             async_task_row = AsyncTaskModel.create(

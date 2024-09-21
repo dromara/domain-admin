@@ -25,7 +25,7 @@ routes = {
 
     # 登录注册
     "/api/login": auth_api.login,
-    "/api/register": auth_api.register,
+    "/api/loginByEmail": auth_api.login_by_email,
     "/api/sendCode": auth_api.send_code,
 
     # 域名（SSL证书）

@@ -34,6 +34,9 @@ DATABASE_DIR = os.path.join(RUNTIME_DIR, 'database')
 # acme_dir
 ACME_DIR = os.path.join(DATABASE_DIR, 'acme')
 
+# cache_dir
+CACHE_DIR = os.path.join(DATABASE_DIR, 'cache')
+
 # sqlite 数据库
 SQLITE_DATABASE_PATH = os.path.join(DATABASE_DIR, 'database.db')
 

@@ -25,3 +25,4 @@ alibabacloud_cdn20180510==4.0.0
 alibabacloud_cas20200407==1.4.0
 alibabacloud_dcdn20180115==2.4.0
 oss2
+diskcache

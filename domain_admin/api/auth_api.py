@@ -19,18 +19,18 @@ def login():
     return {'token': token}
 
 
-def register():
+def login_by_email():
     """
-    用户注册
+    邮箱登录
     :return:
     """
-    raise AppException('暂未开放')
 
-    username = request.json['username']
-    password = request.json['password']
-    password_repeat = request.json['password_repeat']
+    email = request.json['email']
+    code = request.json['code']
 
-    auth_service.register(username, password, password_repeat)
+    token = auth_service.login_by_email(email, code)
+
+    return {'token': token}
 
 
 def send_code():
@@ -38,6 +38,6 @@ def send_code():
     发送验证码
     :return:
     """
-    username = request.json['username']
+    email = request.json['email']
 
-    # auth_service.register()
+    auth_service.send_verify_code_async(email)

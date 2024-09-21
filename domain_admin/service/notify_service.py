@@ -496,6 +496,28 @@ def notify_user_by_email(
     :param email_list: List[str]
     :return:
     """
+    send_email_to_user(
+        template,
+        subject,
+        data,
+        email_list
+    )
+
+
+def send_email_to_user(
+        template,
+        subject,
+        data,
+        email_list,
+):
+    """
+    通过邮件通知用户证书到期
+    :param template: str
+    :param subject: str
+    :param data: Dict
+    :param email_list: List[str]
+    :return:
+    """
     if not email_list or len(email_list) == 0:
         logger.warn("email_list is empty")
         return

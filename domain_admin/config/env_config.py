@@ -35,4 +35,4 @@ APP_MODE = env.str("APP_MODE", 'production')
 ALLOW_COMMANDS = [cmd.strip() for cmd in env.str("ALLOW_COMMANDS", '').split(';') if cmd.strip()]
 
 # ENABLED_REGISTER
-ENABLED_REGISTER = env.str("ENABLED_REGISTER", 'false')
+ENABLED_REGISTER = env.bool("ENABLED_REGISTER", False)

@@ -21,3 +21,6 @@ class AuthServiceTest(unittest.TestCase):
         assert auth_service.has_role_permission(current_role=RoleEnum.ADMIN, need_permission=RoleEnum.ADMIN) is True
         assert auth_service.has_role_permission(current_role=RoleEnum.USER, need_permission=RoleEnum.USER) is True
         assert auth_service.has_role_permission(current_role=RoleEnum.USER, need_permission=None) is True
+
+    def test_send_verify_code(self):
+        auth_service.send_verify_code('xxx@qq.com')

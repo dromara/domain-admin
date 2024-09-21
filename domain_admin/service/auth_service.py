@@ -11,8 +11,8 @@ from flask import g
 from domain_admin.enums.role_enum import RoleEnum, ROLE_PERMISSION
 from domain_admin.enums.status_enum import StatusEnum
 from domain_admin.model.user_model import UserModel
-from domain_admin.service import token_service
-from domain_admin.utils import bcrypt_util
+from domain_admin.service import token_service, notify_service, async_task_service
+from domain_admin.utils import bcrypt_util, cache_util, validate_util, secret_util
 from domain_admin.utils.flask_ext.app_exception import AppException
 
 
@@ -124,3 +124,50 @@ def has_role_permission(current_role, need_permission):
             current_permission = item['permission']
 
     return need_permission in current_permission
+
+
+@async_task_service.async_task_decorator("发送邮箱验证码")
+def send_verify_code_async(email):
+    send_verify_code(email)
+
+
+def send_verify_code(email):
+    if not validate_util.is_email(email):
+        raise AppException('邮箱格式不正确')
+
+    code = secret_util.get_random_password()
+
+    cache_util.set_value(key=email, value=code, expire=5 * 60)
+
+    notify_service.send_email_to_user(
+        template='code-email.html',
+        subject='验证码',
+        data={'code': code},
+        email_list=[email]
+    )
+
+
+def login_by_email(email, code):
+    if not validate_util.is_email(email):
+        raise AppException('邮箱格式不正确')
+
+    cache_code = cache_util.get_value(email)
+
+    if cache_code and code == cache_code:
+        pass
+    else:
+        raise AppException('验证码不正确')
+
+    user_row = UserModel.select().where(
+        UserModel.username == email
+    ).get_or_none()
+
+    if not user_row:
+        user_row = UserModel.create(
+            username=email,
+            password=''
+        )
+
+    return token_service.encode_token({
+        'user_id': user_row.id
+    })
