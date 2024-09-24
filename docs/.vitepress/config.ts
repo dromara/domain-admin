@@ -17,7 +17,24 @@ export default defineConfig({
       lazyLoading: true,
     },
   },
+  head: [
+    ["link", { rel: "icon", href: "/coding-tree/favicon.ico" }],
 
+    // 百度统计
+    [
+      "script",
+      {},
+      `
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1323b8c197b13150a6592146d5dbc928";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+`,
+    ],
+  ],
   sitemap: {
     hostname: "https://mouday.github.io/domain-admin",
   },
