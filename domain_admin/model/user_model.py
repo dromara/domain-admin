@@ -7,7 +7,7 @@ from peewee import CharField, DateTimeField, BooleanField, AutoField, IntegerFie
 from domain_admin.config import ADMIN_USERNAME, ADMIN_PASSWORD, DEFAULT_ADMIN_PASSWORD, DEFAULT_ADMIN_USERNAME
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.base_model import BaseModel
-from domain_admin.utils import bcrypt_util
+from domain_admin.utils import bcrypt_util, datetime_util
 
 
 class UserModel(BaseModel):
@@ -48,6 +48,10 @@ class UserModel(BaseModel):
             return False
         else:
             return bcrypt_util.check_password(DEFAULT_ADMIN_PASSWORD, self.password)
+
+    @property
+    def create_time_label(self):
+        return datetime_util.time_for_human(self.create_time)
 
 
 def init_table_data():

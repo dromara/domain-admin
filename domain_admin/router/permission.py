@@ -10,10 +10,10 @@ from domain_admin.utils.flask_ext.app_exception import UnauthorizedAppException,
 
 # 白名单
 WHITE_LIST = [
-    # '/api/login',
+    '/api/login',
     # 暂时不开放注册，安全起见先关闭
-    # '/api/register',
-    # '/api/getSystemVersion',
+    '/api/register',
+    '/api/getSystemVersion',
 ]
 
 # 仅管理账号可访问的接口
@@ -44,8 +44,8 @@ def parse_token():
         return
 
     # 白名单直接通过
-    # if request.path in WHITE_LIST:
-    #     return
+    if request.path in WHITE_LIST:
+        return
 
     # 获取token
     token = request.headers.get(TOKEN_KEY)

@@ -111,6 +111,9 @@ def get_user_list():
         model=m,
         exclude=[
             UserModel.password,
+        ],
+        extra_attrs=[
+            'create_time_label'
         ]
     ), lst))
 
