@@ -17,6 +17,9 @@ from domain_admin.utils.cert_util import cert_common
 # 默认的ssl端口
 DEFAULT_SSL_PORT = 443
 
+# www.
+WWW_WITH_DOT = 'www.'
+
 
 def verify_cert(cert, domain):
     """
@@ -32,6 +35,16 @@ def verify_cert(cert, domain):
 
     if common_name not in dns_names:
         dns_names.insert(0, common_name)
+
+    # 申请域名为www.domain.com的证书同时支持保护domain.com
+    if common_name.startswith(WWW_WITH_DOT):
+        not_www_common_name = common_name[len(WWW_WITH_DOT):]
+        if not_www_common_name not in dns_names:
+            dns_names.append(not_www_common_name)
+    else:
+        www_common_name = WWW_WITH_DOT + common_name
+        if www_common_name not in dns_names:
+            dns_names.append(www_common_name)
 
     for dns_name in dns_names:
         domain_checked = domain_util.verify_cert_common_name(dns_name, domain)
