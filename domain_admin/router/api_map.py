@@ -218,6 +218,8 @@ routes = {
     '/api/deleteCertificateById': certificate_api.delete_certificate_by_id,
     '/api/deleteCertificateByIds': certificate_api.delete_certificate_by_ids,
     '/api/getCertificateById': certificate_api.get_certificate_by_id,
+    '/api/deployCertificateByWebhook': certificate_api.deploy_certificate_by_webhook,
+    '/api/getDeployWebhook': certificate_api.get_deploy_webhook,
 
     # 证书部署
     '/api/getDeployListByCertId': deploy_cert_api.get_deploy_list_by_cert_id,

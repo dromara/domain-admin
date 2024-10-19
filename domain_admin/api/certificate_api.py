@@ -3,11 +3,16 @@
 @File    : certificate_api.py
 @Date    : 2024-02-25
 """
+import json
+
 from flask import g, request
 from peewee import SQL
 
+from domain_admin.enums.deploy_status_enum import DeployStatusEnum
+from domain_admin.enums.object_enum import ObjectEnum
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.model.certificate_model import CertificateModel
+from domain_admin.model.deploy_webhook_model import DeployWebhookModel
 from domain_admin.service import certificate_service, auth_service
 from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException, ForbiddenAppException
 
@@ -56,6 +61,9 @@ def get_certificate_list():
 
         # 查询部署数量
         certificate_service.load_cert_deploy_count(lst)
+
+        # 查询api部署状态
+        certificate_service.load_api_deploy_status(lst)
 
     return {
         "list": lst,
@@ -205,4 +213,104 @@ def get_certificate_by_id():
     certificate_dict = certificate_row.to_dict()
     certificate_service.load_cert_deploy_count([certificate_dict])
 
+    # 查询api部署状态
+    certificate_service.load_api_deploy_status([certificate_dict])
+
     return certificate_dict
+
+
+@auth_service.permission(role=RoleEnum.USER)
+def deploy_certificate_by_webhook():
+    """
+    通过webhook部署托管证书
+    @since v1.6.52
+    """
+    current_user_id = g.user_id
+
+    certificate_id = request.json['certificate_id']
+    url = request.json['url']
+    headers = request.json.get('headers') or {}
+
+    # check data
+    certificate_row = certificate_service.get_certificate_row(
+        certificate_id=certificate_id,
+        user_id=current_user_id
+    )
+
+    # update config
+    deploy_webhook_row = DeployWebhookModel.select().where(
+        DeployWebhookModel.user_id == current_user_id,
+        DeployWebhookModel.object_id == certificate_row.id,
+        DeployWebhookModel.object_type == ObjectEnum.Certificate
+    ).first()
+
+    if not deploy_webhook_row:
+        deploy_webhook_row = DeployWebhookModel.create(
+            user_id=current_user_id,
+            object_id=certificate_row.id,
+            object_type=ObjectEnum.Certificate,
+            url=url,
+            header_raw=json.dumps(headers),
+        )
+    else:
+        DeployWebhookModel.update(
+            url=url,
+            header_raw=json.dumps(headers),
+        ).where(
+            DeployWebhookModel.id == deploy_webhook_row.id
+        ).execute()
+
+    # refresh
+    deploy_webhook_row = DeployWebhookModel.get_by_id(deploy_webhook_row.id)
+
+    # deploy
+    res = certificate_service.deploy_certificate_by_webhook(
+        certificate_row=certificate_row,
+        deploy_webhook_row=deploy_webhook_row,
+    )
+
+    # report result
+    if res.ok:
+        DeployWebhookModel.update(
+            status=DeployStatusEnum.SUCCESS
+        ).where(
+            DeployWebhookModel.id == deploy_webhook_row.id
+        ).execute()
+
+        return {
+            'result': res.text
+        }
+    else:
+        DeployWebhookModel.update(
+            status=DeployStatusEnum.ERROR
+        ).where(
+            DeployWebhookModel.id == deploy_webhook_row.id
+        ).execute()
+
+        raise res.raise_for_status()
+
+
+@auth_service.permission(role=RoleEnum.USER)
+def get_deploy_webhook():
+    """
+    获取配置部署托管证书
+    @since v1.6.52
+    """
+    current_user_id = g.user_id
+
+    certificate_id = request.json['certificate_id']
+
+    # check data
+    certificate_row = certificate_service.get_certificate_row(
+        certificate_id=certificate_id,
+        user_id=current_user_id
+    )
+
+    deploy_webhook_row = DeployWebhookModel.select().where(
+        DeployWebhookModel.user_id == current_user_id,
+        DeployWebhookModel.object_id == certificate_row.id,
+        DeployWebhookModel.object_type == ObjectEnum.Certificate
+    ).first()
+
+    if deploy_webhook_row:
+        return deploy_webhook_row.to_dict()

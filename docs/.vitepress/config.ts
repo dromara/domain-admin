@@ -83,7 +83,7 @@ var _hmt = _hmt || [];
         ],
 
         socialLinks: [
-            {icon: "github", link: "https://github.com/mouday/domain-admin"},
+            {icon: "github", link: "https://github.com/dromara/domain-admin"},
         ],
 
         outlineTitle: "导航目录",

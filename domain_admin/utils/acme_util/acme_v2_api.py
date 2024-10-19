@@ -68,9 +68,11 @@ from acme import messages
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+from flask import g
 
 from domain_admin.config import ACME_DIR
 from domain_admin.log import logger
+from domain_admin.utils import uuid_util
 # This is the staging point for ACME-V2 within Let's Encrypt.
 from domain_admin.utils.acme_util.challenge_type import ChallengeType
 from domain_admin.utils.acme_util import key_type_enum
@@ -102,6 +104,7 @@ CERT_PKEY_BITS = 2048
 
 # ACCOUNT_STORAGE = AccountMemoryStorage()
 # {directory_type: acme_client}
+# @since v1.6.52 {(user_id, directory_type): acme_client}
 ACME_CACHE = {}
 
 
@@ -257,9 +260,9 @@ def get_account_key(directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
     #     encryption_algorithm=serialization.NoEncryption()
     # )
 
-        # # store private key
-        # with open(account_key_filename, 'wb') as f:
-        #     f.write(pem)
+    # # store private key
+    # with open(account_key_filename, 'wb') as f:
+    #     f.write(pem)
 
     return private_key
 
@@ -340,13 +343,17 @@ def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 
 
 def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyTypeEnum.RSA):
+    current_user_id = g.user_id
+
     # default use letsencrypt directory_url
     if not directory_type:
         directory_type = DirectoryTypeEnum.LETS_ENCRYPT
 
-    if directory_type in ACME_CACHE:
+    acme_client_key = (current_user_id, directory_type)
+
+    if acme_client_key in ACME_CACHE:
         logger.info('directory_type exists')
-        return ACME_CACHE.get(directory_type)
+        return ACME_CACHE.get(acme_client_key)
 
     directory_url = directory_type_enum.get_directory_url(directory_type)
     if not directory_url:
@@ -379,7 +386,7 @@ def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyT
     create_account(client_acme, directory_type)
 
     # ensure_account_exists(client_acme, directory_type)
-    ACME_CACHE[directory_type] = client_acme
+    ACME_CACHE[acme_client_key] = client_acme
 
     return client_acme
 
