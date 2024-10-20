@@ -53,6 +53,8 @@ www.baidu.com
 
 通过调用远程api接口，将证书数据发送到远程接口，可自定义实现的部署逻辑
 
+申请证书api推送格式
+
 ```json
 {
   "domains": [
@@ -66,15 +68,28 @@ www.baidu.com
 }
 ```
 
+
+托管证书api推送格式
+
+```json
+{
+  "domain": "www.baidu.com",
+  "ssl_certificate":"-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----",
+  "ssl_certificate_key":"-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----",
+  "start_time": "2023-01-04 14:33:39",
+  "expire_time": "2023-04-04 14:33:39"
+}
+```
+
 参数说明
 
-| 参数  | 类型   | 说明 |
-| -| - | - |
-| domains | `array<string>` | 域名列表
-| ssl_certificate | string  | 证书公钥
-| ssl_certificate_key | string  | 证书私钥
-| start_time | string  | 证书生效时间
-| expire_time | string  | 证书过期时间
+| 参数  | 类型                       | 说明 |
+| -|--------------------------| - |
+| domains | `array<string>` / string | 域名列表
+| ssl_certificate | string                   | 证书公钥
+| ssl_certificate_key | string                   | 证书私钥
+| start_time | string                   | 证书生效时间
+| expire_time | string                   | 证书过期时间
 
 
 远程服务器实现示例
