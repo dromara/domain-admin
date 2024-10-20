@@ -143,11 +143,22 @@ www.baidu.com
 <section id="id4">
 <h2>4、远程部署<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
 <p>通过调用远程api接口，将证书数据发送到远程接口，可自定义实现的部署逻辑</p>
+<p>申请证书api推送格式</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;domains&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;zhidao.baidu.com&quot;</span>
 <span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;ssl_certificate&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ssl_certificate_key&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-04 14:33:39&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expire_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04 14:33:39&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>托管证书api推送格式</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;domain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;ssl_certificate&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;ssl_certificate_key&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-04 14:33:39&quot;</span><span class="p">,</span>
@@ -167,7 +178,7 @@ www.baidu.com
 <tbody>
 <tr>
 <td>domains</td>
-<td><code>array&lt;string&gt;</code></td>
+<td><code>array&lt;string&gt;</code> / string</td>
 <td>域名列表</td>
 </tr>
 <tr>
