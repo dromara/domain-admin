@@ -23,10 +23,6 @@ hero:
     - theme: alt
       text: Github
       link: https://github.com/dromara/domain-admin
-    
-    - theme: alt
-      text: Gitee
-      link: https://gitee.com/dromara/domain-admin
 
 
 features:
