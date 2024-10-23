@@ -13,64 +13,13 @@ Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的
 > - 【测试环境】可以使用默认的sqlite数据库;
 > - 【生产环境】推荐使用MySQL数据库，避免锁表，配置方式:[可选配置](#id5)
 
-## 方式一：pip安装
+## 方式一：宝塔面板安装
 
-运行环境：
+宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。
 
-- Python >= 2.7 或者 Python >= 3.4
-- sqlite、openssl
+有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。
 
-python的安装，可以参考文章：[Linux环境下安装Python3](https://pengshiyu.blog.csdn.net/article/details/85304557)
-
-可以使用 `pyenv` + `venv` 管理多个Python版本和隔离虚拟环境
-
-确保已经安装Python解释器
-
-```bash
-$ python3 --version
-Python 3.7.0
-```
-
-linux / macos 安装
-
-```bash
-# 创建名为 venv 的虚拟环境并激活
-$ python3 -m venv venv && source venv/bin/activate
-
-# 安装 domain-admin
-$ pip install gunicorn domain-admin
-
-# 启动运行
-$ gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
-```
-
-windows 安装
-
-```bash
-# 创建名为 venv 的虚拟环境
-> py -3 -m venv venv
-
-# 激活虚拟环境
-> venv\Scripts\activate
-
-# 安装 domain-admin
-> pip install waitress domain-admin
-
-# 启动运行
-> waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
-```
-
-访问地址：http://127.0.0.1:8000
-
-升级到最新版本
-
-```bash
-$ pip3 install -U domain-admin -i https://pypi.org/simple
-```
-
-Python2.7如果安装依赖报错，可以使用依赖文件 [production-2.7.txt](https://github.com/mouday/domain-admin/tree/master/requirements/production-2.7.txt)
-
-先安装好依赖文件的依赖，再安装domain-admin即可
+![](https://mouday.github.io/img/2024/10/23/cwb72xg.png)
 
 ## 方式二：docker启动
 
@@ -299,13 +248,65 @@ spec:
           timeoutSeconds: 1
 ```
 
-## 方式六：宝塔面板安装（推荐）
 
-宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。
+## 方式六：pip安装
 
-有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。
+运行环境：
 
-![](https://mouday.github.io/img/2024/10/23/cwb72xg.png)
+- Python >= 2.7 或者 Python >= 3.4
+- sqlite、openssl
+
+python的安装，可以参考文章：[Linux环境下安装Python3](https://pengshiyu.blog.csdn.net/article/details/85304557)
+
+可以使用 `pyenv` + `venv` 管理多个Python版本和隔离虚拟环境
+
+确保已经安装Python解释器
+
+```bash
+$ python3 --version
+Python 3.7.0
+```
+
+linux / macos 安装
+
+```bash
+# 创建名为 venv 的虚拟环境并激活
+$ python3 -m venv venv && source venv/bin/activate
+
+# 安装 domain-admin
+$ pip install gunicorn domain-admin
+
+# 启动运行
+$ gunicorn --bind '127.0.0.1:8000' 'domain_admin.main:app'
+```
+
+windows 安装
+
+```bash
+# 创建名为 venv 的虚拟环境
+> py -3 -m venv venv
+
+# 激活虚拟环境
+> venv\Scripts\activate
+
+# 安装 domain-admin
+> pip install waitress domain-admin
+
+# 启动运行
+> waitress-serve --listen=127.0.0.1:8000 domain_admin.main:app
+```
+
+访问地址：http://127.0.0.1:8000
+
+升级到最新版本
+
+```bash
+$ pip3 install -U domain-admin -i https://pypi.org/simple
+```
+
+Python2.7如果安装依赖报错，可以使用依赖文件 [production-2.7.txt](https://github.com/mouday/domain-admin/tree/master/requirements/production-2.7.txt)
+
+先安装好依赖文件的依赖，再安装domain-admin即可
 
 ## 其他部署方式
 

@@ -52,12 +52,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">用户手册</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">安装方式</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#pip">方式一：pip安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">方式一：宝塔面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker">方式二：docker启动</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">方式三：下载源码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">方式三：下载源码安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#panel">方式四：1Panel面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#k8s">方式五：k8s部署</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">方式六：宝塔面板安装（推荐）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pip">方式六：pip安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id5">其他部署方式</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id6">平滑升级</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id7">可选配置</a></li>
@@ -116,52 +116,11 @@
 <li><p>【生产环境】推荐使用MySQL数据库，避免锁表，配置方式:<a class="reference external" href="#id5">可选配置</a></p></li>
 </ul>
 </div></blockquote>
-<section id="pip">
-<h2>方式一：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
-<p>运行环境：</p>
-<ul class="simple">
-<li><p>Python &gt;= 2.7 或者 Python &gt;= 3.4</p></li>
-<li><p>sqlite、openssl</p></li>
-</ul>
-<p>python的安装，可以参考文章：<a class="reference external" href="https://pengshiyu.blog.csdn.net/article/details/85304557">Linux环境下安装Python3</a></p>
-<p>可以使用 <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> + <code class="docutils literal notranslate"><span class="pre">venv</span></code> 管理多个Python版本和隔离虚拟环境</p>
-<p>确保已经安装Python解释器</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>--version
-Python<span class="w"> </span><span class="m">3</span>.7.0
-</pre></div>
-</div>
-<p>linux / macos 安装</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境并激活</span>
-$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
-
-<span class="c1"># 安装 domain-admin</span>
-$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gunicorn<span class="w"> </span>domain-admin
-
-<span class="c1"># 启动运行</span>
-$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
-</pre></div>
-</div>
-<p>windows 安装</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境</span>
-&gt;<span class="w"> </span>py<span class="w"> </span>-3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
-
-<span class="c1"># 激活虚拟环境</span>
-&gt;<span class="w"> </span>venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
-
-<span class="c1"># 安装 domain-admin</span>
-&gt;<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress<span class="w"> </span>domain-admin
-
-<span class="c1"># 启动运行</span>
-&gt;<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span>domain_admin.main:app
-</pre></div>
-</div>
-<p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
-<p>升级到最新版本</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>domain-admin<span class="w"> </span>-i<span class="w"> </span>https://pypi.org/simple
-</pre></div>
-</div>
-<p>Python2.7如果安装依赖报错，可以使用依赖文件 <a class="reference external" href="https://github.com/mouday/domain-admin/tree/master/requirements/production-2.7.txt">production-2.7.txt</a></p>
-<p>先安装好依赖文件的依赖，再安装domain-admin即可</p>
+<section id="id3">
+<h2>方式一：宝塔面板安装<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。</p>
+<p>有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。</p>
+<a class="reference external image-reference" href="https://mouday.github.io/img/2024/10/23/cwb72xg.png"><img alt="" src="https://mouday.github.io/img/2024/10/23/cwb72xg.png" /></a>
 </section>
 <section id="docker">
 <h2>方式二：docker启动<a class="headerlink" href="#docker" title="此标题的永久链接"></a></h2>
@@ -211,8 +170,8 @@ mouday/domain-admin:latest
 <li><p><a class="reference external" href="https://docker.catiz.eu.org/">https://docker.catiz.eu.org/</a></p></li>
 </ul>
 </section>
-<section id="id3">
-<h2>方式三：下载源码安装<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="id4">
+<h2>方式三：下载源码安装<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
 <p>下载地址：<a class="reference external" href="https://github.com/mouday/domain-admin/releases">https://github.com/mouday/domain-admin/releases</a></p>
 <p>本方式仅适用于二次开发，推荐采用 pip安装 或者 docker启动 的方式体验</p>
 <p>例如：以<code class="docutils literal notranslate"><span class="pre">v1.5.8</span></code>为例</p>
@@ -364,11 +323,52 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 </pre></div>
 </div>
 </section>
-<section id="id4">
-<h2>方式六：宝塔面板安装（推荐）<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
-<p>宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。</p>
-<p>有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。</p>
-<a class="reference external image-reference" href="https://mouday.github.io/img/2024/10/23/cwb72xg.png"><img alt="" src="https://mouday.github.io/img/2024/10/23/cwb72xg.png" /></a>
+<section id="pip">
+<h2>方式六：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
+<p>运行环境：</p>
+<ul class="simple">
+<li><p>Python &gt;= 2.7 或者 Python &gt;= 3.4</p></li>
+<li><p>sqlite、openssl</p></li>
+</ul>
+<p>python的安装，可以参考文章：<a class="reference external" href="https://pengshiyu.blog.csdn.net/article/details/85304557">Linux环境下安装Python3</a></p>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> + <code class="docutils literal notranslate"><span class="pre">venv</span></code> 管理多个Python版本和隔离虚拟环境</p>
+<p>确保已经安装Python解释器</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>--version
+Python<span class="w"> </span><span class="m">3</span>.7.0
+</pre></div>
+</div>
+<p>linux / macos 安装</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境并激活</span>
+$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+
+<span class="c1"># 安装 domain-admin</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gunicorn<span class="w"> </span>domain-admin
+
+<span class="c1"># 启动运行</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+</pre></div>
+</div>
+<p>windows 安装</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建名为 venv 的虚拟环境</span>
+&gt;<span class="w"> </span>py<span class="w"> </span>-3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+
+<span class="c1"># 激活虚拟环境</span>
+&gt;<span class="w"> </span>venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+
+<span class="c1"># 安装 domain-admin</span>
+&gt;<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress<span class="w"> </span>domain-admin
+
+<span class="c1"># 启动运行</span>
+&gt;<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:8000<span class="w"> </span>domain_admin.main:app
+</pre></div>
+</div>
+<p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
+<p>升级到最新版本</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>domain-admin<span class="w"> </span>-i<span class="w"> </span>https://pypi.org/simple
+</pre></div>
+</div>
+<p>Python2.7如果安装依赖报错，可以使用依赖文件 <a class="reference external" href="https://github.com/mouday/domain-admin/tree/master/requirements/production-2.7.txt">production-2.7.txt</a></p>
+<p>先安装好依赖文件的依赖，再安装domain-admin即可</p>
 </section>
 <section id="id5">
 <h2>其他部署方式<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
