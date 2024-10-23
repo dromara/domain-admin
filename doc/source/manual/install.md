@@ -73,8 +73,33 @@ services:
 ```
 
 可用的docker镜像站
-- https://docker.aityp.com/
-- https://docker.catiz.eu.org/
+
+```bash
+$ sudo mkdir -p /etc/docker
+
+$ sudo tee /etc/docker/daemon.json <<EOF
+{
+"registry-mirrors": [
+"https://dockerpull.com",
+"https://dockerproxy.cn",
+"https://docker.loli.voto",
+"https://docker.chenby.cn",
+"https://docker-cf.registry.cyou",
+"https://docker.m.daocloud.io",
+"https://docker.ketches.cn",
+"https://docker.1panel.dev",
+"https://docker.1panel.live",
+"https://docker.rainbond.cc",
+"https://hub.rat.dev",
+"https://docker.aityp.com/",
+"https://docker.catiz.eu.org/"
+]
+}
+EOF
+
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart docker
+```
 
 ## 方式三：下载源码安装
 

@@ -17,7 +17,7 @@ hero:
       link: https://demo.domain-admin.cn/
   
     - theme: alt
-      text: 部署文档
+      text: 快速开始
       link: https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html
 
     - theme: alt
