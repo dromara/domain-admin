@@ -10,6 +10,8 @@
 [![Documentation Status](https://readthedocs.org/projects/domain-admin/badge/?version=latest)](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
 [![GitHub release](https://img.shields.io/github/v/release/dromara/domain-admin)](https://github.com/dromara/domain-admin/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/dromara/domain-admin?color=%231890FF&style=flat-square)](https://github.com/dromara/domain-admin)
+[![宝塔服务器面板，一键全能部署及管理](https://img.shields.io/badge/BT_Deploy-Install-20a53a)](https://www.bt.cn/u/MaBJJC)
+
 
 ![](https://raw.githubusercontent.com/mouday/domain-admin/master/image/domain.svg)
 
