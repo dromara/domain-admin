@@ -299,6 +299,14 @@ spec:
           timeoutSeconds: 1
 ```
 
+## 方式六：宝塔面板安装（推荐）
+
+宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。
+
+有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。
+
+![](https://mouday.github.io/img/2024/10/23/cwb72xg.png)
+
 ## 其他部署方式
 
 可以参考[https://flask.palletsprojects.com/en/2.3.x/deploying/](https://flask.palletsprojects.com/en/2.3.x/deploying/)

@@ -57,10 +57,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#id3">方式三：下载源码安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#panel">方式四：1Panel面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#k8s">方式五：k8s部署</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">其他部署方式</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">平滑升级</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">可选配置</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">配置参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">方式六：宝塔面板安装（推荐）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">其他部署方式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">平滑升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">可选配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">配置参数</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notify.html">通知配置</a></li>
@@ -364,19 +365,25 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 </div>
 </section>
 <section id="id4">
-<h2>其他部署方式<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
-<p>可以参考<a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/deploying/">https://flask.palletsprojects.com/en/2.3.x/deploying/</a></p>
+<h2>方式六：宝塔面板安装（推荐）<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。</p>
+<p>有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。</p>
+<a class="reference external image-reference" href="https://mouday.github.io/img/2024/10/23/cwb72xg.png"><img alt="" src="https://mouday.github.io/img/2024/10/23/cwb72xg.png" /></a>
 </section>
 <section id="id5">
-<h2>平滑升级<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<h2>其他部署方式<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>可以参考<a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/deploying/">https://flask.palletsprojects.com/en/2.3.x/deploying/</a></p>
+</section>
+<section id="id6">
+<h2>平滑升级<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
 <p>Domain Admin所有版本都支持平滑升级</p>
 <p>安装最新版，重启即可</p>
 <blockquote>
 <div><p>注意：如果是docker安装的，注意<code class="docutils literal notranslate"><span class="pre">database</span></code> 目录是不是手动挂载的，不要删除</p>
 </div></blockquote>
 </section>
-<section id="id6">
-<h2>可选配置<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h2>可选配置<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
 <p>通过配置<code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件或者直接设置系统环境变量</p>
 <p>1、修改数据库存储方式</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># sqlite 默认 （少量用户推荐）</span>
@@ -395,8 +402,8 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 </pre></div>
 </div>
 </section>
-<section id="id7">
-<h2>配置参数<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<section id="id8">
+<h2>配置参数<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
 <p>可以通过运行目录下添加 <code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件配置项目的可选参数</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 数据库链接参数</span>
 <span class="c1"># 支持数据库：sqlite（默认）、mysql、postgresql</span>
