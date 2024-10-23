@@ -166,10 +166,32 @@ mouday/domain-admin:latest
 </pre></div>
 </div>
 <p>可用的docker镜像站</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://docker.aityp.com/">https://docker.aityp.com/</a></p></li>
-<li><p><a class="reference external" href="https://docker.catiz.eu.org/">https://docker.catiz.eu.org/</a></p></li>
-</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/docker
+
+$<span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/docker/daemon.json<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">{</span>
+<span class="s">&quot;registry-mirrors&quot;: [</span>
+<span class="s">&quot;https://dockerpull.com&quot;,</span>
+<span class="s">&quot;https://dockerproxy.cn&quot;,</span>
+<span class="s">&quot;https://docker.loli.voto&quot;,</span>
+<span class="s">&quot;https://docker.chenby.cn&quot;,</span>
+<span class="s">&quot;https://docker-cf.registry.cyou&quot;,</span>
+<span class="s">&quot;https://docker.m.daocloud.io&quot;,</span>
+<span class="s">&quot;https://docker.ketches.cn&quot;,</span>
+<span class="s">&quot;https://docker.1panel.dev&quot;,</span>
+<span class="s">&quot;https://docker.1panel.live&quot;,</span>
+<span class="s">&quot;https://docker.rainbond.cc&quot;,</span>
+<span class="s">&quot;https://hub.rat.dev&quot;,</span>
+<span class="s">&quot;https://docker.aityp.com/&quot;,</span>
+<span class="s">&quot;https://docker.catiz.eu.org/&quot;</span>
+<span class="s">]</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+
+$<span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+$<span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>docker
+</pre></div>
+</div>
 </section>
 <section id="id4">
 <h2>方式三：下载源码安装<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
