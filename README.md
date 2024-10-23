@@ -32,9 +32,9 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
     - 辅助功能：`Let’s Encrypt` SSL证书免费申请和SSL证书自动续期
     - 多语言：支持中文、英文
 
-- 项目地址：[后端代码（github）](https://github.com/mouday/domain-admin)、[后端代码（国内镜像）](https://gitee.com/mouday/domain-admin)
+- 项目地址：[后端代码（github）](https://github.com/dromara/domain-admin)、[后端代码（国内镜像）](https://gitee.com/dromara/domain-admin)
 
-- 发布渠道：[PyPI](https://pypi.org/project/domain-admin)、[Docker](https://hub.docker.com/r/mouday/domain-admin)、[Releases](https://github.com/mouday/domain-admin/releases)、[1Panel](https://apps.fit2cloud.com/1panel/domain-admin)
+- 发布渠道：[PyPI](https://pypi.org/project/domain-admin)、[Docker](https://hub.docker.com/r/mouday/domain-admin)、[Releases](https://github.com/mouday/domain-admin/releases)、[1Panel](https://apps.fit2cloud.com/1panel/domain-admin)、[宝塔](https://www.bt.cn/u/MaBJJC)
 
 - 使用文档：[readthedocs](https://domain-admin.readthedocs.io/zh_CN/latest/?badge=latest)
 
