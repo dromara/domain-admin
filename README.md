@@ -53,6 +53,19 @@ Domain Admin是一个轻量级监控方案，占用系统资源较少。同时�
 
 > 服务器和域名由群友赞助提供
 
+本项目支持的安装方式
+
+| 安装方式   | 链接                               |
+|--------|----------------------------------|
+| 宝塔     | [链接](https://www.bt.cn/u/MaBJJC) | 
+| Docker | [链接](https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html#docker) | 
+| 源码     | [链接](https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html#id4) | 
+| 1Panel     | [链接](https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html#panel) | 
+| k8s     | [链接](https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html#k8s) | 
+| pip     | [链接](https://domain-admin.readthedocs.io/zh-cn/latest/manual/install.html#pip) | 
+
+
+
 ## 项目截图
 
 账号密码随意（例如：admin/123456），预览模式仅提供模拟数据，无法操作修改
