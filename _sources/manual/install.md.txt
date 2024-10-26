@@ -21,7 +21,9 @@ Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的
 
 有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。
 
-如果还未安装宝塔，请先前往下载注册安装
+如果还未安装宝塔，请先前往[下载](https://www.bt.cn/u/MaBJJC)注册安装
+
+面板版本v9.2.0 应用商店搜索`domain-admin`
 
 [![宝塔服务器面板，一键全能部署及管理](https://mouday.github.io/img/2024/10/24/fxkd3qe.jpg)](https://www.bt.cn/u/MaBJJC)
 
