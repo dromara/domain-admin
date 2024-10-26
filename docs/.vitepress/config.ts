@@ -5,7 +5,7 @@ import AutoSidebar from "vite-plugin-vitepress-auto-sidebar";
 // ref: https://gitee.com/zhontai/zhontai-admin-doc/blob/master/docs/.vitepress/config.ts
 export default defineConfig({
     lang: "zh-CN",
-    title: "Domain Admin-域名技术分享站",
+    title: "Domain Admin-SSL证书监测平台、到期提醒",
     base: "/domain-admin/",
     ignoreDeadLinks: true,
     lastUpdated: true,
