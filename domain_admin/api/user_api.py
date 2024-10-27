@@ -85,6 +85,32 @@ def update_user_password():
     ).execute()
 
 
+@auth_service.permission(role=RoleEnum.USER)
+def get_user_list_by_name():
+    """
+    精确搜索，普通用户端可用
+    """
+    username = request.json.get('keyword')
+
+    query = UserModel.select().where(
+        UserModel.username == username
+    )
+    total = query.count()
+
+    lst = list(map(lambda m: model_to_dict(
+        model=m,
+        only=[
+            UserModel.id,
+            UserModel.username,
+        ],
+    ), query))
+
+    return {
+        'list': lst,
+        'total': total
+    }
+
+
 @auth_service.permission(role=RoleEnum.ADMIN)
 def get_user_list():
     """

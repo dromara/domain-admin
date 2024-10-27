@@ -89,6 +89,7 @@ routes = {
 
     # 用户管理 (管理员权限)
     '/api/getUserList': user_api.get_user_list,
+    '/api/getUserListByName': user_api.get_user_list_by_name,
     '/api/addUser': user_api.add_user,
     '/api/updateUserStatus': user_api.update_user_status,
     '/api/deleteUser': user_api.delete_user,
