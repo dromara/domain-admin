@@ -22,7 +22,7 @@ from domain_admin.service import domain_service
 from domain_admin.service import file_service
 from domain_admin.utils import datetime_util, domain_util
 from domain_admin.utils.cert_util import cert_consts
-from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException
+from domain_admin.utils.flask_ext.app_exception import AppException, DataNotFoundAppException, ForbiddenAppException
 
 
 @auth_service.permission(role=RoleEnum.USER)
@@ -113,12 +113,20 @@ def update_domain_by_id():
 
     # data check
     before_domain_row = DomainModel.select().where(
-        DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id
+        DomainModel.id == domain_id
     ).first()
 
     if not before_domain_row:
         raise DataNotFoundAppException()
+
+    # edit permission check
+    has_permission = domain_service.has_edit_permission(
+        domain_row=before_domain_row,
+        user_id=current_user_id
+    )
+
+    if not has_permission:
+        raise ForbiddenAppException()
 
     DomainModel.update(data).where(
         DomainModel.id == domain_id
@@ -148,12 +156,20 @@ def update_domain_expire_monitor_by_id():
 
     # data check
     domain_row = DomainModel.select().where(
-        DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id
+        DomainModel.id == domain_id
     ).first()
 
     if not domain_row:
         raise DataNotFoundAppException()
+
+    # edit permission check
+    has_permission = domain_service.has_edit_permission(
+        domain_row=domain_row,
+        user_id=current_user_id
+    )
+
+    if not has_permission:
+        raise ForbiddenAppException()
 
     data = {
         "is_monitor": request.json.get('is_monitor', True)
@@ -193,12 +209,20 @@ def update_domain_field_by_id():
 
     # data check
     domain_row = DomainModel.select().where(
-        DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id
+        DomainModel.id == domain_id
     ).first()
 
     if not domain_row:
         raise DataNotFoundAppException()
+
+    # edit permission check
+    has_permission = domain_service.has_edit_permission(
+        domain_row=domain_row,
+        user_id=current_user_id
+    )
+
+    if not has_permission:
+        raise ForbiddenAppException()
 
     DomainModel.update(data).where(
         DomainModel.id == domain_row.id
@@ -250,12 +274,20 @@ def delete_domain_by_id():
 
     # data check
     domain_row = DomainModel.select().where(
-        DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id
+        DomainModel.id == domain_id
     ).first()
 
     if not domain_row:
         raise DataNotFoundAppException()
+
+    # edit permission check
+    has_permission = domain_service.has_edit_permission(
+        domain_row=domain_row,
+        user_id=current_user_id
+    )
+
+    if not has_permission:
+        raise ForbiddenAppException()
 
     DomainModel.delete_by_id(domain_row.id)
 
@@ -307,12 +339,20 @@ def get_domain_by_id():
 
     # data check
     domain_row = DomainModel.select().where(
-        DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id
+        DomainModel.id == domain_id
     ).first()
 
     if not domain_row:
         raise DataNotFoundAppException()
+
+    # edit permission check
+    has_permission = domain_service.has_edit_permission(
+        domain_row=domain_row,
+        user_id=current_user_id
+    )
+
+    if not has_permission:
+        raise ForbiddenAppException()
 
     row = model_to_dict(
         model=domain_row,
@@ -390,12 +430,20 @@ def update_domain_row_info_by_id():
 
     # data check
     domain_row = DomainModel.select().where(
-        DomainModel.id == domain_id,
-        DomainModel.user_id == current_user_id
+        DomainModel.id == domain_id
     ).first()
 
     if not domain_row:
         raise DataNotFoundAppException()
+
+    # edit permission check
+    has_permission = domain_service.has_read_permission(
+        domain_row=domain_row,
+        user_id=current_user_id
+    )
+
+    if not has_permission:
+        raise ForbiddenAppException()
 
     domain_service.update_domain_row(domain_row=domain_row)
 

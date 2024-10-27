@@ -679,3 +679,44 @@ def init_domain_cert_info_of_user(user_id):
 
     for row in rows:
         update_domain_row(row)
+
+
+def has_read_permission(domain_row, user_id):
+    """
+    读取权限
+    """
+    # 1、域名所有人
+    if domain_row.user_id == user_id:
+        return True
+
+    # 2、分组成员
+    group_user_row = GroupUserModel.select().where(
+        GroupUserModel.group_id == domain_row.group_id,
+        GroupUserModel.user_id == user_id
+    ).first()
+
+    if group_user_row:
+        return True
+
+    return False
+
+
+def has_edit_permission(domain_row, user_id):
+    """
+    编辑权限
+    """
+    # 1、域名所有人
+    if domain_row.user_id == user_id:
+        return True
+
+    # 2、分组成员 并且拥有编辑权限
+    group_user_row = GroupUserModel.select().where(
+        GroupUserModel.group_id == domain_row.group_id,
+        GroupUserModel.user_id == user_id,
+        GroupUserModel.has_edit_permission == True
+    ).first()
+
+    if group_user_row:
+        return True
+
+    return False
