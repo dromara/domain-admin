@@ -25,6 +25,8 @@ Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的
 
 面板版本v9.2.0 应用商店搜索`domain-admin`
 
+[【教程贴】Docker应用-Domain Admin 安装帮助](https://www.bt.cn/bbs/thread-139621-1-1.html)
+
 [![宝塔服务器面板，一键全能部署及管理](https://mouday.github.io/img/2024/10/24/fxkd3qe.jpg)](https://www.bt.cn/u/MaBJJC)
 
 ![](https://mouday.github.io/img/2024/10/23/cwb72xg.png)
