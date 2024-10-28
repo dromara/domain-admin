@@ -37,6 +37,7 @@
 - 2024-04-09 辣码甄源 [Domain Admin：方便快捷的图形化域名和SSL证书监测平台](https://mp.weixin.qq.com/s/29MGqNbSX5VLBi8Im5GQDQ)
 - 2024-05-10 刘哥聊技术 [开源|一款基于Python + Vue3.js 技术栈实现的域名和SSL证书监测管理平台](https://mp.weixin.qq.com/s/BOQLpvGjXvvNgIoeAGJBRg)
 - 2024-05-12 云原生生态圈 [这个域名证书监控平台又吊打Uptimekuma了](https://mp.weixin.qq.com/s/6C1zQJHMo-a4sy6DLJY4Xw)
+- 2024-10-28 IT运维技术圈 [推荐一个非常轻便的ssl监控工具](https://mp.weixin.qq.com/s/cq4id4OfoyTQxhXvO-bA_w)
 
 
 ## 参考文章
