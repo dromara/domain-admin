@@ -23,13 +23,13 @@ Domain Admin是一个Flask应用，启动部署方式和Flask应用是一样的
 
 如果还未安装宝塔，请先前往[下载](https://www.bt.cn/u/MaBJJC)注册安装
 
-面板版本v9.2.0 应用商店搜索`domain-admin`
+面板版本v9.2.0： 宝塔面板 --> Docker --> 应用商店 --> Domain Admin --> 安装
 
 [【教程贴】Docker应用-Domain Admin 安装帮助](https://www.bt.cn/bbs/thread-139621-1-1.html)
 
 [![宝塔服务器面板，一键全能部署及管理](https://mouday.github.io/img/2024/10/24/fxkd3qe.jpg)](https://www.bt.cn/u/MaBJJC)
 
-![](https://mouday.github.io/img/2024/10/23/cwb72xg.png)
+<img src="https://mouday.github.io/img/2024/10/31/63ke2ij.png" width="200">
 
 ## 方式二：docker启动
 
