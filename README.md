@@ -136,7 +136,7 @@ QQ群号: 731742868
 | 2024-04-23 | [@1275788667](https://github.com/1275788667) | ￥50
 |            | `星河 ๑. ` |
 | 2024-07-10 | [@1275788667](https://github.com/1275788667) | ￥50
-| 2024-10-31 | [@ldytech](https://github.com/ldytech) | ￥100
+| 2024-10-31 | ldytech | ￥100
 
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
