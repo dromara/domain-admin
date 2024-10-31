@@ -442,6 +442,9 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 
 <span class="c1"># 允许远程执行的命令白名单，多个英文分号（;）分隔</span>
 <span class="nv">ALLOW_COMMANDS</span><span class="o">=</span>/opt/nginx/sbin/nginx<span class="w"> </span>-s<span class="w"> </span>reload<span class="p">;</span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
+
+<span class="c1"># 允许用户注册，目前仅支持邮箱验证码登录</span>
+<span class="nv">ENABLED_REGISTER</span><span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>还可以通过环境变量来暴露</p>

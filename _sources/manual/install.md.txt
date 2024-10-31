@@ -396,6 +396,9 @@ APP_MODE=production
 
 # 允许远程执行的命令白名单，多个英文分号（;）分隔
 ALLOW_COMMANDS=/opt/nginx/sbin/nginx -s reload;nginx -s reload
+
+# 允许用户注册，目前仅支持邮箱验证码登录
+ENABLED_REGISTER=true
 ```
 
 还可以通过环境变量来暴露
