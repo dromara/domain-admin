@@ -141,6 +141,7 @@ QQ群号: 731742868
 |            | `星河 ๑. ` |
 | 2024-07-10 | [@1275788667](https://github.com/1275788667) | ￥50
 | 2024-10-31 | ldytech | ￥200
+| 2024-11-1  | [@xiaobiaozhao](https://github.com/xiaobiaozhao) | ￥50
 
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
