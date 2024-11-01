@@ -343,8 +343,8 @@ def get_certificate_san(x509cert):
         ext = x509cert.get_extension(i)
         if 'subjectAltName' in str(ext.get_short_name()):
             for item in str(ext).split(', '):
-
-                if item.startswith('DNS:'):
+                # add IP Address support
+                if item.startswith('DNS:') or item.startswith('IP Address:'):
                     key, value = item.split(':')
                     dns_names.append(value.strip())
 
