@@ -136,12 +136,12 @@ QQ群号: 731742868
 | 时间         | 赞助者 | 金额 |
 |------------| - | - |
 | 2023-11-21 | [@1275788667](https://github.com/1275788667) | ￥50
-|            | [@hhdebb](https://github.com/hhdebb) |  
+| -          | [@hhdebb](https://github.com/hhdebb) | 若干
 | 2024-04-23 | [@1275788667](https://github.com/1275788667) | ￥50
-|            | `星河 ๑. ` |
+| -          | `星河 ๑. ` | 若干
 | 2024-07-10 | [@1275788667](https://github.com/1275788667) | ￥50
 | 2024-10-31 | ldytech | ￥200
-| 2024-11-1  | [@xiaobiaozhao](https://github.com/xiaobiaozhao) | ￥50
+| 2024-11-01 | [@xiaobiaozhao](https://github.com/xiaobiaozhao) | ￥50
 
 
 <img src="https://gitee.com/mouday/domain-admin/raw/master/image/alipay.jpg" width="300">
