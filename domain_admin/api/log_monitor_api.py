@@ -12,7 +12,7 @@ from domain_admin.model.log_monitor_model import LogMonitorModel
 from domain_admin.service import auth_service
 
 
-@auth_service.permission(role=RoleEnum.ADMIN)
+@auth_service.permission(role=RoleEnum.USER)
 def get_log_monitor_list():
     """
     :return:
@@ -52,7 +52,7 @@ def get_log_monitor_list():
     }
 
 
-@auth_service.permission(role=RoleEnum.ADMIN)
+@auth_service.permission(role=RoleEnum.USER)
 def clear_log_monitor():
     """
     :return:
@@ -64,7 +64,7 @@ def clear_log_monitor():
     ).execute()
 
 
-@auth_service.permission(role=RoleEnum.ADMIN)
+@auth_service.permission(role=RoleEnum.USER)
 def clear_all_log_monitor():
     """
     :return:

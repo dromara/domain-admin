@@ -11,6 +11,7 @@ from flask import request, g
 from peewee import SQL, fn
 from playhouse.shortcuts import model_to_dict
 
+from domain_admin.enums.monitor_type_enum import MonitorTypeEnum
 from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.enums.role_enum import RoleEnum
 from domain_admin.enums.time_unit_enum import TimeUnitEnum
@@ -140,6 +141,11 @@ def remove_monitor_by_id():
 
     MonitorModel.delete_by_id(monitor_row.id)
 
+    # remote log
+    LogMonitorModel.delete().where(
+        LogMonitorModel.monitor_id == monitor_row.id,
+        LogMonitorModel.monitor_type == MonitorTypeEnum.HTTP
+    ).execute()
 
 @auth_service.permission(role=RoleEnum.USER)
 @operation_service.operation_log_decorator(
@@ -160,6 +166,12 @@ def delete_monitor_by_ids():
     MonitorModel.delete().where(
         MonitorModel.id.in_(monitor_ids),
         MonitorModel.user_id == current_user_id
+    ).execute()
+
+    # remote log
+    LogMonitorModel.delete().where(
+        LogMonitorModel.monitor_id.in_(monitor_ids),
+        LogMonitorModel.monitor_type == MonitorTypeEnum.HTTP
     ).execute()
 
 
