@@ -15,6 +15,8 @@ from peewee import fn, chunked
 from domain_admin.config import USER_AGENT
 from domain_admin.enums.monitor_status_enum import MonitorStatusEnum
 from domain_admin.enums.monitor_type_enum import MonitorTypeEnum
+from domain_admin.enums.time_unit_enum import TimeUnitEnum
+from domain_admin.log import logger
 from domain_admin.model import monitor_model
 from domain_admin.model.base_model import db
 from domain_admin.model.log_monitor_model import LogMonitorModel
@@ -122,7 +124,9 @@ def run_monitor_warp(monitor_row):
         error = e
 
     # 计算下次运行时间
-    next_run_time = datetime.now() + timedelta(minutes=monitor_row.interval)
+    # @since v1.6.56 精确到毫秒
+    next_run_time = datetime.now() + timedelta(
+        milliseconds=TimeUnitEnum.to_millisecond(value=monitor_row.interval, unit=monitor_row.interval_unit))
 
     # 同步任务
     MonitorModel.update(
@@ -144,11 +148,18 @@ def run_monitor(monitor_row):
     :param monitor_row:
     :return:
     """
+
     if monitor_row.monitor_type == MonitorTypeEnum.HTTP:
+        # 毫秒
+        timeout = TimeUnitEnum.to_millisecond(
+            value=monitor_row.http_timeout,
+            unit=monitor_row.http_timeout_unit or TimeUnitEnum.Second  # 系统原来默认是毫秒
+        )
+
         run_http_monitor(
             method=monitor_row.content_dict['method'],
             url=monitor_row.content_dict['url'],
-            timeout=int(monitor_row.content_dict['timeout'])
+            timeout=timeout * 0.001  # 毫秒转为秒
         )
 
 
@@ -250,17 +261,18 @@ def import_monitor_from_file(filename, user_id):
     rows = file_util.read_data_from_file(filename)
 
     lst = file_util.convert_to_import(rows, monitor_model.FIELD_MAPPING)
-    print(lst)
 
     lst = [
         {
             'title': item['title'],
             'monitor_type': MonitorTypeEnum.HTTP,
             'interval': int(item.get('interval') or '60'),
+            'interval_unit': TimeUnitEnum.get_value(item.get('interval_unit_label') or '分钟'),
             'content': json.dumps({
                 'url': item['http_url'],
                 'method': 'GET',
                 'timeout': int(item.get('http_timeout') or '3'),
+                'timeout_unit': TimeUnitEnum.get_value(item.get('http_timeout_unit_label') or '秒'),
             }),
             'user_id': user_id,
         } for item in lst

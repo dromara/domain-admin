@@ -12,6 +12,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.monitor_status_enum import MonitorStatusEnum
 from domain_admin.enums.monitor_type_enum import MonitorTypeEnum
+from domain_admin.enums.time_unit_enum import TimeUnitEnum
 from domain_admin.model.base_model import BaseModel
 from domain_admin.utils import datetime_util
 
@@ -31,10 +32,14 @@ class MonitorModel(BaseModel):
 
     # 监控参数
     # http {url, method, timeout}
+    # @since v1.6.56 add timeout_unit
     content = TextField(default=None)
 
-    # 间隔 检测频率 单位：分钟
+    # 间隔 检测频率
     interval = IntegerField(default=60)
+
+    # 间隔 检测频率单位：默认：分钟
+    interval_unit = IntegerField(default=TimeUnitEnum.Minute)
 
     # 允许失败次数
     allow_error_count = IntegerField(default=0)
@@ -82,7 +87,19 @@ class MonitorModel(BaseModel):
 
     @property
     def http_timeout(self):
-        return self.content_dict.get('timeout')
+        return int(self.content_dict.get('timeout'))
+
+    @property
+    def http_timeout_unit(self):
+        return self.content_dict.get('timeout_unit')
+
+    @property
+    def http_timeout_unit_label(self):
+        return TimeUnitEnum.get_label(self.http_timeout_unit)
+
+    @property
+    def interval_unit_label(self):
+        return TimeUnitEnum.get_label(self.interval_unit)
 
     def to_dict(self):
         data = model_to_dict(
@@ -94,6 +111,9 @@ class MonitorModel(BaseModel):
                 'monitor_id',
                 'http_url',
                 'http_timeout',
+                'http_timeout_unit',
+                'http_timeout_unit_label',
+                'interval_unit_label',
             ]
         )
 
@@ -112,11 +132,19 @@ FIELD_MAPPING = [
         'field': 'http_url',
     },
     {
-        'name': '请求超时（秒）',
+        'name': '请求超时',
         'field': 'http_timeout',
     },
     {
-        'name': '检测频率（分钟）',
+        'name': '请求超时单位',
+        'field': 'http_timeout_unit_label',
+    },
+    {
+        'name': '检测频率',
         'field': 'interval',
+    },
+    {
+        'name': '检测频率单位',
+        'field': 'interval_unit_label',
     },
 ]

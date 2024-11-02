@@ -13,6 +13,7 @@ from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.operation_enum import OperationEnum
 from domain_admin.enums.role_enum import RoleEnum
+from domain_admin.enums.time_unit_enum import TimeUnitEnum
 from domain_admin.model.log_monitor_model import LogMonitorModel
 from domain_admin.model.monitor_model import MonitorModel
 from domain_admin.service import monitor_service, file_service, async_task_service, operation_service, auth_service
@@ -32,6 +33,7 @@ def add_monitor():
     allow_error_count = request.json.get('allow_error_count') or 0
     content = request.json['content']
     interval = request.json['interval']
+    interval_unit = request.json.get('interval_unit', TimeUnitEnum.Minute)
 
     monitor_row = MonitorModel.create(
         user_id=current_user_id,
@@ -39,7 +41,8 @@ def add_monitor():
         allow_error_count=allow_error_count,
         monitor_type=monitor_type,
         content=json.dumps(content),
-        interval=interval
+        interval=interval,
+        interval_unit=interval_unit
     )
 
     scheduler_main.run_one_monitor_task(MonitorModel.get_by_id(monitor_row.id))
@@ -58,6 +61,7 @@ def update_monitor_by_id():
     content = request.json['content']
     interval = request.json['interval']
     allow_error_count = request.json.get('allow_error_count') or 0
+    interval_unit = request.json.get('interval_unit', TimeUnitEnum.Minute)
 
     monitor_row = MonitorModel.select().where(
         MonitorModel.id == monitor_id,
@@ -71,6 +75,7 @@ def update_monitor_by_id():
         title=title,
         content=json.dumps(content),
         interval=interval,
+        interval_unit=interval_unit,
         allow_error_count=allow_error_count,
     ).where(
         MonitorModel.id == monitor_id
