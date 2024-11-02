@@ -11,7 +11,7 @@ from email.mime.text import MIMEText
 from email.utils import formataddr
 
 # 默认的发件人
-DEFAULT_MAIL_USERNAME = 'admin@domain-admin.com'
+DEFAULT_MAIL_USERNAME = 'admin@domain-admin.cn'
 
 
 def get_email_server(mail_host='localhost', mail_port=25):
