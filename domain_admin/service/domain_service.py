@@ -442,22 +442,22 @@ def add_domain_from_file(filename, user_id):
     else:
         group_map = {}
 
-    lst = [
+    items = [
         {
             'domain': item['domain'],
             'root_domain': domain_util.get_root_domain(item['domain']),
             'port': item.get('port'),
-            'alias': item.get('alias', ''),
+            'alias': item.get('alias') or '',
             'user_id': user_id,
             'group_id': group_map.get(item.get('group_name'), 0),
         } for item in lst
     ]
 
-    # print(json_util.json_dump(lst))
+    # print(json_util.json_dump(items))
 
     # fix: peewee.OperationalError: too many SQL variables
     # https://github.com/mouday/domain-admin/issues/63
-    for batch in chunked(lst, 500):
+    for batch in chunked(items, 500):
         DomainModel.insert_many(batch).on_conflict_ignore().execute()
 
 
