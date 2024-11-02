@@ -450,9 +450,11 @@ MIGRATE_CONFIG = [
             VersionEnum.Version_1652,
             VersionEnum.Version_1653,
             VersionEnum.Version_1654,
-            VersionEnum.Version_1655
+            VersionEnum.Version_1655,
+            VersionEnum.Version_1656,
+            VersionEnum.Version_1657,
         ],
         'migrate_func': migrate_1655_to_1656.execute_migrate,
-        'update_version': VersionEnum.Version_1656
+        'update_version': VersionEnum.Version_1658
     },
 ]
