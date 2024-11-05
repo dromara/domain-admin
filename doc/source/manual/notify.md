@@ -36,7 +36,9 @@
 
 ### 2.2、webhook发送钉钉消息
 
-获取请求地址
+文档：[https://open.dingtalk.com/document/orgapp/custom-bot-send-message-type](https://open.dingtalk.com/document/orgapp/custom-bot-send-message-type)
+
+webhook地址
 
 ```
 https://oapi.dingtalk.com/robot/send?access_token=<access_token>
@@ -50,31 +52,47 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 }
 ```
 
-设置请求体
+示例：SSL证书到期（文本格式）
 
 ```json
 {
   "msgtype": "text",
   "text": {
-    "content":"监控报警: 我就是我, 是不一样的烟火"
+      "content": "以下证书临期，请检查：\n {% for row in list %}{{row.domain}} {{row.start_date or '-' }} ~ {{row.expire_date or '-' }} (剩余{{row.expire_days}}天)\n{% endfor %}"
   }
 }
 ```
 
-使用模板的请求体示例
+示例：SSL证书到期（markdown格式）
 
 ```json
 {
-  "msgtype": "text",
-  "text": {
-      "content": "{% for row in list %}{{row.domain}} {{row.start_date or '-' }} - {{row.expire_date or '-' }} ({{row.expire_days}}){% endfor %}"
+  "msgtype": "markdown",
+  "markdown": {
+    "title": "SSL证书到期提醒",
+    "text": "### SSL证书到期提醒 🔔\n\n| 域名 | 到期 |\n| ---- | ---- |\n{% for row in list %}| {{row.domain}} | {{row.expire_date or '未知'}}({{row.expire_days}}天) |\n{% endfor %}\n\n> 请及时更新即将到期的SSL证书。"
   }
+}
+```
+
+示例：网站监控异常（markdown格式）
+
+```json
+{
+    "msgtype": "markdown",
+    "markdown": {
+        "title": "网站监控异常提醒",
+        "text": "{{monitor_row.title}} 监测异常，请检查：\n
+         请求URL：<font color=\"red\">{{monitor_row.http_url}}</font>
+         重试次数：<font color=\"red\">{{monitor_row.allow_error_count}}</font>
+         状态：{% if monitor_row.status==2 %}<font color=\"red\">失败</font>{% elif monitor_row.status==1 %}<font color=\"green\">成功</font>{% else %}<font color=\"comment\">未知</font>{% endif %}"
+    }
 }
 ```
 
 可以参考 [@PanZongQing](https://github.com/PanZongQing) 分享的钉钉webhook配置：
 
-[对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/mouday/domain-admin/issues/47)
+[对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/dromara/domain-admin/issues/47)
 
 
 ### 2.3、webhook发送Resend邮件
@@ -252,7 +270,7 @@ https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=693a91f6-7xxx-4bc4-97a0-0ec
 }
 ```
 
-示例：网站监控
+示例：网站监控异常
 
 ```json
 {
