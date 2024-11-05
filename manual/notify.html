@@ -143,7 +143,8 @@
 </section>
 <section id="id5">
 <h3>2.2、webhook发送钉钉消息<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
-<p>获取请求地址</p>
+<p>文档：<a class="reference external" href="https://open.dingtalk.com/document/orgapp/custom-bot-send-message-type">https://open.dingtalk.com/document/orgapp/custom-bot-send-message-type</a></p>
+<p>webhook地址</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://oapi.dingtalk.com/robot/send?access_token=&lt;access_token&gt;
 </pre></div>
 </div>
@@ -153,26 +154,40 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>设置请求体</p>
+<p>示例：SSL证书到期（文本格式）</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;监控报警: 我就是我, 是不一样的烟火&quot;</span>
+<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;以下证书临期，请检查：\n {% for row in list %}{{row.domain}} {{row.start_date or &#39;-&#39; }} ~ {{row.expire_date or &#39;-&#39; }} (剩余{{row.expire_days}}天)\n{% endfor %}&quot;</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>使用模板的请求体示例</p>
+<p>示例：SSL证书到期（markdown格式）</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{% for row in list %}{{row.domain}} {{row.start_date or &#39;-&#39; }} - {{row.expire_date or &#39;-&#39; }} ({{row.expire_days}}){% endfor %}&quot;</span>
+<span class="w">  </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;markdown&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SSL证书到期提醒&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;### SSL证书到期提醒 🔔\n\n| 域名 | 到期 |\n| ---- | ---- |\n{% for row in list %}| {{row.domain}} | {{row.expire_date or &#39;未知&#39;}}({{row.expire_days}}天) |\n{% endfor %}\n\n&gt; 请及时更新即将到期的SSL证书。&quot;</span>
 <span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>示例：网站监控异常（markdown格式）</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;markdown&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;网站监控异常提醒&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{monitor_row.title}} 监测异常，请检查：\n</span>
+<span class="s2">         请求URL：&lt;font color=\&quot;red\&quot;&gt;{{monitor_row.http_url}}&lt;/font&gt;</span>
+<span class="s2">         重试次数：&lt;font color=\&quot;red\&quot;&gt;{{monitor_row.allow_error_count}}&lt;/font&gt;</span>
+<span class="s2">         状态：{% if monitor_row.status==2 %}&lt;font color=\&quot;red\&quot;&gt;失败&lt;/font&gt;{% elif monitor_row.status==1 %}&lt;font color=\&quot;green\&quot;&gt;成功&lt;/font&gt;{% else %}&lt;font color=\&quot;comment\&quot;&gt;未知&lt;/font&gt;{% endif %}&quot;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>可以参考 <a class="reference external" href="https://github.com/PanZongQing">&#64;PanZongQing</a> 分享的钉钉webhook配置：</p>
-<p><a class="reference external" href="https://github.com/mouday/domain-admin/issues/47">对接钉钉群内自定义webhook机器人发送告警注意事项</a></p>
+<p><a class="reference external" href="https://github.com/dromara/domain-admin/issues/47">对接钉钉群内自定义webhook机器人发送告警注意事项</a></p>
 </section>
 <section id="webhookresend">
 <h3>2.3、webhook发送Resend邮件<a class="headerlink" href="#webhookresend" title="此标题的永久链接"></a></h3>
@@ -331,7 +346,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>示例：网站监控</p>
+<p>示例：网站监控异常</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;msgtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;markdown&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
