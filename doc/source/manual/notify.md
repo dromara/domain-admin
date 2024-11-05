@@ -74,7 +74,7 @@ https://oapi.dingtalk.com/robot/send?access_token=<access_token>
 
 可以参考 [@PanZongQing](https://github.com/PanZongQing) 分享的钉钉webhook配置：
 
-[对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/mouday/domain-admin/issues/47)
+[对接钉钉群内自定义webhook机器人发送告警注意事项](https://github.com/dromara/domain-admin/issues/47)
 
 
 ### 2.3、webhook发送Resend邮件
