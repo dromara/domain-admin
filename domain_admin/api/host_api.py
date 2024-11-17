@@ -4,6 +4,7 @@
 @Date    : 2023-07-29
 """
 from flask import request, g
+from playhouse.shortcuts import model_to_dict
 
 from domain_admin.config import DEFAULT_SSH_PORT
 from domain_admin.enums.role_enum import RoleEnum
@@ -97,6 +98,9 @@ def get_host_by_id():
     if not host_row:
         raise DataNotFoundAppException()
 
+    host_row.password = ''
+    host_row.private_key = ''
+
     return host_row
 
 
@@ -153,7 +157,13 @@ def get_host_list():
         HostModel.id.desc()
     ).paginate(page, size)
 
+    lst = list(map(lambda m: model_to_dict(model=m), rows))
+
+    for row in lst:
+        row['password'] = ''
+        row['private_key'] = ''
+
     return {
-        'list': rows,
+        'list': lst,
         'total': total,
     }

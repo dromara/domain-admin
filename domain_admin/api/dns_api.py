@@ -4,6 +4,7 @@
 @Date    : 2023-07-29
 """
 from flask import request, g
+from playhouse.shortcuts import model_to_dict
 
 from domain_admin.enums.dns_type_enum import DnsTypeEnum
 from domain_admin.enums.role_enum import RoleEnum
@@ -86,6 +87,8 @@ def get_dns_by_id():
     if not dns_row:
         raise DataNotFoundAppException()
 
+    dns_row.secret_key = ''
+
     return dns_row
 
 
@@ -139,7 +142,12 @@ def get_dns_list():
         DnsModel.id.desc()
     )
 
+    lst = list(map(lambda m: model_to_dict(model=m), rows))
+
+    for row in lst:
+        row['secret_key'] = ''
+
     return {
-        'list': rows,
+        'list': lst,
         'total': total,
     }
