@@ -30,10 +30,10 @@ def get_certificate_list():
     page = request.json.get('page', 1)
     size = request.json.get('size', 10)
     keyword = request.json.get('keyword')
-    order_prop = request.json.get('order_prop') or 'create_time'
-    order_type = request.json.get('order_type') or 'desc'
+    order_prop = request.json.get('order_prop') or 'expire_time'
+    order_type = request.json.get('order_type') or 'asc'
 
-    if order_prop not in ['create_time']:
+    if order_prop not in ['create_time','expire_time']:
         raise AppException('params error: order_prop')
 
     if order_type not in ['desc', 'asc']:
