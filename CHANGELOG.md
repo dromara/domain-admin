@@ -1,3 +1,6 @@
+- v1.6.62(2024-12-20)
+    - 修复.tw后缀域名无法查询 fix #159
+
 - v1.6.61(2024-11-23)
     - Cert Saver, ordered by expire_time (#153)
 
