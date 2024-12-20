@@ -44,7 +44,8 @@ class DomainUtilTest(unittest.TestCase):
             # 'token.im',
             # 'airdry.com.my'
             # 'karinasharpe.com.au',
-            'cvc.cx',
+            # 'cvc.cx',
+            'cloudmax.com.tw',
         ]
 
         for domain in domain_list:

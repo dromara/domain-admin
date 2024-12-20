@@ -64,7 +64,7 @@ CUSTOM_WHOIS_CONFIGS = {
         'expire_time': 'Expiration Time',
     },
     'tw': {
-        'whois_server': 'whois.twnic.net',
+        # 'whois_server': 'whois.twnic.net',
         'registry_time': 'Record created',
         "registry_time_format": '%Y-%m-%d %H:%M:%S (UTC+8)',
         'expire_time': 'Record expires',
