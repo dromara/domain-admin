@@ -343,7 +343,10 @@ def create_account(client_acme, directory_type=DirectoryTypeEnum.LETS_ENCRYPT):
 
 
 def get_acme_client(directory_type=DirectoryTypeEnum.LETS_ENCRYPT, key_type=KeyTypeEnum.RSA):
-    current_user_id = g.user_id
+    # 没有登录默认
+    current_user_id = 0
+    if g and hasattr(g, 'user_id'):
+        current_user_id = g.user_id
 
     # default use letsencrypt directory_url
     if not directory_type:
