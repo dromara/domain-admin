@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SSL证书申请 &mdash; Domain Admin latest 文档</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
@@ -202,13 +202,13 @@ www.baidu.com
 <span class="sd">@File    : fake_server.py</span>
 <span class="sd">@Date    : 2024-03-22</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="s1">&#39;/issueCertificate&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">issue_certificate</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">issue_certificate</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
     <span class="c1"># 此处可自行实现部署逻辑</span>
@@ -220,16 +220,16 @@ www.baidu.com
 </pre></div>
 </div>
 <p>完整示例，由群友 <code class="docutils literal notranslate"><span class="pre">&#64;星河</span> <span class="pre">๑.</span></code>提供</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">delayed_restart_nginx</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delayed_restart_nginx</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;在延迟5秒后重启nginx&quot;&quot;&quot;</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -239,7 +239,7 @@ www.baidu.com
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;重启nginx失败: &#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/deploy-cert&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">deploy_cert</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deploy_cert</span><span class="p">():</span>
     <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s1">&#39;token&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid token&#39;</span><span class="p">}),</span> <span class="mi">401</span>

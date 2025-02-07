@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>常见问题 &mdash; Domain Admin latest 文档</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
@@ -267,13 +267,13 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">kubernetes</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">client</span>
-<span class="kn">import</span> <span class="nn">tldextract</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kubernetes</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">client</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tldextract</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
 
@@ -282,7 +282,7 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">get_token</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_token</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/api/login&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
@@ -301,7 +301,7 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">add_domain</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_domain</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
     <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/api/addDomainInfo&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="n">domain</span>
@@ -319,7 +319,7 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="n">config</span><span class="o">.</span><span class="n">load_incluster_config</span><span class="p">()</span>
     <span class="n">kube_api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ExtensionsV1beta1Api</span><span class="p">()</span>
     <span class="n">ingresses</span> <span class="o">=</span> <span class="n">kube_api</span><span class="o">.</span><span class="n">list_ingress_for_all_namespaces</span><span class="p">()</span>
