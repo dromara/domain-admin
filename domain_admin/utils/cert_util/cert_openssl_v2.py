@@ -73,11 +73,26 @@ def get_ssl_cert(
     """
     # 默认参数
     host = host or domain
+    # split port in domain
+    if ":" in host:
+        temp_list = host.split(":")
+        host = temp_list[0]
+        try:
+            port = int(temp_list[-1])
+        except Exception:
+            print("Illegal port ", temp_list[-1])
 
     # socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(timeout)
-    sock.connect((host, port))
+    # try ipv4
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        sock.connect((host, port))
+    # try ipv6
+    except Exception:
+        sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        sock.connect((host, port))
 
     # 用户可以设置使用协议：STARTTLS、SSL/TLS
     # issues: https://github.com/mouday/domain-admin/issues/57
