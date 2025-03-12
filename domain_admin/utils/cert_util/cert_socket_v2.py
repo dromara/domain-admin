@@ -24,12 +24,28 @@ def get_domain_host_list(domain, port=80):
     """
     # fix Python2 TypeError: getaddrinfo() takes no keyword arguments
     # host, port, family=None, socktype=None, proto=None, flags=None
-    ret = socket.getaddrinfo(
-        domain,
-        port,
-        socket.AF_INET,  # 限制仅返回IPv4
-        0,
-        socket.IPPROTO_TCP)
+    if domain.startswith("https://"):
+        domain = domain[len("https://"):]
+    if domain.startswith("http://"):
+        domain = domain[len("http://"):]
+    try:
+        # use ipv4
+        ret = socket.getaddrinfo(
+            domain,
+            port,
+            socket.AF_INET,  # 限制仅返回IPv4
+            0,
+            socket.IPPROTO_TCP
+        )
+    except Exception:
+        # use ipv6
+        ret = socket.getaddrinfo(
+            domain,
+            port,
+            socket.AF_INET6,
+            0,
+            socket.IPPROTO_TCP
+        )
 
     lst = []
     for item in ret:

@@ -71,17 +71,20 @@ def get_ssl_cert(
     :param timeout: int
     :return:
     """
-    # 默认参数
-    host = host or domain
+    if domain.startswith("https://"):
+        domain = domain[len("https://"):]
+    if domain.startswith("http://"):
+        domain = domain[len("http://"):]
     # split port in domain
-    if ":" in host:
-        temp_list = host.split(":")
-        host = temp_list[0]
+    if ":" in domain:
+        temp_list = domain.split(":")
+        domain = temp_list[0]
         try:
             port = int(temp_list[-1])
         except Exception:
             print("Illegal port ", temp_list[-1])
-
+    # 默认参数
+    host = host or domain
     # socket
     # try ipv4
     try:
