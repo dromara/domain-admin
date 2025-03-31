@@ -26,7 +26,7 @@ from domain_admin.service import file_service, async_task_service
 from domain_admin.service import render_service, group_service
 from domain_admin.utils import datetime_util, cert_util, file_util, json_util
 from domain_admin.utils import domain_util
-from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2
+from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2, cert_ftp
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
 from domain_admin.utils.open_api import crtsh_api
 
@@ -119,12 +119,20 @@ def update_address_row_info(address_row, domain_row):
 
     err = ''
     try:
-        cert_info = cert_openssl_v2.get_ssl_cert_by_openssl(
-            domain=domain_row.domain,
-            host=address_row.host,
-            port=domain_row.port,
-            ssl_type=domain_row.ssl_type
-        )
+        if domain_row.port == 21:
+            cert_info = cert_ftp.get_ftp_cert_by_ftplib(
+                    domain=domain_row.domain,
+                    host=address_row.host,
+                    port=domain_row.port,
+            )
+
+        else:
+            cert_info = cert_openssl_v2.get_ssl_cert_by_openssl(
+                domain=domain_row.domain,
+                host=address_row.host,
+                port=domain_row.port,
+                ssl_type=domain_row.ssl_type
+            )
     except Exception as e:
         err = e.__str__()
         logger.error(traceback.format_exc())
