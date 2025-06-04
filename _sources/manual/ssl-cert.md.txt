@@ -204,4 +204,7 @@ if __name__ == '__main__':
 
 - 如果是全程采用`一键部署`方式操作，域名到期前30天会自动续期
 - 申请到的证书，不会到期提醒，如需到期提醒，请将部署该证书的域名添加到`证书监控`列表
-
+- 如果总是验证不通过，可能是验证服务器有问题，可以使用其他证书申请手段，临时处理证书申请问题
+    - 阿里云：每一个自然年内，提供20个90天个人测试证书（免费版） [点击跳转](https://help.aliyun.com/zh/ssl-certificate/user-guide/purchase-an-individual-test-certificate?from=domain-admin.cn)
+    - 腾讯云：申请20张免费证书 [点击跳转](https://cloud.tencent.com/document/product/400/6814?from=domain-admin.cn)
+    - acme.sh 自动申请证书也可以很好的配合domain-admin的到期提醒
