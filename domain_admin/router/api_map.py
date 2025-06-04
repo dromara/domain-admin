@@ -10,14 +10,13 @@ from domain_admin.api import (
     log_operation_api, group_user_api,
     log_async_task_api, issue_certificate_api,
     host_api, monitor_api, log_monitor_api,
-    tag_api, certificate_api, deploy_cert_api, dns_api)
-from domain_admin.api import domain_api
-from domain_admin.api import group_api
-from domain_admin.api import auth_api
-from domain_admin.api import system_api
-from domain_admin.api import user_api
-from domain_admin.api import log_scheduler_api
-from domain_admin.api import domain_check
+    tag_api, certificate_api,
+    deploy_cert_api, dns_api,
+    domain_api, group_api,
+    auth_api, system_api,
+    user_api, log_scheduler_api,
+    check_wechat_api
+)
 
 routes = {
     # 域名信息
@@ -240,6 +239,6 @@ routes = {
     '/api/getDnsList': dns_api.get_dns_list,
     '/api/deleteDnsById': dns_api.delete_dns_by_id,
 
-    # 域名检查
-    '/api/v1/domain/check': domain_check.check_domain,
+    # 微信域名禁封状态检查
+    '/api/validateUrlForWechat': check_wechat_api.validate_url_for_wechat,
 }

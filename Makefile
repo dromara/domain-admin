@@ -3,7 +3,7 @@
 
 # 运行开发环境
 dev:
-	source venv/bin/activate && gunicorn --bind '0.0.0.0:5000' --timeout 120  --reload 'domain_admin.main:app'
+	source venv/bin/activate && gunicorn --bind '0.0.0.0:5001' --timeout 120  --reload 'domain_admin.main:app'
 
 # 运行生产环境
 pro:
