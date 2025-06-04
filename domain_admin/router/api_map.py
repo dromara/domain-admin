@@ -17,6 +17,7 @@ from domain_admin.api import auth_api
 from domain_admin.api import system_api
 from domain_admin.api import user_api
 from domain_admin.api import log_scheduler_api
+from domain_admin.api import domain_check
 
 routes = {
     # 域名信息
@@ -239,4 +240,6 @@ routes = {
     '/api/getDnsList': dns_api.get_dns_list,
     '/api/deleteDnsById': dns_api.delete_dns_by_id,
 
+    # 域名检查
+    '/api/v1/domain/check': domain_check.check_domain,
 }
