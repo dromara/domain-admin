@@ -1,0 +1,18 @@
+### 域名检查接口测试文件
+@baseUrl = http://localhost:5000
+
+### 检查域名状态 - 正常域名
+GET {{baseUrl}}/api/v1/domain/check?url=http://example.com
+Content-Type: application/json
+
+### 检查域名状态 - 被封域名
+GET {{baseUrl}}/api/v1/domain/check?url=http://blocked-example.com
+Content-Type: application/json
+
+### 检查域名状态 - 无参数
+GET {{baseUrl}}/api/v1/domain/check
+Content-Type: application/json
+
+### 检查域名状态 - 特殊字符URL
+GET {{baseUrl}}/api/v1/domain/check?url=http://example.com/path?param=value
+Content-Type: application/json 
