@@ -137,6 +137,14 @@ def new_csr_comp(domains, pkey_pem=None):
         pkey.generate_key(type=OpenSSL.crypto.TYPE_RSA, bits=CERT_PKEY_BITS)
         pkey_pem = OpenSSL.crypto.dump_privatekey(
             OpenSSL.crypto.FILETYPE_PEM, pkey)
+    else:
+        # 如果调用传入的是 str，则转为 bytes
+        if isinstance(pkey_pem, str):
+            # 假设原始 str 是 UTF-8 编码的 PEM 文本
+            pkey_pem = pkey_pem.encode('utf-8')
+        # 如果传入的是 bytes，直接使用；若其他类型，可考虑报错或转换
+        if not isinstance(pkey_pem, (bytes, bytearray)):
+            raise TypeError(f"Unsupported type for pkey_pem: {type(pkey_pem)}")
 
     csr_pem = crypto_util.make_csr(pkey_pem, domains)
     return pkey_pem, csr_pem
