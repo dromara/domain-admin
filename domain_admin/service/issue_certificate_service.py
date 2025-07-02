@@ -77,7 +77,6 @@ def get_certificate_challenges(issue_certificate_id):
         domains=domains,
         pkey_pem=pkey_pem,
     )
-    print('directory_type', issue_certificate_row.directory_type)
 
     acme_client = acme_v2_api.get_acme_client(
         directory_type=issue_certificate_row.directory_type,
@@ -105,7 +104,7 @@ def get_certificate_challenges(issue_certificate_id):
     return lst
 
 
-def verify_certificate(issue_certificate_id, challenge_type):
+def verify_certificate(issue_certificate_id, challenge_type, verify_deploy_path, host_id, dns_id):
     """
     验证域名
     :param issue_certificate_id:
@@ -120,7 +119,25 @@ def verify_certificate(issue_certificate_id, challenge_type):
         directory_type=issue_certificate_row.directory_type,
         key_type=issue_certificate_row.key_type
     )
+    # 如果有challenge_type对应的部署信息，则进行部署
+    if challenge_type == ChallengeType.HTTP01 and verify_deploy_path and host_id:
+        itemsCopy = []
+        for item in items:
+            temp = item['challenge'].to_json()
+            temp['validation'] = item['validation']
+            itemsCopy.append(temp)
+        deploy_verify_file(
+            host_id=host_id,
+            verify_deploy_path=verify_deploy_path,
+            challenges=itemsCopy
+        )
 
+    if challenge_type == ChallengeType.DNS01 and dns_id:
+        add_dns_domain_record(
+            dns_id=dns_id,
+            challenges=items
+        )
+    # 开始验证
     verify_count = 0
     for item in items:
         challenge = item['challenge']
@@ -309,10 +326,11 @@ def renew_certificate_row(row):
             challenges=challenge_rows
         )
     elif row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
+        challenge_list = get_certificate_challenges(row.id)
         # 添加txt记录
         add_dns_domain_record(
             dns_id=row.challenge_deploy_id,
-            issue_certificate_id=row.id
+            challenges=challenge_list
         )
 
     # 验证域名
@@ -500,19 +518,16 @@ def deploy_certificate_file(
             )
 
 
-def add_dns_domain_record(dns_id, issue_certificate_id):
+def add_dns_domain_record(dns_id, challenges):
     """
     添加dns记录
     :param dns_id:
-    :param issue_certificate_id:
+    :param challenges:
     :return:
     """
     dns_row = DnsModel.get_by_id(dns_id)
 
-    # 获取验证方式
-    challenge_list = get_certificate_challenges(issue_certificate_id)
-
-    for challenge_row in challenge_list:
+    for challenge_row in challenges:
         challenge_json = challenge_row['challenge'].to_json()
         if challenge_json['type'] == ChallengeType.DNS01:
 
