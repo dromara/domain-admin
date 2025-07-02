@@ -59,6 +59,10 @@ def verify_certificate():
 
     issue_certificate_id = request.json['issue_certificate_id']
     challenge_type = request.json['challenge_type']
+    # 验证文件部署信息 可选参数
+    verify_deploy_path = request.json.get('verify_deploy_path')
+    host_id = request.json.get('host_id')
+    dns_id = request.json.get('dns_id')
 
     # 验证成功后，自动添加到证书监控列表
     issue_certificate_row = IssueCertificateModel.select().where(
@@ -69,7 +73,13 @@ def verify_certificate():
     if not issue_certificate_row:
         raise DataNotFoundAppException()
 
-    issue_certificate_service.verify_certificate(issue_certificate_id, challenge_type)
+    issue_certificate_service.verify_certificate(
+        issue_certificate_id=issue_certificate_id,
+        challenge_type=challenge_type,
+        verify_deploy_path=verify_deploy_path,
+        host_id=host_id,
+        dns_id=dns_id
+    )
 
     issue_certificate_service.renew_certificate(issue_certificate_id)
 
@@ -625,10 +635,12 @@ def add_dns_domain_record():
     if not issue_certificate_row:
         raise DataNotFoundAppException()
 
+    challenges =  issue_certificate_service.get_certificate_challenges(issue_certificate_id)
+
     # 添加txt记录
     issue_certificate_service.add_dns_domain_record(
         dns_id=dns_id,
-        issue_certificate_id=issue_certificate_id
+        challenges=challenges
     )
 
     # 更新验证信息
