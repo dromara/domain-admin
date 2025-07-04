@@ -306,35 +306,14 @@ def renew_certificate_row(row):
         IssueCertificateModel.id == row.id
     )
 
-    # 验证文件部署
-    if row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
-        # 获取验证方式
-        challenge_list = get_certificate_challenges(row.id)
-
-        challenge_rows = []
-        for challenge_row in challenge_list:
-            challenge_json = challenge_row['challenge'].to_json()
-            if challenge_json['type'] == ChallengeType.HTTP01:
-                challenge_rows.append({
-                    'token': challenge_json['token'],
-                    'validation': challenge_row['validation']
-                })
-
-        deploy_verify_file(
-            host_id=row.challenge_deploy_id,
-            verify_deploy_path=row.deploy_verify_path,
-            challenges=challenge_rows
-        )
-    elif row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
-        challenge_list = get_certificate_challenges(row.id)
-        # 添加txt记录
-        add_dns_domain_record(
-            dns_id=row.challenge_deploy_id,
-            challenges=challenge_list
-        )
-
-    # 验证域名
-    verify_certificate(row.id, row.challenge_type)
+    # 验证文件部署 & 验证域名
+    verify_certificate(
+        issue_certificate_id=row.id,
+        challenge_type=row.challenge_type,
+        verify_deploy_path=row.deploy_verify_path,
+        host_id=row.challenge_deploy_id,
+        dns_id=row.challenge_deploy_id
+    )
 
     # 下载证书
     renew_certificate(row.id)

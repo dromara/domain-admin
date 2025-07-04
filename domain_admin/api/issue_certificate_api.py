@@ -81,6 +81,24 @@ def verify_certificate():
         dns_id=dns_id
     )
 
+    if host_id and verify_deploy_path:
+        IssueCertificateModel.update(
+            challenge_deploy_type_id=ChallengeDeployTypeEnum.SSH,
+            challenge_deploy_id=host_id,
+            deploy_verify_path=verify_deploy_path,
+            challenge_deploy_status=DeployStatusEnum.SUCCESS
+        ).where(
+            IssueCertificateModel.id == issue_certificate_id
+        ).execute()
+    if dns_id:
+        IssueCertificateModel.update(
+            challenge_deploy_type_id=ChallengeDeployTypeEnum.DNS,
+            challenge_deploy_id=dns_id,
+            challenge_deploy_status=DeployStatusEnum.SUCCESS
+        ).where(
+            IssueCertificateModel.id == issue_certificate_id
+        ).execute()
+
     issue_certificate_service.renew_certificate(issue_certificate_id)
 
     # fix: 过滤通配符的域名
