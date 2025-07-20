@@ -462,3 +462,14 @@ services:
 ```
 
 可以通过 `printenv` 命令查看设置的环境变量
+
+## 更新脚本
+
+可以使用类似的shell脚本，快速更新到新的版本
+
+```shell
+# update.sh
+git pull && \
+supervisorctl restart domain-admin && \
+echo '部署成功'
+```
