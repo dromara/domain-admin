@@ -56,6 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#id7">平滑升级</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id8">可选配置</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id9">配置参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">更新脚本</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notify.html">通知配置</a></li>
@@ -492,6 +493,16 @@ docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </sp
 </pre></div>
 </div>
 <p>可以通过 <code class="docutils literal notranslate"><span class="pre">printenv</span></code> 命令查看设置的环境变量</p>
+</section>
+<section id="id10">
+<h2>更新脚本<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<p>可以使用类似的shell脚本，快速更新到新的版本</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># update.sh</span>
+git<span class="w"> </span>pull<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+supervisorctl<span class="w"> </span>restart<span class="w"> </span>domain-admin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;部署成功&#39;</span>
+</pre></div>
+</div>
 </section>
 </section>
 
