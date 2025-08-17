@@ -29,6 +29,9 @@ class AsyncTaskModel(BaseModel):
     # 执行状态: None 未执行; True 执行成功; False 执行失败
     status = BooleanField(null=True, default=None)
 
+    # 入参
+    params = TextField(default='', null=False)
+
     # 执行结果
     result = TextField(default='', null=False)
 

@@ -6,6 +6,7 @@ async_task_service.py
 
 from __future__ import print_function, unicode_literals, absolute_import, division
 
+import json
 import traceback
 from concurrent.futures.thread import ThreadPoolExecutor
 from functools import wraps
@@ -16,7 +17,7 @@ from flask import g
 from domain_admin.log import logger
 from domain_admin.model.base_model import db
 from domain_admin.model.log_async_task_model import AsyncTaskModel
-from domain_admin.utils import datetime_util
+from domain_admin.utils import datetime_util, json_util
 
 executor = ThreadPoolExecutor()
 
@@ -111,7 +112,6 @@ def sync_task_decorator(task_name):
     def outer_wrapper(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-
             current_user_id = 0
 
             try:
@@ -141,6 +141,13 @@ def sync_task_decorator(task_name):
 
             data = {
                 'status': False if error else True,
+                'params': json_util.json_encode(
+                    data={
+                        "args": list(args),
+                        "kwargs": kwargs
+                    },
+                    ensure_ascii=False
+                ),
                 'result': result or '',
                 'end_time': datetime_util.get_datetime(),
                 'update_time': datetime_util.get_datetime(),
