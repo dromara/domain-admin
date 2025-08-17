@@ -459,6 +459,7 @@ def notify_user_by_webhook(
     :param data: Dict
     :return:
     """
+    logger.info("notify_row.id: %s", notify_row.id)
 
     if not notify_row.webhook_url:
         logger.warn("webhook url未设置")
