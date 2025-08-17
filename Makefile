@@ -7,7 +7,7 @@ dev:
 
 # 运行生产环境
 pro:
-	source venv/bin/activate &&  gunicorn --bind '0.0.0.0:8000' --timeout 120 'domain_admin.main:app'
+	source venv/bin/activate &&  gunicorn --bind '0.0.0.0:5001' --timeout 120 'domain_admin.main:app'
 
 # 发布 make release
 .PHONY: release

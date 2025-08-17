@@ -1,3 +1,10 @@
+- v1.6.71(2025-08-17)
+    - add log params
+    - add log
+    - fix
+    - fix
+    - fix
+
 - v1.6.70(2025-07-04)
     - refactor(issue_certificate): 重构证书续签的验证逻辑，避免重复创建订单 (#193)
 
