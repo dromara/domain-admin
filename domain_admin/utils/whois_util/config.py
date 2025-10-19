@@ -92,11 +92,16 @@ CUSTOM_WHOIS_CONFIGS = {
     },
     'kr': {
         'whois_server': 'whois.kr',
-        'registry_time': 'Registered Date',
+        'registry_time': 'Registered',
         "registry_time_format": '%Y. %m. %d.',
-        'expire_time': 'Expiration Date',
+        'expire_time': 'Expires',
         "expire_time_format": '%Y. %m. %d.',
     },
+    'lt': {
+        # 'whois_server': 'whois.lt',
+        'registry_time': 'Registered',
+        'expire_time': 'Expires',
+    }
 }
 
 # 国内cn域名注册商
