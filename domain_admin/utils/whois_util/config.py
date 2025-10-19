@@ -92,9 +92,9 @@ CUSTOM_WHOIS_CONFIGS = {
     },
     'kr': {
         'whois_server': 'whois.kr',
-        'registry_time': 'Registered',
+        'registry_time': 'Registered Date',
         "registry_time_format": '%Y. %m. %d.',
-        'expire_time': 'Expires',
+        'expire_time': 'Expiration Date',
         "expire_time_format": '%Y. %m. %d.',
     },
     'lt': {
