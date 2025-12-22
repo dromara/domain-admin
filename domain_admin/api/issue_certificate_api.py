@@ -329,23 +329,46 @@ def get_issue_certificate_list():
         IssueCertificateModel.id.desc()
     ).paginate(page, size)
 
-    lst = [model_to_dict(
-        row,
-        extra_attrs=[
-            'domains',
-            'create_time_label',
-            'update_time_label',
-            'start_date',
-            'expire_date',
-            'has_ssl_certificate',
-            'can_auto_renew',
-            # 'domain_validation_urls'
-        ],
-        exclude=[
-            IssueCertificateModel.ssl_certificate,
-            IssueCertificateModel.ssl_certificate_key
-        ])
-        for row in rows]
+    lst = []
+    for row in rows:
+        item = model_to_dict(
+            row,
+            extra_attrs=[
+                'domains',
+                'create_time_label',
+                'update_time_label',
+                'start_date',
+                'expire_date',
+                'has_ssl_certificate',
+                'can_auto_renew',
+            ],
+            exclude=[
+                IssueCertificateModel.ssl_certificate,
+                IssueCertificateModel.ssl_certificate_key
+            ])
+
+        # 关联信息
+        item['challenge_deploy_name'] = '-'
+        if row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
+            host = HostModel.get_or_none(HostModel.id == row.challenge_deploy_id)
+            if host:
+                item['challenge_deploy_name'] = host.host
+        elif row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
+            dns = DnsModel.get_or_none(DnsModel.id == row.challenge_deploy_id)
+            if dns:
+                item['challenge_deploy_name'] = dns.name
+
+        item['deploy_host_name'] = '-'
+        if row.deploy_type_id == SSLDeployTypeEnum.SSH:
+            host = HostModel.get_or_none(HostModel.id == row.deploy_host_id)
+            if host:
+                item['deploy_host_name'] = host.host
+        elif row.deploy_type_id in [SSLDeployTypeEnum.OSS, SSLDeployTypeEnum.CDN, SSLDeployTypeEnum.DCDN]:
+            dns = DnsModel.get_or_none(DnsModel.id == row.deploy_host_id)
+            if dns:
+                item['deploy_host_name'] = dns.name
+
+        lst.append(item)
 
     return {
         'list': lst,
@@ -379,7 +402,10 @@ def get_issue_certificate_by_id():
     data['cert_deploy_dns'] = None
 
     if issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.SSH:
-        data['deploy_host'] = HostModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
+        host_row = HostModel.get_or_none(HostModel.id == issue_certificate_row.challenge_deploy_id)
+        data['deploy_host'] = host_row
+        if host_row and host_row.dns_id:
+            data['deploy_dns'] = DnsModel.get_or_none(DnsModel.id == host_row.dns_id)
 
     elif issue_certificate_row.challenge_deploy_type_id == ChallengeDeployTypeEnum.DNS:
         data['deploy_dns'] = DnsModel.get_or_none(DnsModel.id == issue_certificate_row.challenge_deploy_id)

@@ -39,6 +39,9 @@ class HostModel(BaseModel):
     private_key = TextField(default=None, null=True)
 
     password = CharField(default=None, null=True)
+    
+    # DNS账号id @since v1.6.xx
+    dns_id = IntegerField(default=0)
 
     # 创建时间
     create_time = DateTimeField(default=datetime.now)

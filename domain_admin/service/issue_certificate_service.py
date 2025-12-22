@@ -281,8 +281,25 @@ def renew_all_certificate():
     for row in rows:
         try:
             renew_certificate_row(row)
+
+            IssueCertificateModel.update(
+                renew_status=0,
+                renew_message='成功',
+                update_time=datetime.now()
+            ).where(
+                IssueCertificateModel.id == row.id
+            ).execute()
+
         except Exception as e:
             logger.error(traceback.format_exc())
+
+            IssueCertificateModel.update(
+                renew_status=1,
+                renew_message=str(e),
+                update_time=datetime.now()
+            ).where(
+                IssueCertificateModel.id == row.id
+            ).execute()
 
 
 def renew_certificate_row(row):

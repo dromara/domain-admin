@@ -28,6 +28,7 @@ def add_host():
     auth_type = request.json['auth_type']
     private_key = request.json['private_key']
     password = request.json['password']
+    dns_id = request.json.get('dns_id', 0)
 
     row = HostModel.create(
         user_id=current_user_id,
@@ -37,6 +38,7 @@ def add_host():
         auth_type=auth_type,
         private_key=private_key,
         password=password,
+        dns_id=dns_id
     )
 
     return row
@@ -57,6 +59,7 @@ def update_host_by_id():
     password = request.json['password']
     auth_type = request.json['auth_type']
     private_key = request.json['private_key']
+    dns_id = request.json.get('dns_id', 0)
 
     # check data
     host_row = HostModel.select().where(
@@ -74,6 +77,7 @@ def update_host_by_id():
         password=password,
         auth_type=auth_type,
         private_key=private_key,
+        dns_id=dns_id
     ).where(
         HostModel.id == host_row.id
     ).execute()

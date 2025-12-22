@@ -123,6 +123,12 @@ class IssueCertificateModel(BaseModel):
     # 自动续期
     is_auto_renew = BooleanField(default=False)
 
+    # 续期执行状态 0：成功，1：失败
+    renew_status = IntegerField(default=0)
+
+    # 续期失败信息
+    renew_message = TextField(default=None, null=True)
+
     # 数据版本号
     version = IntegerField(default=0, null=False)
 
