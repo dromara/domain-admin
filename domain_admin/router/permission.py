@@ -14,6 +14,10 @@ WHITE_LIST = [
     # 暂时不开放注册，安全起见先关闭
     '/api/register',
     '/api/getSystemVersion',
+    # OIDC SSO endpoints
+    '/api/oidc/login',
+    '/api/oidc/callback',
+    '/api/oidc/config',
 ]
 
 # 仅管理账号可访问的接口

@@ -88,6 +88,10 @@ def init_app(flask_app):
     """
     logger.info('init_app')
 
+    # 设置 SECRET_KEY（必须在注册路由之前设置，因为 OIDC 需要使用 session）
+    from domain_admin.config import SECRET_KEY
+    flask_app.config['SECRET_KEY'] = SECRET_KEY
+
     # 注册路由
     register.register_app_routers(flask_app, api_map.routes)
 
@@ -116,6 +120,10 @@ def init_app(flask_app):
 
     # 初始化全局常量配置
     system_service.init_system_config(flask_app)
+
+    # 初始化 OIDC 单点登录
+    from domain_admin.service import oidc_service
+    oidc_service.init_oidc(flask_app)
 
     # 尝试更新whois_servers文件
     # try:
