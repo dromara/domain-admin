@@ -269,10 +269,15 @@ def get_domain_info_by_id():
     domain_info_id = request.json['domain_info_id']
 
     # check data
-    domain_info_row = DomainInfoModel.select().where(
-        DomainInfoModel.id == domain_info_id,
-        DomainInfoModel.user_id == current_user_id
-    ).first()
+    if g.current_user_row.role == RoleEnum.ADMIN:
+        domain_info_row = DomainInfoModel.select().where(
+            DomainInfoModel.id == domain_info_id
+        ).first()
+    else:
+        domain_info_row = DomainInfoModel.select().where(
+            DomainInfoModel.id == domain_info_id,
+            DomainInfoModel.user_id == current_user_id
+        ).first()
 
     if not domain_info_row:
         raise DataNotFoundAppException()
