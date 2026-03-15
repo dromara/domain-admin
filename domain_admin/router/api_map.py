@@ -15,7 +15,7 @@ from domain_admin.api import (
     domain_api, group_api,
     auth_api, system_api,
     user_api, log_scheduler_api,
-    check_wechat_api
+    check_wechat_api, oidc_api
 )
 
 routes = {
@@ -241,4 +241,9 @@ routes = {
 
     # 微信域名禁封状态检查
     '/api/validateUrlForWechat': check_wechat_api.validate_url_for_wechat,
+
+    # OIDC SSO
+    '/api/oidc/login': oidc_api.oidc_login,
+    '/api/oidc/callback': oidc_api.oidc_callback,
+    '/api/oidc/config': oidc_api.oidc_config,
 }

@@ -47,3 +47,6 @@ USER_AGENT = "Mozilla/5.0 (compatible; DomainAdmin/{version}; +{url})".format(
     version=VERSION,
     url=PROJECT_HOME_URL,
 )
+
+# 是否启用单点登录
+OIDC_ENABLED = False
