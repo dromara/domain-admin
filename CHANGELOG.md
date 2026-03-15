@@ -1,3 +1,6 @@
+- v1.6.75(2026-03-15)
+    - fix getDomainInfoById not permission for admin
+
 - v1.6.74(2025-12-22)
     - 增加升级脚本 for #211
     - feat: implement dns-host association and auto-renew result tracking (#211)
