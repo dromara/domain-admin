@@ -1,3 +1,9 @@
+- v1.6.76(2026-04-04)
+    - fix: 根域名写入为空的问题
+    - Merge branch 'master' of github.com:dromara/domain-admin
+    - fix uk
+    - feat: 新增单点登录功能 (#217)
+
 - v1.6.75(2026-03-15)
     - fix getDomainInfoById not permission for admin
 
