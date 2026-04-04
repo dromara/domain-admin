@@ -36,3 +36,14 @@ ALLOW_COMMANDS = [cmd.strip() for cmd in env.str("ALLOW_COMMANDS", '').split(';'
 
 # ENABLED_REGISTER
 ENABLED_REGISTER = env.bool("ENABLED_REGISTER", False)
+
+# OIDC 单点登录配置
+OIDC_ENABLED = env.bool("OIDC_ENABLED", OIDC_ENABLED)
+OIDC_CLIENT_ID = env.str("OIDC_CLIENT_ID", "")
+OIDC_CLIENT_SECRET = env.str("OIDC_CLIENT_SECRET", "")
+OIDC_ISSUER_URL = env.str("OIDC_ISSUER_URL", "")
+OIDC_SCOPES = env.str("OIDC_SCOPES", "openid profile email")
+
+# OIDC 自动创建用户的默认配置
+OIDC_AUTO_CREATE_USER_ROLE = env.int("OIDC_AUTO_CREATE_USER_ROLE", 1)  # 1=USER, 10=ADMIN
+OIDC_AUTO_CREATE_USER_STATUS = env.bool("OIDC_AUTO_CREATE_USER_STATUS", False)
