@@ -268,4 +268,6 @@ def get_domain_parent(domain):
 
 if __name__ == '__main__':
     # print(get_root_domain("*.juejin.cn"))
-    print(get_subdomain("chinafruitime.com"))
+    # print(get_subdomain("chinafruitime.com"))
+    print(get_root_domain("org.uk"))
+    print(get_root_domain("co.uk"))

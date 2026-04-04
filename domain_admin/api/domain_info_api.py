@@ -39,7 +39,13 @@ def add_domain_info():
 
     current_user_id = g.user_id
 
-    domain = domain_util.get_root_domain(request.json['domain'])
+    domain = request.json['domain']
+    root_domain = domain_util.get_root_domain(domain)
+    if not root_domain:
+        raise AppException("不能解析根域名：{}".format(domain))
+    else:
+        domain = root_domain
+
     domain_start_time = request.json.get('domain_start_time')
     domain_expire_time = request.json.get('domain_expire_time')
     is_auto_update = request.json.get('is_auto_update', True)
