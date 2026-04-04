@@ -101,6 +101,11 @@ CUSTOM_WHOIS_CONFIGS = {
         # 'whois_server': 'whois.lt',
         'registry_time': 'Registered',
         'expire_time': 'Expires',
+    },
+    'uk': {
+        # 'whois_server': 'whois.lt',
+        'registry_time': 'Registered on',
+        'expire_time': 'Expiry date',
     }
 }
 

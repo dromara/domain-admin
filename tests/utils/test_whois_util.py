@@ -45,7 +45,8 @@ class DomainUtilTest(unittest.TestCase):
             # 'airdry.com.my'
             # 'karinasharpe.com.au',
             # 'cvc.cx',
-            'www.audiosolutions.lt',
+            # 'www.audiosolutions.lt',
+            't.uk',
         ]
 
         for domain in domain_list:
