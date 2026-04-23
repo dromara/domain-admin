@@ -139,16 +139,23 @@ def update_address_row_info(address_row, domain_row):
 
     logger.info(cert_info)
 
-    address = AddressModel()
-    address.ssl_start_time = cert_info.get('start_date')
-    address.ssl_expire_time = cert_info.get('expire_date')
+    update_data = {
+        'update_time': datetime_util.get_datetime(),
+    }
+
+    if cert_info.get('expire_date'):
+        address = AddressModel()
+        address.ssl_start_time = cert_info.get('start_date')
+        address.ssl_expire_time = cert_info.get('expire_date')
+
+        update_data.update({
+            'ssl_start_time': address.ssl_start_time,
+            'ssl_expire_time': address.ssl_expire_time,
+            'ssl_expire_days': address.real_time_ssl_expire_days,
+        })
 
     AddressModel.update(
-        ssl_start_time=address.ssl_start_time,
-        ssl_expire_time=address.ssl_expire_time,
-        ssl_expire_days=address.real_time_ssl_expire_days,
-        # ssl_check_time=datetime_util.get_datetime(),
-        update_time=datetime_util.get_datetime(),
+        **update_data
     ).where(
         AddressModel.id == address_row.id
     ).execute()
@@ -178,28 +185,30 @@ def sync_address_info_to_domain_info(domain_row):
     :return:
     """
     first_address_row = AddressModel.select().where(
-        AddressModel.domain_id == domain_row.id
+        AddressModel.domain_id == domain_row.id,
+        AddressModel.ssl_expire_time.is_null(False)
     ).order_by(
         AddressModel.ssl_expire_days.asc()
     ).first()
 
-    connect_status = False
+    update_data = {
+        'connect_status': False,
+        'update_time': datetime_util.get_datetime(),
+        'version': DomainModel.version + 1
+    }
 
-    if first_address_row is None:
-        first_address_row = AddressModel()
-        first_address_row.ssl_start_time = None
-        first_address_row.ssl_expire_time = None
+    if first_address_row is not None:
+        if first_address_row.real_time_ssl_expire_days > 0:
+            update_data['connect_status'] = True
 
-    elif first_address_row.real_time_ssl_expire_days > 0:
-        connect_status = True
+        update_data.update({
+            'start_time': first_address_row.ssl_start_time,
+            'expire_time': first_address_row.ssl_expire_time,
+            'expire_days': first_address_row.real_time_ssl_expire_days,
+        })
 
     DomainModel.update(
-        start_time=first_address_row.ssl_start_time,
-        expire_time=first_address_row.ssl_expire_time,
-        expire_days=first_address_row.real_time_ssl_expire_days,
-        connect_status=connect_status,
-        update_time=datetime_util.get_datetime(),
-        version=DomainModel.version + 1
+        **update_data
     ).where(
         DomainModel.id == domain_row.id
     ).execute()
