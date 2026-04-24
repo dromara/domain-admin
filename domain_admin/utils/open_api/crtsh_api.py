@@ -13,6 +13,8 @@ https://github.com/PaulSec/crt.sh
 from __future__ import print_function, unicode_literals, absolute_import, division
 import requests
 
+from domain_admin.log import logger
+
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
 
 
@@ -33,9 +35,13 @@ def search(domain):
         'User-Agent': USER_AGENT
     }
 
-    req = requests.get(url=url, params=params, headers=headers)
+    req = requests.get(url=url, params=params, headers=headers, timeout=8)
 
-    return req.json()
+    try:
+        return req.json()
+    except ValueError:
+        logger.warn('crt.sh response is not json, status_code=%s', req.status_code)
+        return []
 
 
 if __name__ == '__main__':

@@ -47,3 +47,7 @@ OIDC_SCOPES = env.str("OIDC_SCOPES", "openid profile email")
 # OIDC 自动创建用户的默认配置
 OIDC_AUTO_CREATE_USER_ROLE = env.int("OIDC_AUTO_CREATE_USER_ROLE", 1)  # 1=USER, 10=ADMIN
 OIDC_AUTO_CREATE_USER_STATUS = env.bool("OIDC_AUTO_CREATE_USER_STATUS", False)
+
+# shodan api key
+SHODAN_API_KEY = env.str("SHODAN_API_KEY", "")
+

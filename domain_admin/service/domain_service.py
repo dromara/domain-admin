@@ -24,11 +24,12 @@ from domain_admin.model.group_user_model import GroupUserModel
 from domain_admin.model.user_model import UserModel
 from domain_admin.service import file_service, async_task_service
 from domain_admin.service import render_service, group_service
-from domain_admin.utils import datetime_util, cert_util, file_util, json_util
+from domain_admin.utils import datetime_util, cert_util, file_util, json_util, time_util
 from domain_admin.utils import domain_util
+from domain_admin.config import SHODAN_API_KEY
 from domain_admin.utils.cert_util import cert_socket_v2, cert_openssl_v2, cert_ftp
 from domain_admin.utils.flask_ext.app_exception import ForbiddenAppException
-from domain_admin.utils.open_api import crtsh_api
+from domain_admin.utils.open_api import certspotter_api, shodan_api, crtsh_api
 
 
 def update_domain_host_list(domain_row):
@@ -100,10 +101,198 @@ def update_address_row_info_wrap(address_row, domain_row):
         if not err or retry_count >= MAX_RETRY_COUNT:
             break
 
+        if _is_unreachable_handshake_error(err):
+            break
+
         # sleep
         time.sleep(0.5)
 
     return err
+
+
+def _is_unreachable_handshake_error(err_msg):
+    if not err_msg:
+        return False
+
+    err_msg = err_msg.lower()
+
+    if 'domain not verified' in err_msg:
+        return False
+
+    unreachable_keywords = [
+        'timed out',
+        'timeout',
+        'name or service not known',
+        'temporary failure in name resolution',
+        'nodename nor servname provided',
+        'connection refused',
+        'connection reset',
+        'network is unreachable',
+        'no route to host',
+        'host unreachable',
+        'errno 111',
+        'errno 113',
+        'errno -2',
+    ]
+
+    return any(keyword in err_msg for keyword in unreachable_keywords)
+
+
+
+def _get_latest_certspotter_cert_info(domain):
+    if domain_util.is_ipv4(domain):
+        return {}
+
+    try:
+        rows = certspotter_api.search(domain)
+    except Exception:
+        logger.error(traceback.format_exc())
+        return {}
+
+    if not rows:
+        return {}
+
+    candidates = []
+
+    for row in rows:
+        names = [item.strip() for item in row.get('dns_names', []) if item and item.strip()]
+
+        matched = False
+        for name in names:
+            if domain_util.verify_cert_common_name(name, domain):
+                matched = True
+                break
+
+        if not matched:
+            continue
+
+        not_before = row.get('not_before')
+        not_after = row.get('not_after')
+        if not not_before or not not_after:
+            continue
+
+        try:
+            start_date = time_util.parse_time(not_before)
+            expire_date = time_util.parse_time(not_after)
+
+            entry_timestamp = row.get('entry_timestamp')
+            if entry_timestamp:
+                entry_time = time_util.parse_time(entry_timestamp)
+            else:
+                entry_time = expire_date
+
+            row_id = row.get('id') or 0
+            candidates.append({
+                'start_date': start_date,
+                'expire_date': expire_date,
+                'entry_time': entry_time,
+                'row_id': int(row_id),
+            })
+
+        except Exception:
+            logger.error(traceback.format_exc())
+
+    if not candidates:
+        return {}
+
+    latest = max(
+        candidates,
+        key=lambda item: (
+            item['entry_time'],
+            item['start_date'],
+            item['expire_date'],
+            item['row_id'],
+        )
+    )
+
+    return {
+        'start_date': latest['start_date'],
+        'expire_date': latest['expire_date'],
+    }
+
+
+
+def _get_latest_shodan_cert_info(domain):
+    if domain_util.is_ipv4(domain):
+        return {}
+
+    query_domains = [domain]
+    root_domain = domain_util.get_root_domain(domain)
+    if root_domain and root_domain not in query_domains:
+        query_domains.append(root_domain)
+
+    candidates = []
+
+    for query_domain in query_domains:
+        rows = shodan_api.search_domain_certificates(domain=query_domain, api_key=SHODAN_API_KEY)
+        if not rows:
+            continue
+
+        for row in rows:
+            subdomain = row.get('subdomain')
+            if subdomain and subdomain != '@':
+                record_domain = '{subdomain}.{domain}'.format(subdomain=subdomain, domain=query_domain)
+            else:
+                record_domain = query_domain
+
+            if not domain_util.verify_cert_common_name(record_domain, domain):
+                continue
+
+            value = row.get('value') or ''
+            value = value.strip().lower()
+            if len(value) != 40:
+                continue
+
+            cert_detail = shodan_api.get_certificate_by_sha1(value, SHODAN_API_KEY)
+            if not cert_detail:
+                continue
+
+            cert_name = cert_detail.get('subject', {}).get('CN')
+            if cert_name and not domain_util.verify_cert_common_name(cert_name, domain):
+                continue
+
+            not_before = cert_detail.get('issued') or cert_detail.get('validity', {}).get('start')
+            not_after = cert_detail.get('expires') or cert_detail.get('validity', {}).get('end')
+            if not not_before or not not_after:
+                continue
+
+            try:
+                start_date = time_util.parse_time(not_before)
+                expire_date = time_util.parse_time(not_after)
+                candidates.append({
+                    'start_date': start_date,
+                    'expire_date': expire_date,
+                    'fingerprint': value,
+                })
+            except Exception:
+                logger.error(traceback.format_exc())
+
+    if not candidates:
+        return {}
+
+    latest = max(
+        candidates,
+        key=lambda item: (
+            item['start_date'],
+            item['expire_date'],
+            item['fingerprint'],
+        )
+    )
+
+    return {
+        'start_date': latest['start_date'],
+        'expire_date': latest['expire_date'],
+    }
+
+
+
+def _get_latest_fallback_cert_info(domain):
+    cert_info = _get_latest_certspotter_cert_info(domain)
+    if cert_info:
+        return cert_info
+
+    return _get_latest_shodan_cert_info(domain)
+
 
 
 def update_address_row_info(address_row, domain_row):
@@ -137,21 +326,51 @@ def update_address_row_info(address_row, domain_row):
         err = e.__str__()
         logger.error(traceback.format_exc())
 
+    fallback_applied = False
+
+    if not cert_info and _is_unreachable_handshake_error(err):
+        cert_info = _get_latest_fallback_cert_info(domain_row.domain)
+        fallback_applied = True
+
     logger.info(cert_info)
 
-    address = AddressModel()
-    address.ssl_start_time = cert_info.get('start_date')
-    address.ssl_expire_time = cert_info.get('expire_date')
+    if fallback_applied and not cert_info:
+        err = ''
+
+    update_time = datetime_util.get_datetime()
+    update_data = {
+        'update_time': update_time,
+    }
+
+    if cert_info.get('expire_date'):
+        address = AddressModel()
+        address.ssl_start_time = cert_info.get('start_date')
+        address.ssl_expire_time = cert_info.get('expire_date')
+
+        update_data.update({
+            'ssl_start_time': address.ssl_start_time,
+            'ssl_expire_time': address.ssl_expire_time,
+            'ssl_expire_days': address.real_time_ssl_expire_days,
+        })
 
     AddressModel.update(
-        ssl_start_time=address.ssl_start_time,
-        ssl_expire_time=address.ssl_expire_time,
-        ssl_expire_days=address.real_time_ssl_expire_days,
-        # ssl_check_time=datetime_util.get_datetime(),
-        update_time=datetime_util.get_datetime(),
+        **update_data
     ).where(
         AddressModel.id == address_row.id
     ).execute()
+
+    if fallback_applied and cert_info.get('expire_date'):
+        AddressModel.update(
+            ssl_start_time=update_data.get('ssl_start_time'),
+            ssl_expire_time=update_data.get('ssl_expire_time'),
+            ssl_expire_days=update_data.get('ssl_expire_days'),
+            update_time=update_time,
+        ).where(
+            AddressModel.domain_id == address_row.domain_id,
+            AddressModel.id != address_row.id,
+            AddressModel.ssl_expire_time.is_null(False),
+            AddressModel.ssl_expire_time < update_data.get('ssl_expire_time')
+        ).execute()
 
     return err
 
@@ -178,28 +397,30 @@ def sync_address_info_to_domain_info(domain_row):
     :return:
     """
     first_address_row = AddressModel.select().where(
-        AddressModel.domain_id == domain_row.id
+        AddressModel.domain_id == domain_row.id,
+        AddressModel.ssl_expire_time.is_null(False)
     ).order_by(
         AddressModel.ssl_expire_days.asc()
     ).first()
 
-    connect_status = False
+    update_data = {
+        'connect_status': False,
+        'update_time': datetime_util.get_datetime(),
+        'version': DomainModel.version + 1
+    }
 
-    if first_address_row is None:
-        first_address_row = AddressModel()
-        first_address_row.ssl_start_time = None
-        first_address_row.ssl_expire_time = None
+    if first_address_row is not None:
+        if first_address_row.real_time_ssl_expire_days > 0:
+            update_data['connect_status'] = True
 
-    elif first_address_row.real_time_ssl_expire_days > 0:
-        connect_status = True
+        update_data.update({
+            'start_time': first_address_row.ssl_start_time,
+            'expire_time': first_address_row.ssl_expire_time,
+            'expire_days': first_address_row.real_time_ssl_expire_days,
+        })
 
     DomainModel.update(
-        start_time=first_address_row.ssl_start_time,
-        expire_time=first_address_row.ssl_expire_time,
-        expire_days=first_address_row.real_time_ssl_expire_days,
-        connect_status=connect_status,
-        update_time=datetime_util.get_datetime(),
-        version=DomainModel.version + 1
+        **update_data
     ).where(
         DomainModel.id == domain_row.id
     ).execute()
@@ -588,8 +809,8 @@ def get_domain_list_query(keyword, group_id, group_ids, expire_days, user_id, ro
         if expire_days[0] is None:
             max_expire_time = datetime.now() + timedelta(days=expire_days[1])
             query = query.where(
-                (DomainModel.expire_time <= max_expire_time)
-                | (DomainModel.expire_time.is_null(True))
+                DomainModel.expire_time.is_null(False),
+                DomainModel.expire_time <= max_expire_time
             )
         elif expire_days[1] is None:
             min_expire_time = datetime.now() + timedelta(days=expire_days[0])

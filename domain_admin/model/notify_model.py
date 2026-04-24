@@ -56,16 +56,22 @@ class NotifyModel(BaseModel):
 
     @property
     def value(self):
-        if self.value_raw:
+        if not self.value_raw:
+            return None
+
+        try:
             return json.loads(self.value_raw)
-        else:
+        except ValueError:
             return None
 
     @property
     def groups(self):
-        if self.groups_raw:
+        if not self.groups_raw:
+            return []
+
+        try:
             return json.loads(self.groups_raw)
-        else:
+        except ValueError:
             return []
 
     # email参数
