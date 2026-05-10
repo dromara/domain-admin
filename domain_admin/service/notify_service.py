@@ -273,8 +273,8 @@ def notify_user_about_cert_expired(notify_row):
         )
 
     rows = query.where(
-        (DomainModel.expire_time <= notify_expire_time)
-        | (DomainModel.expire_time.is_null(True))
+        DomainModel.expire_time.is_null(False),
+        DomainModel.expire_time <= notify_expire_time
     ).order_by(
         DomainModel.expire_time.asc(),
         DomainModel.id.desc()
@@ -316,8 +316,8 @@ def notify_user_about_cert_file_expired(notify_row):
     query = CertificateModel.select()
 
     rows = query.where(
-        (CertificateModel.expire_time <= notify_expire_time)
-        | (CertificateModel.expire_time.is_null(True))
+        CertificateModel.expire_time.is_null(False),
+        CertificateModel.expire_time <= notify_expire_time
     ).order_by(
         CertificateModel.expire_time.asc(),
         CertificateModel.id.desc()

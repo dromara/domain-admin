@@ -139,8 +139,8 @@ def get_system_data():
     ssl_cert_expire_count = DomainModel.select().where(
         DomainModel.user_id == current_user_id
     ).where(
-        (DomainModel.expire_time <= now) |
-        (DomainModel.expire_time.is_null(True))
+        DomainModel.expire_time.is_null(False),
+        DomainModel.expire_time <= now
     ).count()
 
     ssl_cert_will_expire_count = DomainModel.select().where(
