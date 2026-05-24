@@ -1,3 +1,7 @@
+- v1.6.77(2026-05-24)
+    - fix close #220
+    - fix: 修复证书过期误报并优化不可达场景回退刷新 (#219)
+
 - v1.6.76(2026-04-04)
     - fix: 根域名写入为空的问题
     - Merge branch 'master' of github.com:dromara/domain-admin
