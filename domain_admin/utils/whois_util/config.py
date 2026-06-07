@@ -106,7 +106,137 @@ CUSTOM_WHOIS_CONFIGS = {
         # 'whois_server': 'whois.lt',
         'registry_time': 'Registered on',
         'expire_time': 'Expiry date',
-    }
+    },
+
+    # 多级域名配置 - 印度域名
+    'co.in': {
+        'whois_server': 'whois.nixiregistry.in',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Registry Expiry Date',
+    },
+    'net.in': {
+        'whois_server': 'whois.nixiregistry.in',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Registry Expiry Date',
+    },
+    'org.in': {
+        'whois_server': 'whois.nixiregistry.in',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Registry Expiry Date',
+    },
+    'com.in': {
+        'whois_server': 'whois.nixiregistry.in',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Registry Expiry Date',
+    },
+
+    # 多级域名配置 - 英国域名
+    'co.uk': {
+        'whois_server': 'whois.nic.uk',
+        'registry_time': 'Registered on',
+        'expire_time': 'Expiry date',
+    },
+    'org.uk': {
+        'whois_server': 'whois.nic.uk',
+        'registry_time': 'Registered on',
+        'expire_time': 'Expiry date',
+    },
+    'net.uk': {
+        'whois_server': 'whois.nic.uk',
+        'registry_time': 'Registered on',
+        'expire_time': 'Expiry date',
+    },
+
+    # 多级域名配置 - 澳大利亚域名
+    'com.au': {
+        'whois_server': 'whois.auda.org.au',
+        'registry_time': 'Last Modified',
+        'expire_time': 'Status Reason',
+    },
+    'net.au': {
+        'whois_server': 'whois.auda.org.au',
+        'registry_time': 'Last Modified',
+        'expire_time': 'Status Reason',
+    },
+    'org.au': {
+        'whois_server': 'whois.auda.org.au',
+        'registry_time': 'Last Modified',
+        'expire_time': 'Status Reason',
+    },
+
+    # 多级域名配置 - 新西兰域名
+    'co.nz': {
+        'whois_server': 'whois.irs.net.nz',
+        'registry_time': 'Domain name registered',
+        'expire_time': 'Registrar expires',
+    },
+    'org.nz': {
+        'whois_server': 'whois.irs.net.nz',
+        'registry_time': 'Domain name registered',
+        'expire_time': 'Registrar expires',
+    },
+
+    # 多级域名配置 - 南非域名
+    'co.za': {
+        'whois_server': 'whois.registry.net.za',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Expiration Date',
+    },
+    'org.za': {
+        'whois_server': 'whois.registry.net.za',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Expiration Date',
+    },
+
+    # 多级域名配置 - 新加坡域名
+    'com.sg': {
+        'whois_server': 'whois.sgnic.sg',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Expiration Date',
+    },
+    'net.sg': {
+        'whois_server': 'whois.sgnic.sg',
+        'registry_time': 'Creation Date',
+        'expire_time': 'Expiration Date',
+    },
+
+    # 多级域名配置 - 马来西亚域名
+    'com.my': {
+        'whois_server': 'whois.mynic.my',
+        'registry_time': 'Created Date',
+        'expire_time': 'Expired Date',
+    },
+    'net.my': {
+        'whois_server': 'whois.mynic.my',
+        'registry_time': 'Created Date',
+        'expire_time': 'Expired Date',
+    },
+
+    # 多级域名配置 - 香港域名
+    'com.hk': {
+        'whois_server': 'whois.hkirc.hk',
+        'registry_time': 'Domain Name Commencement Date',
+        'expire_time': 'Expiry Date',
+        'expire_time_format': '%d-%m-%Y',
+    },
+    'net.hk': {
+        'whois_server': 'whois.hkirc.hk',
+        'registry_time': 'Domain Name Commencement Date',
+        'expire_time': 'Expiry Date',
+        'expire_time_format': '%d-%m-%Y',
+    },
+
+    # 多级域名配置 - 台湾域名
+    'com.tw': {
+        'whois_server': 'whois.twnic.net.tw',
+        'registry_time': 'Record created',
+        'expire_time': 'Record expires',
+    },
+    'net.tw': {
+        'whois_server': 'whois.twnic.net.tw',
+        'registry_time': 'Record created',
+        'expire_time': 'Record expires',
+    },
 }
 
 # 国内cn域名注册商

@@ -101,22 +101,28 @@ def get_whois_config(domain):
     global WHOIS_CONFIGS
 
     # logger.debug('get_whois_config %s', domain)
-    root = domain.split('.')[-1]
 
     if WHOIS_CONFIGS is None:
         WHOIS_CONFIGS = load_whois_servers_config()
 
-    if root in WHOIS_CONFIGS:
-        return WHOIS_CONFIGS.get(root)
+    # 支持多级域名匹配，优先匹配最长的后缀
+    # 例如：firerock.co.in 需要匹配 co.in 而不是 in
+    parts = domain.split('.')
+    
+    # 从最长的后缀开始尝试匹配（最多尝试3级）
+    for i in range(min(len(parts), 3), 0, -1):
+        suffix = '.'.join(parts[-i:])
+        if suffix in WHOIS_CONFIGS:
+            return WHOIS_CONFIGS.get(suffix)
+
+    # 如果没有找到匹配的配置，从根服务器查询域名信息服务器
+    domain_whois_server = get_domain_whois_server_from_root(domain)
+    if domain_whois_server:
+        server_config = deepcopy(DEFAULT_WHOIS_CONFIG)
+        server_config['whois_server'] = domain_whois_server
+        return server_config
     else:
-        # 从根服务器查询域名信息服务器
-        domain_whois_server = get_domain_whois_server_from_root(domain)
-        if domain_whois_server:
-            server_config = deepcopy(DEFAULT_WHOIS_CONFIG)
-            server_config['whois_server'] = domain_whois_server
-            return server_config
-        else:
-            raise Exception('not support {}'.format(root))
+        raise Exception('not support {}'.format(domain))
 
 
 def get_domain_whois_server_from_root(domain):
