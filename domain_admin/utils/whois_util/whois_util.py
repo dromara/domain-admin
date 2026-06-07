@@ -106,7 +106,7 @@ def get_whois_config(domain):
         WHOIS_CONFIGS = load_whois_servers_config()
 
     # 支持多级域名匹配，优先匹配最长的后缀
-    # 例如：firerock.co.in 需要匹配 co.in 而不是 in
+    # 例如：com.co.in 需要匹配 co.in 而不是 in
     parts = domain.split('.')
     
     # 从最长的后缀开始尝试匹配（最多尝试3级）
