@@ -56,7 +56,7 @@ JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))
 
 批量域名列表 (746314个)
  
-- [alexa-top-1m.csv.zip](http://s3.amazonaws.com/alexa-static/top-1m.csv.zip)
+- [NetAPI Top 1M: netapi_top1mln.csv](https://netapi.com/netapi_top1mln.csv)（Alexa 列表已于 2022 年停更，原地址已失效）
 - [docs/top-1m.csv](tests/top-1m.txt)
 
 ![](image/domain-admin-process.png)
