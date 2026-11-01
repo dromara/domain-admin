@@ -132,6 +132,8 @@ def get_group_user_list():
     current_user_id = g.user_id
     group_id = request.json.get('group_id')
 
+    group_service.check_group_permission(group_id, current_user_id)
+
     # 分组列表数据
     query = GroupUserModel.select().where(
         GroupUserModel.group_id == group_id
