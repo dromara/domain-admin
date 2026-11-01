@@ -5,9 +5,9 @@ werkzeug
 Jinja2
 requests
 pymysql
-Flask-Cors=3.0.10
+Flask-Cors==3.0.10
 python-dateutil
-apscheduler=3.8.1
+apscheduler==3.8.1
 PyJWT
 bcrypt
 tldextract
@@ -16,5 +16,5 @@ environs
 pyOpenSSL
 prometheus-client
 acme
-fabric=2.7.1
+fabric==2.7.1
 dnspython
