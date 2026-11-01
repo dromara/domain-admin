@@ -1,3 +1,9 @@
+- v1.6.79(2026-11-01)
+    - fix test config
+    - fix Missing authorization on getGroupUserList allows cross-user group member disclosure
+    - docs: replace the dead Alexa Top 1M link in the development guide (#227)
+    - fix doc
+
 - v1.6.78(2026-06-07)
     - 修复多级域名问题
 
