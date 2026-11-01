@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN">
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -13,9 +13,9 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1f19b280"></script>
-      <script src="../_static/doctools.js?v=888ff710"></script>
-      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/documentation_options.js?v=c80d5b48"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/translations.js?v=beaddf03"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
@@ -101,28 +101,28 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>常见问题<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>常见问题<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <section id="id2">
-<h2>1、暂不支持多进程方式启动<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<h2>1、暂不支持多进程方式启动<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>使用 master + 多worker 方式启动应用，会启动多个定时任务Scheduler，导致多次执行任务</p>
 <p>如果小规模使用，启动一个进程即可</p>
 <p>如果是需要支持并发访问，可自行改进应用</p>
 <p>将定时器独立出来，单独一个进程控制，行成 scheduler + Flask（master + 多worker）</p>
 </section>
 <section id="id3">
-<h2>2、为什么外网访问不到？<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span># 启动运行
-$ gunicorn &#39;domain_admin.main:app&#39;
+<h2>2、为什么外网访问不到？<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 启动运行</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span><span class="s1">'domain_admin.main:app'</span>
 
-# 支持外网可访问，云服务器（阿里云或腾讯云）需要设置安全组
-# 默认内网访问 --bind 127.0.0.1:8000
-$ gunicorn --bind &#39;0.0.0.0:8000&#39; domain_admin.main:app&#39;
+<span class="c1"># 支持外网可访问，云服务器（阿里云或腾讯云）需要设置安全组</span>
+<span class="c1"># 默认内网访问 --bind 127.0.0.1:8000</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">'0.0.0.0:8000'</span><span class="w"> </span>domain_admin.main:app<span class="err">'</span>
 </pre></div>
 </div>
 <p>更多设置，可参考<a class="reference external" href="https://docs.gunicorn.org/en/stable/index.html">gunicorn</a></p>
 </section>
 <section id="windows-fcntl">
-<h2>3、Windows平台启动报错,找不到模块 <code class="docutils literal notranslate"><span class="pre">fcntl</span></code><a class="headerlink" href="#windows-fcntl" title="此标题的永久链接"></a></h2>
+<h2>3、Windows平台启动报错,找不到模块 <code class="docutils literal notranslate"><span class="pre">fcntl</span></code><a class="headerlink" href="#windows-fcntl" title="Link to this heading"></a></h2>
 <p>gunicorn不支持Windows，可以使用<a class="reference external" href="https://github.com/Pylons/waitress">waitress</a> 替换，感谢<a class="reference external" href="https://github.com/cbr252522489">&#64;cbr252522489</a>提供的解决方案</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>waitress
 
@@ -132,7 +132,7 @@ $<span class="w"> </span>waitress-serve<span class="w"> </span>--listen<span cla
 <p>参考：<a class="reference external" href="https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl">https://stackoverflow.com/questions/45228395/error-no-module-named-fcntl</a></p>
 </section>
 <section id="id4">
-<h2>4、添加域名数据后系统异常<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<h2>4、添加域名数据后系统异常<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>可按如下步骤删除异常数据</p>
 <p>docker 启动方式</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 查看容器的运行信息</span>
@@ -165,11 +165,11 @@ sqlite&gt;<span class="w"> </span>.quit
 </div>
 </section>
 <section id="id5">
-<h2>5、邮件发送失败<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<h2>5、邮件发送失败<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p>可尝试更换端口：25、465、587</p>
 </section>
 <section id="id6">
-<h2>7、监控域名非443的端口<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<h2>7、监控域名非443的端口<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p>域名格式</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">域名</span><span class="p">:</span><span class="n">端口</span>
 
@@ -180,7 +180,7 @@ sqlite&gt;<span class="w"> </span>.quit
 </div>
 </section>
 <section id="id7">
-<h2>8、修改数据库链接<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<h2>8、修改数据库链接<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p>系统默认使用sqlite数据库作为后端存储，仅支持单线程操作</p>
 <p>如果操作频繁会出现<code class="docutils literal notranslate"><span class="pre">database</span> <span class="pre">locked</span></code> 提示，就是数据库锁表了，可以更换后端存储为mysql，或者其他数据库</p>
 <p>通过配置<code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件或者直接设置系统环境变量</p>
@@ -204,7 +204,7 @@ sqlite&gt;<span class="w"> </span>.quit
 <p>更多mysql的设置可参考：<a class="reference external" href="https://pymysql.readthedocs.io/en/latest/modules/connections.html">https://pymysql.readthedocs.io/en/latest/modules/connections.html</a></p>
 </section>
 <section id="prometheus-metrics">
-<h2>10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口<a class="headerlink" href="#prometheus-metrics" title="此标题的永久链接"></a></h2>
+<h2>10、支持<code class="docutils literal notranslate"><span class="pre">prometheus</span></code> 的<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>接口<a class="headerlink" href="#prometheus-metrics" title="Link to this heading"></a></h2>
 <p>请求地址：<a class="reference external" href="http://127.0.0.1:8000/metrics">http://127.0.0.1:8000/metrics</a></p>
 <p>示例</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8000</span><span class="o">/</span><span class="n">metrics</span>
@@ -215,49 +215,49 @@ sqlite&gt;<span class="w"> </span>.quit
 <p>1、第一步、需要在 <code class="docutils literal notranslate"><span class="pre">系统设置/API</span> <span class="pre">KEY</span></code> 获取授权key</p>
 <p>2、第二步、配置 prometheus.yml</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">scrape_configs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">bearer_token</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;f60c03bfff8bb42dcf6821542e5fd11e&#39;</span>
+<span class="w">    </span><span class="nt">bearer_token</span><span class="p">:</span><span class="w"> </span><span class="s">'f60c03bfff8bb42dcf6821542e5fd11e'</span>
 </pre></div>
 </div>
 <p>如果是夜莺-Nightingale <a class="reference external" href="https://flashcat.cloud/docs/content/flashcat-monitor/categraf/plugin/prometheus/">参考文档</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[[</span><span class="nv">instances.domain</span><span class="p p-Indicator">]]</span>
 <span class="l l-Scalar l-Scalar-Plain">urls = [</span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">&quot;http://127.0.0.1:8000/metrics&quot;</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">"http://127.0.0.1:8000/metrics"</span>
 <span class="l l-Scalar l-Scalar-Plain">]</span>
 
-<span class="l l-Scalar l-Scalar-Plain">url_label_key = &quot;instance&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">url_label_value = &quot;{{.Host}}&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">headers = [&quot;Authorization&quot;, &quot;Bearer f60c03bfff8bb42dcf6821542e5fd11e&quot;]</span>
+<span class="l l-Scalar l-Scalar-Plain">url_label_key = "instance"</span>
+<span class="l l-Scalar l-Scalar-Plain">url_label_value = "{{.Host}}"</span>
+<span class="l l-Scalar l-Scalar-Plain">headers = ["Authorization", "Bearer f60c03bfff8bb42dcf6821542e5fd11e"]</span>
 </pre></div>
 </div>
 <p>该配置由<a class="reference external" href="https://github.com/1275788667">&#64;1275788667</a> 提供</p>
 <p>返回数据示例：</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># HELP domain_admin this is a domain admin data
 # TYPE domain_admin gauge
-domain_admin{domain=&quot;pgmanage.qnvip.com&quot;} 0.0
-domain_admin{domain=&quot;fanyi.baidu.com&quot;} 37.0
-domain_admin{domain=&quot;www.tmall.com&quot;} 37.0
-domain_admin{domain=&quot;www.baidu.com&quot;} 37.0
-domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
+domain_admin{domain="pgmanage.qnvip.com"} 0.0
+domain_admin{domain="fanyi.baidu.com"} 37.0
+domain_admin{domain="www.tmall.com"} 37.0
+domain_admin{domain="www.baidu.com"} 37.0
+domain_admin{domain="www.taobao.com"} 37.0
 </pre></div>
 </div>
 <p>&#64;since v1.5.27 升级为</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># HELP domain_admin this is a domain admin data</span>
 <span class="c1"># TYPE domain_admin gauge 证书列表数据</span>
-<span class="n">domain_admin</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;百度系&quot;</span><span class="p">,</span><span class="n">root_domain</span><span class="o">=</span><span class="s2">&quot;baidu.com&quot;</span><span class="p">}</span> <span class="mf">258.0</span>
-<span class="n">domain_admin</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;www.163.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">root_domain</span><span class="o">=</span><span class="s2">&quot;163.com&quot;</span><span class="p">}</span> <span class="mf">153.0</span>
+<span class="n">domain_admin</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">"www.baidu.com"</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">"百度系"</span><span class="p">,</span><span class="n">root_domain</span><span class="o">=</span><span class="s2">"baidu.com"</span><span class="p">}</span> <span class="mf">258.0</span>
+<span class="n">domain_admin</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">"www.163.com"</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span><span class="n">root_domain</span><span class="o">=</span><span class="s2">"163.com"</span><span class="p">}</span> <span class="mf">153.0</span>
 <span class="c1"># HELP domain_info this is a domain info data</span>
 <span class="c1"># TYPE domain_info gauge 域名列表数据</span>
-<span class="n">domain_info</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;163.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;百度系&quot;</span><span class="p">}</span> <span class="mf">1392.0</span>
-<span class="n">domain_info</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;qq.com&quot;</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">}</span> <span class="mf">3535.0</span>
+<span class="n">domain_info</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">"163.com"</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">"百度系"</span><span class="p">}</span> <span class="mf">1392.0</span>
+<span class="n">domain_info</span><span class="p">{</span><span class="n">domain</span><span class="o">=</span><span class="s2">"qq.com"</span><span class="p">,</span><span class="n">group_name</span><span class="o">=</span><span class="s2">""</span><span class="p">}</span> <span class="mf">3535.0</span>
 </pre></div>
 </div>
 </section>
 <section id="id10">
-<h2>11、部分域名无法查询到信息<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<h2>11、部分域名无法查询到信息<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
 <p>已知不支持的域名后缀：<code class="docutils literal notranslate"><span class="pre">.lc</span></code>、<code class="docutils literal notranslate"><span class="pre">.ml</span></code>、<code class="docutils literal notranslate"><span class="pre">.ai</span></code>、<code class="docutils literal notranslate"><span class="pre">.my</span></code>、<code class="docutils literal notranslate"><span class="pre">.ch</span></code>、<code class="docutils literal notranslate"><span class="pre">.edu.cn</span></code>、<code class="docutils literal notranslate"><span class="pre">.name</span></code></p>
 </section>
 <section id="ingress">
-<h2>12、获取ingress的域名<a class="headerlink" href="#ingress" title="此标题的永久链接"></a></h2>
+<h2>12、获取ingress的域名<a class="headerlink" href="#ingress" title="Link to this heading"></a></h2>
 <p>从k8s里面自动获取ingress的域名，然后添加到domain-admin里面</p>
 <p>安装依赖</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>tldextract<span class="w"> </span>requests<span class="w"> </span>kubernetes
@@ -278,21 +278,21 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 
 
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+    <span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'application/json'</span>
 <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_token</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/api/login&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">/api/login'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
-        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span>
+        <span class="s1">'username'</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s1">'password'</span><span class="p">:</span> <span class="n">password</span>
     <span class="p">}</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">token</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;token&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">'code'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'data'</span><span class="p">][</span><span class="s1">'token'</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">token</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -302,15 +302,15 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">add_domain</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/api/addDomainInfo&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">/api/addDomainInfo'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="n">domain</span>
+        <span class="s1">'domain'</span><span class="p">:</span> <span class="n">domain</span>
     <span class="p">}</span>
-    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Token&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s1">'X-Token'</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">'code'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -325,27 +325,27 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
     <span class="n">ingresses</span> <span class="o">=</span> <span class="n">kube_api</span><span class="o">.</span><span class="n">list_ingress_for_all_namespaces</span><span class="p">()</span>
     <span class="n">_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ingresses</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;NAMESPACE_MATCH&#39;</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'NAMESPACE_MATCH'</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;NAMESPACE_NOT_MATCH&#39;</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'NAMESPACE_NOT_MATCH'</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
             <span class="n">domain</span> <span class="o">=</span> <span class="n">tldextract</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">host</span><span class="p">)</span><span class="o">.</span><span class="n">registered_domain</span>
             <span class="n">_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_HOST&#39;</span><span class="p">),</span>
-                      <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_USERNAME&#39;</span><span class="p">),</span>
-                      <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_PASSWORD&#39;</span><span class="p">))</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'DOMAIN_ADMIN_HOST'</span><span class="p">),</span>
+                      <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'DOMAIN_ADMIN_USERNAME'</span><span class="p">),</span>
+                      <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'DOMAIN_ADMIN_PASSWORD'</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">_set</span><span class="p">:</span>
-        <span class="n">add_domain</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DOMAIN_ADMIN_HOST&#39;</span><span class="p">),</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">add_domain</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'DOMAIN_ADMIN_HOST'</span><span class="p">),</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="id11">
-<h2>13、证书监控原理<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+<h2>13、证书监控原理<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
 <p>第一步：<code class="docutils literal notranslate"><span class="pre">证书数据更新</span></code>：通过实时访问网站，取回网站部署的证书，解析证书签发时间和过期时间，更新到数据库</p>
 <p>第二步：<code class="docutils literal notranslate"><span class="pre">到期通知</span></code>：通过配置好的通知触发条件，查询数据库，如果查询到记录则发送通知，没有查询到数据就忽略</p>
 <blockquote>
@@ -353,7 +353,7 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 </div></blockquote>
 </section>
 <section id="id12">
-<h2>14、域名监控原理<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
+<h2>14、域名监控原理<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
 <p>第一步：<code class="docutils literal notranslate"><span class="pre">域名数据更新</span></code>：通过访问域名服务器，取回域名信息，解析出域名注册时间和过期时间，更新到数据库</p>
 <p>第二步：<code class="docutils literal notranslate"><span class="pre">到期通知</span></code>：通过配置好的通知触发条件，查询数据库，如果查询到记录则发送通知，没有查询到数据就忽略</p>
 <blockquote>
@@ -363,18 +363,18 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 </div></blockquote>
 </section>
 <section id="id13">
-<h2>15、提示缺少依赖<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h2>
+<h2>15、提示缺少依赖<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
 <p>可参考网友写的总结文章：</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://blog.csdn.net/u013901725/article/details/132394530">domain-admin域名监控的源码搭建</a></p></li>
 </ul>
 </section>
 <section id="id14">
-<h2>16、主机地址显示错误<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h2>
+<h2>16、主机地址显示错误<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
 <p>由于系统不会主动清空已存在的主机地址，对于CND等证书，可以打开【动态主机】，每次更新数据都会先清空主机IP列表，重新获取数据，避免误报的问题。</p>
 </section>
 <section id="admin">
-<h2>17、忘记admin密码怎么办<a class="headerlink" href="#admin" title="此标题的永久链接"></a></h2>
+<h2>17、忘记admin密码怎么办<a class="headerlink" href="#admin" title="Link to this heading"></a></h2>
 <p>把数据库表<code class="docutils literal notranslate"><span class="pre">tb_user</span></code>密码字段<code class="docutils literal notranslate"><span class="pre">password</span></code>替换为这个：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$2</span>b<span class="nv">$12$c</span>/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK
 </pre></div>
@@ -382,24 +382,24 @@ domain_admin{domain=&quot;www.taobao.com&quot;} 37.0
 <p>可以重置为：123456</p>
 <p>示例</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="w"> </span><span class="n">sqlite3</span>
-<span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ATTACH</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="s1">&#39;/opt/domain-admin/database/database.db&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mydatabase</span><span class="p">;</span>
-<span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">tb_user</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;$2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK&quot;</span><span class="w"> </span><span class="p">;</span>
+<span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ATTACH</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="s1">'/opt/domain-admin/database/database.db'</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mydatabase</span><span class="p">;</span>
+<span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">tb_user</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"$2b$12$c/tJvOYaWxzis4CXSyGN9ua4B7wzor8j9WrGsgV/2pdJnsrAMJxiK"</span><span class="w"> </span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
 <section id="database-is-locked">
-<h2>18、database is locked<a class="headerlink" href="#database-is-locked" title="此标题的永久链接"></a></h2>
+<h2>18、database is locked<a class="headerlink" href="#database-is-locked" title="Link to this heading"></a></h2>
 <p>数据库锁表了，由于默认使用sqlite数据库，不支持多线程操作</p>
 <p>如果遇到此提示，可以等待一会再进行操作</p>
 <p>还可以直接换成mysql数据库，参考<a class="reference external" href="https://domain-admin.readthedocs.io/zh_CN/latest/manual/install.html#id5">可选配置</a></p>
 </section>
 <section id="python2-7">
-<h2>19、Python2.7 依赖问题<a class="headerlink" href="#python2-7" title="此标题的永久链接"></a></h2>
+<h2>19、Python2.7 依赖问题<a class="headerlink" href="#python2-7" title="Link to this heading"></a></h2>
 <p>可以手动安装适合Python2.7 的依赖版本，也可以使用整理好的依赖文件</p>
 <p><a class="reference external" href="https://github.com/mouday/domain-admin/blob/master/requirements/production-2.7.txt">production-2.7.txt</a></p>
 </section>
 <section id="grafana">
-<h2>20、grafana 的展示模版<a class="headerlink" href="#grafana" title="此标题的永久链接"></a></h2>
+<h2>20、grafana 的展示模版<a class="headerlink" href="#grafana" title="Link to this heading"></a></h2>
 <p>可参考群友 友志 提供的模板</p>
 <p><a class="reference external" href="https://grafana.com/grafana/dashboards/14605-domain-exporter-for-prometheus/">https://grafana.com/grafana/dashboards/14605-domain-exporter-for-prometheus/</a></p>
 <p><a class="reference external" href="https://grafana.com/grafana/dashboards/13924-9116-domain/">https://grafana.com/grafana/dashboards/13924-9116-domain/</a></p>

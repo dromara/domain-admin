@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN">
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -13,9 +13,9 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1f19b280"></script>
-      <script src="../_static/doctools.js?v=888ff710"></script>
-      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/documentation_options.js?v=c80d5b48"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/translations.js?v=beaddf03"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
@@ -46,17 +46,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">用户手册</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">安装方式</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id3">方式一：宝塔面板安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">方式一：宝塔面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker">方式二：docker启动</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">方式三：下载源码安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">方式三：下载源码安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#panel">方式四：1Panel面板安装</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#k8s">方式五：k8s部署</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pip">方式六：pip安装</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">其他部署方式</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">平滑升级</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">可选配置</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">配置参数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">更新脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">其他部署方式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">平滑升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">可选配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">配置参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">更新脚本</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notify.html">通知配置</a></li>
@@ -94,7 +94,7 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>安装方式<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>安装方式<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>管理员默认的账号和密码</p>
 <ul class="simple">
 <li><p>账号：admin</p></li>
@@ -108,22 +108,24 @@
 <div><p><code class="docutils literal notranslate"><span class="pre">特别注意</span></code>：</p>
 <ul class="simple">
 <li><p>【测试环境】可以使用默认的sqlite数据库;</p></li>
-<li><p>【生产环境】推荐使用MySQL数据库，避免锁表，配置方式:<a class="reference external" href="#id5">可选配置</a></p></li>
+<li><p>【生产环境】推荐使用MySQL数据库，避免锁表，配置方式:<a class="reference internal" href="#id5"><span>可选配置</span></a></p></li>
 </ul>
 </div></blockquote>
-<section id="id3">
-<h2>方式一：宝塔面板安装<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<a class="reference external image-reference" href="https://www.bt.cn/u/MaBJJC"><img alt="宝塔服务器面板，一键全能部署及管理" src="https://img.shields.io/badge/BT_Deploy-Install-20a53a" /></a>
+<section id="id2">
+<h2>方式一：宝塔面板安装<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://www.bt.cn/u/MaBJJC"><img alt="宝塔服务器面板，一键全能部署及管理" src="https://img.shields.io/badge/BT_Deploy-Install-20a53a" />
+</a>
 <p>宝塔Linux面板是提升运维效率的服务器管理软件，支持一键LAMP/LNMP/集群/监控/网站/FTP/数据库/JAVA等100多项服务器管理功能。</p>
 <p>有30个人的专业团队研发及维护，经过200多个版本的迭代，功能全，少出错且足够安全，已获得全球百万用户认可安装。</p>
 <p>如果还未安装宝塔，请先前往<a class="reference external" href="https://www.bt.cn/u/MaBJJC">下载</a>注册安装</p>
 <p>面板版本v9.2.0： 宝塔面板 –&gt; Docker –&gt; 应用商店 –&gt; Domain Admin –&gt; 安装</p>
 <p><a class="reference external" href="https://www.bt.cn/bbs/thread-139621-1-1.html">【教程贴】Docker应用-Domain Admin 安装帮助</a></p>
-<p><span class="raw-html-m2r"><a title="宝塔服务器面板，一键全能部署及管理" href="https://www.bt.cn/u/MaBJJC"><img src="https://mouday.github.io/img/2024/10/24/fxkd3qe.jpg" width="200"></a></span></p>
-<a class="reference external image-reference" href="https://mouday.github.io/img/2024/10/31/63ke2ij.png"><img alt="" src="https://mouday.github.io/img/2024/10/31/63ke2ij.png" /></a>
+<p><span class="raw-html-m2r"><a title="宝塔服务器面板，一键全能部署及管理" href="https://www.bt.cn/u/MaBJJC"></span><span class="raw-html-m2r"><img src="https://mouday.github.io/img/2024/10/24/fxkd3qe.jpg" width="200"></span><span class="raw-html-m2r"></a></span></p>
+<a class="reference external image-reference" href="https://mouday.github.io/img/2024/10/31/63ke2ij.png"><img alt="" src="https://mouday.github.io/img/2024/10/31/63ke2ij.png" />
+</a>
 </section>
 <section id="docker">
-<h2>方式二：docker启动<a class="headerlink" href="#docker" title="此标题的永久链接"></a></h2>
+<h2>方式二：docker启动<a class="headerlink" href="#docker" title="Link to this heading"></a></h2>
 <p>感谢<a class="reference external" href="https://github.com/miss85246">&#64;miss85246</a> 提供Docker支持</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 本地文件夹和容器文件夹映射</span>
 $<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
@@ -152,14 +154,14 @@ mouday/domain-admin:latest
 <p>也可以用dokcer-compose来一键启动</p>
 <p>可以使用<code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>来启动</p>
 <p>当版本更新时，可以用<code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">pull</span></code>来拉取镜像，然后用<code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>来重启新镜像</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.3&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">'3.3'</span>
 <span class="nt">services</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">domain-admin</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./database:/app/database&#39;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./logs:/app/logs&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'./database:/app/database'</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'./logs:/app/logs'</span>
 <span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;8000:8000&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'8000:8000'</span>
 <span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
 <span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mouday/domain-admin:latest</span>
 </pre></div>
@@ -169,20 +171,20 @@ mouday/domain-admin:latest
 
 $<span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/docker/daemon.json<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
 <span class="s">{</span>
-<span class="s">&quot;registry-mirrors&quot;: [</span>
-<span class="s">&quot;https://dockerpull.com&quot;,</span>
-<span class="s">&quot;https://dockerproxy.cn&quot;,</span>
-<span class="s">&quot;https://docker.loli.voto&quot;,</span>
-<span class="s">&quot;https://docker.chenby.cn&quot;,</span>
-<span class="s">&quot;https://docker-cf.registry.cyou&quot;,</span>
-<span class="s">&quot;https://docker.m.daocloud.io&quot;,</span>
-<span class="s">&quot;https://docker.ketches.cn&quot;,</span>
-<span class="s">&quot;https://docker.1panel.dev&quot;,</span>
-<span class="s">&quot;https://docker.1panel.live&quot;,</span>
-<span class="s">&quot;https://docker.rainbond.cc&quot;,</span>
-<span class="s">&quot;https://hub.rat.dev&quot;,</span>
-<span class="s">&quot;https://docker.aityp.com/&quot;,</span>
-<span class="s">&quot;https://docker.catiz.eu.org/&quot;</span>
+<span class="s">"registry-mirrors": [</span>
+<span class="s">"https://dockerpull.com",</span>
+<span class="s">"https://dockerproxy.cn",</span>
+<span class="s">"https://docker.loli.voto",</span>
+<span class="s">"https://docker.chenby.cn",</span>
+<span class="s">"https://docker-cf.registry.cyou",</span>
+<span class="s">"https://docker.m.daocloud.io",</span>
+<span class="s">"https://docker.ketches.cn",</span>
+<span class="s">"https://docker.1panel.dev",</span>
+<span class="s">"https://docker.1panel.live",</span>
+<span class="s">"https://docker.rainbond.cc",</span>
+<span class="s">"https://hub.rat.dev",</span>
+<span class="s">"https://docker.aityp.com/",</span>
+<span class="s">"https://docker.catiz.eu.org/"</span>
 <span class="s">]</span>
 <span class="s">}</span>
 <span class="s">EOF</span>
@@ -192,8 +194,8 @@ $<span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> <
 </pre></div>
 </div>
 </section>
-<section id="id5">
-<h2>方式三：下载源码安装<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<section id="id4">
+<h2>方式三：下载源码安装<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>下载地址：<a class="reference external" href="https://github.com/mouday/domain-admin/releases">https://github.com/mouday/domain-admin/releases</a></p>
 <p>本方式仅适用于二次开发，推荐采用 pip安装 或者 docker启动 的方式体验</p>
 <p>例如：以<code class="docutils literal notranslate"><span class="pre">v1.5.8</span></code>为例</p>
@@ -232,7 +234,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>.
 <p>4、新建启动文件 <code class="docutils literal notranslate"><span class="pre">app.py</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">domain_admin.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -260,7 +262,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>.
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 启动运行</span>
 $<span class="w"> </span>python<span class="w"> </span>app.py
 
-*<span class="w"> </span>Serving<span class="w"> </span>Flask<span class="w"> </span>app<span class="w"> </span><span class="s1">&#39;domain_admin.main&#39;</span>
+*<span class="w"> </span>Serving<span class="w"> </span>Flask<span class="w"> </span>app<span class="w"> </span><span class="s1">'domain_admin.main'</span>
 *<span class="w"> </span>Debug<span class="w"> </span>mode:<span class="w"> </span>off
 WARNING:<span class="w"> </span>This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>development<span class="w"> </span>server.<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>use<span class="w"> </span>it<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>deployment.<span class="w"> </span>Use<span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>WSGI<span class="w"> </span>server<span class="w"> </span>instead.
 *<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:8000
@@ -273,13 +275,13 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 <p>访问地址：<a class="reference external" href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
 </section>
 <section id="panel">
-<h2>方式四：1Panel面板安装<a class="headerlink" href="#panel" title="此标题的永久链接"></a></h2>
+<h2>方式四：1Panel面板安装<a class="headerlink" href="#panel" title="Link to this heading"></a></h2>
 <p>1Panel是一个Linux 服务器运维管理面板，Domain-Admin已发布到它的应用商店，可以直接安装</p>
 <p>安装地址：</p>
 <p><a class="reference external" href="https://apps.fit2cloud.com/1panel/domain-admin">https://apps.fit2cloud.com/1panel/domain-admin</a></p>
 </section>
 <section id="k8s">
-<h2>方式五：k8s部署<a class="headerlink" href="#k8s" title="此标题的永久链接"></a></h2>
+<h2>方式五：k8s部署<a class="headerlink" href="#k8s" title="Link to this heading"></a></h2>
 <p>配置文件示例</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
@@ -319,7 +321,7 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 <span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
 <span class="w">        </span><span class="nt">env</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_CONNECT_URL</span>
-<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sqlite:///database/database.db&quot;</span>
+<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">"sqlite:///database/database.db"</span>
 <span class="w">        </span><span class="nt">livenessProbe</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span>
@@ -346,7 +348,7 @@ Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </
 </div>
 </section>
 <section id="pip">
-<h2>方式六：pip安装<a class="headerlink" href="#pip" title="此标题的永久链接"></a></h2>
+<h2>方式六：pip安装<a class="headerlink" href="#pip" title="Link to this heading"></a></h2>
 <p>运行环境：</p>
 <ul class="simple">
 <li><p>Python &gt;= 2.7 或者 Python &gt;= 3.4</p></li>
@@ -367,7 +369,7 @@ $<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </spa
 $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gunicorn<span class="w"> </span>domain-admin
 
 <span class="c1"># 启动运行</span>
-$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">&#39;127.0.0.1:8000&#39;</span><span class="w"> </span><span class="s1">&#39;domain_admin.main:app&#39;</span>
+$<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> </span><span class="s1">'127.0.0.1:8000'</span><span class="w"> </span><span class="s1">'domain_admin.main:app'</span>
 </pre></div>
 </div>
 <p>windows 安装</p>
@@ -392,20 +394,20 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 <p>Python2.7如果安装依赖报错，可以使用依赖文件 <a class="reference external" href="https://github.com/mouday/domain-admin/tree/master/requirements/production-2.7.txt">production-2.7.txt</a></p>
 <p>先安装好依赖文件的依赖，再安装domain-admin即可</p>
 </section>
-<section id="id6">
-<h2>其他部署方式<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id5">
+<h2>其他部署方式<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p>可以参考<a class="reference external" href="https://flask.palletsprojects.com/en/2.3.x/deploying/">https://flask.palletsprojects.com/en/2.3.x/deploying/</a></p>
 </section>
-<section id="id7">
-<h2>平滑升级<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<section id="id6">
+<h2>平滑升级<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p>Domain Admin所有版本都支持平滑升级</p>
 <p>安装最新版，重启即可</p>
 <blockquote>
 <div><p>注意：如果是docker安装的，注意<code class="docutils literal notranslate"><span class="pre">database</span></code> 目录是不是手动挂载的，不要删除</p>
 </div></blockquote>
 </section>
-<section id="id8">
-<h2>可选配置<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h2>可选配置<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p>通过配置<code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件或者直接设置系统环境变量</p>
 <p>1、修改数据库存储方式</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># sqlite 默认 （少量用户推荐）</span>
@@ -424,8 +426,8 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 </pre></div>
 </div>
 </section>
-<section id="id9">
-<h2>配置参数<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<section id="id8">
+<h2>配置参数<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <p>可以通过运行目录下添加 <code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件配置项目的可选参数</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 数据库链接参数</span>
 <span class="c1"># 支持数据库：sqlite（默认）、mysql、postgresql</span>
@@ -451,7 +453,7 @@ $<span class="w"> </span>gunicorn<span class="w"> </span>--bind<span class="w"> 
 ENV<span class="w"> </span>APP_MODE<span class="w"> </span>production
 
 <span class="c1"># 设置多个环境变量</span>
-ENV<span class="w"> </span><span class="nv">APP_MODE</span><span class="o">=</span>production<span class="w"> </span><span class="nv">ALLOW_COMMANDS</span><span class="o">=</span><span class="s1">&#39;nginx -s reload&#39;</span>
+ENV<span class="w"> </span><span class="nv">APP_MODE</span><span class="o">=</span>production<span class="w"> </span><span class="nv">ALLOW_COMMANDS</span><span class="o">=</span><span class="s1">'nginx -s reload'</span>
 </pre></div>
 </div>
 <p>使用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> 命令的 <code class="docutils literal notranslate"><span class="pre">-e</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--env</span></code> 选项在运行容器时设置环境变量</p>
@@ -459,18 +461,18 @@ ENV<span class="w"> </span><span class="nv">APP_MODE</span><span class="o">=</sp
 docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">APP_MODE</span><span class="o">=</span>production<span class="w"> </span>my_image
 
 <span class="c1"># 设置多个环境变量</span>
-docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">APP_MODE</span><span class="o">=</span>production<span class="w"> </span>-e<span class="w"> </span><span class="nv">ALLOW_COMMANDS</span><span class="o">=</span><span class="s1">&#39;nginx -s reload&#39;</span><span class="w"> </span>my_image
+docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">APP_MODE</span><span class="o">=</span>production<span class="w"> </span>-e<span class="w"> </span><span class="nv">ALLOW_COMMANDS</span><span class="o">=</span><span class="s1">'nginx -s reload'</span><span class="w"> </span>my_image
 </pre></div>
 </div>
 <p>在<code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>文件中使用<code class="docutils literal notranslate"><span class="pre">environment</span></code>关键字</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.3&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">'3.3'</span>
 <span class="nt">services</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">domain-admin</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./database:/app/database&#39;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./logs:/app/logs&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'./database:/app/database'</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'./logs:/app/logs'</span>
 <span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;8000:8000&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'8000:8000'</span>
 <span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_MODE=production</span>
 <span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
@@ -478,14 +480,14 @@ docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </sp
 </pre></div>
 </div>
 <p>在<code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>文件从宿主机获取环境变量，可以使用<code class="docutils literal notranslate"><span class="pre">env_file</span></code>关键字指向一个文件</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.3&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">'3.3'</span>
 <span class="nt">services</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">domain-admin</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./database:/app/database&#39;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;./logs:/app/logs&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'./database:/app/database'</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'./logs:/app/logs'</span>
 <span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;8000:8000&#39;</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'8000:8000'</span>
 <span class="w">        </span><span class="nt">env_file</span><span class="p">:</span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.env</span>
 <span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain-admin</span>
@@ -494,13 +496,13 @@ docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </sp
 </div>
 <p>可以通过 <code class="docutils literal notranslate"><span class="pre">printenv</span></code> 命令查看设置的环境变量</p>
 </section>
-<section id="id10">
-<h2>更新脚本<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<section id="id9">
+<h2>更新脚本<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
 <p>可以使用类似的shell脚本，快速更新到新的版本</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># update.sh</span>
 git<span class="w"> </span>pull<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
 supervisorctl<span class="w"> </span>restart<span class="w"> </span>domain-admin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
-<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;部署成功&#39;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">'部署成功'</span>
 </pre></div>
 </div>
 </section>

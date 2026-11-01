@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN">
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -13,9 +13,9 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1f19b280"></script>
-      <script src="../_static/doctools.js?v=888ff710"></script>
-      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/documentation_options.js?v=c80d5b48"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/translations.js?v=beaddf03"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
@@ -88,13 +88,13 @@
            <div itemprop="articleBody">
              
   <section id="ssl">
-<h1>SSL证书申请<a class="headerlink" href="#ssl" title="此标题的永久链接"></a></h1>
+<h1>SSL证书申请<a class="headerlink" href="#ssl" title="Link to this heading"></a></h1>
 <p>申请步骤与阿里云申请证书一致</p>
 <p>考虑到大部分用户采用的是nginx，其他用户可自行按照如下思路研究</p>
 <p>首次使用申请ssl证书，推荐使用<code class="docutils literal notranslate"><span class="pre">手动验证</span></code>，流程跑通熟练之后，再使用<code class="docutils literal notranslate"><span class="pre">一键部署</span></code>功能</p>
 <p>申请步骤：</p>
 <section id="id1">
-<h2>1、填写域名<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<h2>1、填写域名<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>可以是一个域名，也可以是多个域名，每行一个</p>
 <p>例如：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>baidu.com
@@ -103,7 +103,7 @@ www.baidu.com
 </div>
 </section>
 <section id="id2">
-<h2>2、验证域名<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<h2>2、验证域名<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>2.1、手动文件验证</p>
 <ul class="simple">
 <li><p>下载<code class="docutils literal notranslate"><span class="pre">验证文件</span></code>，到服务器</p></li>
@@ -122,7 +122,7 @@ www.baidu.com
 </ul>
 </section>
 <section id="id3">
-<h2>3、下载证书<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<h2>3、下载证书<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>3.1、手动部署</p>
 <ul class="simple">
 <li><p>点击zip 下载SSL证书，自行解压</p></li>
@@ -135,28 +135,28 @@ www.baidu.com
 </ul>
 </section>
 <section id="id4">
-<h2>4、远程部署<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<h2>4、远程部署<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>通过调用远程api接口，将证书数据发送到远程接口，可自定义实现的部署逻辑</p>
 <p>申请证书api推送格式</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;domains&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;zhidao.baidu.com&quot;</span>
+<span class="w">  </span><span class="nt">"domains"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"www.baidu.com"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"zhidao.baidu.com"</span>
 <span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;ssl_certificate&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ssl_certificate_key&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-04 14:33:39&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;expire_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04 14:33:39&quot;</span>
+<span class="w">  </span><span class="nt">"ssl_certificate"</span><span class="p">:</span><span class="s2">"-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"ssl_certificate_key"</span><span class="p">:</span><span class="s2">"-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-04 14:33:39"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"expire_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-04-04 14:33:39"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>托管证书api推送格式</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;domain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;www.baidu.com&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ssl_certificate&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ssl_certificate_key&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-04 14:33:39&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;expire_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04 14:33:39&quot;</span>
+<span class="w">  </span><span class="nt">"domain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"www.baidu.com"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"ssl_certificate"</span><span class="p">:</span><span class="s2">"-----BEGIN CERTIFICATE-----\nMIIGdTCCBN2gAwI\n-----END CERTIFICATE-----"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"ssl_certificate_key"</span><span class="p">:</span><span class="s2">"-----BEGIN PRIVATE KEY-----\nMIIEvH+bpTwI=\n-----END PRIVATE KEY-----"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-04 14:33:39"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"expire_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-04-04 14:33:39"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -198,24 +198,24 @@ www.baidu.com
 </tbody>
 </table><p>远程服务器实现示例</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">@File    : fake_server.py</span>
 <span class="sd">@Date    : 2024-03-22</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="s1">&#39;/issueCertificate&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="s1">'/issueCertificate'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">'POST'</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">issue_certificate</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
     <span class="c1"># 此处可自行实现部署逻辑</span>
-    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">'result'</span><span class="p">:</span> <span class="s1">'ok'</span><span class="p">})</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8082</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -230,44 +230,44 @@ www.baidu.com
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">delayed_restart_nginx</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;在延迟5秒后重启nginx&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""在延迟5秒后重启nginx"""</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;docker&#39;</span><span class="p">,</span> <span class="s1">&#39;restart&#39;</span><span class="p">,</span> <span class="s1">&#39;nginx&#39;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;重启nginx完成。&#39;</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">'docker'</span><span class="p">,</span> <span class="s1">'restart'</span><span class="p">,</span> <span class="s1">'nginx'</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'重启nginx完成。'</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;重启nginx失败: &#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'重启nginx失败: '</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/deploy-cert&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">'/deploy-cert'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">'POST'</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">deploy_cert</span><span class="p">():</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s1">&#39;token&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid token&#39;</span><span class="p">}),</span> <span class="mi">401</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s1">'token'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">'error'</span><span class="p">:</span> <span class="s1">'Invalid token'</span><span class="p">}),</span> <span class="mi">401</span>
 
     <span class="c1"># 获取请求参数</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
     <span class="c1"># 获取域名列表</span>
-    <span class="n">domains</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;domains&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">domains</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'domains'</span><span class="p">,</span> <span class="p">[])</span>
     <span class="c1"># 获取证书文件</span>
-    <span class="n">ssl_certificate</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ssl_certificate&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">ssl_certificate</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ssl_certificate'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
     <span class="c1"># 获取证书密钥</span>
-    <span class="n">ssl_certificate_key</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ssl_certificate_key&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">ssl_certificate_key</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ssl_certificate_key'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
 
     <span class="c1"># 检测是否有值，避免无效请求</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">domains</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">ssl_certificate</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">ssl_certificate_key</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Missing required fields&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">'error'</span><span class="p">:</span> <span class="s1">'Missing required fields'</span><span class="p">}),</span> <span class="mi">400</span>
 
     <span class="c1"># 定义基础路径，因为本人的 nginx 是 docker 运行的，做了磁盘映射</span>
     <span class="c1"># nginx 的配置文件都在此目录，加上域名作为不同域名的证书目录</span>
     <span class="c1"># 如：/server/dockerApps/nginx/nginx/certs/simple.com/fullchain.pem</span>
     <span class="c1"># 如：/server/dockerApps/nginx/nginx/certs/simple.com/cert.key</span>
-    <span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;/server/dockerApps/nginx/nginx/certs&#39;</span>
+    <span class="n">base_path</span> <span class="o">=</span> <span class="s1">'/server/dockerApps/nginx/nginx/certs'</span>
 
     <span class="c1"># 遍历域名列表</span>
     <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">domains</span><span class="p">:</span>
         <span class="c1"># 将泛域名中的 *. 去掉</span>
-        <span class="k">if</span> <span class="n">domain</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;*.&#39;</span><span class="p">):</span>
-            <span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">domain</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'*.'</span><span class="p">):</span>
+            <span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'*.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="c1"># 创建目录</span>
         <span class="n">domain_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">domain_dir</span><span class="p">):</span>
@@ -275,25 +275,25 @@ www.baidu.com
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">domain_dir</span><span class="p">)</span>
 
         <span class="c1"># 生成证书文件</span>
-        <span class="n">cert_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">domain_dir</span><span class="p">,</span> <span class="s1">&#39;fullchain.pem&#39;</span><span class="p">)</span>
-        <span class="n">key_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">domain_dir</span><span class="p">,</span> <span class="s1">&#39;cert.key&#39;</span><span class="p">)</span>
+        <span class="n">cert_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">domain_dir</span><span class="p">,</span> <span class="s1">'fullchain.pem'</span><span class="p">)</span>
+        <span class="n">key_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">domain_dir</span><span class="p">,</span> <span class="s1">'cert.key'</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cert_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cert_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cert_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">cert_file</span><span class="p">:</span>
             <span class="n">cert_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ssl_certificate</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">key_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">key_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">key_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">key_file</span><span class="p">:</span>
             <span class="n">key_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ssl_certificate_key</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="s2">&quot; ==&gt; 证书创建成功&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="s2">" ==&gt; 证书创建成功"</span><span class="p">)</span>
 
     <span class="c1"># 执行重启nginx的线程</span>
     <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">delayed_restart_nginx</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
     <span class="c1"># 返回前端结果</span>
-    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">'result'</span><span class="p">:</span> <span class="s1">'ok'</span><span class="p">}),</span> <span class="mi">200</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8001</span><span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">'0.0.0.0'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8001</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>基于golang实现的部署方案，由网友提供</p>
@@ -302,7 +302,7 @@ www.baidu.com
 </ul>
 </section>
 <section id="id5">
-<h2>说明<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<h2>说明<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>如果是全程采用<code class="docutils literal notranslate"><span class="pre">一键部署</span></code>方式操作，域名到期前30天会自动续期</p></li>
 <li><p>申请到的证书，不会到期提醒，如需到期提醒，请将部署该证书的域名添加到<code class="docutils literal notranslate"><span class="pre">证书监控</span></code>列表</p></li>
