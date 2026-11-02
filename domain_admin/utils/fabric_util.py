@@ -18,6 +18,11 @@ from domain_admin.config import DEFAULT_SSH_PORT, ALLOW_COMMANDS
 from domain_admin.log import logger
 from domain_admin.utils.flask_ext.app_exception import AppException
 
+# SSH 连接超时时间（秒）
+# 不设置超时会导致远程主机无响应时任务永久阻塞，
+# 进而拖垮整个定时任务队列（导致到期通知等后续任务无法执行）
+DEFAULT_SSH_CONNECT_TIMEOUT = 15
+
 # 命令白名单
 allow_commands = [
     # 重启nginx
@@ -50,7 +55,10 @@ def deploy_file(host, user, password, content, remote, port=DEFAULT_SSH_PORT):
             host=host,
             port=port,
             user=user,
-            connect_kwargs={"password": password}
+            connect_kwargs={
+                "password": password,
+                "timeout": DEFAULT_SSH_CONNECT_TIMEOUT,
+            }
     ) as conn:
         conn.put(six.StringIO(content), remote)
 
@@ -74,7 +82,10 @@ def run_command(host, user, password, command, port=DEFAULT_SSH_PORT):
             host=host,
             port=port,
             user=user,
-            connect_kwargs={"password": password}
+            connect_kwargs={
+                "password": password,
+                "timeout": DEFAULT_SSH_CONNECT_TIMEOUT,
+            }
     ) as conn:
         conn.run(command, hide=True)
 
@@ -96,7 +107,10 @@ def deploy_file_by_key(host, user, private_key, content, remote, port=DEFAULT_SS
             host=host,
             port=port,
             user=user,
-            connect_kwargs={"pkey": _get_paramiko_key(private_key)}
+            connect_kwargs={
+                "pkey": _get_paramiko_key(private_key),
+                "timeout": DEFAULT_SSH_CONNECT_TIMEOUT,
+            }
     ) as conn:
         conn.put(six.StringIO(content), remote)
 
@@ -120,7 +134,10 @@ def run_command_by_key(host, user, private_key, command, port=DEFAULT_SSH_PORT):
             host=host,
             port=port,
             user=user,
-            connect_kwargs={"pkey": _get_paramiko_key(private_key)}
+            connect_kwargs={
+                "pkey": _get_paramiko_key(private_key),
+                "timeout": DEFAULT_SSH_CONNECT_TIMEOUT,
+            }
     ) as conn:
         conn.run(command, hide=True)
 

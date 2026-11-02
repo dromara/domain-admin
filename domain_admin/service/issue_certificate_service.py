@@ -30,6 +30,10 @@ from domain_admin.utils.open_api import aliyun_domain_api, tencentcloud_domain_a
 from domain_admin.utils.open_api.aliyun_domain_api import RecordTypeEnum
 from domain_admin import config
 
+# 外部 HTTP 请求超时时间（秒）
+# 不设置超时会导致任务永久阻塞，拖垮整个定时任务队列
+DEFAULT_REQUEST_TIMEOUT = 10
+
 
 def issue_certificate(
         domains, user_id,
@@ -104,11 +108,12 @@ def get_certificate_challenges(issue_certificate_id):
     return lst
 
 
-def verify_certificate(issue_certificate_id, challenge_type, verify_deploy_path, host_id, dns_id):
+def verify_certificate(issue_certificate_id, challenge_type, verify_deploy_path, host_id, dns_id, deadline=None):
     """
     验证域名
     :param issue_certificate_id:
     :param challenge_type:
+    :param deadline: time.time() 格式的截止时间，超过则中断验证
     :return:
     """
 
@@ -157,6 +162,10 @@ def verify_certificate(issue_certificate_id, challenge_type, verify_deploy_path,
         max_count = 5
 
         while True:
+            # 超过截止时间则中断本次验证，避免任务无限期挂起
+            if deadline is not None and time.time() > deadline:
+                raise AppException("域名验证超时：{}".format(item['domain']))
+
             count += 1
 
             status = get_challenge_status(challenge_json['url'])
@@ -253,7 +262,9 @@ def get_challenge_status(url):
     """
     logger.debug(url)
 
-    res = requests.get(url)
+    # fix: requests.get 不带 timeout，ACME 服务端无响应时任务会永久阻塞，
+    # 导致后续定时任务（含到期通知）全部排队无法执行
+    res = requests.get(url, timeout=DEFAULT_REQUEST_TIMEOUT)
 
     data = res.json()
     logger.debug(data)
@@ -278,9 +289,27 @@ def renew_all_certificate():
         )
     ).order_by(IssueCertificateModel.expire_time.asc())
 
-    for row in rows:
+    # 本次续签任务的总耗时上限（秒）
+    # 证书数量多时（如上百个），即使单个证书不超时，整体也可能跑数小时，
+    # 导致后续定时任务排队，到期通知迟迟不发
+    total_deadline = time.time() + config.DEFAULT_RENEW_ALL_TIMEOUT_SECONDS
+
+    for index, row in enumerate(rows):
+        # 单个证书续签的整体耗时上限（秒）
+        # 防止个别证书卡死拖垮整个定时任务，导致到期通知无法触发
+        deadline = time.time() + config.DEFAULT_RENEW_TIMEOUT_SECONDS
+
+        # 整体任务已超时，剩余证书留到下次任务处理
+        if time.time() > total_deadline:
+            logger.error(
+                "证书续签任务整体超时（%s秒），剩余 %s 个证书本次跳过",
+                config.DEFAULT_RENEW_ALL_TIMEOUT_SECONDS,
+                len(rows) - index
+            )
+            break
+
         try:
-            renew_certificate_row(row)
+            renew_certificate_row(row, deadline=deadline)
 
             IssueCertificateModel.update(
                 renew_status=0,
@@ -302,10 +331,11 @@ def renew_all_certificate():
             ).execute()
 
 
-def renew_certificate_row(row):
+def renew_certificate_row(row, deadline=None):
     """
     证书自动续期
     :param row:
+    :param deadline: time.time() 格式的截止时间，超过则中断续签
     :return:
     """
     # 重新申请
@@ -321,7 +351,7 @@ def renew_certificate_row(row):
         status=ValidStatus.PENDING,
     ).where(
         IssueCertificateModel.id == row.id
-    )
+    ).execute()
 
     # 验证文件部署 & 验证域名
     verify_certificate(
@@ -329,7 +359,8 @@ def renew_certificate_row(row):
         challenge_type=row.challenge_type,
         verify_deploy_path=row.deploy_verify_path,
         host_id=row.challenge_deploy_id,
-        dns_id=row.challenge_deploy_id
+        dns_id=row.challenge_deploy_id,
+        deadline=deadline
     )
 
     # 下载证书

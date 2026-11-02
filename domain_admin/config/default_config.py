@@ -27,6 +27,16 @@ DEFAULT_BEFORE_EXPIRE_DAYS = 3
 # 默认续期时间 单位：天
 DEFAULT_RENEW_DAYS = 30
 
+# 单个证书自动续签的整体耗时上限 单位：秒
+# 超过该时间则中断本次续签，避免外部服务无响应时任务永久阻塞，
+# 进而拖垮整个定时任务队列（导致到期通知等后续任务无法执行）
+DEFAULT_RENEW_TIMEOUT_SECONDS = 300
+
+# 单次证书续签任务（所有证书）的总耗时上限 单位：秒
+# 证书数量较多时，即使单个证书不超时，整体也可能跑数小时，
+# 导致后续定时任务排队、到期通知延迟发送，超时后剩余证书留到下次处理
+DEFAULT_RENEW_ALL_TIMEOUT_SECONDS = 3600
+
 # secret_key
 DEFAULT_SECRET_KEY = secret_util.get_random_secret()
 
