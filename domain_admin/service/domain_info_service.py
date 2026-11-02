@@ -104,6 +104,18 @@ def update_domain_info_row(row):
         update_row.domain_registrar = domain_whois['registrar']
         update_row.domain_registrar_url = domain_whois['registrar_url']
 
+    # fix: whois 查询失败/结果不完整时不能用 None 覆盖已有的到期时间，
+    # 否则会丢失原本有效的到期信息，导致到期通知无法触发
+    if not domain_whois or not domain_whois.get('expire_time'):
+        logger.error("whois 查询失败或未解析出到期时间，保留原有域名信息：%s", row.domain)
+        DomainInfoModel.update(
+            update_time=datetime_util.get_datetime(),
+            version=DomainInfoModel.version + 1
+        ).where(
+            DomainInfoModel.id == row.id
+        ).execute()
+        return
+
     DomainInfoModel.update(
         domain_start_time=update_row.domain_start_time,
         domain_expire_time=update_row.domain_expire_time,
