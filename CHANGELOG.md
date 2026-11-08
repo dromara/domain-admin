@@ -1,3 +1,11 @@
+- v1.6.80(2026-11-08)
+    - chore: .dockerignore 排除 .git 与 .gitignore (#231)
+    - fix: 定时任务卡死导致证书/域名到期通知无法发送 (#230)
+    - fix requirements
+    - update setup python version
+    - update python version
+    - update  python version
+
 - v1.6.79(2026-11-01)
     - fix test config
     - fix Missing authorization on getGroupUserList allows cross-user group member disclosure
