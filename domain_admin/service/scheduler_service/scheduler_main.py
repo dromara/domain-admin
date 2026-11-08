@@ -60,6 +60,20 @@ def update_job(cron_exp):
         replace_existing=True
     )
 
+    # 通知任务独立注册
+    # fix: 通知任务与证书续签任务解耦，避免续签卡死导致到期通知无法触发
+    scheduler.add_job(
+        func=run_notify_task,
+        trigger='cron',
+        minute=minute,
+        hour=hour,
+        day=day,
+        month=month,
+        day_of_week=scheduler_util.crontab_compatible_weekday(day_of_week),
+        id=scheduler_config.NOTIFY_TASK_JOB_ID,
+        replace_existing=True
+    )
+
 
 def run_one_monitor_task(monitor_row):
     next_run_time = monitor_service.run_monitor_warp(monitor_row)
@@ -98,7 +112,7 @@ def run_monitor_task():
         update_monitor_task(next_run_time)
 
 
-# fix: OperationalError: (2006, ‘MySQL server has gone away’)
+# fix: OperationalError: (2006, 'MySQL server has gone away')
 # see: http://docs.peewee-orm.com/en/latest/peewee/database.html#context-managers
 @db.connection_context()
 def run_task():
@@ -113,6 +127,39 @@ def run_task():
     status = True
 
     for func in scheduler_config.TASK_LIST:
+        try:
+            func()
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            status = False
+            message = str(e)
+
+    # 执行完毕
+    LogSchedulerModel.update({
+        'status': status,
+        'error_message': message,
+        'update_time': datetime_util.get_datetime(),
+    }).where(
+        LogSchedulerModel.id == log_row.id
+    ).execute()
+
+
+# fix: OperationalError: (2006, 'MySQL server has gone away')
+# see: http://docs.peewee-orm.com/en/latest/peewee/database.html#context-managers
+@db.connection_context()
+def run_notify_task():
+    """
+    通知定时任务
+    fix: 从 run_task 中拆出，单独调度。
+    证书续签任务一旦卡死，不会再阻塞到期通知的发送。
+    :return:
+    """
+    log_row = LogSchedulerModel.create()
+
+    message = '执行成功'
+    status = True
+
+    for func in scheduler_config.NOTIFY_TASK_LIST:
         try:
             func()
         except Exception as e:

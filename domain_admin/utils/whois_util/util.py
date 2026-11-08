@@ -49,7 +49,9 @@ def get_whois_raw(domain, server, port=43, timeout=5):
     :return: str
     """
     # 创建连接
-    sock = socket.create_connection((server, port))
+    # fix: create_connection 未传 timeout，连接阶段可能无限阻塞，
+    # 导致定时任务挂起，后续任务（含到期通知）全部排队无法执行
+    sock = socket.create_connection((server, port), timeout=timeout)
     sock.settimeout(timeout)
 
     # 发送请求
