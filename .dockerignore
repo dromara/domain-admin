@@ -6,3 +6,5 @@ doc
 http
 image
 .pytest_cache
+.git
+.gitignore
