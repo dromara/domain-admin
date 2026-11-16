@@ -1,12 +1,10 @@
 name: Upstream Sync
 
-permissions:
-    contents: write
-
 on:
     schedule:
         - cron: "0 0 * * *"
     workflow_dispatch:
+
 
 jobs:
     sync_with_upstream:
@@ -15,20 +13,28 @@ jobs:
         if: ${{ github.event.repository.fork }}
 
         steps:
+            # Step 1: run a standard checkout action, provided by github
             - name: Checkout target repo
               uses: actions/checkout@v3
 
+            # Step 2: run the sync action
             - name: Sync Upstream
-              uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+              uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
               with:
-                  target_repo_token: ${{ secrets.GITHUB_TOKEN }}
                   upstream_sync_repo: dromara/domain-admin
                   upstream_sync_branch: master
+                  target_repo_token: ${{ secrets.GITHUB_TOKEN }}
                   target_sync_branch: master
                   test_mode: false
 
-            - name: Check for Failure
-              if: failure()
-              run: |
-                  echo "[Error] Due to a change in the workflow file of the upstream repository, GitHub has automatically suspended the scheduled automatic update. You need to manually sync your fork."
-                  exit 1
+            # Step 3: Display a sample message based on the sync output var 'has_new_commits'
+            - name: New commits found
+              if: steps.sync.outputs.has_new_commits == 'true'
+              run: echo "New commits were found to sync."
+
+            - name: No new commits
+              if: steps.sync.outputs.has_new_commits == 'false'
+              run: echo "There were no new commits."
+
+            - name: Show value of 'has_new_commits'
+              run: echo ${{ steps.sync.outputs.has_new_commits }}
