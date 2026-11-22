@@ -5,6 +5,11 @@ name: Upstream Sync
 #        - cron: "0 0 * * *"
 #    workflow_dispatch:
 
+on:
+  push:
+    branches:
+      - "devx"
+
 jobs:
     sync_with_upstream:
         name: Sync with Upstream
